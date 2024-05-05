@@ -13,7 +13,7 @@ export const pcb_trace_hint = z
         x: distance,
         y: distance,
         via: z.boolean().optional(),
-        to_layer: layer_ref,
+        to_layer: layer_ref.optional(),
       })
     ),
   })
