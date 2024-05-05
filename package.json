@@ -1,0 +1,23 @@
+{
+  "name": "@tscircuit/soup",
+  "version": "0.0.1",
+  "description": "Definitions for the tscircuit intermediary JSON format",
+  "main": "dist/index.js",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup ./src/index.ts --dts --sourcemap"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/convert-units": "^2.3.9",
+    "esbuild": "^0.20.2",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "convert-units": "^2.3.4",
+    "zod": "^3.23.6"
+  }
+}
