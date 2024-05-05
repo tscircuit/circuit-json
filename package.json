@@ -1,9 +1,11 @@
 {
   "name": "@tscircuit/soup",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Definitions for the tscircuit intermediary JSON format",
   "main": "dist/index.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup ./src/index.ts --dts --sourcemap"
   },
