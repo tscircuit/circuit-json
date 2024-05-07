@@ -84,7 +84,7 @@ export const parseAndConvertSiUnit = <
       unit,
       value: convertUnits(parseFloat(value))
         .from(unit as any)
-        .to((target_conversion as any)[measure]),
+        .to((target_conversion as any)[measure]) as any,
     }
   } else {
     return {
