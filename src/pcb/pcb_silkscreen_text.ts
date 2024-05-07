@@ -5,7 +5,7 @@ import { point } from "src/common"
 export const pcb_silkscreen_text = z
   .object({
     type: z.literal("pcb_silkscreen_text"),
-    variant: z.literal("tscircuit2024").default("tscircuit2024"),
+    font: z.literal("tscircuit2024").default("tscircuit2024"),
     pcb_component_id: z.string(),
     text: z.string(),
     layer: visible_layer,
