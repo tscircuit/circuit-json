@@ -28,3 +28,6 @@ export const layer_ref = layer_string
 
 export type LayerRefInput = z.input<typeof layer_ref>
 export type LayerRef = z.output<typeof layer_ref>
+
+export const visible_layer = z.enum(["top", "bottom"])
+export type VisibleLayerRef = z.infer<typeof visible_layer>
