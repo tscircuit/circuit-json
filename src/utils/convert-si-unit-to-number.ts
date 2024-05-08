@@ -83,11 +83,17 @@ export const parseAndConvertSiUnit = <
     measure = convertUnits().describe(unit as any)?.measure
   } catch (e) {}
   if (measure) {
+    const target_unit = (target_conversion as any)[measure]
+    if (!target_unit) {
+      throw new Error(
+        `Could not determine target unit for measure: "${measure}"`
+      )
+    }
     return {
       unit,
       value: convertUnits(parseFloat(value))
         .from(unit as any)
-        .to((target_conversion as any)[measure]) as any,
+        .to(target_unit) as any,
     }
   } else {
     return {
