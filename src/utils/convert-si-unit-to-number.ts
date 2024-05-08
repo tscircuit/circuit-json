@@ -78,7 +78,10 @@ export const parseAndConvertSiUnit = <
   }
   const unit = unit_reversed.split("").reverse().join("")
   const value = v.slice(0, -unit.length)
-  const measure = convertUnits().describe(unit as any)?.measure
+  let measure
+  try {
+    measure = convertUnits().describe(unit as any)?.measure
+  } catch (e) {}
   if (measure) {
     return {
       unit,
