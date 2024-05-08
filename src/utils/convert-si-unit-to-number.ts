@@ -30,6 +30,7 @@ const target_conversion = {
   length: "mm",
   time: "ms",
   volume: "ml",
+  angle: "deg",
 }
 
 function getSiPrefixMultiplierFromUnit(v: string): number {
