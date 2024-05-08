@@ -1,6 +1,6 @@
 {
   "name": "@tscircuit/soup",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Definitions for the tscircuit intermediary JSON format",
   "main": "dist/index.js",
   "files": [
