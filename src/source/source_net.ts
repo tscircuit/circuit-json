@@ -1,6 +1,7 @@
 import { z } from "zod"
 
 export const source_net = z.object({
+  type: z.literal("source_net"),
   source_net_id: z.string(),
   name: z.string(),
   member_source_group_ids: z.array(z.string()),
