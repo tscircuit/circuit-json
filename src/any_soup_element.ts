@@ -45,6 +45,7 @@ export const any_soup_element = z.union([
   sch.schematic_trace,
   sch.schematic_path,
   sch.schematic_error,
+  sch.schematic_net_label,
 ])
 
 export type AnySoupElement = z.infer<typeof any_soup_element>
