@@ -5,6 +5,7 @@ export const schematic_net_label = z.object({
   type: z.literal("schematic_net_label"),
   source_net_id: z.string(),
   center: point,
+  anchor_side: z.enum(["top", "bottom", "left", "right"]),
   text: z.string(),
 })
 
