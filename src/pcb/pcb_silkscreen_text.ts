@@ -6,11 +6,11 @@ export const pcb_silkscreen_text = z
   .object({
     type: z.literal("pcb_silkscreen_text"),
     font: z.literal("tscircuit2024").default("tscircuit2024"),
+    font_size: z.number().default(1),
     pcb_component_id: z.string(),
     text: z.string(),
     layer: visible_layer,
-    pcbX: z.number(),
-    pcbY: z.number(),
+    center: point,
   })
   .describe("Defines silkscreen text on the PCB")
 

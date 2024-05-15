@@ -1,12 +1,14 @@
 import { z } from "zod"
 import { distance } from "../units"
 import { layer_ref, visible_layer } from "./properties/layer_ref"
+import { point } from "src/common/point"
 
 export const pcb_silkscreen_rect = z
   .object({
     type: z.literal("pcb_silkscreen_rect"),
     pcb_silkscreen_rect_id: z.string(),
     pcb_component_id: z.string(),
+    center: point,
     width: distance,
     height: distance,
     layer: visible_layer,
