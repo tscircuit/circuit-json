@@ -7,6 +7,7 @@ export const pcb_silkscreen_line = z
     type: z.literal("pcb_silkscreen_line"),
     pcb_silkscreen_line_id: z.string(),
     pcb_component_id: z.string(),
+    stroke_width: distance.default("0.1mm"),
     x1: distance,
     y1: distance,
     x2: distance,
