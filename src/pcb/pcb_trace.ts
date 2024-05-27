@@ -3,7 +3,8 @@ import { distance } from "../units"
 
 export const pcb_trace = z.object({
   type: z.literal("pcb_trace"),
-  source_trace_id: z.string(),
+  source_trace_id: z.string().optional(),
+  pcb_component_id: z.string().optional(),
   pcb_trace_id: z.string(),
   route: z.array(
     z.union([
