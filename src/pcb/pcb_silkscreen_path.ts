@@ -1,6 +1,7 @@
 import { z } from "zod"
 import { visible_layer } from "./properties/layer_ref"
 import { point } from "src/common"
+import { length } from "src/units"
 
 export const pcb_silkscreen_path = z
   .object({
@@ -9,6 +10,7 @@ export const pcb_silkscreen_path = z
     pcb_component_id: z.string(),
     layer: visible_layer,
     route: z.array(point),
+    stroke_width: length,
   })
   .describe("Defines a silkscreen path on the PCB")
 
