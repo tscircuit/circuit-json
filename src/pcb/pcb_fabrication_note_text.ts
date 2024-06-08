@@ -3,7 +3,7 @@ import { visible_layer } from "./properties/layer_ref"
 import { point } from "src/common"
 import { distance } from "src/units"
 
-export const fabrication_note_text = z
+export const pcb_fabrication_note_text = z
   .object({
     type: z.literal("fabrication_note_text"),
     font: z.literal("tscircuit2024").default("tscircuit2024"),
@@ -20,5 +20,7 @@ export const fabrication_note_text = z
     "Defines a fabrication note in text on the PCB, useful for leaving notes for assemblers or fabricators"
   )
 
-export type FabricationNoteText = z.infer<typeof fabrication_note_text>
-export type FabricationNoteTextInput = z.input<typeof fabrication_note_text>
+export type PcbFabricationNoteText = z.infer<typeof pcb_fabrication_note_text>
+export type PcbFabricationNoteTextInput = z.input<
+  typeof pcb_fabrication_note_text
+>

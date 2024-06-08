@@ -3,9 +3,9 @@ import { visible_layer } from "./properties/layer_ref"
 import { point } from "src/common"
 import { length } from "src/units"
 
-export const fabrication_note_path = z
+export const pcb_fabrication_note_path = z
   .object({
-    type: z.literal("fabrication_note_path"),
+    type: z.literal("pcb_fabrication_note_path"),
     fabrication_note_path_id: z.string(),
     pcb_component_id: z.string(),
     layer: visible_layer,
@@ -16,5 +16,7 @@ export const fabrication_note_path = z
     "Defines a fabrication path on the PCB for fabricators or assemblers"
   )
 
-export type FabricationNotePath = z.infer<typeof fabrication_note_path>
-export type FabricationNotePathInput = z.input<typeof fabrication_note_path>
+export type PcbFabricationNotePath = z.infer<typeof pcb_fabrication_note_path>
+export type PcbFabricationNotePathInput = z.input<
+  typeof pcb_fabrication_note_path
+>
