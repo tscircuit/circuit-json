@@ -1,7 +1,7 @@
 import { z } from "zod"
 import { point } from "../common/point"
 import { size } from "../common/size"
-import { rotation } from "../units"
+import { length, rotation } from "../units"
 
 export const schematic_component = z.object({
   type: z.literal("schematic_component"),
@@ -10,6 +10,8 @@ export const schematic_component = z.object({
   center: point,
   source_component_id: z.string(),
   schematic_component_id: z.string(),
+  pin_spacing: length.optional(),
+  box_width: length.optional(),
   port_arrangement: z
     .union([
       z.object({
