@@ -18,7 +18,7 @@ export const pcb_plated_hole = z
   .or(
     z.object({
       type: z.literal("pcb_plated_hole"),
-      shape: z.literal("oval"),
+      shape: z.enum(["oval", "pill"]),
       outer_width: z.number(),
       outer_height: z.number(),
       hole_width: z.number(),
