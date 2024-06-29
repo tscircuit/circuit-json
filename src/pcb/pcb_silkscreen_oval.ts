@@ -9,8 +9,8 @@ export const pcb_silkscreen_oval = z
     pcb_silkscreen_oval_id: z.string(),
     pcb_component_id: z.string(),
     center: point,
-    radiusX: distance,
-    radiusY: distance,
+    radius_x: distance,
+    radius_y: distance,
     layer: visible_layer,
   })
   .describe("Defines a silkscreen oval on the PCB");
