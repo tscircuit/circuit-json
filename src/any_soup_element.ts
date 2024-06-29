@@ -2,6 +2,7 @@ import { z } from "zod"
 import * as pcb from "./pcb"
 import * as sch from "./schematic"
 import * as src from "./source"
+import * as cad from "./cad"
 
 export const any_soup_element = z.union([
   // TODO source_group
@@ -50,6 +51,7 @@ export const any_soup_element = z.union([
   sch.schematic_path,
   sch.schematic_error,
   sch.schematic_net_label,
+  cad.cad_component,
 ])
 
 export type AnySoupElement = z.infer<typeof any_soup_element>
