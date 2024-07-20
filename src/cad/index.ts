@@ -1,1 +1,1 @@
-export * from "./cad_component_model"
+export * from "./cad_component"
