@@ -1,3 +1,4 @@
+import { point } from "src/common"
 import { z } from "zod"
 
 export const pcb_trace_error = z
@@ -6,6 +7,7 @@ export const pcb_trace_error = z
     type: z.literal("pcb_error"),
     error_type: z.literal("pcb_trace_error"),
     message: z.string(),
+    center: point.optional(),
     pcb_trace_id: z.string(),
     source_trace_id: z.string(),
     pcb_component_ids: z.array(z.string()),
