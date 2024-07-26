@@ -1,4 +1,4 @@
-# @tscircuit/soup (Soup = Circuit JSON)
+# @tscircuit/soup (Circuit JSON Specification)
 
 [tscircuit](https://github.com/tscircuit/tscircuit) · [Soup Specification Docs](https://docs.tscircuit.com/api-reference/advanced/soup)
 
