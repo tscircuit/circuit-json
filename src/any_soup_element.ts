@@ -18,6 +18,7 @@ export const any_soup_element = z.union([
   src.source_net,
   src.source_group,
   src.source_simple_bug,
+  src.source_simple_chip, 
   src.source_simple_capacitor,
   src.source_simple_diode,
   src.source_simple_resistor,
