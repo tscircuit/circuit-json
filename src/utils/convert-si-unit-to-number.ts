@@ -47,9 +47,9 @@ export const parseAndConvertSiUnit = <
     | string
     | number
     | undefined
-    | { x: string | number; y: string | number }
+    | { x: string | number; y: string | number },
 >(
-  v: T
+  v: T,
 ): {
   unit: string | null
   value: T extends { x: string | number; y: string | number }
@@ -87,7 +87,7 @@ export const parseAndConvertSiUnit = <
     const target_unit = (target_conversion as any)[measure]
     if (!target_unit) {
       throw new Error(
-        `Could not determine target unit for measure: "${measure}"`
+        `Could not determine target unit for measure: "${measure}"`,
       )
     }
     return {

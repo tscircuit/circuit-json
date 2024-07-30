@@ -17,7 +17,7 @@ export const schematic_trace = z.object({
       }),
       from_schematic_port_id: z.string().optional(),
       to_schematic_port_id: z.string().optional(),
-    })
+    }),
   ),
 })
 

@@ -17,7 +17,7 @@ export const pcb_hole = z
       hole_height: z.number(),
       x: distance,
       y: distance,
-    })
+    }),
   )
   .describe("Defines a hole on the PCB")
 

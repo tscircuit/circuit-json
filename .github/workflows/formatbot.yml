@@ -1,0 +1,47 @@
+name: Format PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  format:
+    name: Format code
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.TSCIRCUIT_BOT_GITHUB_TOKEN }}
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - name: Get @biomejs/biome version
+      id: get-biome-version
+      run: echo "BIOME_VERSION=$(node -p "require('./package.json').devDependencies['@biomejs/biome']")" >> $GITHUB_OUTPUT
+
+    - name: Install @biomejs/biome
+      run: npm install @biomejs/biome@${{ steps.get-biome-version.outputs.BIOME_VERSION }}
+
+    - name: Run formatter
+      run: npx @biomejs/biome format . --write
+
+    - name: Restore lock files
+      run: |
+        git checkout -- *lock.json || true
+        git checkout -- *.lock || true
+        git checkout -- *.lockb || true
+
+    - name: Commit changes
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: "formatbot: Automatically format code"
+        branch: ${{ github.head_ref }}
+        commit_user_name: tscircuitbot
+        commit_user_email: tscircuitbot@users.noreply.github.com
+        commit_author: tscircuitbot <tscircuitbot@users.noreply.github.com>

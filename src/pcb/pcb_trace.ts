@@ -24,7 +24,7 @@ export const pcb_trace = z.object({
         from_layer: z.string(),
         to_layer: z.string(),
       }),
-    ])
+    ]),
   ),
 })
 

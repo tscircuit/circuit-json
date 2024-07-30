@@ -29,7 +29,7 @@ export const pcb_plated_hole = z
       port_hints: z.array(z.string()).optional(),
       pcb_component_id: z.string().optional(),
       pcb_port_id: z.string().optional(),
-    })
+    }),
   )
   .describe("Defines a plated hole on the PCB")
 
