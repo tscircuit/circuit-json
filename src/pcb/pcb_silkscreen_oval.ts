@@ -13,7 +13,7 @@ export const pcb_silkscreen_oval = z
     radius_y: distance,
     layer: visible_layer,
   })
-  .describe("Defines a silkscreen oval on the PCB");
+  .describe("Defines a silkscreen oval on the PCB")
 
 export type PcbSilkscreenOval = z.infer<typeof pcb_silkscreen_oval>
 export type PcbSilkscreenOvalInput = z.input<typeof pcb_silkscreen_oval>

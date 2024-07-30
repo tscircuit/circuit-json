@@ -13,7 +13,7 @@ export const pcb_fabrication_note_path = z
     stroke_width: length,
   })
   .describe(
-    "Defines a fabrication path on the PCB for fabricators or assemblers"
+    "Defines a fabrication path on the PCB for fabricators or assemblers",
   )
 
 export type PcbFabricationNotePath = z.infer<typeof pcb_fabrication_note_path>

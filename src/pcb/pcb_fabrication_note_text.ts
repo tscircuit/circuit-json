@@ -17,7 +17,7 @@ export const pcb_fabrication_note_text = z
       .default("center"),
   })
   .describe(
-    "Defines a fabrication note in text on the PCB, useful for leaving notes for assemblers or fabricators"
+    "Defines a fabrication note in text on the PCB, useful for leaving notes for assemblers or fabricators",
   )
 
 export type PcbFabricationNoteText = z.infer<typeof pcb_fabrication_note_text>

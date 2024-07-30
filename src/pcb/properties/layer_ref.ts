@@ -17,7 +17,7 @@ export const layer_ref = layer_string
   .or(
     z.object({
       name: layer_string,
-    })
+    }),
   )
   .transform((layer) => {
     if (typeof layer === "string") {
