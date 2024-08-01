@@ -19,7 +19,7 @@ export const cad_component = z
     model_obj_url: z.string().optional(),
     model_stl_url: z.string().optional(),
     model_3mf_url: z.string().optional(),
-    model_jscad: z.array(z.any()).optional(),
+    model_jscad: z.any().optional(),
   })
   .describe("Defines a component on the PCB")
 
