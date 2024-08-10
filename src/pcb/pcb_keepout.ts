@@ -1,6 +1,6 @@
-import { z } from "zod";
-import { point } from "../common";
-import { distance } from "../units";
+import { z } from "zod"
+import { point } from "../common"
+import { distance } from "../units"
 
 export const pcb_keepout = z
   .object({
@@ -23,9 +23,9 @@ export const pcb_keepout = z
           shape: z.literal("circle"),
           center: point,
           radius: distance,
-        })
-      )
-  );
+        }),
+      ),
+  )
 
-export type PCBKeepoutInput = z.input<typeof pcb_keepout>;
-export type PCBKeepout = z.infer<typeof pcb_keepout>;
+export type PCBKeepoutInput = z.input<typeof pcb_keepout>
+export type PCBKeepout = z.infer<typeof pcb_keepout>
