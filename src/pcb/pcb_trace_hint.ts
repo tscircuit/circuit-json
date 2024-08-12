@@ -8,8 +8,8 @@ export const pcb_trace_hint = z
     type: z.literal("pcb_trace_hint"),
     pcb_port_id: z.string(),
     pcb_component_id: z.string(),
-    route: z.array(route_hint_point),
-    trace_width: distance,
+    route: z.array(route_hint_point.optional()),
+    trace_width: distance.optional(),
   })
   .describe("A hint that can be used to generate a PCB trace")
 
