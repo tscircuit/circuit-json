@@ -7,6 +7,7 @@ export const route_hint_point = z.object({
   y: distance,
   via: z.boolean().optional(),
   to_layer: layer_ref.optional(),
+  trace_width: distance.optional(),
 })
 
 export type RouteHintPoint = z.infer<typeof route_hint_point>
