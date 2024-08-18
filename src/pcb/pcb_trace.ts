@@ -6,6 +6,10 @@ export const pcb_trace = z.object({
   source_trace_id: z.string().optional(),
   pcb_component_id: z.string().optional(),
   pcb_trace_id: z.string(),
+  route_thickness_mode: z
+    .enum(["constant", "interpolated"])
+    .default("interpolated"),
+  should_round_corners: z.boolean().optional(),
   route: z.array(
     z.union([
       z.object({
