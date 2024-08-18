@@ -45,3 +45,5 @@ jobs:
         commit_user_name: tscircuitbot
         commit_user_email: tscircuitbot@users.noreply.github.com
         commit_author: tscircuitbot <tscircuitbot@users.noreply.github.com>
+        file_pattern: '*.ts'
+
