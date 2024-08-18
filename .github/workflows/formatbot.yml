@@ -36,6 +36,7 @@ jobs:
         git checkout -- *lock.json || true
         git checkout -- *.lock || true
         git checkout -- *.lockb || true
+        git checkout -- package.json || true
 
     - name: Commit changes
       uses: stefanzweifel/git-auto-commit-action@v4
