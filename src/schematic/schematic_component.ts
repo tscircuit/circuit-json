@@ -12,6 +12,7 @@ export const schematic_component = z.object({
   schematic_component_id: z.string(),
   pin_spacing: length.optional(),
   box_width: length.optional(),
+  symbol_name: z.string().optional(),
   port_arrangement: z
     .union([
       z.object({
