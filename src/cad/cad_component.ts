@@ -6,7 +6,7 @@ import { layer_ref } from "src/pcb"
 export const cad_component = z
   .object({
     type: z.literal("cad_component"),
-    cad_component_id: z.string(),
+       cad_component_id: z.string(),
     pcb_component_id: z.string(),
     source_component_id: z.string(),
     position: point3,
