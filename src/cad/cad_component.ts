@@ -7,7 +7,7 @@ export const cad_component = z
   .object({
     type: z.literal("cad_component"),
        cad_component_id: z.string(),
-    pcb_component_id: z.string(),
+       pcb_component_id: z.string(),
     source_component_id: z.string(),
     position: point3,
     rotation: point3.optional(),
