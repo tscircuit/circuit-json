@@ -37,16 +37,23 @@ jobs:
     - name: Install @biomejs/biome
       run: npm install @biomejs/biome@${{ steps.get-biome-version.outputs.BIOME_VERSION }}
 
-    - name: Run formatter
+    - name: Run Formatter and autofix
+      if: steps.check_fork.outputs.is_fork == 'false'
       run: npx @biomejs/biome format . --write
 
+    - name: Format Check (cannot autofix against forks)
+      if: steps.check_fork.outputs.is_fork == 'true'
+      run: npx @biomejs/biome format .
+
     - name: Restore lock files
+      if: steps.check_fork.outputs.is_fork == 'false'
       run: |
         git checkout -- *lock.json || true
         git checkout -- *.lock || true
         git checkout -- *.lockb || true
 
     - name: Commit changes
+      if: steps.check_fork.outputs.is_fork == 'false'
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: "formatbot: Automatically format code"
