@@ -9,6 +9,7 @@ export const pcb_board = z
     width: length,
     height: length,
     center: point,
+    outline: z.array(point).optional(),
   })
   .describe("Defines the board outline of the PCB")
 
