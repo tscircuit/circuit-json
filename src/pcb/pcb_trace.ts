@@ -8,7 +8,8 @@ export const pcb_trace = z.object({
   pcb_trace_id: z.string(),
   route_thickness_mode: z
     .enum(["constant", "interpolated"])
-    .default("interpolated"),
+    .default("interpolated")
+    .optional(),
   should_round_corners: z.boolean().optional(),
   route: z.array(
     z.union([

@@ -5,7 +5,7 @@ import { point } from "../common"
 export const pcb_board = z
   .object({
     type: z.literal("pcb_board"),
-    pcb_board_id: z.string().default("pcb_board_0"),
+    pcb_board_id: z.string().default("pcb_board_0").optional(),
     width: length,
     height: length,
     center: point,
