@@ -3,6 +3,15 @@ import { point } from "../common/point"
 import { size } from "../common/size"
 import { length, rotation } from "../units"
 
+export const schematic_pin_styles = z.record(
+  z.object({
+    left_margin: length.optional(),
+    right_margin: length.optional(),
+    top_margin: length.optional(),
+    bottom_margin: length.optional(),
+  }),
+)
+
 export const schematic_component = z.object({
   type: z.literal("schematic_component"),
   rotation: rotation.default(0),
@@ -11,6 +20,7 @@ export const schematic_component = z.object({
   source_component_id: z.string(),
   schematic_component_id: z.string(),
   pin_spacing: length.optional(),
+  pin_styles: schematic_pin_styles.optional(),
   box_width: length.optional(),
   symbol_name: z.string().optional(),
   port_arrangement: z
