@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { distance } from "../units"
-import { layer_ref } from "dist"
+import { layer_ref } from "./properties/layer_ref"
 
 export const pcb_trace = z.object({
   type: z.literal("pcb_trace"),
@@ -21,7 +21,7 @@ export const pcb_trace = z.object({
         width: distance,
         start_pcb_port_id: z.string().optional(),
         end_pcb_port_id: z.string().optional(),
-        layer: layer_ref
+        layer: layer_ref,
       }),
       z.object({
         route_type: z.literal("via"),
