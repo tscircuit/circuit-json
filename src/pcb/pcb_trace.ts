@@ -21,7 +21,7 @@ export const pcb_trace = z.object({
         width: distance,
         start_pcb_port_id: z.string().optional(),
         end_pcb_port_id: z.string().optional(),
-        layer: layer_ref
+        layer: layer_ref,
       }),
       z.object({
         route_type: z.literal("via"),
