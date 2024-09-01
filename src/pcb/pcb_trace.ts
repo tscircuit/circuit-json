@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { distance } from "../units"
-import { layer_ref } from "dist"
+import { layer_ref } from "./properties/layer_ref"
 
 export const pcb_trace = z.object({
   type: z.literal("pcb_trace"),
