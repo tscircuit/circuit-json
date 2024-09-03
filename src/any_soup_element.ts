@@ -26,6 +26,7 @@ export const any_soup_element = z.union([
   pcb.pcb_component,
   pcb.pcb_hole,
   pcb.pcb_plated_hole,
+  pcb.pcb_keepout,
   pcb.pcb_port,
   pcb.pcb_text,
   pcb.pcb_trace,
