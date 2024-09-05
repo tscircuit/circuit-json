@@ -1,8 +1,10 @@
 import { z } from "zod"
 import { distance } from "../units"
+import { uuid } from "../common/uuid"
 
 export const pcb_hole = z
   .object({
+    pcb_hole_id: uuid,
     type: z.literal("pcb_hole"),
     hole_shape: z.enum(["round", "square"]).default("round"),
     hole_diameter: z.number(),
@@ -11,6 +13,7 @@ export const pcb_hole = z
   })
   .or(
     z.object({
+      pcb_hole_id: uuid,
       type: z.literal("pcb_hole"),
       hole_shape: z.literal("oval"),
       hole_width: z.number(),
