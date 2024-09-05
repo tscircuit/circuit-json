@@ -5,7 +5,7 @@ on:
 
 jobs:
   auto-fix:
-    if: github.event.label.name == 'aider'
+    if: github.event.label.name == 'aider' || github.event.label.name == "bunaider"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
