@@ -6,12 +6,11 @@ export const pcb_keepout = z
   .object({
     type: z.literal("pcb_keepout"),
     shape: z.literal("rect"),
-    x: distance,
-    y: distance,
+    center: point,
     width: distance,
     height: distance,
     pcb_keepout_id: z.string(),
-    layer: z.array(z.string()).optional(), // Specify layers where the keepout applies
+    layers: z.array(z.string()), // Specify layers where the keepout applies
     description: z.string().optional(), // Optional description of the keepout
   })
   .or(
@@ -21,7 +20,7 @@ export const pcb_keepout = z
       center: point,
       radius: distance,
       pcb_keepout_id: z.string(),
-      layer: z.array(z.string()).optional(), // Specify layers where the keepout applies
+      layers: z.array(z.string()), // Specify layers where the keepout applies
       description: z.string().optional(), // Optional description of the keepout
     }),
   )
