@@ -1,7 +1,7 @@
 import { z } from "zod"
 import { distance } from "../units"
 
-const holeShapeEnum = z.enum(["circle", "square"])
+const holeShapeEnum = z.enum(["circle", "square", "round"])
 
 export const pcb_hole = z
   .object({
@@ -9,7 +9,7 @@ export const pcb_hole = z
     type: z.literal("pcb_hole"),
     hole_shape: holeShapeEnum.default("circle").transform((shape) => {
       if (shape === "round") return "circle"
-      return shape
+      return shape as "circle" | "square"
     }),
     hole_diameter: z.number(),
     x: distance,
