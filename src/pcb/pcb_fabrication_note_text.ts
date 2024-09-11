@@ -6,6 +6,7 @@ import { distance } from "src/units"
 export const pcb_fabrication_note_text = z
   .object({
     type: z.literal("pcb_fabrication_note_text"),
+    pcb_fabrication_note_text_id: z.string(),
     font: z.literal("tscircuit2024").default("tscircuit2024"),
     font_size: distance.default("1mm"),
     pcb_component_id: z.string(),

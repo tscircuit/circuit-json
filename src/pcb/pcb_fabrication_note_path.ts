@@ -6,7 +6,7 @@ import { length } from "src/units"
 export const pcb_fabrication_note_path = z
   .object({
     type: z.literal("pcb_fabrication_note_path"),
-    fabrication_note_path_id: z.string(),
+    pcb_fabrication_note_path_id: z.string(),
     pcb_component_id: z.string(),
     layer: visible_layer,
     route: z.array(point),
