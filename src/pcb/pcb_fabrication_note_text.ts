@@ -15,6 +15,7 @@ export const pcb_fabrication_note_text = z
     anchor_alignment: z
       .enum(["center", "top_left", "top_right", "bottom_left", "bottom_right"])
       .default("center"),
+    color: z.string().optional(),
   })
   .describe(
     "Defines a fabrication note in text on the PCB, useful for leaving notes for assemblers or fabricators",
