@@ -1,0 +1,27 @@
+name: Bunaider Auto-Fix
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  auto-fix:
+    if: github.event.label.name == 'aider' || github.event.label.name == 'bunaider'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Install bunaider
+        run: bun install -g bunaider
+
+      - run: bunaider init
+
+      - name: Run bunaider fix
+        env:
+          GITHUB_TOKEN: ${{ secrets.TSCIRCUIT_BOT_GITHUB_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.TSCIRCUIT_BOT_ANTHROPIC_API_KEY }}
+          AIDER_SONNET: 1
+        run: bunaider fix ${{ github.event.issue.number }}
