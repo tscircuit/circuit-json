@@ -11,7 +11,7 @@ export const pcb_fabrication_note_path = z
     layer: visible_layer,
     route: z.array(point),
     stroke_width: length,
-    color: z.string().optional()
+    color: z.string().optional(),
   })
   .describe(
     "Defines a fabrication path on the PCB for fabricators or assemblers",
