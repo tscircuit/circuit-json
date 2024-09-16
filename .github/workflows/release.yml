@@ -18,7 +18,7 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org/
       - run: npm install -g pver
-      - run: bun install --frozen-lockfile
+      - run: bun install
       - run: bun run build
       - run: pver release
         env:
