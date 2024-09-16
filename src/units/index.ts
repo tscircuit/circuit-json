@@ -77,6 +77,10 @@ export const length = z
   .string()
   .or(z.number())
   .transform((v) => parseAndConvertSiUnit(v).value!)
+/**
+ * Length in meters
+ */
+export type Length = number
 
 export const distance = length
 
@@ -90,7 +94,22 @@ export const time = z
   .or(z.number())
   .transform((v) => parseAndConvertSiUnit(v).value!)
 
+/**
+ * Rotation is always converted to degrees
+ */
 export const rotation = z
   .string()
   .or(z.number())
-  .transform((v) => parseAndConvertSiUnit(v).value!)
+  .transform((arg): number => {
+    if (typeof arg === "number") return arg
+    if (arg.endsWith("deg")) {
+      return Number.parseFloat(arg.split("deg")[0]!)
+    }
+    if (arg.endsWith("rad")) {
+      return (Number.parseFloat(arg.split("rad")[0]!) * 180) / Math.PI
+    }
+    return Number.parseFloat(arg)
+  })
+
+export type InputRotation = number | string
+export type Rotation = number
