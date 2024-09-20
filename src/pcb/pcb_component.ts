@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
-import { layer_ref, type LayerRef } from "src/properties/layer_ref"
+import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
 import { rotation, length, type Rotation, type Length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 

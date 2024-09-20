@@ -1,9 +1,10 @@
 import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { route_hint_point, type RouteHintPoint } from "src/pcb"
+import { expectTypesMatch } from "src/utils/expect-types-match"
 
 /**
- * A hint that can be used to generate a PCB trace.
+ * A hint that can be used during generation of a PCB trace.
  */
 export interface PcbTraceHint {
   type: "pcb_trace_hint"
@@ -19,9 +20,9 @@ export const pcb_trace_hint = z
     pcb_trace_hint_id: getZodPrefixedIdWithDefault("pcb_trace_hint"),
     pcb_port_id: z.string(),
     pcb_component_id: z.string(),
-    route: z.array(route_hint_point.optional()),
+    route: z.array(route_hint_point),
   })
-  .describe("A hint that can be used to generate a PCB trace")
+  .describe("A hint that can be used during generation of a PCB trace")
 
 export type PcbTraceHintInput = z.input<typeof pcb_trace_hint>
 type InferredPcbTraceHint = z.infer<typeof pcb_trace_hint>

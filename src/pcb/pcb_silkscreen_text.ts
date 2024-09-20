@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
-import { layer_ref, type LayerRef } from "src/properties/layer_ref"
+import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
 import { distance, type Length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
@@ -35,7 +35,12 @@ export interface PcbSilkscreenText {
   text: string
   layer: LayerRef
   anchor_position: Point
-  anchor_alignment: "center" | "top_left" | "top_right" | "bottom_left" | "bottom_right"
+  anchor_alignment:
+    | "center"
+    | "top_left"
+    | "top_right"
+    | "bottom_left"
+    | "bottom_right"
 }
 
 /**

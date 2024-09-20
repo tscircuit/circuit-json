@@ -1,6 +1,10 @@
 import { z } from "zod"
 import { distance, type Distance } from "src/units"
-import { layer_ref, type LayerRef, getZodPrefixedIdWithDefault } from "src/properties/layer_ref"
+import {
+  layer_ref,
+  type LayerRef,
+  getZodPrefixedIdWithDefault,
+} from "src/pcb/properties/layer_ref"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const pcb_via = z
