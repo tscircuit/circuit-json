@@ -1,18 +1,44 @@
 import { z } from "zod"
-import { distance } from "../units"
+import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
+import { layer_ref, type LayerRef } from "src/properties/layer_ref"
+import { length, type Length } from "src/units"
+import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const pcb_text = z
   .object({
     type: z.literal("pcb_text"),
+    pcb_text_id: getZodPrefixedIdWithDefault("pcb_text"),
     text: z.string(),
-    x: distance,
-    y: distance,
-    align: z.enum(["bottom-left"]),
-    width: distance,
-    height: distance,
+    center: point,
+    layer: layer_ref,
+    width: length,
+    height: length,
     lines: z.number(),
+    align: z.enum(["bottom-left"]),
   })
   .describe("Defines text on the PCB")
 
-export type PCBTextInput = z.input<typeof pcb_text>
-export type PCBText = z.infer<typeof pcb_text>
+export type PcbTextInput = z.input<typeof pcb_text>
+type InferredPcbText = z.infer<typeof pcb_text>
+
+/**
+ * Defines text on the PCB
+ */
+export interface PcbText {
+  type: "pcb_text"
+  pcb_text_id: string
+  text: string
+  center: Point
+  layer: LayerRef
+  width: Length
+  height: Length
+  lines: number
+  align: "bottom-left"
+}
+
+/**
+ * @deprecated use PcbText
+ */
+export type PCBText = PcbText
+
+expectTypesMatch<PcbText, InferredPcbText>(true)

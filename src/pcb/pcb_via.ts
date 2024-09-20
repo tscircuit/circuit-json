@@ -1,10 +1,12 @@
 import { z } from "zod"
-import { distance } from "../units"
-import { layer_ref } from "./properties/layer_ref"
+import { distance, type Distance } from "src/units"
+import { layer_ref, type LayerRef, getZodPrefixedIdWithDefault } from "src/properties/layer_ref"
+import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const pcb_via = z
   .object({
     type: z.literal("pcb_via"),
+    pcb_via_id: getZodPrefixedIdWithDefault("pcb_via"),
     x: distance,
     y: distance,
     outer_diameter: distance.default("0.6mm"),
@@ -17,5 +19,29 @@ export const pcb_via = z
   })
   .describe("Defines a via on the PCB")
 
-export type PCBViaInput = z.input<typeof pcb_via>
-export type PCBVia = z.infer<typeof pcb_via>
+export type PcbViaInput = z.input<typeof pcb_via>
+type InferredPcbVia = z.infer<typeof pcb_via>
+
+/**
+ * Defines a via on the PCB
+ */
+export interface PcbVia {
+  type: "pcb_via"
+  pcb_via_id: string
+  x: Distance
+  y: Distance
+  outer_diameter: Distance
+  hole_diameter: Distance
+  /** @deprecated */
+  from_layer?: LayerRef
+  /** @deprecated */
+  to_layer?: LayerRef
+  layers: LayerRef[]
+}
+
+/**
+ * @deprecated use PcbVia
+ */
+export type PCBVia = PcbVia
+
+expectTypesMatch<PcbVia, InferredPcbVia>(true)
