@@ -17,7 +17,10 @@
     // We are not transpiling, so preserve our source code and do not emit files
     "module": "preserve",
     "noEmit": true,
-    "lib": ["es2022"]
+    "lib": ["es2022"],
+    "paths": {
+      "src/*": ["src/*"]
+    }
   },
   // Include the necessary files for your project
   "include": ["**/*.ts", "**/*.tsx"],
