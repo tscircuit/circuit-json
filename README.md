@@ -1,4 +1,4 @@
-# @tscircuit/soup (Circuit JSON Specification)
+# Circuit JSON Specification `circuit-json`
 
 [tscircuit](https://github.com/tscircuit/tscircuit) · [Soup Specification Docs](https://docs.tscircuit.com/api-reference/advanced/soup)
 
@@ -12,8 +12,8 @@ This module has the zod definitions and conversion functions for using tscircuit
 > This is mostly an internal module, you probably want to use the [main tscircuit library](https://github.com/tscircuit/tscircuit) instead.
 
 ```ts
-import { any_circuit_element, simple_source_resistor } from "@tscircuit/soup"
-import type { SourceSimpleResistor } from "@tscircuit/soup"
+import { any_circuit_element, simple_source_resistor } from "circuit-json"
+import type { SourceSimpleResistor } from "circuit-json"
 
 const resistor: SourceSimpleResistor = simple_source_resistor.parse({
   type: "source_component",

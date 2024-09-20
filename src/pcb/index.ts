@@ -25,3 +25,43 @@ export * from "./pcb_silkscreen_oval"
 export * from "./pcb_fabrication_note_text"
 export * from "./pcb_fabrication_note_path"
 export * from "./pcb_keepout"
+
+// Define PcbCircuitElement which is a union of all the Pcb* elements
+import type { PcbComponent } from "./pcb_component"
+import type { PcbHole } from "./pcb_hole"
+import type { PcbPlatedHole } from "./pcb_plated_hole"
+import type { PcbPort } from "./pcb_port"
+import type { PcbSmtPad } from "./pcb_smtpad"
+import type { PcbText } from "./pcb_text"
+import type { PcbTrace } from "./pcb_trace"
+import type { PcbTraceError } from "./pcb_trace_error"
+import type { PcbPortNotMatchedError } from "./pcb_port_not_matched_error"
+import type { PcbVia } from "./pcb_via"
+import type { PcbBoard } from "./pcb_board"
+import type { PcbPlacementError } from "./pcb_placement_error"
+import type { PcbTraceHint } from "./pcb_trace_hint"
+import type { PcbSilkscreenLine } from "./pcb_silkscreen_line"
+import type { PcbSilkscreenPath } from "./pcb_silkscreen_path"
+import type { PcbSilkscreenText } from "./pcb_silkscreen_text"
+import type { PcbSilkscreenRect } from "./pcb_silkscreen_rect"
+import type { PcbSilkscreenCircle } from "./pcb_silkscreen_circle"
+
+export type PcbCircuitElement =
+  | PcbComponent
+  | PcbHole
+  | PcbPlatedHole
+  | PcbPort
+  | PcbSmtPad
+  | PcbText
+  | PcbTrace
+  | PcbTraceError
+  | PcbPortNotMatchedError
+  | PcbVia
+  | PcbBoard
+  | PcbPlacementError
+  | PcbTraceHint
+  | PcbSilkscreenLine
+  | PcbSilkscreenPath
+  | PcbSilkscreenText
+  | PcbSilkscreenRect
+  | PcbSilkscreenCircle

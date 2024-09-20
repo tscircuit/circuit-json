@@ -15,7 +15,7 @@ for (const filePath of filePaths) {
   const fileContents = fs.readFileSync(filePath, "utf8")
 
   const msg = await anthropic.messages.create({
-    model: "claude-3-sonnet-20240229",
+    model: "claude-3-5-sonnet-20240620",
     max_tokens: 4000,
     messages: [
       {
