@@ -9,7 +9,7 @@ export const pcb_hole = z
     type: z.literal("pcb_hole"),
     hole_shape: holeShapeEnum.default("circle").transform((shape) => {
       if (shape === "round") return "circle"
-      return shape as "circle" | "square"
+      return shape as "circle" | "square" | "oval"
     }),
     hole_diameter: z.number(),
     x: distance,
