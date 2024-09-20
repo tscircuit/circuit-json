@@ -4,7 +4,7 @@ import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
 import { rotation, length, type Rotation, type Length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-export const pcb_component_zod = z
+export const pcb_component = z
   .object({
     type: z.literal("pcb_component"),
     pcb_component_id: getZodPrefixedIdWithDefault("pcb_component"),
@@ -17,8 +17,8 @@ export const pcb_component_zod = z
   })
   .describe("Defines a component on the PCB")
 
-export type PcbComponentInput = z.input<typeof pcb_component_zod>
-type InferredPcbComponent = z.infer<typeof pcb_component_zod>
+export type PcbComponentInput = z.input<typeof pcb_component>
+type InferredPcbComponent = z.infer<typeof pcb_component>
 
 /**
  * Defines a component on the PCB

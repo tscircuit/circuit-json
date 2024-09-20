@@ -1,7 +1,11 @@
 import { z } from "zod"
 import { point, type Point } from "src/common"
 import { distance, type Length } from "src/units"
-import { visible_layer, type LayerRef } from "src/pcb/properties/layer_ref"
+import {
+  visible_layer,
+  type LayerRef,
+  type VisibleLayer,
+} from "src/pcb/properties/layer_ref"
 import { getZodPrefixedIdWithDefault } from "src/common/getZodPrefixedIdWithDefault"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
@@ -41,7 +45,7 @@ export interface PcbFabricationNoteText {
   font_size: Length
   pcb_component_id: string
   text: string
-  layer: LayerRef
+  layer: VisibleLayer
   anchor_position: Point
   anchor_alignment:
     | "center"
