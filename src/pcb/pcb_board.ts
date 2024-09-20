@@ -1,11 +1,12 @@
 import { z } from "zod"
-import { length } from "../units"
-import { point } from "../common"
+import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
+import { length, type Length } from "src/units"
+import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const pcb_board = z
   .object({
     type: z.literal("pcb_board"),
-    pcb_board_id: z.string().default("pcb_board_0").optional(),
+    pcb_board_id: getZodPrefixedIdWithDefault("pcb_board"),
     width: length,
     height: length,
     center: point,
@@ -13,5 +14,24 @@ export const pcb_board = z
   })
   .describe("Defines the board outline of the PCB")
 
-export type PCBBoardInput = z.input<typeof pcb_board>
-export type PCBBoard = z.infer<typeof pcb_board>
+/**
+ * Defines the board outline of the PCB
+ */
+export interface PcbBoard {
+  type: "pcb_board"
+  pcb_board_id: string
+  width: Length
+  height: Length
+  center: Point
+  outline?: Point[]
+}
+
+export type PcbBoardInput = z.input<typeof pcb_board>
+type InferredPcbBoard = z.infer<typeof pcb_board>
+
+/**
+ * @deprecated use PcbBoard
+ */
+export type PCBBoard = PcbBoard
+
+expectTypesMatch<PcbBoard, InferredPcbBoard>(true)

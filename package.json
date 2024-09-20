@@ -1,5 +1,5 @@
 {
-  "name": "@tscircuit/soup",
+  "name": "circuit-json",
   "version": "0.0.71",
   "description": "Definitions for the tscircuit intermediary JSON format",
   "main": "dist/index.js",
@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@anthropic-ai/sdk": "^0.27.3",
     "@biomejs/biome": "^1.9.2",
     "@types/convert-units": "^2.3.9",
     "esbuild": "^0.20.2",

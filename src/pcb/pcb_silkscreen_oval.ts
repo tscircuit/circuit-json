@@ -1,12 +1,18 @@
 import { z } from "zod"
-import { distance } from "../units"
-import { layer_ref, visible_layer } from "./properties/layer_ref"
-import { point } from "src/common/point"
+import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
+import {
+  layer_ref,
+  type LayerRef,
+  visible_layer,
+  type VisibleLayer,
+} from "src/pcb/properties/layer_ref"
+import { distance, type Distance } from "src/units"
+import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const pcb_silkscreen_oval = z
   .object({
     type: z.literal("pcb_silkscreen_oval"),
-    pcb_silkscreen_oval_id: z.string(),
+    pcb_silkscreen_oval_id: getZodPrefixedIdWithDefault("pcb_silkscreen_oval"),
     pcb_component_id: z.string(),
     center: point,
     radius_x: distance,
@@ -15,5 +21,25 @@ export const pcb_silkscreen_oval = z
   })
   .describe("Defines a silkscreen oval on the PCB")
 
-export type PcbSilkscreenOval = z.infer<typeof pcb_silkscreen_oval>
 export type PcbSilkscreenOvalInput = z.input<typeof pcb_silkscreen_oval>
+type InferredPcbSilkscreenOval = z.infer<typeof pcb_silkscreen_oval>
+
+/**
+ * Defines a silkscreen oval on the PCB
+ */
+export interface PcbSilkscreenOval {
+  type: "pcb_silkscreen_oval"
+  pcb_silkscreen_oval_id: string
+  pcb_component_id: string
+  center: Point
+  radius_x: Distance
+  radius_y: Distance
+  layer: VisibleLayer
+}
+
+/**
+ * @deprecated use PcbSilkscreenOval
+ */
+export type PcbSilkscreenOvalDeprecated = PcbSilkscreenOval
+
+expectTypesMatch<PcbSilkscreenOval, InferredPcbSilkscreenOval>(true)

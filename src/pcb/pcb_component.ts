@@ -1,8 +1,7 @@
 import { z } from "zod"
-import { point, type Point } from "../common"
-import { layer_ref, type LayerRef } from "./properties/layer_ref"
-import { rotation, length, type Rotation, type Length } from "../units"
-import { getZodPrefixedIdWithDefault } from "src/common/getZodPrefixedIdWithDefault"
+import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
+import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
+import { rotation, length, type Rotation, type Length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const pcb_component = z
@@ -18,9 +17,12 @@ export const pcb_component = z
   })
   .describe("Defines a component on the PCB")
 
-export type PCBComponentInput = z.input<typeof pcb_component>
-type InferredPCBComponent = z.infer<typeof pcb_component>
+export type PcbComponentInput = z.input<typeof pcb_component>
+type InferredPcbComponent = z.infer<typeof pcb_component>
 
+/**
+ * Defines a component on the PCB
+ */
 export interface PcbComponent {
   type: "pcb_component"
   pcb_component_id: string
@@ -37,4 +39,4 @@ export interface PcbComponent {
  */
 export type PCBComponent = PcbComponent
 
-expectTypesMatch<PcbComponent, InferredPCBComponent>(true)
+expectTypesMatch<PcbComponent, InferredPcbComponent>(true)
