@@ -1,6 +1,9 @@
 import { z } from "zod"
 import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
-import { visible_layer, type LayerRef } from "src/properties/layer_ref"
+import {
+  visible_layer,
+  type VisibleLayerRef,
+} from "src/pcb/properties/layer_ref"
 import { length, type Length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
@@ -25,7 +28,7 @@ export interface PcbSilkscreenPath {
   type: "pcb_silkscreen_path"
   pcb_silkscreen_path_id: string
   pcb_component_id: string
-  layer: LayerRef
+  layer: VisibleLayerRef
   route: Point[]
   stroke_width: Length
 }

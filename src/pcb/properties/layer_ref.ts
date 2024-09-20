@@ -31,3 +31,4 @@ export type LayerRef = z.output<typeof layer_ref>
 
 export const visible_layer = z.enum(["top", "bottom"])
 export type VisibleLayerRef = z.infer<typeof visible_layer>
+export type VisibleLayer = z.infer<typeof visible_layer>

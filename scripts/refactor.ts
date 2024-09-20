@@ -5,7 +5,7 @@ import fs from "node:fs"
 
 const anthropic = new Anthropic()
 
-const filePaths = [
+const filePaths = ["./src/pcb/pcb_hole.ts"] || [
   "./src/pcb/pcb_fabrication_note_path.ts",
   "./src/pcb/pcb_component.ts",
   "./src/pcb/pcb_port_not_matched_error.ts",

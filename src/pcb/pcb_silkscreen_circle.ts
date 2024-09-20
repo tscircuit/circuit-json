@@ -1,17 +1,24 @@
 import { z } from "zod"
 import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
-import { layer_ref, type LayerRef } from "src/properties/layer_ref"
+import {
+  layer_ref,
+  visible_layer,
+  type LayerRef,
+  type VisibleLayer,
+} from "src/pcb/properties/layer_ref"
 import { length, type Length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const pcb_silkscreen_circle = z
   .object({
     type: z.literal("pcb_silkscreen_circle"),
-    pcb_silkscreen_circle_id: getZodPrefixedIdWithDefault("pcb_silkscreen_circle"),
+    pcb_silkscreen_circle_id: getZodPrefixedIdWithDefault(
+      "pcb_silkscreen_circle",
+    ),
     pcb_component_id: z.string(),
     center: point,
     radius: length,
-    layer: layer_ref,
+    layer: visible_layer,
   })
   .describe("Defines a silkscreen circle on the PCB")
 
@@ -27,12 +34,7 @@ export interface PcbSilkscreenCircle {
   pcb_component_id: string
   center: Point
   radius: Length
-  layer: LayerRef
+  layer: VisibleLayer
 }
-
-/**
- * @deprecated use PcbSilkscreenCircle
- */
-export type PcbSilkscreenCircleInput = PcbSilkscreenCircleInput
 
 expectTypesMatch<PcbSilkscreenCircle, InferredPcbSilkscreenCircle>(true)

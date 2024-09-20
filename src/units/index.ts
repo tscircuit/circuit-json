@@ -81,6 +81,7 @@ export const length = z
  * Length in meters
  */
 export type Length = number
+export type Distance = number
 
 export const distance = length
 

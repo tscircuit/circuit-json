@@ -1,6 +1,11 @@
 import { z } from "zod"
 import { distance, type Distance } from "src/units"
-import { layer_ref, type LayerRef, visible_layer } from "src/properties/layer_ref"
+import {
+  layer_ref,
+  type LayerRef,
+  type VisibleLayer,
+  visible_layer,
+} from "src/pcb/properties/layer_ref"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
@@ -33,7 +38,7 @@ export interface PcbSilkscreenLine {
   y1: Distance
   x2: Distance
   y2: Distance
-  layer: LayerRef
+  layer: VisibleLayer
 }
 
 /**

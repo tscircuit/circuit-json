@@ -11,7 +11,9 @@ export const pcb_port_not_matched_error = z
   })
   .describe("Defines a trace error on the PCB where a port is not matched")
 
-export type PcbPortNotMatchedErrorInput = z.input<typeof pcb_port_not_matched_error>
+export type PcbPortNotMatchedErrorInput = z.input<
+  typeof pcb_port_not_matched_error
+>
 type InferredPcbPortNotMatchedError = z.infer<typeof pcb_port_not_matched_error>
 
 /**
