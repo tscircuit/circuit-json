@@ -11,10 +11,12 @@ Some of the new rules:
 - Prefer absolute imports from "src/"
 - Use `getZodPrefixedIdWithDefault` to generate a unique id for the primary id of the object
 - The main interface should have a `/**` multi-line comment describing the object
-- If the zod type is a union or `or` type, then it into separate zod types
+- If the zod type is a union or `or` type, then it into separate zod definitions
   and export interfaces for each of the of the types in the union, then define a
   union type for each of the exported interfaces
-  `export type MainInterface = SomeInterface1 | SomeInterface2`.
+  `export type MainInterface = SomeInterface1 | SomeInterface2`. Make sure to
+  use the `expectTypesMatch` function to ensure the zod type and each interface
+  are the same.
 
 ```ts
 // EXAMPLE FILE OF NEW CIRCUIT SPECIFICATION
