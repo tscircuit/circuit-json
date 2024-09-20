@@ -1,10 +1,9 @@
 import { z } from "zod"
-import { distance, type Distance } from "src/units"
-import { getZodPrefixedIdWithDefault } from "src/utils/get-zod-prefixed-id-with-default"
-import { expectTypesMatch } from "src/utils/expect-types-match"
+import { distance } from "../units"
 
-export const pcb_hole = z.union([
-  z.object({
+export const pcb_hole = z
+  .object({
+    pcb_hole_id: z.string(),
     type: z.literal("pcb_hole"),
     hole_shape: z
       .enum(["circle", "square", "round"])
@@ -16,38 +15,19 @@ export const pcb_hole = z.union([
     hole_diameter: z.number(),
     x: distance,
     y: distance,
-  }),
-  z.object({
-    type: z.literal("pcb_hole"),
-    pcb_hole_id: getZodPrefixedIdWithDefault("pcb_hole"),
-    hole_shape: z.literal("oval"),
-    hole_width: z.number(),
-    hole_height: z.number(),
-    x: distance,
-    y: distance,
-  }),
-])
+  })
+  .or(
+    z.object({
+      pcb_hole_id: z.string(),
+      type: z.literal("pcb_hole"),
+      hole_shape: z.literal("oval"),
+      hole_width: z.number(),
+      hole_height: z.number(),
+      x: distance,
+      y: distance,
+    }),
+  )
+  .describe("Defines a hole on the PCB")
 
-export type PcbHoleInput = z.input<typeof pcb_hole>
-type InferredPcbHole = z.infer<typeof pcb_hole>
-
-/**
- * Defines a hole on the PCB
- */
-export interface PcbHole {
-  type: "pcb_hole"
-  pcb_hole_id: string
-  hole_shape: "round" | "square" | "oval"
-  hole_diameter?: number
-  hole_width?: number
-  hole_height?: number
-  x: Distance
-  y: Distance
-}
-
-/**
- * @deprecated use PcbHole
- */
-export type PCBHole = PcbHole
-
-expectTypesMatch<PcbHole, InferredPcbHole>(true)
+export type PCBHoleInput = z.input<typeof pcb_hole>
+export type PCBHole = z.infer<typeof pcb_hole>
