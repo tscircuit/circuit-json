@@ -1,6 +1,6 @@
 {
   "name": "circuit-json",
-  "version": "0.0.75",
+  "version": "0.0.76",
   "description": "Definitions for the tscircuit intermediary JSON format",
   "main": "dist/index.js",
   "files": [
