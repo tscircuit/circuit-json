@@ -4,7 +4,7 @@ import * as sch from "./schematic"
 import * as src from "./source"
 import * as cad from "./cad"
 
-export const any_soup_element = z.union([
+export const any_circuit_element = z.union([
   // TODO source_group
   // TODO source_config
   // TODO pcb_group
@@ -57,5 +57,19 @@ export const any_soup_element = z.union([
   cad.cad_component,
 ])
 
-export type AnySoupElement = z.infer<typeof any_soup_element>
-export type AnySoupElementInput = z.input<typeof any_soup_element>
+/**
+ * @deprecated use any_circuit_element instead
+ */
+export const any_soup_element = any_circuit_element
+
+export type AnyCircuitElement = z.infer<typeof any_circuit_element>
+export type AnyCircuitElementInput = z.input<typeof any_circuit_element>
+/**
+ * @deprecated use AnyCircuitElement instead
+ */
+export type AnySoupElement = AnyCircuitElement
+
+/**
+ * @deprecated use AnyCircuitElementInput instead
+ */
+export type AnySoupElementInput = AnyCircuitElementInput
