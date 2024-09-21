@@ -17,6 +17,7 @@ export const pcb_via = z
     /** @deprecated */
     to_layer: layer_ref.optional(),
     layers: z.array(layer_ref),
+    pcb_trace_id: z.string().optional(),
   })
   .describe("Defines a via on the PCB")
 
@@ -38,6 +39,7 @@ export interface PcbVia {
   /** @deprecated */
   to_layer?: LayerRef
   layers: LayerRef[]
+  pcb_trace_id?: string
 }
 
 /**
