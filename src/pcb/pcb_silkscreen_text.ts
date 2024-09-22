@@ -13,6 +13,7 @@ export const pcb_silkscreen_text = z
     pcb_component_id: z.string(),
     text: z.string(),
     layer: layer_ref,
+    is_mirrored: z.boolean().default(false).optional(),
     anchor_position: point.default({ x: 0, y: 0 }),
     anchor_alignment: z
       .enum(["center", "top_left", "top_right", "bottom_left", "bottom_right"])
@@ -34,6 +35,7 @@ export interface PcbSilkscreenText {
   pcb_component_id: string
   text: string
   layer: LayerRef
+  is_mirrored?: boolean
   anchor_position: Point
   anchor_alignment:
     | "center"
