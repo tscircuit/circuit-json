@@ -10,6 +10,8 @@ export const pcb_board = z
     width: length,
     height: length,
     center: point,
+    thickness: length.optional().default(1.4),
+    num_layers: z.number().optional().default(4),
     outline: z.array(point).optional(),
   })
   .describe("Defines the board outline of the PCB")
@@ -22,6 +24,8 @@ export interface PcbBoard {
   pcb_board_id: string
   width: Length
   height: Length
+  thickness: Length
+  num_layers: number
   center: Point
   outline?: Point[]
 }
