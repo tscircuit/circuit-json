@@ -38,6 +38,7 @@ export const pcb_trace = z
       .enum(["constant", "interpolated"])
       .default("constant")
       .optional(),
+    route_order_index: z.number().optional(),
     should_round_corners: z.boolean().optional(),
     route: z.array(
       z.union([
@@ -93,6 +94,13 @@ export interface PcbTrace {
   source_trace_id?: string
   pcb_component_id?: string
   pcb_trace_id: string
+  /**
+   * The order that this trace was routed in. This can be used to debug the
+   * autorouter and to understand the trace path better
+   *
+   * The route_order_index should be relative to a subcircuit
+   */
+  route_order_index?: number
   route_thickness_mode?: "constant" | "interpolated"
   should_round_corners?: boolean
   route: Array<PcbTraceRoutePoint>
