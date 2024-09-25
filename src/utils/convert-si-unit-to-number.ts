@@ -1,46 +1,162 @@
-import convertUnits from "convert-units"
-
-const si_prefix_multiplier = {
-  tera: 10e12,
-  T: 10e12,
-  giga: 10e9,
-  G: 10e9,
-  mega: 10e6,
-  M: 10e6,
-  kilo: 10e3,
-  k: 10e3,
-  deci: 10e-1,
-  d: 10e-1,
-  centi: 10e-2,
-  c: 10e-2,
-  milli: 10e-3,
-  m: 10e-3,
-  micro: 10e-6,
-  u: 10e-6,
-  µ: 10e-6,
-  nano: 10e-9,
-  n: 10e-9,
-  pico: 10e-12,
-  p: 10e-12,
-}
-const si_prefixes = Object.keys(si_prefix_multiplier)
-
-const target_conversion = {
-  mass: "g",
-  length: "mm",
-  time: "ms",
-  volume: "ml",
-  angle: "deg",
+type UnitInfo = {
+  baseUnit: BaseTscircuitUnit
+  conversionFactor: number
 }
 
-function getSiPrefixMultiplierFromUnit(v: string): number {
-  for (const prefix of si_prefixes) {
-    if (v.startsWith(prefix)) {
-      return si_prefix_multiplier[prefix as keyof typeof si_prefix_multiplier]
+const unitMappings: Record<
+  string,
+  { baseUnit: BaseTscircuitUnit; variants: Record<string, number> }
+> = {
+  Hz: {
+    baseUnit: "Hz",
+    variants: {
+      MHz: 1e6,
+      kHz: 1e3,
+      Hz: 1,
+    },
+  },
+  g: {
+    baseUnit: "g",
+    variants: {
+      kg: 1e3,
+      g: 1,
+    },
+  },
+  Ω: {
+    baseUnit: "Ω",
+    variants: {
+      mΩ: 1e-3,
+      Ω: 1,
+      kΩ: 1e3,
+      MΩ: 1e6,
+      GΩ: 1e9,
+      TΩ: 1e12,
+    },
+  },
+  V: {
+    baseUnit: "V",
+    variants: {
+      mV: 1e-3,
+      V: 1,
+      kV: 1e3,
+      MV: 1e6,
+      GV: 1e9,
+      TV: 1e12,
+    },
+  },
+  A: {
+    baseUnit: "A",
+    variants: {
+      µA: 1e-6,
+      mA: 1e-3,
+      ma: 1e-3,
+      A: 1,
+      kA: 1e3,
+      MA: 1e6,
+    },
+  },
+  F: {
+    baseUnit: "F",
+    variants: {
+      pF: 1e-12,
+      nF: 1e-9,
+      µF: 1e-6,
+      mF: 1e-3,
+      F: 1,
+    },
+  },
+  ml: {
+    baseUnit: "ml",
+    variants: {
+      ml: 1,
+      mL: 1,
+      l: 1e3,
+      L: 1e3,
+    },
+  },
+  deg: {
+    baseUnit: "deg",
+    variants: {
+      rad: 180 / Math.PI,
+    },
+  },
+  ms: {
+    baseUnit: "ms",
+    variants: {
+      s: 1000,
+    },
+  },
+  mm: {
+    baseUnit: "mm",
+    variants: {
+      nm: 1e-6,
+      µm: 1e-3,
+      um: 1e-3,
+      mm: 1,
+      cm: 10,
+      dm: 100,
+      m: 1000,
+      km: 1e6,
+      in: 25.4,
+      ft: 304.8,
+      IN: 25.4,
+      FT: 304.8,
+      yd: 914.4,
+      mi: 1.609344e6,
+    },
+  },
+}
+
+function getBaseTscircuitUnit(unit: string): UnitInfo {
+  for (const [baseUnit, info] of Object.entries(unitMappings)) {
+    if (unit in info.variants) {
+      return {
+        baseUnit: info.baseUnit,
+        conversionFactor: info.variants[unit]!,
+      }
     }
   }
-  return 1
+  return {
+    baseUnit: unit as BaseTscircuitUnit,
+    conversionFactor: 1,
+  }
 }
+
+const si_prefix_multiplier = {
+  tera: 1e12,
+  T: 1e12,
+  giga: 1e9,
+  G: 1e9,
+  mega: 1e6,
+  M: 1e6,
+  kilo: 1e3,
+  k: 1e3,
+  deci: 1e-1,
+  d: 1e-1,
+  centi: 1e-2,
+  c: 1e-2,
+  milli: 1e-3,
+  m: 1e-3,
+  micro: 1e-6,
+  u: 1e-6,
+  µ: 1e-6,
+  nano: 1e-9,
+  n: 1e-9,
+  pico: 1e-12,
+  p: 1e-12,
+}
+type BaseTscircuitUnit =
+  | "ms"
+  | "mm"
+  | "g"
+  | "deg"
+  | "Hz"
+  | "ml"
+  | "V"
+  | "A"
+  | "Ω"
+  | "F"
+  | "H"
 
 export const parseAndConvertSiUnit = <
   T extends
@@ -51,18 +167,27 @@ export const parseAndConvertSiUnit = <
 >(
   v: T,
 ): {
-  unit: string | null
+  parsedUnit: string | null
+  unitOfValue: BaseTscircuitUnit | null
   value: T extends { x: string | number; y: string | number }
     ? null | { x: number; y: number }
     : null | number
 } => {
-  if (typeof v === "undefined") return { unit: null, value: null }
+  if (typeof v === "undefined")
+    return { parsedUnit: null, unitOfValue: null, value: null }
   if (typeof v === "string" && v.match(/^[\d\.]+$/))
-    return { value: parseFloat(v) as any, unit: null }
-  if (typeof v === "number") return { value: v as any, unit: null }
-  if (typeof v === "object" && "x" in v && "y" in v) {
     return {
-      unit: parseAndConvertSiUnit(v.x).unit,
+      value: Number.parseFloat(v) as any,
+      parsedUnit: null,
+      unitOfValue: null,
+    }
+  if (typeof v === "number")
+    return { value: v as any, parsedUnit: null, unitOfValue: null }
+  if (typeof v === "object" && "x" in v && "y" in v) {
+    const { parsedUnit, unitOfValue } = parseAndConvertSiUnit(v.x)
+    return {
+      parsedUnit: parsedUnit,
+      unitOfValue: unitOfValue,
       value: {
         x: parseAndConvertSiUnit(v.x as any).value as number,
         y: parseAndConvertSiUnit(v.y as any).value as number,
@@ -79,27 +204,12 @@ export const parseAndConvertSiUnit = <
   }
   const unit = unit_reversed.split("").reverse().join("")
   const value = v.slice(0, -unit.length)
-  let measure
-  try {
-    measure = convertUnits().describe(unit as any)?.measure
-  } catch (e) {}
-  if (measure) {
-    const target_unit = (target_conversion as any)[measure]
-    if (!target_unit) {
-      throw new Error(
-        `Could not determine target unit for measure: "${measure}"`,
-      )
-    }
-    return {
-      unit,
-      value: convertUnits(parseFloat(value))
-        .from(unit as any)
-        .to(target_unit) as any,
-    }
-  } else {
-    return {
-      unit,
-      value: (getSiPrefixMultiplierFromUnit(unit) * parseFloat(value)) as any,
-    }
+
+  const { baseUnit, conversionFactor } = getBaseTscircuitUnit(unit)
+
+  return {
+    parsedUnit: unit,
+    unitOfValue: baseUnit,
+    value: (conversionFactor * Number.parseFloat(value)) as any,
   }
 }
