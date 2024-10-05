@@ -32,6 +32,7 @@ export const any_circuit_element = z.union([
   pcb.pcb_trace,
   pcb.pcb_via,
   pcb.pcb_smtpad,
+  pcb.pcb_solder_paste,
   pcb.pcb_board,
   pcb.pcb_trace_hint,
   pcb.pcb_silkscreen_line,

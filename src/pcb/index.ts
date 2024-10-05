@@ -8,6 +8,7 @@ export * from "./pcb_hole"
 export * from "./pcb_plated_hole"
 export * from "./pcb_port"
 export * from "./pcb_smtpad"
+export * from "./pcb_solder_paste"
 export * from "./pcb_text"
 export * from "./pcb_trace"
 export * from "./pcb_trace_error"
@@ -32,6 +33,7 @@ import type { PcbHole } from "./pcb_hole"
 import type { PcbPlatedHole } from "./pcb_plated_hole"
 import type { PcbPort } from "./pcb_port"
 import type { PcbSmtPad } from "./pcb_smtpad"
+import type { PcbSolderPaste } from "./pcb_solder_paste"
 import type { PcbText } from "./pcb_text"
 import type { PcbTrace } from "./pcb_trace"
 import type { PcbTraceError } from "./pcb_trace_error"
@@ -52,6 +54,7 @@ export type PcbCircuitElement =
   | PcbPlatedHole
   | PcbPort
   | PcbSmtPad
+  | PcbSolderPaste
   | PcbText
   | PcbTrace
   | PcbTraceError

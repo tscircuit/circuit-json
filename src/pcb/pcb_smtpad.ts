@@ -15,6 +15,7 @@ const pcb_smtpad_circle = z.object({
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
+  no_solder_paste: z.boolean().optional(),
 })
 
 const pcb_smtpad_rect = z.object({
@@ -29,6 +30,7 @@ const pcb_smtpad_rect = z.object({
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
+  no_solder_paste: z.boolean().optional(),
 })
 
 export const pcb_smtpad = z
@@ -53,6 +55,7 @@ export interface PcbSmtPadCircle {
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
+  no_solder_paste?: boolean
 }
 
 /**
@@ -70,6 +73,7 @@ export interface PcbSmtPadRect {
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
+  no_solder_paste?: boolean
 }
 
 export type PcbSmtPad = PcbSmtPadCircle | PcbSmtPadRect
