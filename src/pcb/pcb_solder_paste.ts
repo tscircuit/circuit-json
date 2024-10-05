@@ -34,8 +34,8 @@ export const pcb_solder_paste = z
   .describe("Defines solderpaste on the PCB")
 
 export type PCBSolderPasteInput = z.input<typeof pcb_solder_paste>
-type PCBSolderPasteCircle = z.infer<typeof pcb_solder_paste_circle>
-type PCBSolderPasteRect = z.infer<typeof pcb_solder_paste_rect>
+type InferredPcbSolderPasteCircle = z.infer<typeof pcb_solder_paste_circle>
+type InferredPcbSolderPasteRect = z.infer<typeof pcb_solder_paste_rect>
 
 /**
  * Defines solderpaste on the PCB
@@ -70,5 +70,5 @@ export interface PcbSolderPasteRect {
 
 export type PcbSolderPaste = PcbSolderPasteCircle | PcbSolderPasteRect
 
-expectTypesMatch<PcbSolderPasteCircle, PCBSolderPasteCircle>(true)
-expectTypesMatch<PcbSolderPasteRect, PCBSolderPasteRect>(true)
+expectTypesMatch<PcbSolderPasteCircle, InferredPcbSolderPasteCircle>(true)
+expectTypesMatch<PcbSolderPasteRect, InferredPcbSolderPasteRect>(true)
