@@ -103,6 +103,7 @@ const unitMappings: Record<
       FT: 304.8,
       yd: 914.4,
       mi: 1.609344e6,
+      mil: 0.0254,
     },
   },
 }
