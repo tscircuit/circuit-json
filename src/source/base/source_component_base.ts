@@ -10,6 +10,7 @@ export const source_component_base = z.object({
   supplier_part_numbers: z
     .record(supplier_name, z.array(z.string()))
     .optional(),
+  display_value: z.string().optional(),
 })
 
 export type SourceComponentBase = z.infer<typeof source_component_base>
