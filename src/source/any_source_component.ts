@@ -7,6 +7,7 @@ import { source_simple_bug } from "./source_simple_bug"
 import { source_simple_chip } from "./source_simple_chip"
 import { source_led } from "./source_led"
 import { source_simple_power_source } from "./source_simple_power_source"
+import { source_simple_battery } from "./source_simple_battery"
 
 export const any_source_component = z.union([
   source_simple_resistor,
@@ -17,6 +18,7 @@ export const any_source_component = z.union([
   source_simple_bug,
   source_led,
   source_simple_power_source,
+  source_simple_battery,
 ])
 
 export type AnySourceComponent = z.infer<typeof any_source_component>

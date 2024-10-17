@@ -23,6 +23,7 @@ export const any_circuit_element = z.union([
   src.source_simple_diode,
   src.source_simple_resistor,
   src.source_simple_power_source,
+  src.source_simple_battery,
   pcb.pcb_component,
   pcb.pcb_hole,
   pcb.pcb_plated_hole,

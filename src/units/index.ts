@@ -112,5 +112,21 @@ export const rotation = z
     return Number.parseFloat(arg)
   })
 
+export const battery_capacity = z
+  .number()
+  .or(z.string().endsWith("mAh"))
+  .transform((v) => {
+    if (typeof v === "string") {
+      const valString = v.replace("mAh", "")
+      const num = Number.parseFloat(valString)
+      if (Number.isNaN(num)) {
+        throw new Error("Invalid capacity")
+      }
+      return num
+    }
+    return v
+  })
+  .describe("Battery capacity in mAh")
+
 export type InputRotation = number | string
 export type Rotation = number
