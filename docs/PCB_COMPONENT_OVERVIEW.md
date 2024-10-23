@@ -1,6 +1,6 @@
 # Circuit JSON Specification: PCB Component Overview
 
-> Created at 2024-09-20T18:37:19.158Z
+> Created at 2024-10-23T22:17:25.274Z
 > Latest Version: https://github.com/tscircuit/circuit-json/blob/main/docs/PCB_COMPONENT_OVERVIEW.md
 
 Any type below can be imported from `circuit-json`. Every type has a corresponding
@@ -37,6 +37,33 @@ export interface PcbPortNotMatchedError {
   pcb_component_ids: string[]
 }
 
+export interface PcbSolderPasteCircle {
+  type: "pcb_solder_paste"
+  shape: "circle"
+  pcb_solder_paste_id: string
+  x: Distance
+  y: Distance
+  radius: number
+  layer: LayerRef
+  pcb_component_id?: string
+  pcb_smtpad_id?: string
+}
+
+export interface PcbSolderPasteRect {
+  type: "pcb_solder_paste"
+  shape: "rect"
+  pcb_solder_paste_id: string
+  x: Distance
+  y: Distance
+  width: number
+  height: number
+  layer: LayerRef
+  pcb_component_id?: string
+  pcb_smtpad_id?: string
+}
+
+export type PcbSolderPaste = PcbSolderPasteCircle | PcbSolderPasteRect
+
 export interface PcbSilkscreenText {
   type: "pcb_silkscreen_text"
   pcb_silkscreen_text_id: string
@@ -45,6 +72,7 @@ export interface PcbSilkscreenText {
   pcb_component_id: string
   text: string
   layer: LayerRef
+  is_mirrored?: boolean
   anchor_position: Point
   anchor_alignment:
     | "center"
@@ -52,6 +80,18 @@ export interface PcbSilkscreenText {
     | "top_right"
     | "bottom_left"
     | "bottom_right"
+}
+
+export interface PcbTraceError {
+  type: "pcb_trace_error"
+  pcb_trace_error_id: string
+  error_type: "pcb_trace_error"
+  message: string
+  center?: Point
+  pcb_trace_id: string
+  source_trace_id: string
+  pcb_component_ids: string[]
+  pcb_port_ids: string[]
 }
 
 export interface PcbSilkscreenPill {
@@ -144,7 +184,17 @@ export interface PcbText {
   align: "bottom-left"
 }
 
-export type PCBKeepout = z.infer<typeof pcb_keepout>
+export interface PCBKeepout {
+  type: "pcb_keepout"
+  shape: "rect" | "circle"
+  center: Point
+  width?: Distance
+  height?: Distance
+  radius?: Distance
+  pcb_keepout_id: string
+  layers: string[]
+  description?: string
+}
 
 export interface PcbVia {
   type: "pcb_via"
@@ -154,6 +204,7 @@ export interface PcbVia {
   outer_diameter: Distance
   hole_diameter: Distance
   layers: LayerRef[]
+  pcb_trace_id?: string
 }
 
 export interface PcbSilkscreenOval {
@@ -180,14 +231,6 @@ export interface PcbPort {
   x: Distance
   y: Distance
   layers: LayerRef[]
-}
-
-export interface PcbTraceHint {
-  type: "pcb_trace_hint"
-  pcb_trace_hint_id: string
-  pcb_port_id: string
-  pcb_component_id: string
-  route: RouteHintPoint[]
 }
 
 export interface PcbSmtPadCircle {
@@ -277,6 +320,7 @@ export interface PcbTrace {
   source_trace_id?: string
   pcb_component_id?: string
   pcb_trace_id: string
+  route_order_index?: number
   route_thickness_mode?: "constant" | "interpolated"
   should_round_corners?: boolean
   route: Array<PcbTraceRoutePoint>
@@ -287,7 +331,10 @@ export interface PcbBoard {
   pcb_board_id: string
   width: Length
   height: Length
+  thickness: Length
+  num_layers: number
   center: Point
   outline?: Point[]
 }
+
 ```
