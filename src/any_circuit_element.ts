@@ -56,6 +56,7 @@ export const any_circuit_element = z.union([
   sch.schematic_path,
   sch.schematic_error,
   sch.schematic_net_label,
+  sch.schematic_debug_object,
   cad.cad_component,
 ])
 
