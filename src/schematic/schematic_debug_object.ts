@@ -1,6 +1,7 @@
 import { z } from "zod"
-import { point } from "../common/point"
-import { size } from "../common/size"
+import { point, type Point } from "../common/point"
+import { size, type Size } from "../common/size"
+import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const schematic_debug_object_base = z.object({
   type: z.literal("schematic_debug_object"),
@@ -23,8 +24,25 @@ export const schematic_debug_object = z.discriminatedUnion("shape", [
   schematic_debug_rect,
   schematic_debug_line,
 ])
+type InferredSchematicDebugObject = z.infer<typeof schematic_debug_object>
 
-export type SchematicDebugObject = z.infer<typeof schematic_debug_object>
-export type SchematicDebugRect = z.infer<typeof schematic_debug_rect>
-export type SchematicDebugLine = z.infer<typeof schematic_debug_line>
+export interface SchematicDebugRect {
+  type: "schematic_debug_object"
+  label?: string
+  shape: "rect"
+  center: Point
+  size: Size
+}
+
+export interface SchematicDebugLine {
+  type: "schematic_debug_object"
+  label?: string
+  shape: "line"
+  start: Point
+  end: Point
+}
+
+export type SchematicDebugObject = SchematicDebugRect | SchematicDebugLine
+
+expectTypesMatch<SchematicDebugObject, InferredSchematicDebugObject>(true)
 export type SchematicDebugObjectInput = z.input<typeof schematic_debug_object>
