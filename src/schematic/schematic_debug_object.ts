@@ -19,9 +19,15 @@ export const schematic_debug_line = schematic_debug_object_base.extend({
   end: point,
 })
 
+export const schematic_debug_point = schematic_debug_object_base.extend({
+  shape: z.literal("point"),
+  center: point,
+})
+
 export const schematic_debug_object = z.discriminatedUnion("shape", [
   schematic_debug_rect,
   schematic_debug_line,
+  schematic_debug_point,
 ])
 
 export type SchematicDebugObject = z.infer<typeof schematic_debug_object>

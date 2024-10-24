@@ -10,6 +10,10 @@ export const schematic_port = z
     schematic_component_id: z.string().optional(),
     center: point,
     facing_direction: z.enum(["up", "down", "left", "right"]).optional(),
+    distance_from_component_edge: z.number().optional(),
+    side_of_component: z.enum(["top", "bottom", "left", "right"]).optional(),
+    true_ccw_index: z.number().optional(),
+    pin_number: z.number().optional(),
   })
   .describe("Defines a port on a schematic component")
 
