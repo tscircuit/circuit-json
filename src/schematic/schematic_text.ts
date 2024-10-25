@@ -14,6 +14,7 @@ export const schematic_text = z.object({
   anchor: z
     .enum(["center", "left", "right", "top", "bottom"])
     .default("center"),
+  color: z.string().default("#000000"),
 })
 
 export type SchematicTextInput = z.input<typeof schematic_text>
