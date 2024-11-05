@@ -61,6 +61,7 @@ const unitMappings: Record<
       pF: 1e-12,
       nF: 1e-9,
       µF: 1e-6,
+      uF: 1e-6,
       mF: 1e-3,
       F: 1,
     },
@@ -199,7 +200,7 @@ export const parseAndConvertSiUnit = <
     .split("")
     .reverse()
     .join("")
-    .match(/[a-zA-Z]+/)?.[0]
+    .match(/[^\d\s]+/)?.[0]
   if (!unit_reversed) {
     throw new Error(`Could not determine unit: "${v}"`)
   }
