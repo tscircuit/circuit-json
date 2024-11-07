@@ -1,7 +1,8 @@
 import { z } from "zod"
-import { point } from "../common/point"
-import { size } from "../common/size"
+import { point, type Point } from "../common/point"
+import { size, type Size } from "../common/size"
 import { length, rotation } from "../units"
+import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const schematic_pin_styles = z.record(
   z.object({
@@ -11,6 +12,100 @@ export const schematic_pin_styles = z.record(
     bottom_margin: length.optional(),
   }),
 )
+
+export interface SchematicPortArrangementBySize {
+  left_size: number
+  right_size: number
+  top_size?: number
+  bottom_size?: number
+}
+
+export interface SchematicPortArrangementBySides {
+  left_side?: { pins: number[]; direction?: "top-to-bottom" | "bottom-to-top" }
+  right_side?: { pins: number[]; direction?: "top-to-bottom" | "bottom-to-top" }
+  top_side?: { pins: number[]; direction?: "left-to-right" | "right-to-left" }
+  bottom_side?: {
+    pins: number[]
+    direction?: "left-to-right" | "right-to-left"
+  }
+}
+
+export type SchematicPortArrangement =
+  | SchematicPortArrangementBySize
+  | SchematicPortArrangementBySides
+
+export interface SchematicComponent {
+  type: "schematic_component"
+  rotation: number
+  size: Size
+  center: Point
+  source_component_id: string
+  schematic_component_id: string
+  pin_spacing?: number
+  pin_styles?: Record<
+    string,
+    {
+      left_margin?: number
+      right_margin?: number
+      top_margin?: number
+      bottom_margin?: number
+    }
+  >
+  box_width?: number
+  symbol_name?: string
+  port_arrangement?: SchematicPortArrangement
+  port_labels?: Record<string, string>
+  symbol_display_value?: string
+}
+
+export const schematic_component_port_arrangement_by_size = z.object({
+  left_size: z.number(),
+  right_size: z.number(),
+  top_size: z.number().optional(),
+  bottom_size: z.number().optional(),
+})
+
+expectTypesMatch<
+  SchematicPortArrangementBySize,
+  z.infer<typeof schematic_component_port_arrangement_by_size>
+>(true)
+
+export const schematic_component_port_arrangement_by_sides = z.object({
+  left_side: z
+    .object({
+      pins: z.array(z.number()),
+      direction: z.enum(["top-to-bottom", "bottom-to-top"]).optional(),
+    })
+    .optional(),
+  right_side: z
+    .object({
+      pins: z.array(z.number()),
+      direction: z.enum(["top-to-bottom", "bottom-to-top"]).optional(),
+    })
+    .optional(),
+  top_side: z
+    .object({
+      pins: z.array(z.number()),
+      direction: z.enum(["left-to-right", "right-to-left"]).optional(),
+    })
+    .optional(),
+  bottom_side: z
+    .object({
+      pins: z.array(z.number()),
+      direction: z.enum(["left-to-right", "right-to-left"]).optional(),
+    })
+    .optional(),
+})
+
+expectTypesMatch<
+  SchematicPortArrangementBySides,
+  z.infer<typeof schematic_component_port_arrangement_by_sides>
+>(true)
+
+export const port_arrangement = z.union([
+  schematic_component_port_arrangement_by_size,
+  schematic_component_port_arrangement_by_sides,
+])
 
 export const schematic_component = z.object({
   type: z.literal("schematic_component"),
@@ -23,44 +118,12 @@ export const schematic_component = z.object({
   pin_styles: schematic_pin_styles.optional(),
   box_width: length.optional(),
   symbol_name: z.string().optional(),
-  port_arrangement: z
-    .union([
-      z.object({
-        left_size: z.number(),
-        right_size: z.number(),
-        top_size: z.number().optional(),
-        bottom_size: z.number().optional(),
-      }),
-      z.object({
-        left_side: z
-          .object({
-            pins: z.array(z.number()),
-            direction: z.enum(["top-to-bottom", "bottom-to-top"]).optional(),
-          })
-          .optional(),
-        right_side: z
-          .object({
-            pins: z.array(z.number()),
-            direction: z.enum(["top-to-bottom", "bottom-to-top"]).optional(),
-          })
-          .optional(),
-        top_side: z
-          .object({
-            pins: z.array(z.number()),
-            direction: z.enum(["left-to-right", "right-to-left"]).optional(),
-          })
-          .optional(),
-        bottom_side: z
-          .object({
-            pins: z.array(z.number()),
-            direction: z.enum(["left-to-right", "right-to-left"]).optional(),
-          })
-          .optional(),
-      }),
-    ])
-    .optional(),
+  port_arrangement: port_arrangement.optional(),
   port_labels: z.record(z.string()).optional(),
+  symbol_display_value: z.string().optional(),
 })
 
 export type SchematicComponentInput = z.input<typeof schematic_component>
-export type SchematicComponent = z.infer<typeof schematic_component>
+type InferredSchematicComponent = z.infer<typeof schematic_component>
+
+expectTypesMatch<SchematicComponent, InferredSchematicComponent>(true)
