@@ -138,4 +138,16 @@ test("parseAndConvertSiUnit", () => {
     unitOfValue: "g",
     value: 2000,
   })
+
+  expect(parseAndConvertSiUnit("10kΩ")).toEqual({
+    parsedUnit: "kΩ",
+    unitOfValue: "Ω",
+    value: 10000,
+  })
+
+  expect(parseAndConvertSiUnit("10k")).toEqual({
+    parsedUnit: null,
+    unitOfValue: null,
+    value: 10000,
+  })
 })
