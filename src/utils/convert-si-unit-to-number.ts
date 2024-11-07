@@ -109,6 +109,14 @@ const unitMappings: Record<
   },
 }
 
+const unitMappingAndVariantSuffixes = new Set()
+for (const [baseUnit, info] of Object.entries(unitMappings)) {
+  unitMappingAndVariantSuffixes.add(baseUnit)
+  for (const variant of Object.keys(info.variants)) {
+    unitMappingAndVariantSuffixes.add(variant)
+  }
+}
+
 function getBaseTscircuitUnit(unit: string): UnitInfo {
   for (const [baseUnit, info] of Object.entries(unitMappings)) {
     if (unit in info.variants) {
@@ -196,22 +204,32 @@ export const parseAndConvertSiUnit = <
       } as any,
     }
   }
-  const unit_reversed = v
-    .split("")
-    .reverse()
-    .join("")
-    .match(/[^\d\s]+/)?.[0]
+  const reversed_input_string = v.toString().split("").reverse().join("")
+  const unit_reversed = reversed_input_string.match(/[^\d\s]+/)?.[0]
   if (!unit_reversed) {
     throw new Error(`Could not determine unit: "${v}"`)
   }
   const unit = unit_reversed.split("").reverse().join("")
-  const value = v.slice(0, -unit.length)
+
+  const numberPart = v.slice(0, -unit.length)
+  if (
+    unit in si_prefix_multiplier &&
+    !unitMappingAndVariantSuffixes.has(unit)
+  ) {
+    const siMultiplier =
+      si_prefix_multiplier[unit as keyof typeof si_prefix_multiplier]
+    return {
+      parsedUnit: null,
+      unitOfValue: null,
+      value: (Number.parseFloat(numberPart) * siMultiplier) as any,
+    }
+  }
 
   const { baseUnit, conversionFactor } = getBaseTscircuitUnit(unit)
 
   return {
     parsedUnit: unit,
     unitOfValue: baseUnit,
-    value: (conversionFactor * Number.parseFloat(value)) as any,
+    value: (conversionFactor * Number.parseFloat(numberPart)) as any,
   }
 }
