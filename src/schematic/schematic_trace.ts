@@ -11,7 +11,7 @@ export interface SchematicTraceEdge {
     x: number
     y: number
   }
-  is_junction?: boolean
+  is_crossing?: boolean
   from_schematic_port_id?: string
   to_schematic_port_id?: string
 }
@@ -37,7 +37,7 @@ export const schematic_trace = z.object({
         x: z.number(),
         y: z.number(),
       }),
-      is_junction: z.boolean().optional(),
+      is_crossing: z.boolean().optional(),
       from_schematic_port_id: z.string().optional(),
       to_schematic_port_id: z.string().optional(),
     }),
