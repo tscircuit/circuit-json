@@ -20,6 +20,10 @@ export interface SchematicTrace {
   type: "schematic_trace"
   schematic_trace_id: string
   source_trace_id: string
+  junctions: {
+    x: number
+    y: number
+  }[]
   edges: SchematicTraceEdge[]
 }
 
@@ -27,6 +31,12 @@ export const schematic_trace = z.object({
   type: z.literal("schematic_trace"),
   schematic_trace_id: z.string(),
   source_trace_id: z.string(),
+  junctions: z.array(
+    z.object({
+      x: z.number(),
+      y: z.number(),
+    }),
+  ),
   edges: z.array(
     z.object({
       from: z.object({
