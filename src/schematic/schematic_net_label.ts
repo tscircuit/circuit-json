@@ -8,6 +8,7 @@ export const schematic_net_label = z.object({
   anchor_position: point.optional(),
   anchor_side: z.enum(["top", "bottom", "left", "right"]),
   text: z.string(),
+  symbol_name: z.string().optional(),
 })
 
 export type SchematicNetLabelInput = z.input<typeof schematic_net_label>
