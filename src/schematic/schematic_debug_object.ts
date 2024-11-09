@@ -48,7 +48,17 @@ export interface SchematicDebugLine {
   end: Point
 }
 
-export type SchematicDebugObject = SchematicDebugRect | SchematicDebugLine
+export interface SchematicDebugPoint {
+  type: "schematic_debug_object"
+  label?: string
+  shape: "point"
+  center: Point
+}
+
+export type SchematicDebugObject =
+  | SchematicDebugRect
+  | SchematicDebugLine
+  | SchematicDebugPoint
 
 expectTypesMatch<SchematicDebugObject, InferredSchematicDebugObject>(true)
 export type SchematicDebugObjectInput = z.input<typeof schematic_debug_object>
