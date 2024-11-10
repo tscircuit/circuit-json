@@ -22,7 +22,7 @@ export const any_source_component = z.union([
   source_simple_power_source,
   source_simple_battery,
   source_simple_inductor,
-  source_simple_pushbutton,
+  source_simple_push_button,
 ])
 
 export type AnySourceComponent = z.infer<typeof any_source_component>
