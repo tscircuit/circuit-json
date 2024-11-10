@@ -9,6 +9,7 @@ export const pcb_missing_footprint_error = z
       "pcb_missing_footprint_error",
     ),
     error_type: z.literal("pcb_missing_footprint_error"),
+    source_component_id: z.string(),
     message: z.string(),
   })
   .describe("Defines a missing footprint error on the PCB")
@@ -27,6 +28,7 @@ export interface PcbMissingFootprintError {
   type: "pcb_missing_footprint_error"
   pcb_missing_footprint_error_id: string
   error_type: "pcb_missing_footprint_error"
+  source_component_id: string
   message: string
 }
 
