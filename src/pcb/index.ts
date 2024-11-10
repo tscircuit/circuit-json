@@ -26,6 +26,7 @@ export * from "./pcb_silkscreen_oval"
 export * from "./pcb_fabrication_note_text"
 export * from "./pcb_fabrication_note_path"
 export * from "./pcb_keepout"
+export * from "./pcb_missing_footprint_error"
 
 // Define PcbCircuitElement which is a union of all the Pcb* elements
 import type { PcbComponent } from "./pcb_component"
@@ -41,6 +42,7 @@ import type { PcbPortNotMatchedError } from "./pcb_port_not_matched_error"
 import type { PcbVia } from "./pcb_via"
 import type { PcbBoard } from "./pcb_board"
 import type { PcbPlacementError } from "./pcb_placement_error"
+import type { PcbMissingFootprintError } from "./pcb_missing_footprint_error"
 import type { PcbTraceHint } from "./pcb_trace_hint"
 import type { PcbSilkscreenLine } from "./pcb_silkscreen_line"
 import type { PcbSilkscreenPath } from "./pcb_silkscreen_path"
@@ -58,6 +60,7 @@ export type PcbCircuitElement =
   | PcbText
   | PcbTrace
   | PcbTraceError
+  | PcbMissingFootprintError
   | PcbPortNotMatchedError
   | PcbVia
   | PcbBoard
