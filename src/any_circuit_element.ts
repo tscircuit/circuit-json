@@ -28,6 +28,7 @@ export const any_circuit_element = z.union([
   src.source_simple_push_button,
   pcb.pcb_component,
   pcb.pcb_hole,
+  pcb.pcb_missing_footprint_error,
   pcb.pcb_plated_hole,
   pcb.pcb_keepout,
   pcb.pcb_port,
