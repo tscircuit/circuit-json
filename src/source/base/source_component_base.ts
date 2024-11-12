@@ -1,5 +1,19 @@
-import { supplier_name } from "src/pcb/properties/supplier_name"
+import {
+  supplier_name,
+  type SupplierName,
+} from "src/pcb/properties/supplier_name"
+import { expectTypesMatch } from "src/utils/expect-types-match"
 import { z } from "zod"
+
+export interface SourceComponentBase {
+  type: "source_component"
+  ftype?: string
+  source_component_id: string
+  name: string
+  manufacturer_part_number?: string
+  supplier_part_numbers?: Partial<Record<SupplierName, string[]>>
+  display_value?: string
+}
 
 export const source_component_base = z.object({
   type: z.literal("source_component"),
@@ -13,4 +27,6 @@ export const source_component_base = z.object({
   display_value: z.string().optional(),
 })
 
-export type SourceComponentBase = z.infer<typeof source_component_base>
+type InferredSourceComponentBase = z.infer<typeof source_component_base>
+
+expectTypesMatch<SourceComponentBase, InferredSourceComponentBase>(true)
