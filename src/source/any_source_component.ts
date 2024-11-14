@@ -10,7 +10,7 @@ import { source_simple_power_source } from "./source_simple_power_source"
 import { source_simple_battery } from "./source_simple_battery"
 import { source_simple_inductor } from "./source_simple_inductor"
 import { source_simple_push_button } from "./source_simple_push_button"
-
+import { source_simple_potentiometer } from "./source_simple_potentiometer"
 export const any_source_component = z.union([
   source_simple_resistor,
   source_simple_capacitor,
@@ -23,6 +23,7 @@ export const any_source_component = z.union([
   source_simple_battery,
   source_simple_inductor,
   source_simple_push_button,
+  source_simple_potentiometer,
 ])
 
 export type AnySourceComponent = z.infer<typeof any_source_component>
