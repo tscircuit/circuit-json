@@ -7,5 +7,9 @@ export const source_simple_potentiometer = source_component_base.extend({
   max_resistance: resistance,
 })
 
-export type SourceSimplePotentiometer = z.infer<typeof source_simple_potentiometer>
-export type SourceSimplePotentiometerInput = z.input<typeof source_simple_potentiometer>
+export type SourceSimplePotentiometer = z.infer<
+  typeof source_simple_potentiometer
+>
+export type SourceSimplePotentiometerInput = z.input<
+  typeof source_simple_potentiometer
+>
