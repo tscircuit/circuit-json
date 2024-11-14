@@ -12,6 +12,10 @@ export * from "./source_trace"
 export * from "./base/source_component_base"
 export * from "./source_group"
 export * from "./source_net"
+<<<<<<< Updated upstream
 export * from "./source_simple_battery"
 export * from "./source_simple_inductor"
 export * from "./source_simple_push_button"
+=======
+export * from "./source_potentiometer"
+>>>>>>> Stashed changes
