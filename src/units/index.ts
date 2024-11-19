@@ -77,6 +77,12 @@ export const length = z
   .string()
   .or(z.number())
   .transform((v) => parseAndConvertSiUnit(v).value!)
+
+export const frequency = z
+  .string()
+  .or(z.number())
+  .transform((v) => parseAndConvertSiUnit(v).value!)
+
 /**
  * Length in meters
  */
