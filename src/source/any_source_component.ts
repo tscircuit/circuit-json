@@ -12,6 +12,7 @@ import { source_simple_inductor } from "./source_simple_inductor"
 import { source_simple_push_button } from "./source_simple_push_button"
 import { source_simple_potentiometer } from "./source_simple_potentiometer"
 import { source_simple_crystal } from "./source_simple_crystal"
+import { source_simple_pin_header } from "./source_simple_pin_header"
 
 export const any_source_component = z.union([
   source_simple_resistor,
@@ -27,6 +28,7 @@ export const any_source_component = z.union([
   source_simple_push_button,
   source_simple_potentiometer,
   source_simple_crystal,
+  source_simple_pin_header,
 ])
 
 export type AnySourceComponent = z.infer<typeof any_source_component>
