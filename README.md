@@ -6,10 +6,14 @@
 
 Circuit JSON (formally “tscircuit soup”) is the name of the compiled intermediary low-level JSON circuit representation. It contains all the information needed to visually represent a schematic, PCB, produce Gerber files, produce bill of materials, run SPICE simulations, view warnings and more. It is designed to easily interoperate with a SQL database.
 
-This module has the zod definitions and conversion functions for using tscircuit soup.
+This module has the zod definitions and conversion functions for using circuit json
 
-> [!NOTE]
-> This is mostly an internal module, you probably want to use the [main tscircuit library](https://github.com/tscircuit/tscircuit) instead.
+## Table of Contents
+
+<!-- toc:start -->
+<!-- toc:end -->
+
+## Typescript Usage
 
 ```ts
 import { any_circuit_element, simple_source_resistor } from "circuit-json"
@@ -30,3 +34,6 @@ any_circuit_element.parse({
   /* ... */
 })
 ```
+
+<!-- circuit-json-docs:start -->
+<!-- circuit-json-docs:end -->

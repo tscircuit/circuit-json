@@ -57,72 +57,71 @@ async function generateDocs() {
 
   // Source Components TOC
   toc += "### [Source Components](#source-components)\n"
-  sections.source
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .forEach((elem) => {
-      toc += `- [${elem.name}](#${elem.name.toLowerCase()})\n`
-    })
+  for (const elem of sections.source.sort((a, b) =>
+    a.name.localeCompare(b.name),
+  )) {
+    toc += `- [${elem.name}](#${elem.name.toLowerCase()})\n`
+  }
   toc += "\n"
 
   // PCB Elements TOC
   toc += "### [PCB Elements](#pcb-elements)\n"
-  sections.pcb
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .forEach((elem) => {
-      toc += `- [${elem.name}](#${elem.name.toLowerCase()})\n`
-    })
+  for (const elem of sections.pcb.sort((a, b) =>
+    a.name.localeCompare(b.name),
+  )) {
+    toc += `- [${elem.name}](#${elem.name.toLowerCase()})\n`
+  }
   toc += "\n"
 
   // Schematic Elements TOC
   toc += "### [Schematic Elements](#schematic-elements)\n"
-  sections.schematic
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .forEach((elem) => {
-      toc += `- [${elem.name}](#${elem.name.toLowerCase()})\n`
-    })
+  for (const elem of sections.schematic.sort((a, b) =>
+    a.name.localeCompare(b.name),
+  )) {
+    toc += `- [${elem.name}](#${elem.name.toLowerCase()})\n`
+  }
   toc += "\n"
 
   // Generate sections with interface definitions
   let docs = ""
-
   docs += "## Source Components\n\n"
-  sections.source
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .forEach((elem) => {
-      docs += `### ${elem.name}\n\n`
-      if (elem.description) {
-        docs += `${elem.description}\n\n`
-      }
-      docs += "```typescript\n"
-      docs += elem.interface
-      docs += "\n```\n\n"
-    })
+  for (const elem of sections.source.sort((a, b) =>
+    a.name.localeCompare(b.name),
+  )) {
+    docs += `### ${elem.name}\n\n`
+    if (elem.description) {
+      docs += `${elem.description}\n\n`
+    }
+    docs += "```typescript\n"
+    docs += elem.interface
+    docs += "\n```\n\n"
+  }
 
   docs += "## PCB Elements\n\n"
-  sections.pcb
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .forEach((elem) => {
-      docs += `### ${elem.name}\n\n`
-      if (elem.description) {
-        docs += `${elem.description}\n\n`
-      }
-      docs += "```typescript\n"
-      docs += elem.interface
-      docs += "\n```\n\n"
-    })
+  for (const elem of sections.pcb.sort((a, b) =>
+    a.name.localeCompare(b.name),
+  )) {
+    docs += `### ${elem.name}\n\n`
+    if (elem.description) {
+      docs += `${elem.description}\n\n`
+    }
+    docs += "```typescript\n"
+    docs += elem.interface
+    docs += "\n```\n\n"
+  }
 
   docs += "## Schematic Elements\n\n"
-  sections.schematic
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .forEach((elem) => {
-      docs += `### ${elem.name}\n\n`
-      if (elem.description) {
-        docs += `${elem.description}\n\n`
-      }
-      docs += "```typescript\n"
-      docs += elem.interface
-      docs += "\n```\n\n"
-    })
+  for (const elem of sections.schematic.sort((a, b) =>
+    a.name.localeCompare(b.name),
+  )) {
+    docs += `### ${elem.name}\n\n`
+    if (elem.description) {
+      docs += `${elem.description}\n\n`
+    }
+    docs += "```typescript\n"
+    docs += elem.interface
+    docs += "\n```\n\n"
+  }
 
   // Update README.md
   const readme = fs.readFileSync("README.md", "utf8")
