@@ -9,7 +9,8 @@
   "scripts": {
     "prepublish": "npm run build",
     "build": "tsup-node ./src/index.ts --format esm --dts --sourcemap",
-    "format": "biome format . --write"
+    "format": "biome format . --write",
+    "generate-docs": "bun scripts/generate-readme-docs.ts && biome format README.md --write"
   },
   "keywords": [],
   "author": "",

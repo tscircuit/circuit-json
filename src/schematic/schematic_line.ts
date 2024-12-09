@@ -1,5 +1,20 @@
 import { z } from "zod"
 import { distance } from "../units"
+import { expectTypesMatch } from "src/utils/expect-types-match"
+
+/**
+ * Defines a line on the schematic, this can be used for adding arbitrary lines
+ * to a schematic, but don't use it for drawing traces, schematic boxes or where
+ * other schematic elements are more appropriate.
+ */
+export interface SchematicLine {
+  type: "schematic_line"
+  schematic_component_id: string
+  x1: number
+  x2: number
+  y1: number
+  y2: number
+}
 
 export const schematic_line = z.object({
   type: z.literal("schematic_line"),
@@ -11,4 +26,6 @@ export const schematic_line = z.object({
 })
 
 export type SchematicLineInput = z.input<typeof schematic_line>
-export type SchematicLine = z.infer<typeof schematic_line>
+type InferredSchematicLine = z.infer<typeof schematic_line>
+
+expectTypesMatch<SchematicLine, InferredSchematicLine>(true)
