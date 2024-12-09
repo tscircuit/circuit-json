@@ -125,7 +125,21 @@ async function generateDocs() {
 
   // Update README.md
   const readme = fs.readFileSync("README.md", "utf8")
-  const newReadme = readme.split("## Table of Contents")[0] + toc + docs
+
+  // Replace content between toc tags
+  const tocRegex = /<!-- toc:start -->[\s\S]*?<!-- toc:end -->/
+  let newReadme = readme.replace(
+    tocRegex,
+    `<!-- toc:start -->\n${toc}<!-- toc:end -->`,
+  )
+
+  // Replace content between circuit-json-docs tags
+  const docsRegex =
+    /<!-- circuit-json-docs:start -->[\s\S]*?<!-- circuit-json-docs:end -->/
+  newReadme = newReadme.replace(
+    docsRegex,
+    `<!-- circuit-json-docs:start -->\n${docs}<!-- circuit-json-docs:end -->`,
+  )
 
   fs.writeFileSync("README.md", newReadme)
 }
