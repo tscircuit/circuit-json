@@ -6,6 +6,7 @@ interface ElementDoc {
   name: string
   description: string
   interface: string
+  otherInterfaces: string[]
 }
 
 async function generateDocs() {
@@ -30,26 +31,43 @@ async function generateDocs() {
           ? "schematic"
           : "misc"
 
-    // Extract interfaces with descriptions and definitions
-    const interfaces =
-      content.match(
-        /(\/\*\*[\s\S]*?\*\/\s*)?export interface [A-Za-z]+[\s\S]*?}/g,
-      ) || []
+    // Convert filename to PascalCase to find primary interface
+    const basename = path.basename(file, ".ts")
+    const primaryName = basename
+      .split("_")
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join("")
 
-    for (const int of interfaces) {
-      const nameMatch = int.match(/export interface ([A-Za-z]+)/)
-      if (!nameMatch) continue
-
-      const name = nameMatch[1] ?? ""
-      const descMatch = int.match(/\/\*\*\s*(.*?)\s*\*\//) ?? ""
-      const description = descMatch ? descMatch[1]! : ""
-
-      sections[section].push({
-        name,
-        description,
-        interface: int,
-      })
+    // Find interface matching filename
+    const allInterfaces = content.match(
+      /(?:\/\*\*[\s\S]*?\*\/\s*)?export interface [\s\S]*?\n}/gm,
+    )
+    const primaryInterface = content.match(
+      new RegExp(
+        `(?:\\/\\*\\*[\\s\\S]*?\\*\\/\\s*)?export interface ${primaryName}\\s[\\s\\S]*?\n}`,
+      ),
+    )?.[0]
+    console.log({ primaryInterface, allInterfaces })
+    if (!primaryInterface) {
+      console.log(`No primary interface found for ${basename}`)
+      continue
     }
+    // Remove the primary interface from the list
+    const otherInterfaces =
+      allInterfaces?.filter(
+        (iface) => !iface.match(new RegExp(`${primaryName}\\s`)),
+      ) ?? []
+
+    // Get description if it exists
+    const descMatch = primaryInterface.match(/\/\*\*\s*(.*?)\s*\*\//)
+    const description = descMatch ? descMatch[1]! : ""
+
+    sections[section].push({
+      name: primaryName,
+      description,
+      interface: primaryInterface,
+      otherInterfaces,
+    })
   }
 
   // Generate table of contents
@@ -94,6 +112,7 @@ async function generateDocs() {
     }
     docs += "```typescript\n"
     docs += elem.interface
+    docs += elem.otherInterfaces.map((iface) => `\n\n${iface}`).join("")
     docs += "\n```\n\n"
   }
 
@@ -107,6 +126,7 @@ async function generateDocs() {
     }
     docs += "```typescript\n"
     docs += elem.interface
+    docs += elem.otherInterfaces.map((iface) => `\n\n${iface}`).join("")
     docs += "\n```\n\n"
   }
 
@@ -120,6 +140,7 @@ async function generateDocs() {
     }
     docs += "```typescript\n"
     docs += elem.interface
+    docs += elem.otherInterfaces.map((iface) => `\n\n${iface}`).join("")
     docs += "\n```\n\n"
   }
 
