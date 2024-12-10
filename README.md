@@ -23,7 +23,7 @@ and is the primary way that Circuit JSON is defined and maintained.
 ## Things You Can Do With Circuit JSON
 
 - Generate [Gerber files](https://github.com/tscircuit/circuit-json-to-gerber)
-- Generate and read [DSN files](https://github.com/tscircuit/dsn-converter)
+- Generate and read [Specctra DSN Autorouting files](https://github.com/tscircuit/dsn-converter)
 - Generate [Pick'n'Place Files](https://github.com/tscircuit/circuit-json-to-pnp)
 - Generate [PCB and Schematic SVGs](https://github.com/tscircuit/circuit-to-svg)
 - Generate [Bill of Materials](https://github.com/tscircuit/circuit-json-to-bom)
