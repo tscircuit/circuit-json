@@ -72,30 +72,35 @@ async function generateDocs() {
   // Generate table of contents
   let toc = ""
 
+  // Static TOC sections
+  toc +=
+    "- [Things You Can Do With Circuit JSON](#things-you-can-do-with-circuit-json)\n"
+  toc += "- [Typescript Usage](#typescript-usage)\n\n"
+
   // Source Components TOC
-  toc += "### [Source Components](#source-components)\n"
+  toc += "- [Source Components](#source-components)\n"
   for (const elem of sections.source.sort((a, b) =>
     a.name.localeCompare(b.name),
   )) {
-    toc += `- [${elem.name}](#${elem.name.toLowerCase()})\n`
+    toc += `- - [${elem.name}](#${elem.name.toLowerCase()})\n`
   }
   toc += "\n"
 
   // PCB Elements TOC
-  toc += "### [PCB Elements](#pcb-elements)\n"
+  toc += "- [PCB Elements](#pcb-elements)\n"
   for (const elem of sections.pcb.sort((a, b) =>
     a.name.localeCompare(b.name),
   )) {
-    toc += `- [${elem.name}](#${elem.name.toLowerCase()})\n`
+    toc += `- - [${elem.name}](#${elem.name.toLowerCase()})\n`
   }
   toc += "\n"
 
   // Schematic Elements TOC
-  toc += "### [Schematic Elements](#schematic-elements)\n"
+  toc += "- [Schematic Elements](#schematic-elements)\n"
   for (const elem of sections.schematic.sort((a, b) =>
     a.name.localeCompare(b.name),
   )) {
-    toc += `- [${elem.name}](#${elem.name.toLowerCase()})\n`
+    toc += `- - [${elem.name}](#${elem.name.toLowerCase()})\n`
   }
   toc += "\n"
 
