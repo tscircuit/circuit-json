@@ -1,6 +1,6 @@
 # Circuit JSON Specification `circuit-json`
 
-[tscircuit](https://github.com/tscircuit/tscircuit) · [Soup Specification Docs](https://docs.tscircuit.com/api-reference/advanced/soup)
+[tscircuit](https://github.com/tscircuit/tscircuit) · [discord](https://tscircuit.com/join)
 
 [![npm version](https://badge.fury.io/js/circuit-json.svg)](https://badge.fury.io/js/circuit-json)
 
@@ -83,8 +83,6 @@ and is the primary way that Circuit JSON is defined and maintained.
     - [SchematicText](#schematictext)
     - [SchematicTrace](#schematictrace)
     - [SchematicVoltageProbe](#schematicvoltageprobe)
-
-<!-- toc:end -->
 
 ## Typescript Usage
 
@@ -792,10 +790,7 @@ export interface SchematicPortArrangementBySize {
 
 export interface SchematicPortArrangementBySides {
   left_side?: { pins: number[]; direction?: "top-to-bottom" | "bottom-to-top" }
-  right_side?: {
-    pins: number[]
-    direction?: "top-to-bottom" | "bottom-to-top"
-  }
+  right_side?: { pins: number[]; direction?: "top-to-bottom" | "bottom-to-top" }
   top_side?: { pins: number[]; direction?: "left-to-right" | "right-to-left" }
   bottom_side?: {
     pins: number[]
