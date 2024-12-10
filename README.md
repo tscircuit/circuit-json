@@ -12,8 +12,6 @@ This module has the zod definitions and conversion functions for using circuit j
 
 <!-- toc:start -->
 
-## Table of Contents
-
 ### [Source Components](#source-components)
 
 - [SourceComponentBase](#sourcecomponentbase)

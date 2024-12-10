@@ -47,7 +47,6 @@ async function generateDocs() {
         `(?:\\/\\*\\*[\\s\\S]*?\\*\\/\\s*)?export interface ${primaryName}\\s[\\s\\S]*?\n}`,
       ),
     )?.[0]
-    console.log({ primaryInterface, allInterfaces })
     if (!primaryInterface) {
       console.log(`No primary interface found for ${basename}`)
       continue
@@ -71,7 +70,7 @@ async function generateDocs() {
   }
 
   // Generate table of contents
-  let toc = "## Table of Contents\n\n"
+  let toc = ""
 
   // Source Components TOC
   toc += "### [Source Components](#source-components)\n"
