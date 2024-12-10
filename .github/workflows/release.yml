@@ -22,6 +22,7 @@ jobs:
       - run: bun run build
       - name: Generate README docs
         run: bun run generate-readme-docs
+      - run: git add README.md
       - run: pver release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
