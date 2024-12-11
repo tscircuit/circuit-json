@@ -28,6 +28,9 @@ and is the primary way that Circuit JSON is defined and maintained.
 - Generate [PCB and Schematic SVGs](https://github.com/tscircuit/circuit-to-svg)
 - Generate [Bill of Materials](https://github.com/tscircuit/circuit-json-to-bom)
 - Generate [SPICE netlists and simulations](https://github.com/tscircuit/circuit-json-to-spice)
+- Display [PCBs on the web](https://github.com/tscircuit/pcb-viewer)
+- Display [Schematics on the web](https://github.com/tscircuit/schematic-viewer)
+- Display [3d models of electronics on the web](https://github.com/tscircuit/3d-viewer)
 
 ## Table of Contents
 
