@@ -10,10 +10,16 @@ export const pcb_manual_edit_conflict_error = z
     pcb_component_id: z.string(),
     source_component_id: z.string(),
   })
-  .describe("Error emitted when a component has both manual placement and explicit pcbX/pcbY coordinates")
+  .describe(
+    "Error emitted when a component has both manual placement and explicit pcbX/pcbY coordinates",
+  )
 
-export type PcbManualEditConflictErrorInput = z.input<typeof pcb_manual_edit_conflict_error>
-type InferredPcbManualEditConflictError = z.infer<typeof pcb_manual_edit_conflict_error>
+export type PcbManualEditConflictErrorInput = z.input<
+  typeof pcb_manual_edit_conflict_error
+>
+type InferredPcbManualEditConflictError = z.infer<
+  typeof pcb_manual_edit_conflict_error
+>
 
 /**
  * Error emitted when a component has both manual placement (via manualEdits) and explicit pcbX/pcbY coordinates
@@ -31,4 +37,7 @@ export interface PcbManualEditConflictError {
  */
 export type PCBManualEditConflictError = PcbManualEditConflictError
 
-expectTypesMatch<PcbManualEditConflictError, InferredPcbManualEditConflictError>(true)
+expectTypesMatch<
+  PcbManualEditConflictError,
+  InferredPcbManualEditConflictError
+>(true)
