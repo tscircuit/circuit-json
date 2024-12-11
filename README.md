@@ -395,6 +395,23 @@ export interface PcbFabricationNoteText {
 }
 ```
 
+### PcbManualEditConflictError
+
+- Error emitted when a component has both manual placement (via manualEdits) and explicit pcbX/pcbY coordinates
+
+```typescript
+/**
+ * Error emitted when a component has both manual placement (via manualEdits) and explicit pcbX/pcbY coordinates
+ */
+export interface PcbManualEditConflictError {
+  type: "pcb_manual_edit_conflict_error"
+  pcb_error_id: string
+  message: string
+  pcb_component_id: string
+  source_component_id: string
+}
+```
+
 ### PcbMissingFootprintError
 
 - Defines a placement error on the PCB
