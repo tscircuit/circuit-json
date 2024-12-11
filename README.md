@@ -109,6 +109,52 @@ any_circuit_element.parse({
 })
 ```
 
+## Base Units
+
+When there is not a string unit provided, tscircuit assumes the a "base unit" is used.
+
+You can specify circuit json with string units to avoid ambiguity around
+units, for example by specifying `{ max_trace_length: "100mm" }` avoids needing to know
+the base unit. However if a number is specified, it should be in the base units in the
+table below. In this case `{ max_trace_length: 100 }` is equivalent.
+
+The default units when reading a number are defined as follows:
+
+| Measurement Type | Base Unit | Description |
+|-----------------|-----------|-------------|
+| Length          | mm        | Millimeters |
+| Time            | ms        | Milliseconds |
+| Mass            | g         | Grams |
+| Angle           | deg       | Degrees |
+| Frequency       | Hz        | Hertz |
+| Volume          | ml        | Milliliters |
+| Voltage         | V         | Volts |
+| Current         | A         | Amperes |
+| Resistance      | Ω         | Ohms |
+| Capacitance     | F         | Farads |
+| Inductance      | H         | Henries |
+
+## Element Prefixes
+
+Element prefixes are used to separate data that's used in different contexts. This allows
+developers who use Circuit JSON to develop partial implementations with smaller targets in mind.
+It can also help simplify JSON elements because schematic and pcb information is not contained
+in the same object.
+
+A single `<resistor />` (in tscircuit) will have a corresponding `source_component`, `schematic_component` and `pcb_component`, as well as other elements that may be necessary
+to represent it.
+
+There are 3 main element prefixes:
+
+- `source_` - e.g. `source_component` An element that contains information from whatever originally defined the entity. You can think of this as a non-target representations.
+  - For example, you might have `supplier_part_numbers` as a property here, since that is
+    not strictly related to the `pcb` or the `schematic`.
+  - This category sometimes contains information that is relevant to both the `pcb` and the `schematic`
+  - This is a somewhat a "Miscellaneous" category, because it contains things from the source
+    definition that we wouldn't want to lose.
+- `pcb_` - e.g. `pcb_component`, `pcb_port`. Anything required to render the PCB
+- `schematic_` - e.g. `schematic_component`. Anything required to render the Schematic
+
 <!-- circuit-json-docs:start -->
 
 ## Source Components
