@@ -33,9 +33,4 @@ export interface PcbGroup {
   description?: string
 }
 
-/**
- * @deprecated use PcbGroup
- */
-export type PCBGroup = PcbGroup
-
 expectTypesMatch<PcbGroup, InferredPcbGroup>(true)
