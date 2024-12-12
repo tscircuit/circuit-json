@@ -441,6 +441,26 @@ export interface PcbFabricationNoteText {
 }
 ```
 
+### PcbGroup
+
+- Defines a group of components on the PCB
+
+```typescript
+/**
+ * Defines a group of components on the PCB
+ */
+export interface PcbGroup {
+  type: "pcb_group"
+  pcb_group_id: string
+  width: Length
+  height: Length
+  center: Point
+  pcb_component_ids: string[]
+  name?: string
+  description?: string
+}
+```
+
 ### PcbManualEditConflictError
 
 - Error emitted when a component has both manual placement (via manualEdits) and explicit pcbX/pcbY coordinates
