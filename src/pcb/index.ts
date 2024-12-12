@@ -28,6 +28,7 @@ export * from "./pcb_fabrication_note_path"
 export * from "./pcb_keepout"
 export * from "./pcb_missing_footprint_error"
 export * from "./pcb_manual_edit_conflict_error"
+export * from "./pcb_group"
 
 import type { PcbComponent } from "./pcb_component"
 import type { PcbHole } from "./pcb_hole"
