@@ -1,8 +1,4 @@
-import {
-  existsSync,
-  mkdirSync,
-  writeFileSync,
-} from "fs"
+import { existsSync, mkdirSync, writeFileSync } from "fs"
 import { join } from "path"
 import * as ts from "typescript"
 import { promisify } from "util"
@@ -186,7 +182,7 @@ function zodToPydantic(type: ts.Type, checker: ts.TypeChecker): TypeInfo {
 function generatePydanticModel(
   interfaceName: string,
   type: ts.Type,
-  checker: ts.TypeChecker
+  checker: ts.TypeChecker,
 ): string {
   const imports = new Set<string>()
   const propertyLines: string[] = []
@@ -221,10 +217,10 @@ function generatePydanticModel(
   // Build imports string, avoiding duplicates
   const importList = Array.from(imports)
   const typingImports = importList.filter(
-    (imp) => imp !== "validator" && imp !== "BaseModel"
+    (imp) => imp !== "validator" && imp !== "BaseModel",
   )
   const pydanticImports = ["BaseModel"].concat(
-    imports.has("validator") ? ["validator"] : []
+    imports.has("validator") ? ["validator"] : [],
   )
 
   const importString = [
@@ -273,17 +269,27 @@ async function main() {
 
     // Process each source file
     for (const sourceFile of program.getSourceFiles()) {
-      if (!sourceFile.isDeclarationFile && sourceFile.fileName.startsWith(sourceDir)) {
+      if (
+        !sourceFile.isDeclarationFile &&
+        sourceFile.fileName.startsWith(sourceDir)
+      ) {
         // Get interfaces and type aliases
         ts.forEachChild(sourceFile, (node) => {
-          if (ts.isInterfaceDeclaration(node) || ts.isTypeAliasDeclaration(node)) {
+          if (
+            ts.isInterfaceDeclaration(node) ||
+            ts.isTypeAliasDeclaration(node)
+          ) {
             const type = checker.getTypeAtLocation(node)
             const properties = type.getProperties()
             if (properties.length > 0) {
-              const pydanticModel = generatePydanticModel(node.name.text, type, checker)
+              const pydanticModel = generatePydanticModel(
+                node.name.text,
+                type,
+                checker,
+              )
               const outputPath = join(
                 outputDir,
-                `${node.name.text.toLowerCase()}.py`
+                `${node.name.text.toLowerCase()}.py`,
               )
               writeFileSync(outputPath, pydanticModel)
               console.log(`Generated ${outputPath}`)
