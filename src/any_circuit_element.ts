@@ -5,9 +5,7 @@ import * as src from "./source"
 import * as cad from "./cad"
 
 export const any_circuit_element = z.union([
-  // TODO source_group
   // TODO source_config
-  // TODO pcb_group
   // TODO pcb_config
   // TODO schematic_config
   // TODO schematic_group
@@ -41,6 +39,7 @@ export const any_circuit_element = z.union([
   pcb.pcb_smtpad,
   pcb.pcb_solder_paste,
   pcb.pcb_board,
+  pcb.pcb_group,
   pcb.pcb_trace_hint,
   pcb.pcb_silkscreen_line,
   pcb.pcb_silkscreen_path,
