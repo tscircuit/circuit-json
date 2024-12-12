@@ -38,4 +38,4 @@ export interface PcbGroup {
  */
 export type PCBGroup = PcbGroup
 
-expectTypesMatch<PcbGroup, InferredPcbGroup>(true) 
+expectTypesMatch<PcbGroup, InferredPcbGroup>(true)
