@@ -5,9 +5,7 @@ import * as src from "./source"
 import * as cad from "./cad"
 
 export const any_circuit_element = z.union([
-  // TODO source_group
   // TODO source_config
-  // TODO pcb_group
   // TODO pcb_config
   // TODO schematic_config
   // TODO schematic_group
@@ -29,6 +27,7 @@ export const any_circuit_element = z.union([
   src.source_simple_potentiometer,
   src.source_simple_push_button,
   pcb.pcb_component,
+  pcb.pcb_group,
   pcb.pcb_hole,
   pcb.pcb_missing_footprint_error,
   pcb.pcb_plated_hole,

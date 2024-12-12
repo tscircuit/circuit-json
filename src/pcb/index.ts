@@ -27,8 +27,8 @@ export * from "./pcb_fabrication_note_text"
 export * from "./pcb_fabrication_note_path"
 export * from "./pcb_keepout"
 export * from "./pcb_missing_footprint_error"
+export * from "./pcb_group"
 
-// Define PcbCircuitElement which is a union of all the Pcb* elements
 import type { PcbComponent } from "./pcb_component"
 import type { PcbHole } from "./pcb_hole"
 import type { PcbPlatedHole } from "./pcb_plated_hole"
@@ -49,9 +49,11 @@ import type { PcbSilkscreenPath } from "./pcb_silkscreen_path"
 import type { PcbSilkscreenText } from "./pcb_silkscreen_text"
 import type { PcbSilkscreenRect } from "./pcb_silkscreen_rect"
 import type { PcbSilkscreenCircle } from "./pcb_silkscreen_circle"
+import type { PcbGroup } from "./pcb_group"
 
 export type PcbCircuitElement =
   | PcbComponent
+  | PcbGroup
   | PcbHole
   | PcbPlatedHole
   | PcbPort
