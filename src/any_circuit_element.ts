@@ -82,3 +82,9 @@ export type AnySoupElement = AnyCircuitElement
  * @deprecated use AnyCircuitElementInput instead
  */
 export type AnySoupElementInput = AnyCircuitElementInput
+
+/**
+ * Type representing a complete Circuit JSON document, which is an array of circuit elements.
+ * This is the primary type used when working with circuit-json files or API responses.
+ */
+export type CircuitJson = AnyCircuitElement[]
