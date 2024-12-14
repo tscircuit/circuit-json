@@ -37,12 +37,15 @@ and is the primary way that Circuit JSON is defined and maintained.
 <!-- toc:start -->
 
 - [Circuit JSON Specification `circuit-json`](#circuit-json-specification-circuit-json)
+
   - [Things You Can Do With Circuit JSON](#things-you-can-do-with-circuit-json)
-  - [Table of Contents](#table-of-contents)
   - [Typescript Usage](#typescript-usage)
+
   - [Source Components](#source-components)
     - [SourceComponentBase](#sourcecomponentbase)
+    - [SourceGroup](#sourcegroup)
     - [SourceLed](#sourceled)
+    - [SourceNet](#sourcenet)
     - [SourcePort](#sourceport)
     - [SourceSimpleBattery](#sourcesimplebattery)
     - [SourceSimpleCapacitor](#sourcesimplecapacitor)
@@ -51,41 +54,41 @@ and is the primary way that Circuit JSON is defined and maintained.
     - [SourceSimpleDiode](#sourcesimplediode)
     - [SourceSimpleGround](#sourcesimpleground)
     - [SourceSimpleInductor](#sourcesimpleinductor)
+    - [SourceSimplePinHeader](#sourcesimplepinheader)
+    - [SourceSimplePotentiometer](#sourcesimplepotentiometer)
     - [SourceSimplePowerSource](#sourcesimplepowersource)
     - [SourceSimplePushButton](#sourcesimplepushbutton)
     - [SourceSimpleResistor](#sourcesimpleresistor)
     - [SourceTrace](#sourcetrace)
   - [PCB Elements](#pcb-elements)
-    - [PcbBoard](#pcbboard)
-    - [PcbComponent](#pcbcomponent)
-    - [PcbFabricationNotePath](#pcbfabricationnotepath)
-    - [PcbFabricationNoteText](#pcbfabricationnotetext)
-    - [PcbMissingFootprintError](#pcbmissingfootprinterror)
-    - [PcbPlacementError](#pcbplacementerror)
-    - [PcbPort](#pcbport)
-    - [PcbPortNotMatchedError](#pcbportnotmatchederror)
-    - [PcbSilkscreenCircle](#pcbsilkscreencircle)
-    - [PcbSilkscreenLine](#pcbsilkscreenline)
-    - [PcbSilkscreenOval](#pcbsilkscreenoval)
-    - [PcbSilkscreenPath](#pcbsilkscreenpath)
-    - [PcbSilkscreenPill](#pcbsilkscreenpill)
-    - [PcbSilkscreenRect](#pcbsilkscreenrect)
-    - [PcbSilkscreenText](#pcbsilkscreentext)
-    - [PcbText](#pcbtext)
-    - [PcbTrace](#pcbtrace)
-    - [PcbTraceError](#pcbtraceerror)
-    - [PcbTraceHint](#pcbtracehint)
-    - [PcbVia](#pcbvia)
-  - [Schematic Elements](#schematic-elements)
-    - [SchematicBox](#schematicbox)
-    - [SchematicComponent](#schematiccomponent)
-    - [SchematicError](#schematicerror)
-    - [SchematicLine](#schematicline)
-    - [SchematicPath](#schematicpath)
-    - [SchematicPort](#schematicport)
-    - [SchematicText](#schematictext)
-    - [SchematicTrace](#schematictrace)
-    - [SchematicVoltageProbe](#schematicvoltageprobe)
+  - [PcbBoard](#pcbboard)
+  - [PcbComponent](#pcbcomponent)
+  - [PcbFabricationNotePath](#pcbfabricationnotepath)
+  - [PcbFabricationNoteText](#pcbfabricationnotetext)
+  - [PcbGroup](#pcbgroup)
+  - [PcbHole](#pcbhole)
+  - [PcbManualEditConflictError](#pcbmanualeditconflicterror)
+  - [PcbMissingFootprintError](#pcbmissingfootprinterror)
+  - [PcbPlacementError](#pcbplacementerror)
+  - [PcbPlatedHole](#pcbplatedhole)
+  - [PcbPort](#pcbport)
+  - [PcbPortNotMatchedError](#pcbportnotmatchederror)
+  - [PcbRouteHints](#pcbroutehints)
+  - [PcbSilkscreenCircle](#pcbsilkscreencircle)
+  - [PcbSilkscreenLine](#pcbsilkscreenline)
+  - [PcbSilkscreenOval](#pcbsilkscreenoval)
+  - [PcbSilkscreenPath](#pcbsilkscreenpath)
+  - [PcbSilkscreenPill](#pcbsilkscreenpill)
+  - [PcbSilkscreenRect](#pcbsilkscreenrect)
+  - [PcbSilkscreenText](#pcbsilkscreentext)
+  - [PcbSolderPaste](#pcbsolderpaste)
+  - [PcbText](#pcbtext)
+  - [PcbTrace](#pcbtrace)
+  - [PcbTraceError](#pcbtraceerror)
+  - [PcbTraceHint](#pcbtracehint)
+  - [PcbVia](#pcbvia)
+  - [Schematic Elements](#schematic-elements) - [SchematicBox](#schematicbox) - [SchematicComponent](#schematiccomponent) - [SchematicDebugObject](#schematicdebugobject) - [SchematicError](#schematicerror) - [SchematicLine](#schematicline) - [SchematicNetLabel](#schematicnetlabel) - [SchematicPath](#schematicpath) - [SchematicPort](#schematicport) - [SchematicText](#schematictext) - [SchematicTrace](#schematictrace) - [SchematicVoltageProbe](#schematicvoltageprobe)
+  <!-- toc:end -->
 
 ## Typescript Usage
 
@@ -173,172 +176,155 @@ export interface SourceComponentBase {
 }
 ```
 
-### SourceLed
-
-- Defines an LED component that extends the simple diode
+### SourceGroup
 
 ```typescript
-/**
- * Defines an LED component that extends the simple diode
- */
-export interface SourceLed extends SourceComponentBase {
-  ftype: "led"
-}
+export type SourceGroup = z.infer<typeof source_group>
+e
+```
+
+### SourceLed
+
+```typescript
+export type SourceLedInput = z.input<typeof source_led>
+t
+
+export type SourceLedInput = z.input<typeof source_led>
+t
+```
+
+### SourceNet
+
+```typescript
+export type SourceNet = z.infer<typeof source_net>
+e
 ```
 
 ### SourcePort
 
-- Defines a source port that can be connected to other components
-
 ```typescript
-/**
- * Defines a source port that can be connected to other components
- */
-export interface SourcePort {
-  type: "source_port"
-  pin_number?: number
-  port_hints?: string[]
-  name: string
-  source_port_id: string
-  source_component_id: string
-}
+export type SourcePortInput = z.input<typeof source_port>
+t
+
+export type SourcePortInput = z.input<typeof source_port>
+t
 ```
 
 ### SourceSimpleBattery
 
-- Defines a simple battery component
-
 ```typescript
-/**
- * Defines a simple battery component
- */
-export interface SourceSimpleBattery extends SourceComponentBase {
-  ftype: "simple_battery"
-  capacity: number
-}
+export type SourceSimpleBatteryInput = z.input<typeof source_simple_battery>
+t
+
+export type SourceSimpleBatteryInput = z.input<typeof source_simple_battery>
+t
 ```
 
 ### SourceSimpleCapacitor
 
-- Defines a simple capacitor component
-
 ```typescript
-/**
- * Defines a simple capacitor component
- */
-export interface SourceSimpleCapacitor extends SourceComponentBase {
-  ftype: "simple_capacitor"
-  capacitance: number
-}
+export type SourceSimpleCapacitorInput = z.input<typeof source_simple_capacitor>
+t
+
+export type SourceSimpleCapacitorInput = z.input<typeof source_simple_capacitor>
+t
 ```
 
 ### SourceSimpleChip
 
-- Defines a simple integrated circuit component
-
 ```typescript
-/**
- * Defines a simple integrated circuit component
- */
-export interface SourceSimpleChip extends SourceComponentBase {
-  ftype: "simple_chip"
-}
+export type SourceSimpleChipInput = z.input<typeof source_simple_chip>
+t
+
+export type SourceSimpleChipInput = z.input<typeof source_simple_chip>
+t
 ```
 
 ### SourceSimpleCrystal
 
-- Defines a simple crystal oscillator component
-
 ```typescript
-/**
- * Defines a simple crystal oscillator component
- */
-export interface SourceSimpleCrystal extends SourceComponentBase {
-  ftype: "simple_crystal"
-  frequency: number
-  load_capacitance?: number
-}
+export type SourceSimpleCrystalInput = z.input<typeof source_simple_crystal>
+t
+
+export type SourceSimpleCrystalInput = z.input<typeof source_simple_crystal>
+t
 ```
 
 ### SourceSimpleDiode
 
-- Defines a simple diode component
-
 ```typescript
-/**
- * Defines a simple diode component
- */
-export interface SourceSimpleDiode extends SourceComponentBase {
-  ftype: "simple_diode"
-}
+export type SourceSimpleDiodeInput = z.input<typeof source_simple_diode>
+t
+
+export type SourceSimpleDiodeInput = z.input<typeof source_simple_diode>
+t
 ```
 
 ### SourceSimpleGround
 
-- Defines a simple ground component
-
 ```typescript
-/**
- * Defines a simple ground component
- */
-export interface SourceSimpleGround extends SourceComponentBase {
-  ftype: "simple_ground"
-}
+export type SourceSimpleGroundInput = z.input<typeof source_simple_ground>
+t
+
+export type SourceSimpleGroundInput = z.input<typeof source_simple_ground>
+t
 ```
 
 ### SourceSimpleInductor
 
-- Defines a simple inductor component
+```typescript
+export type SourceSimpleInductorInput = z.input<typeof source_simple_inductor>
+t
+
+export type SourceSimpleInductorInput = z.input<typeof source_simple_inductor>
+t
+```
+
+### SourceSimplePinHeader
 
 ```typescript
-/**
- * Defines a simple inductor component
- */
-export interface SourceSimpleInductor extends SourceComponentBase {
-  ftype: "simple_inductor"
-  inductance: number
-}
+export type SourceSimplePinHeader = z.infer<typeof source_simple_pin_header>
+e
+```
+
+### SourceSimplePotentiometer
+
+```typescript
+export type SourceSimplePotentiometer = z.infer<
+
+
+export type SourceSimplePotentiometerInput = z.input<
+
 ```
 
 ### SourceSimplePowerSource
 
-- Defines a simple power source component
-
 ```typescript
-/**
- * Defines a simple power source component
- */
-export interface SourceSimplePowerSource extends SourceComponentBase {
-  ftype: "simple_power_source"
-  voltage: number
-}
+export type SourceSimplePowerSourceInput = z.input<
+
+
+export type SourceSimplePowerSourceInput = z.input<
+
 ```
 
 ### SourceSimplePushButton
 
-- Defines a simple push button component
-
 ```typescript
-/**
- * Defines a simple push button component
- */
-export interface SourceSimplePushButton extends SourceComponentBase {
-  ftype: "simple_push_button"
-}
+export type SourceSimplePushButtonInput = z.input<
+
+
+export type SourceSimplePushButtonInput = z.input<
+
 ```
 
 ### SourceSimpleResistor
 
-- Defines a simple resistor component
-
 ```typescript
-/**
- * Defines a simple resistor component
- */
-export interface SourceSimpleResistor extends SourceComponentBase {
-  ftype: "simple_resistor"
-  resistance: number
-}
+export type SourceSimpleResistorInput = z.input<typeof source_simple_resistor>
+t
+
+export type SourceSimpleResistorInput = z.input<typeof source_simple_resistor>
+t
 ```
 
 ### SourceTrace
@@ -373,364 +359,374 @@ export interface PcbBoard {
   center: Point
   outline?: Point[]
 }
+
+export type PcbBoardInput = z.input<typeof pcb_board>
+t
 ```
 
 ### PcbComponent
 
-- Defines a component on the PCB
-
 ```typescript
-/**
- * Defines a component on the PCB
- */
-export interface PcbComponent {
-  type: "pcb_component"
-  pcb_component_id: string
-  source_component_id: string
-  center: Point
-  layer: LayerRef
-  rotation: Rotation
-  width: Length
-  height: Length
-}
+export type PcbComponentInput = z.input<typeof pcb_component>
+t
+
+export type PcbComponentInput = z.input<typeof pcb_component>
+t
 ```
 
 ### PcbFabricationNotePath
 
-- Defines a fabrication path on the PCB for fabricators or assemblers
-
 ```typescript
-/**
- * Defines a fabrication path on the PCB for fabricators or assemblers
- */
-export interface PcbFabricationNotePath {
-  type: "pcb_fabrication_note_path"
-  pcb_fabrication_note_path_id: string
-  pcb_component_id: string
-  layer: LayerRef
-  route: Point[]
-  stroke_width: Length
-  color?: string
-}
+export type PcbFabricationNotePathInput = z.input<
+
+
+export type PcbFabricationNotePathInput = z.input<
+
 ```
 
 ### PcbFabricationNoteText
 
-- Defines a fabrication note in text on the PCB, useful for leaving notes for assemblers or fabricators
-
 ```typescript
-/**
- * Defines a fabrication note in text on the PCB, useful for leaving notes for assemblers or fabricators
- */
-export interface PcbFabricationNoteText {
-  type: "pcb_fabrication_note_text"
-  pcb_fabrication_note_text_id: string
-  font: "tscircuit2024"
-  font_size: Length
-  pcb_component_id: string
-  text: string
-  layer: VisibleLayer
-  anchor_position: Point
-  anchor_alignment:
-    | "center"
-    | "top_left"
-    | "top_right"
-    | "bottom_left"
-    | "bottom_right"
-  color?: string
-}
+export type PcbFabricationNoteTextInput = z.input<
+
+
+export type PcbFabricationNoteTextInput = z.input<
+
 ```
 
 ### PcbGroup
 
-- Defines a group of components on the PCB
+```typescript
+export type PcbGroupInput = z.input<typeof pcb_group>
+t
+
+export type PcbGroupInput = z.input<typeof pcb_group>
+t
+```
+
+### PcbHole
 
 ```typescript
+export type PcbHoleCircleOrSquareInput = z.input<
+
+
+export type PcbHoleCircleOrSquareInput = z.input<
+
+
 /**
- * Defines a group of components on the PCB
+ * Defines a circular or square hole on the PCB
  */
-export interface PcbGroup {
-  type: "pcb_group"
-  pcb_group_id: string
-  width: Length
-  height: Length
-  center: Point
-  pcb_component_ids: string[]
-  name?: string
-  description?: string
+export interface PcbHoleCircleOrSquare {
+  type: "pcb_hole"
+  pcb_hole_id: string
+  hole_shape: "circle" | "square"
+  hole_diameter: number
+  x: Distance
+  y: Distance
 }
+
+export type PcbHoleOvalInput = z.input<typeof pcb_hole_oval>
+t
+
+/**
+ * Defines an oval hole on the PCB
+ */
+export interface PcbHoleOval {
+  type: "pcb_hole"
+  pcb_hole_id: string
+  hole_shape: "oval"
+  hole_width: number
+  hole_height: number
+  x: Distance
+  y: Distance
+}
+
+/**
+ * @deprecated Use PcbHoleCircleOrSquare or PcbHoleOval
+ */
+export type PCBHoleInput = z.input<typeof pcb_hole>
+/
+
+export type PCBHole = z.infer<typeof pcb_hole>
+
 ```
 
 ### PcbManualEditConflictError
 
-- Error emitted when a component has both manual placement (via manualEdits) and explicit pcbX/pcbY coordinates
-
 ```typescript
-/**
- * Error emitted when a component has both manual placement (via manualEdits) and explicit pcbX/pcbY coordinates
- */
-export interface PcbManualEditConflictError {
-  type: "pcb_manual_edit_conflict_error"
-  pcb_error_id: string
-  message: string
-  pcb_component_id: string
-  source_component_id: string
-}
+export type PcbManualEditConflictErrorInput = z.input<
+
+
+export type PcbManualEditConflictErrorInput = z.input<
+
 ```
 
 ### PcbMissingFootprintError
 
-- Defines a placement error on the PCB
-
 ```typescript
-/**
- * Defines a placement error on the PCB
- */
-export interface PcbMissingFootprintError {
-  type: "pcb_missing_footprint_error"
-  pcb_missing_footprint_error_id: string
-  error_type: "pcb_missing_footprint_error"
-  source_component_id: string
-  message: string
-}
+export type PcbMissingFootprintErrorInput = z.input<
+
+
+export type PcbMissingFootprintErrorInput = z.input<
+
 ```
 
 ### PcbPlacementError
 
-- Defines a placement error on the PCB
+```typescript
+export type PcbPlacementErrorInput = z.input<typeof pcb_placement_error>
+t
+
+export type PcbPlacementErrorInput = z.input<typeof pcb_placement_error>
+t
+```
+
+### PcbPlatedHole
+
+- Defines a circular plated hole on the PCB
 
 ```typescript
 /**
- * Defines a placement error on the PCB
+ * Defines a circular plated hole on the PCB
  */
-export interface PcbPlacementError {
-  type: "pcb_placement_error"
-  pcb_placement_error_id: string
-  message: string
+export interface PcbPlatedHoleCircle {
+  type: "pcb_plated_hole"
+  shape: "circle"
+  outer_diameter: number
+  hole_diameter: number
+  x: Distance
+  y: Distance
+  layers: LayerRef[]
+  port_hints?: string[]
+  pcb_component_id?: string
+  pcb_port_id?: string
+  pcb_plated_hole_id: string
 }
+
+/**
+ * Defines a circular plated hole on the PCB
+ */
+export interface PcbPlatedHoleCircle {
+  type: "pcb_plated_hole"
+  shape: "circle"
+  outer_diameter: number
+  hole_diameter: number
+  x: Distance
+  y: Distance
+  layers: LayerRef[]
+  port_hints?: string[]
+  pcb_component_id?: string
+  pcb_port_id?: string
+  pcb_plated_hole_id: string
+}
+
+/**
+ * Defines an oval or pill-shaped plated hole on the PCB
+ */
+export interface PcbPlatedHoleOval {
+  type: "pcb_plated_hole"
+  shape: "oval" | "pill"
+  outer_width: number
+  outer_height: number
+  hole_width: number
+  hole_height: number
+  x: Distance
+  y: Distance
+  layers: LayerRef[]
+  port_hints?: string[]
+  pcb_component_id?: string
+  pcb_port_id?: string
+  pcb_plated_hole_id: string
+}
+
+/**
+ * @deprecated use PcbPlatedHoleInput
+ */
+export type PCBPlatedHoleInput = z.input<typeof pcb_plated_hole>
+e
 ```
 
 ### PcbPort
 
-- Defines a port on the PCB
-
 ```typescript
+export type PcbPortInput = z.input<typeof pcb_port>
+t
+
+export type PcbPortInput = z.input<typeof pcb_port>
+t
+
 /**
- * Defines a port on the PCB
+ * @deprecated use PcbPortInput
  */
-export interface PcbPort {
-  type: "pcb_port"
-  pcb_port_id: string
-  source_port_id: string
-  pcb_component_id: string
-  x: Distance
-  y: Distance
-  layers: LayerRef[]
-}
+export type PCBPortInput = PcbPortInput
 ```
 
 ### PcbPortNotMatchedError
 
-- Defines a trace error on the PCB where a port is not matched
+```typescript
+export type PcbPortNotMatchedErrorInput = z.input<
+
+
+export type PcbPortNotMatchedErrorInput = z.input<
+
+```
+
+### PcbRouteHints
 
 ```typescript
-/**
- * Defines a trace error on the PCB where a port is not matched
- */
-export interface PcbPortNotMatchedError {
-  type: "pcb_port_not_matched_error"
-  pcb_error_id: string
-  message: string
-  pcb_component_ids: string[]
-}
+export type PcbRouteHintsInput = z.input<typeof pcb_route_hints>
+e
+
+export type PcbRouteHintInput = z.input<typeof pcb_route_hint>
+e
+
+export type PcbRouteHint = z.output<typeof pcb_route_hint>
+e
 ```
 
 ### PcbSilkscreenCircle
 
-- Defines a silkscreen circle on the PCB
-
 ```typescript
-/**
- * Defines a silkscreen circle on the PCB
- */
-export interface PcbSilkscreenCircle {
-  type: "pcb_silkscreen_circle"
-  pcb_silkscreen_circle_id: string
-  pcb_component_id: string
-  center: Point
-  radius: Length
-  layer: VisibleLayer
-}
+export type PcbSilkscreenCircleInput = z.input<typeof pcb_silkscreen_circle>
+t
+
+export type PcbSilkscreenCircleInput = z.input<typeof pcb_silkscreen_circle>
+t
 ```
 
 ### PcbSilkscreenLine
 
-- Defines a silkscreen line on the PCB
-
 ```typescript
-/**
- * Defines a silkscreen line on the PCB
- */
-export interface PcbSilkscreenLine {
-  type: "pcb_silkscreen_line"
-  pcb_silkscreen_line_id: string
-  pcb_component_id: string
-  stroke_width: Distance
-  x1: Distance
-  y1: Distance
-  x2: Distance
-  y2: Distance
-  layer: VisibleLayer
-}
+export type PcbSilkscreenLineInput = z.input<typeof pcb_silkscreen_line>
+t
+
+export type PcbSilkscreenLineInput = z.input<typeof pcb_silkscreen_line>
+t
 ```
 
 ### PcbSilkscreenOval
 
-- Defines a silkscreen oval on the PCB
-
 ```typescript
-/**
- * Defines a silkscreen oval on the PCB
- */
-export interface PcbSilkscreenOval {
-  type: "pcb_silkscreen_oval"
-  pcb_silkscreen_oval_id: string
-  pcb_component_id: string
-  center: Point
-  radius_x: Distance
-  radius_y: Distance
-  layer: VisibleLayer
-}
+export type PcbSilkscreenOvalInput = z.input<typeof pcb_silkscreen_oval>
+t
+
+export type PcbSilkscreenOvalInput = z.input<typeof pcb_silkscreen_oval>
+t
 ```
 
 ### PcbSilkscreenPath
 
-- Defines a silkscreen path on the PCB
-
 ```typescript
-/**
- * Defines a silkscreen path on the PCB
- */
-export interface PcbSilkscreenPath {
-  type: "pcb_silkscreen_path"
-  pcb_silkscreen_path_id: string
-  pcb_component_id: string
-  layer: VisibleLayerRef
-  route: Point[]
-  stroke_width: Length
-}
+export type PcbSilkscreenPathInput = z.input<typeof pcb_silkscreen_path>
+t
+
+export type PcbSilkscreenPathInput = z.input<typeof pcb_silkscreen_path>
+t
 ```
 
 ### PcbSilkscreenPill
 
-- Defines a silkscreen pill on the PCB
-
 ```typescript
-/**
- * Defines a silkscreen pill on the PCB
- */
-export interface PcbSilkscreenPill {
-  type: "pcb_silkscreen_pill"
-  pcb_silkscreen_pill_id: string
-  pcb_component_id: string
-  center: Point
-  width: Length
-  height: Length
-  layer: LayerRef
-}
+export type PcbSilkscreenPillInput = z.input<typeof pcb_silkscreen_pill>
+t
+
+export type PcbSilkscreenPillInput = z.input<typeof pcb_silkscreen_pill>
+t
 ```
 
 ### PcbSilkscreenRect
 
-- Defines a silkscreen rect on the PCB
-
 ```typescript
-/**
- * Defines a silkscreen rect on the PCB
- */
-export interface PcbSilkscreenRect {
-  type: "pcb_silkscreen_rect"
-  pcb_silkscreen_rect_id: string
-  pcb_component_id: string
-  center: Point
-  width: Length
-  height: Length
-  layer: LayerRef
-}
+export type PcbSilkscreenRectInput = z.input<typeof pcb_silkscreen_rect>
+t
+
+export type PcbSilkscreenRectInput = z.input<typeof pcb_silkscreen_rect>
+t
 ```
 
 ### PcbSilkscreenText
 
-- Defines silkscreen text on the PCB
+```typescript
+export type PcbSilkscreenTextInput = z.input<typeof pcb_silkscreen_text>
+t
+
+export type PcbSilkscreenTextInput = z.input<typeof pcb_silkscreen_text>
+t
+```
+
+### PcbSolderPaste
+
+- Defines solderpaste on the PCB
 
 ```typescript
 /**
- * Defines silkscreen text on the PCB
+ * Defines solderpaste on the PCB
  */
-export interface PcbSilkscreenText {
-  type: "pcb_silkscreen_text"
-  pcb_silkscreen_text_id: string
-  font: "tscircuit2024"
-  font_size: Length
-  pcb_component_id: string
-  text: string
+export interface PcbSolderPasteCircle {
+  type: "pcb_solder_paste"
+  shape: "circle"
+  pcb_solder_paste_id: string
+  x: Distance
+  y: Distance
+  radius: number
   layer: LayerRef
-  is_mirrored?: boolean
-  anchor_position: Point
-  anchor_alignment:
-    | "center"
-    | "top_left"
-    | "top_right"
-    | "bottom_left"
-    | "bottom_right"
+  pcb_component_id?: string
+  pcb_smtpad_id?: string
+}
+
+export type PCBSolderPasteInput = z.input<typeof pcb_solder_paste>
+t
+
+/**
+ * Defines solderpaste on the PCB
+ */
+export interface PcbSolderPasteCircle {
+  type: "pcb_solder_paste"
+  shape: "circle"
+  pcb_solder_paste_id: string
+  x: Distance
+  y: Distance
+  radius: number
+  layer: LayerRef
+  pcb_component_id?: string
+  pcb_smtpad_id?: string
+}
+
+/**
+ * Defines solderpaste on the PCB
+ */
+export interface PcbSolderPasteRect {
+  type: "pcb_solder_paste"
+  shape: "rect"
+  pcb_solder_paste_id: string
+  x: Distance
+  y: Distance
+  width: number
+  height: number
+  layer: LayerRef
+  pcb_component_id?: string
+  pcb_smtpad_id?: string
 }
 ```
 
 ### PcbText
 
-- Defines text on the PCB
-
 ```typescript
-/**
- * Defines text on the PCB
- */
-export interface PcbText {
-  type: "pcb_text"
-  pcb_text_id: string
-  text: string
-  center: Point
-  layer: LayerRef
-  width: Length
-  height: Length
-  lines: number
-  align: "bottom-left"
-}
+export type PcbTextInput = z.input<typeof pcb_text>
+t
+
+export type PcbTextInput = z.input<typeof pcb_text>
+t
 ```
 
 ### PcbTrace
 
-- Defines a trace on the PCB
-
 ```typescript
-/**
- * Defines a trace on the PCB
- */
-export interface PcbTrace {
-  type: "pcb_trace"
-  source_trace_id?: string
-  pcb_component_id?: string
-  pcb_trace_id: string
-  /**
-   * The order that this trace was routed in. This can be used to debug the
-   * autorouter and to understand the trace path better
-   *
-   * The route_order_index should be relative to a subcircuit
-   */
-  route_order_index?: number
-  route_thickness_mode?: "constant" | "interpolated"
-  should_round_corners?: boolean
-  route: Array<PcbTraceRoutePoint>
-}
+export type PcbTraceInput = z.input<typeof pcb_trace>
+t
+
+export type PcbTraceInput = z.input<typeof pcb_trace>
+t
 
 export interface PcbTraceRoutePointWire {
   route_type: "wire"
@@ -749,27 +745,23 @@ export interface PcbTraceRoutePointVia {
   from_layer: string
   to_layer: string
 }
+
+export type PcbTraceRoutePoint = PcbTraceRoutePointWire | PcbTraceRoutePointVia
+
+/**
+ * @deprecated use PcbTraceInput
+ */
+export type PCBTraceInput = PcbTraceInput
 ```
 
 ### PcbTraceError
 
-- Defines a trace error on the PCB
-
 ```typescript
-/**
- * Defines a trace error on the PCB
- */
-export interface PcbTraceError {
-  type: "pcb_trace_error"
-  pcb_trace_error_id: string
-  error_type: "pcb_trace_error"
-  message: string
-  center?: Point
-  pcb_trace_id: string
-  source_trace_id: string
-  pcb_component_ids: string[]
-  pcb_port_ids: string[]
-}
+export type PcbTraceErrorInput = z.input<typeof pcb_trace_error>
+t
+
+export type PcbTraceErrorInput = z.input<typeof pcb_trace_error>
+t
 ```
 
 ### PcbTraceHint
@@ -787,6 +779,9 @@ export interface PcbTraceHint {
   pcb_component_id: string
   route: RouteHintPoint[]
 }
+
+export type PcbTraceHintInput = z.input<typeof pcb_trace_hint>
+t
 ```
 
 ### PcbVia
@@ -838,6 +833,9 @@ export interface SchematicBox {
   x: number
   y: number
 }
+
+export type SchematicBoxInput = z.input<typeof schematic_box>
+t
 ```
 
 ### SchematicComponent
@@ -883,6 +881,42 @@ export interface SchematicPortArrangementBySides {
     direction?: "left-to-right" | "right-to-left"
   }
 }
+
+export type SchematicPortArrangement =
+
+
+export type SchematicComponentInput = z.input<typeof schematic_component>
+t
+```
+
+### SchematicDebugObject
+
+```typescript
+export type SchematicDebugObject =
+
+
+export interface SchematicDebugRect {
+  type: "schematic_debug_object"
+  label?: string
+  shape: "rect"
+  center: Point
+  size: Size
+}
+
+export interface SchematicDebugLine {
+  type: "schematic_debug_object"
+  label?: string
+  shape: "line"
+  start: Point
+  end: Point
+}
+
+export interface SchematicDebugPoint {
+  type: "schematic_debug_object"
+  label?: string
+  shape: "point"
+  center: Point
+}
 ```
 
 ### SchematicError
@@ -894,6 +928,9 @@ export interface SchematicError {
   error_type: "schematic_port_not_found"
   message: string
 }
+
+export type SchematicErrorInput = z.input<typeof schematic_error>
+t
 ```
 
 ### SchematicLine
@@ -912,6 +949,19 @@ export interface SchematicLine {
   y1: number
   y2: number
 }
+
+export type SchematicLineInput = z.input<typeof schematic_line>
+t
+```
+
+### SchematicNetLabel
+
+```typescript
+export type SchematicNetLabelInput = z.input<typeof schematic_net_label>
+e
+
+export type SchematicNetLabelInput = z.input<typeof schematic_net_label>
+e
 ```
 
 ### SchematicPath
@@ -924,6 +974,9 @@ export interface SchematicPath {
   is_filled?: boolean
   points: Point[]
 }
+
+export type SchematicPathInput = z.input<typeof schematic_path>
+t
 ```
 
 ### SchematicPort
@@ -942,6 +995,9 @@ export interface SchematicPort {
   pin_number?: number
   display_pin_label?: string
 }
+
+export type SchematicPortInput = z.input<typeof schematic_port>
+t
 ```
 
 ### SchematicText
@@ -960,20 +1016,26 @@ export interface SchematicText {
   anchor: "center" | "left" | "right" | "top" | "bottom"
   color: string
 }
+
+export type SchematicTextInput = z.input<typeof schematic_text>
+t
 ```
 
 ### SchematicTrace
 
 ```typescript
-export interface SchematicTrace {
-  type: "schematic_trace"
-  schematic_trace_id: string
-  source_trace_id: string
-  junctions: {
+export interface SchematicTraceEdge {
+  from: {
     x: number
     y: number
-  }[]
-  edges: SchematicTraceEdge[]
+  }
+  to: {
+    x: number
+    y: number
+  }
+  is_crossing?: boolean
+  from_schematic_port_id?: string
+  to_schematic_port_id?: string
 }
 
 export interface SchematicTraceEdge {
@@ -989,6 +1051,9 @@ export interface SchematicTraceEdge {
   from_schematic_port_id?: string
   to_schematic_port_id?: string
 }
+
+export type SchematicTraceInput = z.input<typeof schematic_trace>
+t
 ```
 
 ### SchematicVoltageProbe
@@ -1001,6 +1066,9 @@ export interface SchematicVoltageProbe {
   schematic_trace_id: string
   voltage?: number
 }
+
+export type SchematicVoltageProbeInput = z.input<typeof schematic_voltage_probe>
+t
 ```
 
 <!-- circuit-json-docs:end -->

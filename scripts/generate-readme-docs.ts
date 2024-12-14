@@ -23,13 +23,14 @@ async function generateDocs() {
 
   for (const file of sourceFiles) {
     const content = fs.readFileSync(file, "utf8")
-    const section = file.includes("/source/")
-      ? "source"
-      : file.includes("pcb_")
-        ? "pcb"
-        : file.includes("schematic_")
-          ? "schematic"
-          : "misc"
+    const section =
+      file.includes("\\source\\") || file.includes("/source/")
+        ? "source"
+        : file.includes("pcb_")
+          ? "pcb"
+          : file.includes("schematic_")
+            ? "schematic"
+            : "misc"
 
     // Convert filename to PascalCase to find primary interface
     const basename = path.basename(file, ".ts")
@@ -39,32 +40,32 @@ async function generateDocs() {
       .join("")
 
     // Find interface matching filename
-    const allInterfaces = content.match(
-      /(?:\/\*\*[\s\S]*?\*\/\s*)?export interface [\s\S]*?\n}/gm,
+    const allInterfacesAndTypes = content.match(
+      /(?:\/\*\*[\s\S]*?\*\/\s*)?export (?:interface|type) [^=]*?(?:{\s*[\s\S]*?\n}|\s*=[\s\S]*?(?:\n\n|\n[^\n]))/gm,
     )
-    const primaryInterface = content.match(
+    const primaryInterfaceOrType = content.match(
       new RegExp(
-        `(?:\\/\\*\\*[\\s\\S]*?\\*\\/\\s*)?export interface ${primaryName}\\s[\\s\\S]*?\n}`,
+        `(?:\\/\\*\\*[\\s\\S]*?\\*\\/\\s*)?export (?:interface|type) ${primaryName}[^=]*?(?:{\\s*[\\s\\S]*?\\n}|\\s*=[\\s\\S]*?(?:\\n\\n|\\n[^\\n]))`,
       ),
     )?.[0]
-    if (!primaryInterface) {
-      console.log(`No primary interface found for ${basename}`)
+    if (!primaryInterfaceOrType) {
+      console.log(`No primary interface or type found for ${basename}`)
       continue
     }
     // Remove the primary interface from the list
     const otherInterfaces =
-      allInterfaces?.filter(
+      allInterfacesAndTypes?.filter(
         (iface) => !iface.match(new RegExp(`${primaryName}\\s`)),
       ) ?? []
 
     // Get description if it exists
-    const descMatch = primaryInterface.match(/\/\*\*\s*(.*?)\s*\*\//)
+    const descMatch = primaryInterfaceOrType.match(/\/\*\*\s*(.*?)\s*\*\//)
     const description = descMatch ? descMatch[1]! : ""
 
     sections[section].push({
       name: primaryName,
       description,
-      interface: primaryInterface,
+      interface: primaryInterfaceOrType,
       otherInterfaces,
     })
   }
