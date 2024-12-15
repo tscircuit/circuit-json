@@ -10,10 +10,8 @@ interface ElementDoc {
 }
 
 async function generateDocs() {
-  // Get all source files
   const sourceFiles = await glob("src/{source,pcb,schematic}/**/*.ts")
 
-  // Read and parse each file to extract interfaces and types
   const sections = {
     source: [] as ElementDoc[],
     pcb: [] as ElementDoc[],
@@ -23,63 +21,114 @@ async function generateDocs() {
 
   for (const file of sourceFiles) {
     const content = fs.readFileSync(file, "utf8")
-    const section = file.includes("/source/")
-      ? "source"
-      : file.includes("pcb_")
-        ? "pcb"
-        : file.includes("schematic_")
-          ? "schematic"
-          : "misc"
+    const section =
+      file.includes("\\source\\") || file.includes("/source/")
+        ? "source"
+        : file.includes("pcb_")
+          ? "pcb"
+          : file.includes("schematic_")
+            ? "schematic"
+            : "misc"
 
-    // Convert filename to PascalCase to find primary interface
     const basename = path.basename(file, ".ts")
     const primaryName = basename
       .split("_")
       .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
       .join("")
 
-    // Find interface matching filename
-    const allInterfaces = content.match(
-      /(?:\/\*\*[\s\S]*?\*\/\s*)?export interface [\s\S]*?\n}/gm,
-    )
-    const primaryInterface = content.match(
-      new RegExp(
-        `(?:\\/\\*\\*[\\s\\S]*?\\*\\/\\s*)?export interface ${primaryName}\\s[\\s\\S]*?\n}`,
-      ),
-    )?.[0]
-    if (!primaryInterface) {
+    const exportBlocks =
+      content.match(
+        /\/\*\*[\s\S]*?\*\/\s*export\s+(interface|type)\s+[A-Z][^=]*?(?:{[\s\S]*?}|=[^;]*?;)|export\s+(interface|type)\s+[A-Z][^=]*?(?:{[\s\S]*?}|=[^;]*?;)/gm,
+      ) ?? []
+
+    const cleanBlocks = exportBlocks
+      .filter((block) => {
+        const isDeprecated = block.includes("@deprecated")
+        const isZodRelated =
+          block.includes("z.") ||
+          block.includes("Inferred") ||
+          block.includes("Input") ||
+          block.includes(".parse(")
+        return !isDeprecated && !isZodRelated
+      })
+      .map((block) => {
+        const cleaned = block
+          // Remove Zod-specific code
+          .replace(/z\.(input|infer|output)<[^>]*>/g, "")
+          .replace(/\.optional\(\)/g, "?")
+          .replace(/z\.[a-zA-Z]+\(/g, "")
+          .replace(/\)\./g, "")
+          .replace(/\)\)/g, ")")
+          // Format JSDoc comment
+          .replace(/\/\*\*\s*\n\s*\*\s*/g, "/** ")
+          .replace(/\n\s*\*\//g, " */")
+          // Clean up whitespace while preserving structure
+          .replace(/{\n\s*([^}]*)\n\s*}/g, (_, content) => {
+            const lines = content.trim().split("\n")
+            const formattedLines = lines.map(
+              (line: string) => `  ${line.trim()}`,
+            )
+            return `{\n${formattedLines.join("\n")}\n}`
+          })
+          // Clean up type definitions
+          .replace(/export\s+(interface|type)\s+/g, "$1 ")
+          .replace(/\s*=\s*{/g, " {")
+          .replace(/;\s*$/gm, "")
+          // Fix spacing around special characters
+          .replace(/\s*\|\s*/g, " | ")
+          .replace(/\s*:\s*/g, ": ")
+          .replace(/\s*,\s*\n/g, ",\n")
+
+        return cleaned
+      })
+
+    const primaryBlock = cleanBlocks.find((block) => {
+      const variations = [
+        primaryName,
+        primaryName.replace(/([A-Z])/g, "_$1").toLowerCase(),
+        basename
+          .split("_")
+          .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+          .join(""),
+      ]
+
+      return variations.some(
+        (variation) =>
+          block.includes(`interface ${variation}`) ||
+          block.includes(`type ${variation} =`),
+      )
+    })
+
+    if (!primaryBlock) {
       console.log(`No primary interface found for ${basename}`)
       continue
     }
-    // Remove the primary interface from the list
-    const otherInterfaces =
-      allInterfaces?.filter(
-        (iface) => !iface.match(new RegExp(`${primaryName}\\s`)),
-      ) ?? []
 
-    // Get description if it exists
-    const descMatch = primaryInterface.match(/\/\*\*\s*(.*?)\s*\*\//)
+    const descMatch = primaryBlock.match(/\/\*\*\s*(.*?)\s*\*\//)
     const description = descMatch ? descMatch[1]! : ""
+
+    const otherInterfaces = cleanBlocks.filter(
+      (block) =>
+        !block.includes(`interface ${primaryName}`) &&
+        !block.includes(`type ${primaryName} =`),
+    )
 
     sections[section].push({
       name: primaryName,
       description,
-      interface: primaryInterface,
+      interface: primaryBlock,
       otherInterfaces,
     })
   }
 
-  // Generate table of contents
   let toc = ""
 
-  // Static TOC sections
   toc +=
     "- [Circuit JSON Specification `circuit-json`](#circuit-json-specification-circuit-json)\n"
   toc +=
     "  - [Things You Can Do With Circuit JSON](#things-you-can-do-with-circuit-json)\n"
   toc += "  - [Typescript Usage](#typescript-usage)\n\n"
 
-  // Source Components TOC
   toc += "  - [Source Components](#source-components)\n"
   for (const elem of sections.source.sort((a, b) =>
     a.name.localeCompare(b.name),
@@ -87,15 +136,13 @@ async function generateDocs() {
     toc += `    - [${elem.name}](#${elem.name.toLowerCase()})\n`
   }
 
-  // PCB Elements TOC
   toc += "  - [PCB Elements](#pcb-elements)\n"
   for (const elem of sections.pcb.sort((a, b) =>
     a.name.localeCompare(b.name),
   )) {
-    toc += `   - [${elem.name}](#${elem.name.toLowerCase()})\n`
+    toc += `    - [${elem.name}](#${elem.name.toLowerCase()})\n`
   }
 
-  // Schematic Elements TOC
   toc += "  - [Schematic Elements](#schematic-elements)\n"
   for (const elem of sections.schematic.sort((a, b) =>
     a.name.localeCompare(b.name),
@@ -103,7 +150,6 @@ async function generateDocs() {
     toc += `    - [${elem.name}](#${elem.name.toLowerCase()})\n`
   }
 
-  // Generate sections with interface definitions
   let docs = ""
   docs += "## Source Components\n\n"
   for (const elem of sections.source.sort((a, b) =>
@@ -115,7 +161,9 @@ async function generateDocs() {
     }
     docs += "```typescript\n"
     docs += elem.interface
-    docs += elem.otherInterfaces.map((iface) => `\n\n${iface}`).join("")
+    if (elem.otherInterfaces.length > 0) {
+      docs += `\n\n${elem.otherInterfaces.join("\n\n")}`
+    }
     docs += "\n```\n\n"
   }
 
@@ -129,7 +177,9 @@ async function generateDocs() {
     }
     docs += "```typescript\n"
     docs += elem.interface
-    docs += elem.otherInterfaces.map((iface) => `\n\n${iface}`).join("")
+    if (elem.otherInterfaces.length > 0) {
+      docs += `\n\n${elem.otherInterfaces.join("\n\n")}`
+    }
     docs += "\n```\n\n"
   }
 
@@ -143,21 +193,20 @@ async function generateDocs() {
     }
     docs += "```typescript\n"
     docs += elem.interface
-    docs += elem.otherInterfaces.map((iface) => `\n\n${iface}`).join("")
+    if (elem.otherInterfaces.length > 0) {
+      docs += `\n\n${elem.otherInterfaces.join("\n\n")}`
+    }
     docs += "\n```\n\n"
   }
 
-  // Update README.md
   const readme = fs.readFileSync("README.md", "utf8")
 
-  // Replace content between toc tags
   const tocRegex = /<!-- toc:start -->[\s\S]*?<!-- toc:end -->/
   let newReadme = readme.replace(
     tocRegex,
     `<!-- toc:start -->\n${toc}<!-- toc:end -->`,
   )
 
-  // Replace content between circuit-json-docs tags
   const docsRegex =
     /<!-- circuit-json-docs:start -->[\s\S]*?<!-- circuit-json-docs:end -->/
   newReadme = newReadme.replace(
