@@ -28,6 +28,7 @@ const unitMappings: Record<
       mΩ: 1e-3,
       Ω: 1,
       kΩ: 1e3,
+      KΩ: 1e3,
       MΩ: 1e6,
       GΩ: 1e9,
       TΩ: 1e12,
