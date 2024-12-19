@@ -214,13 +214,11 @@ export const parseAndConvertSiUnit = <
 
   const numberPart = v.slice(0, -unit.length)
   if (
-    unit.toLowerCase() in si_prefix_multiplier &&
+    unit in si_prefix_multiplier &&
     !unitMappingAndVariantSuffixes.has(unit)
   ) {
     const siMultiplier =
-      si_prefix_multiplier[
-        unit.toLowerCase() as keyof typeof si_prefix_multiplier
-      ]
+      si_prefix_multiplier[unit as keyof typeof si_prefix_multiplier]
     return {
       parsedUnit: null,
       unitOfValue: null,
