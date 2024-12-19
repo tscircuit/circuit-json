@@ -28,6 +28,7 @@ const unitMappings: Record<
       mΩ: 1e-3,
       Ω: 1,
       kΩ: 1e3,
+      KΩ: 1e3,
       MΩ: 1e6,
       GΩ: 1e9,
       TΩ: 1e12,
@@ -213,11 +214,13 @@ export const parseAndConvertSiUnit = <
 
   const numberPart = v.slice(0, -unit.length)
   if (
-    unit in si_prefix_multiplier &&
+    unit.toLowerCase() in si_prefix_multiplier &&
     !unitMappingAndVariantSuffixes.has(unit)
   ) {
     const siMultiplier =
-      si_prefix_multiplier[unit as keyof typeof si_prefix_multiplier]
+      si_prefix_multiplier[
+        unit.toLowerCase() as keyof typeof si_prefix_multiplier
+      ]
     return {
       parsedUnit: null,
       unitOfValue: null,
