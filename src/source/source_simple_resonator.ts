@@ -6,7 +6,6 @@ export const source_simple_resonator = source_component_base.extend({
   frequency: z.union([z.string(), z.number()]),
   load_capacitance: z.union([z.string(), z.number()]),
   pin_count: z.number().default(3), // Set the default pin count to 3 for resonators
-  gender: z.enum(["male", "female"]).optional().default("male"),
 })
 
 export type SourceSimpleResonator = z.infer<typeof source_simple_resonator>
