@@ -40,6 +40,7 @@ const unitMappings: Record<
       mV: 1e-3,
       V: 1,
       kV: 1e3,
+      KV: 1e3,
       MV: 1e6,
       GV: 1e9,
       TV: 1e12,
