@@ -3,14 +3,14 @@ import {
   source_component_base,
   type SourceComponentBase,
 } from "src/source/base/source_component_base"
-import { frequency, capacitance } from "src/units"
+import { capacitance, resistance, frequency } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const source_simple_resonator = source_component_base.extend({
   ftype: z.literal("simple_resonator"),
-  frequency,
-  capacitance,
-  pin_count: z.number().default(3), // Set the default pin count to 3 for resonators
+  load_capacitance: capacitance,
+  equivalent_series_resistance: resistance.optional(),
+  frequency: frequency,
 })
 
 export type SourceSimpleResonatorInput = z.input<typeof source_simple_resonator>
@@ -21,9 +21,9 @@ type InferredSourceSimpleResonator = z.infer<typeof source_simple_resonator>
  */
 export interface SourceSimpleResonator extends SourceComponentBase {
   ftype: "simple_resonator"
+  load_capacitance: number
+  equivalent_series_resistance?: number
   frequency: number
-  capacitance: number
-  pin_count: number
 }
 
 expectTypesMatch<SourceSimpleResonator, InferredSourceSimpleResonator>(true)
