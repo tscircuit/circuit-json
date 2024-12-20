@@ -12,6 +12,7 @@ export const pcb_silkscreen_text = z
     font_size: distance.default("0.2mm"),
     pcb_component_id: z.string(),
     text: z.string(),
+    rotation: z.number().optional(),
     layer: layer_ref,
     is_mirrored: z.boolean().default(false).optional(),
     anchor_position: point.default({ x: 0, y: 0 }),
@@ -34,6 +35,7 @@ export interface PcbSilkscreenText {
   font_size: Length
   pcb_component_id: string
   text: string
+  rotation?: number
   layer: LayerRef
   is_mirrored?: boolean
   anchor_position: Point
