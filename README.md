@@ -650,6 +650,7 @@ interface PcbSilkscreenText {
   font_size: Length
   pcb_component_id: string
   text: string
+  ccw_rotation?: number
   layer: LayerRef
   is_mirrored?: boolean
   anchor_position: Point
