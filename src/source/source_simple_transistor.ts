@@ -9,11 +9,6 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 export const source_simple_transistor = source_component_base.extend({
   ftype: z.literal("simple_transistor"),
   transistorType: z.enum(["NPN", "PNP"]),
-  pinLabels: z.object({
-    emitter: z.string(),
-    base: z.string(),
-    collector: z.string(),
-  }),
   vce: voltage.optional(),
   vbe: voltage.optional(),
   ic: current.optional(),
@@ -26,12 +21,13 @@ type InferredSourceSimpleTransistor = z.infer<typeof source_simple_transistor>
 
 /**
  * Defines a simple transistor component
+ * This is a three-pin semiconductor device (emitter, base, collector)
+ * Pin configuration is handled by the schematic port system
  */
 
 export interface SourceSimpleTransistor extends SourceComponentBase {
   ftype: "simple_transistor"
   transistorType: "NPN" | "PNP"
-  pinLabels: Record<"emitter" | "base" | "collector", string>
   vce?: number
   vbe?: number
   ic?: number
