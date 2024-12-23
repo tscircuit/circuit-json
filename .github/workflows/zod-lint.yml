@@ -18,7 +18,7 @@ jobs:
           bun-version: latest
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: bun install
 
       - name: Run zod linting
         run: bun run scripts/zod-lint.ts
