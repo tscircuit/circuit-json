@@ -73,8 +73,8 @@ export interface PcbPlatedHoleOval {
 const pcb_plated_hole_square = z.object({
   type: z.literal("pcb_plated_hole"),
   shape: z.literal("square"),
-  outer_side_length: z.number(),  // Outer side length of the square
-  hole_side_length: z.number(),   // Inner hole side length
+  outer_side_length: z.number(),
+  hole_side_length: z.number(),
   x: distance,
   y: distance,
   layers: z.array(layer_ref),
@@ -103,14 +103,18 @@ export const pcb_plated_hole = z.union([
   pcb_plated_hole_oval,
   pcb_plated_hole_square,
 ])
-export type PcbPlatedHole = PcbPlatedHoleCircle | PcbPlatedHoleOval | PcbPlatedHoleSquare
+export type PcbPlatedHole =
+  | PcbPlatedHoleCircle
+  | PcbPlatedHoleOval
+  | PcbPlatedHoleSquare
 
 expectTypesMatch<PcbPlatedHoleCircle, z.infer<typeof pcb_plated_hole_circle>>(
   true,
 )
 expectTypesMatch<PcbPlatedHoleOval, z.infer<typeof pcb_plated_hole_oval>>(true)
-expectTypesMatch<PcbPlatedHoleSquare, z.infer<typeof pcb_plated_hole_square>>(true)
-
+expectTypesMatch<PcbPlatedHoleSquare, z.infer<typeof pcb_plated_hole_square>>(
+  true,
+)
 
 /**
  * @deprecated use PcbPlatedHole
