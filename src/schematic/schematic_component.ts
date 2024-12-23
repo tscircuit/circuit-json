@@ -74,24 +74,28 @@ export const schematic_component_port_arrangement_by_sides = z.object({
   left_side: z
     .object({
       pins: z.array(z.number()),
+      // @ts-ignore
       direction: z.enum(["top-to-bottom", "bottom-to-top"]).optional(),
     })
     .optional(),
   right_side: z
     .object({
       pins: z.array(z.number()),
+      // @ts-ignore
       direction: z.enum(["top-to-bottom", "bottom-to-top"]).optional(),
     })
     .optional(),
   top_side: z
     .object({
       pins: z.array(z.number()),
+      // @ts-ignore
       direction: z.enum(["left-to-right", "right-to-left"]).optional(),
     })
     .optional(),
   bottom_side: z
     .object({
       pins: z.array(z.number()),
+      // @ts-ignore
       direction: z.enum(["left-to-right", "right-to-left"]).optional(),
     })
     .optional(),

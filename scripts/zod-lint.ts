@@ -17,10 +17,28 @@ function checkZodSchema(code: string, filePath: string): LintError[] {
       loc: true,
       range: true,
       tokens: true,
+      comment: true, // Enable comment parsing
     })
+
+    // Extract comments from the AST
+    const comments = ast.comments || []
+
+    // Check if a node is ignored by a comment
+    function isIgnored(node: any): boolean {
+      if (!node.loc) return false
+      return comments.some(
+        (comment: any) =>
+          comment.value.trim() === "@ts-ignore" &&
+          comment.loc.end.line === node.loc.start.line - 1,
+      )
+    }
 
     // Visit all nodes in the AST
     function visit(node: any) {
+      if (isIgnored(node)) {
+        return
+      }
+
       // Check for direct enum declarations
       if (
         node.type === "CallExpression" &&

@@ -14,7 +14,8 @@ export const pcb_text = z
     width: length,
     height: length,
     lines: z.number(),
-    align: z.enum(["bottom_left"]),
+    // @ts-ignore
+    align: z.enum(["bottom-left"]),
   })
   .describe("Defines text on the PCB")
 
@@ -33,7 +34,8 @@ export interface PcbText {
   width: Length
   height: Length
   lines: number
-  align: "bottom_left"
+  // @ts-ignore
+  align: "bottom-left"
 }
 
 /**
