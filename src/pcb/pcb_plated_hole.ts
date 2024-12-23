@@ -114,10 +114,10 @@ expectTypesMatch<PcbPlatedHoleCircle, z.infer<typeof pcb_plated_hole_circle>>(
   true,
 )
 expectTypesMatch<PcbPlatedHoleOval, z.infer<typeof pcb_plated_hole_oval>>(true)
-expectTypesMatch<PcbHoleCircularWithSquarePlated, z.infer<typeof pcb_circular_hole_with_square_plate>>(
-  true,
-)
-
+expectTypesMatch<
+  PcbHoleCircularWithSquarePlated,
+  z.infer<typeof pcb_circular_hole_with_square_plate>
+  >(true)
 /**
  * @deprecated use PcbPlatedHole
  */
