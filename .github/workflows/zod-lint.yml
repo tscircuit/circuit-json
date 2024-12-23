@@ -21,4 +21,4 @@ jobs:
         run: bun install
 
       - name: Run zod linting
-        run: bun run scripts/zod-lint.ts
+        run: bun run lint:zod
