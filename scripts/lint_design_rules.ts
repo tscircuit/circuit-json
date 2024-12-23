@@ -63,9 +63,9 @@ function checkFile(filePath: string): boolean {
   return hasViolations
 }
 
-function main() {
+async function main() {
   const srcDir = path.join(__dirname, "..", "src")
-  const files = glob.sync("**/*.ts", { cwd: srcDir })
+  const files = await glob("**/*.ts", { cwd: srcDir })
 
   let hasViolations = false
 
@@ -84,4 +84,7 @@ function main() {
   }
 }
 
-main()
+main().catch((error) => {
+  console.error("Error running lint script:", error)
+  process.exit(1)
+})
