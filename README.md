@@ -712,6 +712,7 @@ interface PcbText {
   width: Length
   height: Length
   lines: number
+  // @ts-ignore
   align: "bottom-left"
 }
 ```
