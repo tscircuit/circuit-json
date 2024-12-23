@@ -10,7 +10,8 @@
     "prepublish": "npm run build",
     "build": "tsup-node ./src/index.ts --format esm --dts --sourcemap",
     "format": "biome format . --write",
-    "generate-docs": "bun scripts/generate-readme-docs.ts && prettier --no-semi -w README.md"
+    "generate-docs": "bun scripts/generate-readme-docs.ts && prettier --no-semi -w README.md",
+    "lint:design": "bun scripts/lint_design_rules.ts"
   },
   "keywords": [],
   "author": "",
