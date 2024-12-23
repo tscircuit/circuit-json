@@ -19,7 +19,7 @@ function isLowerSnakeCase(str: string): boolean {
 function checkFile(filePath: string): boolean {
   let hasViolations = false
   const content = fs.readFileSync(filePath, "utf-8")
-  
+
   // Check z.object() properties for camelCase
   let match: RegExpExecArray | null
   while ((match = zodObjectPattern.exec(content)) !== null) {
@@ -31,7 +31,7 @@ function checkFile(filePath: string): boolean {
       const propertyName = propMatch[1]
       if (propertyName && isCamelCase(propertyName)) {
         console.error(
-          `Error: Found camelCase property "${propertyName}" in Zod object in file: ${filePath}`
+          `Error: Found camelCase property "${propertyName}" in Zod object in file: ${filePath}`,
         )
         hasViolations = true
       }
@@ -52,7 +52,7 @@ function checkFile(filePath: string): boolean {
       const enumValue = enumMatch[1] || enumMatch[2] // Handle both single and double quotes
       if (enumValue && !isLowerSnakeCase(enumValue)) {
         console.error(
-          `Error: Found non-snake_case enum value "${enumValue}" in file: ${filePath}`
+          `Error: Found non-snake_case enum value "${enumValue}" in file: ${filePath}`,
         )
         hasViolations = true
       }
@@ -66,9 +66,9 @@ function checkFile(filePath: string): boolean {
 function main() {
   const srcDir = path.join(__dirname, "..", "src")
   const files = glob.sync("**/*.ts", { cwd: srcDir })
-  
+
   let hasViolations = false
-  
+
   for (const file of files) {
     const fullPath = path.join(srcDir, file)
     if (checkFile(fullPath)) {
