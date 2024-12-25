@@ -136,7 +136,9 @@ export interface PcbPlatedHoleOval {
 
 export interface PcbHoleCircularWithSquarePlated {
   type: "pcb_plated_hole"
-  shape: "square"
+  shape: "circular_hole_with_square_pad"
+  hole_shape: "circle"
+  pad_shape: "square"
   hole_diameter: number
   square_pad_width: number
   square_pad_height: number 

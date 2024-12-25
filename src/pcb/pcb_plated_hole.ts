@@ -72,7 +72,9 @@ export interface PcbPlatedHoleOval {
 
 const pcb_circular_hole_with_square_plate = z.object({
   type: z.literal("pcb_plated_hole"),
-  shape: z.literal("square"),
+  shape: z.literal("circular_hole_with_square_pad"),
+  hole_shape: z.literal("circle"),
+  pad_shape: z.literal("square"),
   hole_diameter: z.number(),
   square_pad_width: z.number(),
   square_pad_height: z.number(),
@@ -87,7 +89,9 @@ const pcb_circular_hole_with_square_plate = z.object({
 
 export interface PcbHoleCircularWithSquarePlated {
   type: "pcb_plated_hole"
-  shape: "square"
+  shape: "circular_hole_with_square_pad"
+  hole_shape: "circle"
+  pad_shape: "square"
   hole_diameter: number
   square_pad_width: number
   square_pad_height: number
