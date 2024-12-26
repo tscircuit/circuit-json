@@ -56,6 +56,7 @@ and is the primary way that Circuit JSON is defined and maintained.
     - [SourceSimplePushButton](#sourcesimplepushbutton)
     - [SourceSimpleResistor](#sourcesimpleresistor)
     - [SourceSimpleResonator](#sourcesimpleresonator)
+    - [SourceSimpleTransistor](#sourcesimpletransistor)
     - [SourceTrace](#sourcetrace)
   - [PCB Elements](#pcb-elements)
     - [PcbBoard](#pcbboard)
@@ -326,6 +327,19 @@ interface SourceSimpleResonator extends SourceComponentBase {
   load_capacitance: number
   equivalent_series_resistance?: number
   frequency: number
+}
+```
+
+### SourceSimpleTransistor
+
+```typescript
+/** Defines a simple transistor component
+ * This is a three-pin semiconductor device (emitter, base, collector)
+ * Pin configuration is handled by the schematic port system */
+
+interface SourceSimpleTransistor extends SourceComponentBase {
+  ftype: "simple_transistor"
+  transistor_type: "npn" | "pnp"
 }
 ```
 
