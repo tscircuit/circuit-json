@@ -7,7 +7,7 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const source_simple_transistor = source_component_base.extend({
   ftype: z.literal("simple_transistor"),
-  transistortype: z.enum(["npn", "pnp"]),
+  transistor_type: z.enum(["npn", "pnp"]),
 })
 
 export type SourceSimpleTransistorInput = z.input<
@@ -23,7 +23,7 @@ type InferredSourceSimpleTransistor = z.infer<typeof source_simple_transistor>
 
 export interface SourceSimpleTransistor extends SourceComponentBase {
   ftype: "simple_transistor"
-  transistortype: "npn" | "pnp"
+  transistor_type: "npn" | "pnp"
 }
 
 expectTypesMatch<SourceSimpleTransistor, InferredSourceSimpleTransistor>(true)
