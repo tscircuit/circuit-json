@@ -70,14 +70,14 @@ export interface PcbPlatedHoleOval {
   pcb_plated_hole_id: string
 }
 
-const pcb_circular_hole_with_square_plate = z.object({
+const pcb_circular_hole_with_rect_pad = z.object({
   type: z.literal("pcb_plated_hole"),
-  shape: z.literal("circular_hole_with_square_pad"),
+  shape: z.literal("circular_hole_with_rect_pad"),
   hole_shape: z.literal("circle"),
-  pad_shape: z.literal("square"),
+  pad_shape: z.literal("rect"),
   hole_diameter: z.number(),
-  square_pad_width: z.number(),
-  square_pad_height: z.number(),
+  rect_pad_width: z.number(),
+  rect_pad_height: z.number(),
   x: distance,
   y: distance,
   layers: z.array(layer_ref),
@@ -87,14 +87,14 @@ const pcb_circular_hole_with_square_plate = z.object({
   pcb_plated_hole_id: getZodPrefixedIdWithDefault("pcb_plated_hole"),
 })
 
-export interface PcbHoleCircularWithSquarePlated {
+export interface PcbHoleCircularWithRectPad {
   type: "pcb_plated_hole"
-  shape: "circular_hole_with_square_pad"
+  shape: "circular_hole_with_rect_pad"
   hole_shape: "circle"
-  pad_shape: "square"
+  pad_shape: "rect"
   hole_diameter: number
-  square_pad_width: number
-  square_pad_height: number
+  rect_pad_width: number
+  rect_pad_height: number
   x: Distance
   y: Distance
   layers: LayerRef[]
@@ -107,20 +107,20 @@ export interface PcbHoleCircularWithSquarePlated {
 export const pcb_plated_hole = z.union([
   pcb_plated_hole_circle,
   pcb_plated_hole_oval,
-  pcb_circular_hole_with_square_plate,
+  pcb_circular_hole_with_rect_pad,
 ])
 export type PcbPlatedHole =
   | PcbPlatedHoleCircle
   | PcbPlatedHoleOval
-  | PcbHoleCircularWithSquarePlated
+  | PcbHoleCircularWithRectPad
 
 expectTypesMatch<PcbPlatedHoleCircle, z.infer<typeof pcb_plated_hole_circle>>(
   true,
 )
 expectTypesMatch<PcbPlatedHoleOval, z.infer<typeof pcb_plated_hole_oval>>(true)
 expectTypesMatch<
-  PcbHoleCircularWithSquarePlated,
-  z.infer<typeof pcb_circular_hole_with_square_plate>
+  PcbHoleCircularWithRectPad,
+  z.infer<typeof pcb_circular_hole_with_rect_pad>
 >(true)
 /**
  * @deprecated use PcbPlatedHole
