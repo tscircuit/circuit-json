@@ -40,6 +40,7 @@ export const pcb_trace = z
       .optional(),
     route_order_index: z.number().optional(),
     should_round_corners: z.boolean().optional(),
+    trace_length: z.number().optional(),
     route: z.array(
       z.union([
         z.object({
@@ -103,6 +104,7 @@ export interface PcbTrace {
   route_order_index?: number
   route_thickness_mode?: "constant" | "interpolated"
   should_round_corners?: boolean
+  trace_length?: number
   route: Array<PcbTraceRoutePoint>
 }
 
