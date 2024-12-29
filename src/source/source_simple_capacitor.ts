@@ -20,6 +20,7 @@ type InferredSourceSimpleCapacitor = z.infer<typeof source_simple_capacitor>
 export interface SourceSimpleCapacitor extends SourceComponentBase {
   ftype: "simple_capacitor"
   capacitance: number
+  display_value?: string
 }
 
 expectTypesMatch<SourceSimpleCapacitor, InferredSourceSimpleCapacitor>(true)

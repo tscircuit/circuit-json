@@ -20,6 +20,7 @@ type InferredSourceSimpleResistor = z.infer<typeof source_simple_resistor>
 export interface SourceSimpleResistor extends SourceComponentBase {
   ftype: "simple_resistor"
   resistance: number
+  display_value?: string
 }
 
 expectTypesMatch<SourceSimpleResistor, InferredSourceSimpleResistor>(true)
