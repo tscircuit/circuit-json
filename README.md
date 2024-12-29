@@ -220,6 +220,7 @@ Defines a simple capacitor component
 interface SourceSimpleCapacitor extends SourceComponentBase {
   ftype: "simple_capacitor"
   capacitance: number
+  display_capacitance?: string
 }
 ```
 
@@ -313,6 +314,7 @@ Defines a simple resistor component
 interface SourceSimpleResistor extends SourceComponentBase {
   ftype: "simple_resistor"
   resistance: number
+  display_resistance?: string
 }
 ```
 
