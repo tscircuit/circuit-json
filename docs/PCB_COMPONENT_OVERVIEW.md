@@ -134,7 +134,24 @@ export interface PcbPlatedHoleOval {
   pcb_plated_hole_id: string
 }
 
-export type PcbPlatedHole = PcbPlatedHoleCircle | PcbPlatedHoleOval
+export interface PcbHoleCircularWithRectPad {
+  type: "pcb_plated_hole"
+  shape: "circular_hole_with_rect_pad"
+  hole_shape: "circle"
+  pad_shape: "rect"
+  hole_diameter: number
+  rect_pad_width: number
+  rect_pad_height: number 
+  x: Distance
+  y: Distance
+  layers: LayerRef[]
+  port_hints?: string[]
+  pcb_component_id?: string
+  pcb_port_id?: string
+  pcb_plated_hole_id: string
+}
+
+export type PcbPlatedHole = PcbPlatedHoleCircle | PcbPlatedHoleOval | PcbHoleCircularWithRectPad
 
 export interface PcbFabricationNoteText {
   type: "pcb_fabrication_note_text"

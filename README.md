@@ -56,6 +56,7 @@ and is the primary way that Circuit JSON is defined and maintained.
     - [SourceSimplePushButton](#sourcesimplepushbutton)
     - [SourceSimpleResistor](#sourcesimpleresistor)
     - [SourceSimpleResonator](#sourcesimpleresonator)
+    - [SourceSimpleTransistor](#sourcesimpletransistor)
     - [SourceTrace](#sourcetrace)
   - [PCB Elements](#pcb-elements)
     - [PcbBoard](#pcbboard)
@@ -329,6 +330,19 @@ interface SourceSimpleResonator extends SourceComponentBase {
 }
 ```
 
+### SourceSimpleTransistor
+
+```typescript
+/** Defines a simple transistor component
+ * This is a three-pin semiconductor device (emitter, base, collector)
+ * Pin configuration is handled by the schematic port system */
+
+interface SourceSimpleTransistor extends SourceComponentBase {
+  ftype: "simple_transistor"
+  transistor_type: "npn" | "pnp"
+}
+```
+
 ### SourceTrace
 
 ```typescript
@@ -509,6 +523,23 @@ interface PcbPlatedHoleCircle {
   shape: "circle"
   outer_diameter: number
   hole_diameter: number
+  x: Distance
+  y: Distance
+  layers: LayerRef[]
+  port_hints?: string[]
+  pcb_component_id?: string
+  pcb_port_id?: string
+  pcb_plated_hole_id: string
+}
+
+interface PcbHoleCircularWithRectPad {
+  type: "pcb_plated_hole"
+  shape: "circular_hole_with_rect_pad"
+  hole_shape: "circle"
+  pad_shape: "rect"
+  hole_diameter: number
+  rect_pad_width: number
+  rect_pad_height: number
   x: Distance
   y: Distance
   layers: LayerRef[]
