@@ -10,6 +10,7 @@ export const source_simple_capacitor = source_component_base.extend({
   ftype: z.literal("simple_capacitor"),
   capacitance,
   display_capacitance: z.string().optional(),
+  max_decoupling_trace_length: z.number().optional(),
 })
 
 export type SourceSimpleCapacitorInput = z.input<typeof source_simple_capacitor>
@@ -22,6 +23,7 @@ export interface SourceSimpleCapacitor extends SourceComponentBase {
   ftype: "simple_capacitor"
   capacitance: number
   display_capacitance?: string
+  max_decoupling_trace_length?: number
 }
 
 expectTypesMatch<SourceSimpleCapacitor, InferredSourceSimpleCapacitor>(true)
