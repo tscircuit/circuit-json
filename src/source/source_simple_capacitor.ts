@@ -3,13 +3,14 @@ import {
   source_component_base,
   type SourceComponentBase,
 } from "src/source/base/source_component_base"
-import { capacitance } from "src/units"
+import { capacitance, distance } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const source_simple_capacitor = source_component_base.extend({
   ftype: z.literal("simple_capacitor"),
   capacitance,
   display_capacitance: z.string().optional(),
+  max_decoupling_trace_length: distance.optional(),
 })
 
 export type SourceSimpleCapacitorInput = z.input<typeof source_simple_capacitor>
@@ -22,6 +23,7 @@ export interface SourceSimpleCapacitor extends SourceComponentBase {
   ftype: "simple_capacitor"
   capacitance: number
   display_capacitance?: string
+  max_decoupling_trace_length?: number
 }
 
 expectTypesMatch<SourceSimpleCapacitor, InferredSourceSimpleCapacitor>(true)
