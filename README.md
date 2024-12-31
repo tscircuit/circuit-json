@@ -221,6 +221,7 @@ interface SourceSimpleCapacitor extends SourceComponentBase {
   ftype: "simple_capacitor"
   capacitance: number
   display_capacitance?: string
+  max_decoupling_trace_length?: number
 }
 ```
 
