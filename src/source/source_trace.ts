@@ -8,6 +8,7 @@ export interface SourceTrace {
   connected_source_net_ids: string[]
   subcircuit_connectivity_map_key?: string
   max_length?: number
+  display_name?: string
 }
 
 export const source_trace = z.object({
@@ -17,6 +18,7 @@ export const source_trace = z.object({
   connected_source_net_ids: z.array(z.string()),
   subcircuit_connectivity_map_key: z.string().optional(),
   max_length: z.number().optional(),
+  display_name: z.string().optional(),
 })
 
 type InferredSourceTrace = z.infer<typeof source_trace>
