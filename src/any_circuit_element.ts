@@ -26,6 +26,7 @@ export const any_circuit_element = z.union([
   src.source_simple_pin_header,
   src.source_simple_resonator,
   src.source_simple_transistor,
+  src.source_simple_mosfet,
   src.source_simple_potentiometer,
   src.source_simple_push_button,
   pcb.pcb_component,
