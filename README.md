@@ -356,6 +356,7 @@ interface SourceTrace {
   connected_source_net_ids: string[]
   subcircuit_connectivity_map_key?: string
   max_length?: number
+  display_name?: string
 }
 ```
 
