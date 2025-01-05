@@ -52,6 +52,7 @@ and is the primary way that Circuit JSON is defined and maintained.
     - [SourceSimpleDiode](#sourcesimplediode)
     - [SourceSimpleGround](#sourcesimpleground)
     - [SourceSimpleInductor](#sourcesimpleinductor)
+    - [SourceSimpleMosfet](#sourcesimplemosfet)
     - [SourceSimplePowerSource](#sourcesimplepowersource)
     - [SourceSimplePushButton](#sourcesimplepushbutton)
     - [SourceSimpleResistor](#sourcesimpleresistor)
@@ -280,6 +281,20 @@ Defines a simple inductor component
 interface SourceSimpleInductor extends SourceComponentBase {
   ftype: "simple_inductor"
   inductance: number
+}
+```
+
+### SourceSimpleMosfet
+
+```typescript
+/** Defines a simple mosfet component
+ * This is a three-pin semiconductor device (source, gate, drain)
+ * Pin configuration is handled by the schematic port system */
+
+interface SourceSimpleMosfet extends SourceComponentBase {
+  ftype: "simple_mosfet"
+  channel_type: "n" | "p"
+  mosfet_mode: "enhancement" | "depletion"
 }
 ```
 
