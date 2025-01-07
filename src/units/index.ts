@@ -63,7 +63,7 @@ export const capacitance = z
   .or(z.number())
   .transform((v) => parseAndConvertSiUnit(v).value!)
   .transform((value) => {
-    return parseFloat(value.toPrecision(2)) // Round to 12 significant digits
+    return parseFloat(value.toPrecision(12)) // Round to 12 significant digits
   })
 
 export const inductance = z
