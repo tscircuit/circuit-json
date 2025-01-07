@@ -1,7 +1,7 @@
-import { describe, it, expect } from "bun:test"
+import { test, expect } from "bun:test"
 import { capacitance } from "src/units"
 
-describe("Capacitance Precision Tests", () => {
+test("Capacitance Precision Tests", () => {
   const testCases = [
     { input: "1uF", expected: 0.000001 },
     { input: "10uF", expected: 0.00001 },
@@ -13,7 +13,7 @@ describe("Capacitance Precision Tests", () => {
   ]
 
   testCases.forEach(({ input, expected }) => {
-    it(`should parse and round capacitance for input: ${input}`, () => {
+    test(`should parse and round capacitance for input: ${input}`, () => {
       const result = capacitance.parse(input)
       expect(result).toBeCloseTo(expected, 12)
     })
