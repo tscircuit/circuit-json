@@ -46,14 +46,35 @@ const pcb_smtpad_rotated_rect = z.object({
   pcb_port_id: z.string().optional(),
 })
 
+export const pcb_smtpad_pill = z.object({
+  type: z.literal("pcb_smtpad"),
+  shape: z.literal("pill"),
+  pcb_smtpad_id: getZodPrefixedIdWithDefault("pcb_smtpad"),
+  x: distance,
+  y: distance,
+  width: z.number(),
+  height: z.number(),
+  radius: z.number(),
+  layer: layer_ref,
+  port_hints: z.array(z.string()).optional(),
+  pcb_component_id: z.string().optional(),
+  pcb_port_id: z.string().optional(),
+})
+
 export const pcb_smtpad = z
-  .union([pcb_smtpad_circle, pcb_smtpad_rect, pcb_smtpad_rotated_rect])
+  .union([
+    pcb_smtpad_circle,
+    pcb_smtpad_rect,
+    pcb_smtpad_rotated_rect,
+    pcb_smtpad_pill,
+  ])
   .describe("Defines an SMT pad on the PCB")
 
 export type PCBSMTPadInput = z.input<typeof pcb_smtpad>
 type PCBSMTPadCircle = z.infer<typeof pcb_smtpad_circle>
 type PCBSMTPadRect = z.infer<typeof pcb_smtpad_rect>
 type PCBSMTPadRotatedRect = z.infer<typeof pcb_smtpad_rotated_rect>
+type PCBSMTPadPill = z.infer<typeof pcb_smtpad_pill>
 
 /**
  * Defines a circular SMT pad on the PCB
@@ -105,8 +126,29 @@ export interface PcbSmtPadRotatedRect {
   pcb_component_id?: string
   pcb_port_id?: string
 }
+/**
+ * Defines a pill-shaped SMT pad on the PCB (rounded rectangle).
+ */
+export interface PcbSmtPadPill {
+  type: "pcb_smtpad"
+  shape: "pill"
+  pcb_smtpad_id: string
+  x: Distance
+  y: Distance
+  width: number
+  height: number
+  radius: number
+  layer: LayerRef
+  port_hints?: string[]
+  pcb_component_id?: string
+  pcb_port_id?: string
+}
 
-export type PcbSmtPad = PcbSmtPadCircle | PcbSmtPadRect | PcbSmtPadRotatedRect
+export type PcbSmtPad =
+  | PcbSmtPadCircle
+  | PcbSmtPadRect
+  | PcbSmtPadRotatedRect
+  | PcbSmtPadPill
 
 /**
  * @deprecated use PcbSmtPad
@@ -116,3 +158,4 @@ export type PCBSMTPad = PcbSmtPad
 expectTypesMatch<PcbSmtPadCircle, PCBSMTPadCircle>(true)
 expectTypesMatch<PcbSmtPadRect, PCBSMTPadRect>(true)
 expectTypesMatch<PcbSmtPadRotatedRect, PCBSMTPadRotatedRect>(true)
+expectTypesMatch<PcbSmtPadPill, PCBSMTPadPill>(true)
