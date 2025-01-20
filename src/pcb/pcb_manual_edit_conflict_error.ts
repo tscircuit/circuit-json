@@ -8,6 +8,8 @@ export const pcb_manual_edit_conflict_error = z
     pcb_error_id: getZodPrefixedIdWithDefault("pcb_manual_edit_conflict_error"),
     message: z.string(),
     pcb_component_id: z.string(),
+    pcb_group_id: z.string().optional(),
+    subcircuit_id: z.string().optional(),
     source_component_id: z.string(),
   })
   .describe(
@@ -29,6 +31,8 @@ export interface PcbManualEditConflictError {
   pcb_error_id: string
   message: string
   pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   source_component_id: string
 }
 

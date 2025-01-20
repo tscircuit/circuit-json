@@ -7,6 +7,8 @@ export const pcb_group = z
   .object({
     type: z.literal("pcb_group"),
     pcb_group_id: getZodPrefixedIdWithDefault("pcb_group"),
+    is_subcircuit: z.boolean().optional(),
+    subcircuit_id: z.string().optional(),
     width: length,
     height: length,
     center: point,
@@ -25,6 +27,8 @@ type InferredPcbGroup = z.infer<typeof pcb_group>
 export interface PcbGroup {
   type: "pcb_group"
   pcb_group_id: string
+  is_subcircuit?: boolean
+  subcircuit_id?: string
   width: Length
   height: Length
   center: Point

@@ -6,6 +6,8 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 const pcb_hole_circle_or_square = z.object({
   type: z.literal("pcb_hole"),
   pcb_hole_id: getZodPrefixedIdWithDefault("pcb_hole"),
+  pcb_group_id: z.string().optional(),
+  subcircuit_id: z.string().optional(),
   hole_shape: z.enum(["circle", "square"]),
   hole_diameter: z.number(),
   x: distance,
@@ -28,6 +30,8 @@ type InferredPcbHoleCircleOrSquare = z.infer<typeof pcb_hole_circle_or_square>
 export interface PcbHoleCircleOrSquare {
   type: "pcb_hole"
   pcb_hole_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   hole_shape: "circle" | "square"
   hole_diameter: number
   x: Distance
@@ -39,6 +43,8 @@ expectTypesMatch<PcbHoleCircleOrSquare, InferredPcbHoleCircleOrSquare>(true)
 const pcb_hole_oval = z.object({
   type: z.literal("pcb_hole"),
   pcb_hole_id: getZodPrefixedIdWithDefault("pcb_hole"),
+  pcb_group_id: z.string().optional(),
+  subcircuit_id: z.string().optional(),
   hole_shape: z.literal("oval"),
   hole_width: z.number(),
   hole_height: z.number(),
@@ -59,6 +65,8 @@ type InferredPcbHoleOval = z.infer<typeof pcb_hole_oval>
 export interface PcbHoleOval {
   type: "pcb_hole"
   pcb_hole_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   hole_shape: "oval"
   hole_width: number
   hole_height: number

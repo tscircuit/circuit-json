@@ -8,6 +8,8 @@ const pcb_solder_paste_circle = z.object({
   type: z.literal("pcb_solder_paste"),
   shape: z.literal("circle"),
   pcb_solder_paste_id: getZodPrefixedIdWithDefault("pcb_solder_paste"),
+  pcb_group_id: z.string().optional(),
+  subcircuit_id: z.string().optional(),
   x: distance,
   y: distance,
   radius: z.number(),
@@ -20,6 +22,8 @@ const pcb_solder_paste_rect = z.object({
   type: z.literal("pcb_solder_paste"),
   shape: z.literal("rect"),
   pcb_solder_paste_id: getZodPrefixedIdWithDefault("pcb_solder_paste"),
+  pcb_group_id: z.string().optional(),
+  subcircuit_id: z.string().optional(),
   x: distance,
   y: distance,
   width: z.number(),
@@ -44,6 +48,8 @@ export interface PcbSolderPasteCircle {
   type: "pcb_solder_paste"
   shape: "circle"
   pcb_solder_paste_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   x: Distance
   y: Distance
   radius: number
@@ -59,6 +65,8 @@ export interface PcbSolderPasteRect {
   type: "pcb_solder_paste"
   shape: "rect"
   pcb_solder_paste_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   x: Distance
   y: Distance
   width: number

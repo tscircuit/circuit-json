@@ -15,6 +15,8 @@ export const pcb_fabrication_note_text = z
     pcb_fabrication_note_text_id: getZodPrefixedIdWithDefault(
       "pcb_fabrication_note_text",
     ),
+    subcircuit_id: z.string().optional(),
+    pcb_group_id: z.string().optional(),
     font: z.literal("tscircuit2024").default("tscircuit2024"),
     font_size: distance.default("1mm"),
     pcb_component_id: z.string(),
@@ -41,6 +43,8 @@ type InferredPcbFabricationNoteText = z.infer<typeof pcb_fabrication_note_text>
 export interface PcbFabricationNoteText {
   type: "pcb_fabrication_note_text"
   pcb_fabrication_note_text_id: string
+  subcircuit_id?: string
+  pcb_group_id?: string
   font: "tscircuit2024"
   font_size: Length
   pcb_component_id: string

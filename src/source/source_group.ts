@@ -3,6 +3,8 @@ import { z } from "zod"
 export const source_group = z.object({
   type: z.literal("source_group"),
   source_group_id: z.string(),
+  subcircuit_id: z.string().optional(),
+  is_subcircuit: z.boolean().optional(),
   name: z.string().optional(),
 })
 

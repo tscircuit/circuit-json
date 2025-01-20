@@ -8,6 +8,8 @@ export const pcb_missing_footprint_error = z
     pcb_missing_footprint_error_id: getZodPrefixedIdWithDefault(
       "pcb_missing_footprint_error",
     ),
+    pcb_group_id: z.string().optional(),
+    subcircuit_id: z.string().optional(),
     error_type: z.literal("pcb_missing_footprint_error"),
     source_component_id: z.string(),
     message: z.string(),
@@ -27,6 +29,8 @@ type InferredPcbMissingFootprintError = z.infer<
 export interface PcbMissingFootprintError {
   type: "pcb_missing_footprint_error"
   pcb_missing_footprint_error_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   error_type: "pcb_missing_footprint_error"
   source_component_id: string
   message: string

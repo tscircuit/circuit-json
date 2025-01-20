@@ -8,6 +8,8 @@ export const pcb_text = z
   .object({
     type: z.literal("pcb_text"),
     pcb_text_id: getZodPrefixedIdWithDefault("pcb_text"),
+    pcb_group_id: z.string().optional(),
+    subcircuit_id: z.string().optional(),
     text: z.string(),
     center: point,
     layer: layer_ref,
@@ -28,6 +30,8 @@ type InferredPcbText = z.infer<typeof pcb_text>
 export interface PcbText {
   type: "pcb_text"
   pcb_text_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   text: string
   center: Point
   layer: LayerRef

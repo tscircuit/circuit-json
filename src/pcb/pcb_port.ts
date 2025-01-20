@@ -8,6 +8,8 @@ export const pcb_port = z
   .object({
     type: z.literal("pcb_port"),
     pcb_port_id: getZodPrefixedIdWithDefault("pcb_port"),
+    pcb_group_id: z.string().optional(),
+    subcircuit_id: z.string().optional(),
     source_port_id: z.string(),
     pcb_component_id: z.string(),
     x: distance,
@@ -25,6 +27,8 @@ type InferredPcbPort = z.infer<typeof pcb_port>
 export interface PcbPort {
   type: "pcb_port"
   pcb_port_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   source_port_id: string
   pcb_component_id: string
   x: Distance

@@ -6,6 +6,8 @@ export const pcb_keepout = z
   .object({
     type: z.literal("pcb_keepout"),
     shape: z.literal("rect"),
+    pcb_group_id: z.string().optional(),
+    subcircuit_id: z.string().optional(),
     center: point,
     width: distance,
     height: distance,
@@ -17,6 +19,8 @@ export const pcb_keepout = z
     z.object({
       type: z.literal("pcb_keepout"),
       shape: z.literal("circle"),
+      pcb_group_id: z.string().optional(),
+      subcircuit_id: z.string().optional(),
       center: point,
       radius: distance,
       pcb_keepout_id: z.string(),

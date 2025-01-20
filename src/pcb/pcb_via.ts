@@ -8,6 +8,8 @@ export const pcb_via = z
   .object({
     type: z.literal("pcb_via"),
     pcb_via_id: getZodPrefixedIdWithDefault("pcb_via"),
+    pcb_group_id: z.string().optional(),
+    subcircuit_id: z.string().optional(),
     x: distance,
     y: distance,
     outer_diameter: distance.default("0.6mm"),
@@ -30,6 +32,8 @@ type InferredPcbVia = z.infer<typeof pcb_via>
 export interface PcbVia {
   type: "pcb_via"
   pcb_via_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   x: Distance
   y: Distance
   outer_diameter: Distance

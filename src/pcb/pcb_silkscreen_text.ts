@@ -8,6 +8,8 @@ export const pcb_silkscreen_text = z
   .object({
     type: z.literal("pcb_silkscreen_text"),
     pcb_silkscreen_text_id: getZodPrefixedIdWithDefault("pcb_silkscreen_text"),
+    pcb_group_id: z.string().optional(),
+    subcircuit_id: z.string().optional(),
     font: z.literal("tscircuit2024").default("tscircuit2024"),
     font_size: distance.default("0.2mm"),
     pcb_component_id: z.string(),
@@ -31,6 +33,8 @@ type InferredPcbSilkscreenText = z.infer<typeof pcb_silkscreen_text>
 export interface PcbSilkscreenText {
   type: "pcb_silkscreen_text"
   pcb_silkscreen_text_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   font: "tscircuit2024"
   font_size: Length
   pcb_component_id: string

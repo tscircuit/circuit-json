@@ -12,6 +12,8 @@ export const pcb_silkscreen_path = z
     type: z.literal("pcb_silkscreen_path"),
     pcb_silkscreen_path_id: getZodPrefixedIdWithDefault("pcb_silkscreen_path"),
     pcb_component_id: z.string(),
+    pcb_group_id: z.string().optional(),
+    subcircuit_id: z.string().optional(),
     layer: visible_layer,
     route: z.array(point),
     stroke_width: length,
@@ -28,6 +30,8 @@ export interface PcbSilkscreenPath {
   type: "pcb_silkscreen_path"
   pcb_silkscreen_path_id: string
   pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   layer: VisibleLayerRef
   route: Point[]
   stroke_width: Length
