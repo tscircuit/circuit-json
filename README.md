@@ -386,6 +386,8 @@ Defines the board outline of the PCB
 interface PcbBoard {
   type: "pcb_board"
   pcb_board_id: string
+  is_subcircuit?: boolean
+  subcircuit_id?: string
   width: Length
   height: Length
   thickness: Length
@@ -405,6 +407,7 @@ interface PcbComponent {
   type: "pcb_component"
   pcb_component_id: string
   source_component_id: string
+  subcircuit_id?: string
   center: Point
   layer: LayerRef
   rotation: Rotation
@@ -423,6 +426,7 @@ interface PcbFabricationNotePath {
   type: "pcb_fabrication_note_path"
   pcb_fabrication_note_path_id: string
   pcb_component_id: string
+  subcircuit_id?: string
   layer: LayerRef
   route: Point[]
   stroke_width: Length
@@ -439,6 +443,8 @@ Defines a fabrication note in text on the PCB, useful for leaving notes for asse
 interface PcbFabricationNoteText {
   type: "pcb_fabrication_note_text"
   pcb_fabrication_note_text_id: string
+  subcircuit_id?: string
+  pcb_group_id?: string
   font: "tscircuit2024"
   font_size: Length
   pcb_component_id: string
@@ -464,6 +470,8 @@ Defines a group of components on the PCB
 interface PcbGroup {
   type: "pcb_group"
   pcb_group_id: string
+  is_subcircuit?: boolean
+  subcircuit_id?: string
   width: Length
   height: Length
   center: Point
@@ -482,6 +490,8 @@ Defines a circular or square hole on the PCB
 interface PcbHoleCircleOrSquare {
   type: "pcb_hole"
   pcb_hole_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   hole_shape: "circle" | "square"
   hole_diameter: number
   x: Distance
@@ -500,6 +510,8 @@ interface PcbManualEditConflictError {
   pcb_error_id: string
   message: string
   pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   source_component_id: string
 }
 ```
@@ -513,6 +525,8 @@ Defines a placement error on the PCB
 interface PcbMissingFootprintError {
   type: "pcb_missing_footprint_error"
   pcb_missing_footprint_error_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   error_type: "pcb_missing_footprint_error"
   source_component_id: string
   message: string
@@ -541,6 +555,8 @@ Defines a circular plated hole on the PCB
 interface PcbPlatedHoleCircle {
   type: "pcb_plated_hole"
   shape: "circle"
+  pcb_group_id?: string
+  subcircuit_id?: string
   outer_diameter: number
   hole_diameter: number
   x: Distance
@@ -555,6 +571,8 @@ interface PcbPlatedHoleCircle {
 interface PcbHoleCircularWithRectPad {
   type: "pcb_plated_hole"
   shape: "circular_hole_with_rect_pad"
+  pcb_group_id?: string
+  subcircuit_id?: string
   hole_shape: "circle"
   pad_shape: "rect"
   hole_diameter: number
@@ -579,6 +597,8 @@ Defines a port on the PCB
 interface PcbPort {
   type: "pcb_port"
   pcb_port_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   source_port_id: string
   pcb_component_id: string
   x: Distance
@@ -611,6 +631,8 @@ interface PcbSilkscreenCircle {
   type: "pcb_silkscreen_circle"
   pcb_silkscreen_circle_id: string
   pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   center: Point
   radius: Length
   layer: VisibleLayer
@@ -627,6 +649,8 @@ interface PcbSilkscreenLine {
   type: "pcb_silkscreen_line"
   pcb_silkscreen_line_id: string
   pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   stroke_width: Distance
   x1: Distance
   y1: Distance
@@ -646,6 +670,8 @@ interface PcbSilkscreenOval {
   type: "pcb_silkscreen_oval"
   pcb_silkscreen_oval_id: string
   pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   center: Point
   radius_x: Distance
   radius_y: Distance
@@ -663,6 +689,8 @@ interface PcbSilkscreenPath {
   type: "pcb_silkscreen_path"
   pcb_silkscreen_path_id: string
   pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   layer: VisibleLayerRef
   route: Point[]
   stroke_width: Length
@@ -679,6 +707,8 @@ interface PcbSilkscreenPill {
   type: "pcb_silkscreen_pill"
   pcb_silkscreen_pill_id: string
   pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   center: Point
   width: Length
   height: Length
@@ -696,6 +726,8 @@ interface PcbSilkscreenRect {
   type: "pcb_silkscreen_rect"
   pcb_silkscreen_rect_id: string
   pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   center: Point
   width: Length
   height: Length
@@ -712,6 +744,8 @@ Defines silkscreen text on the PCB
 interface PcbSilkscreenText {
   type: "pcb_silkscreen_text"
   pcb_silkscreen_text_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   font: "tscircuit2024"
   font_size: Length
   pcb_component_id: string
@@ -739,6 +773,8 @@ interface PcbSolderPasteCircle {
   type: "pcb_solder_paste"
   shape: "circle"
   pcb_solder_paste_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   x: Distance
   y: Distance
   radius: number
@@ -757,6 +793,8 @@ Defines text on the PCB
 interface PcbText {
   type: "pcb_text"
   pcb_text_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   text: string
   center: Point
   layer: LayerRef
