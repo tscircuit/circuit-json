@@ -14,6 +14,8 @@ export const pcb_silkscreen_line = z
     type: z.literal("pcb_silkscreen_line"),
     pcb_silkscreen_line_id: getZodPrefixedIdWithDefault("pcb_silkscreen_line"),
     pcb_component_id: z.string(),
+    pcb_group_id: z.string().optional(),
+    subcircuit_id: z.string().optional(),
     stroke_width: distance.default("0.1mm"),
     x1: distance,
     y1: distance,

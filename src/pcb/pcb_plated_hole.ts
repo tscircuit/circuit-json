@@ -16,6 +16,8 @@ const pcb_plated_hole_circle = z.object({
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
   pcb_plated_hole_id: getZodPrefixedIdWithDefault("pcb_plated_hole"),
+  pcb_group_id: z.string().optional(),
+  subcircuit_id: z.string().optional(),
 })
 
 /**

@@ -7,6 +7,8 @@ export const pcb_board = z
   .object({
     type: z.literal("pcb_board"),
     pcb_board_id: getZodPrefixedIdWithDefault("pcb_board"),
+    is_subcircuit: z.boolean().optional(),
+    subcircuit_id: z.string().optional(),
     width: length,
     height: length,
     center: point,
@@ -22,6 +24,8 @@ export const pcb_board = z
 export interface PcbBoard {
   type: "pcb_board"
   pcb_board_id: string
+  is_subcircuit?: boolean
+  subcircuit_id?: string
   width: Length
   height: Length
   thickness: Length

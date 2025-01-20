@@ -14,6 +14,7 @@ export const pcb_component = z
     rotation: rotation,
     width: length,
     height: length,
+    subcircuit_id: z.string().optional(),
   })
   .describe("Defines a component on the PCB")
 
@@ -27,6 +28,7 @@ export interface PcbComponent {
   type: "pcb_component"
   pcb_component_id: string
   source_component_id: string
+  subcircuit_id?: string
   center: Point
   layer: LayerRef
   rotation: Rotation

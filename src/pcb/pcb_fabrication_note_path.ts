@@ -16,6 +16,7 @@ export const pcb_fabrication_note_path = z
       "pcb_fabrication_note_path",
     ),
     pcb_component_id: z.string(),
+    subcircuit_id: z.string().optional(),
     layer: layer_ref,
     route: z.array(point),
     stroke_width: length,
@@ -37,6 +38,7 @@ export interface PcbFabricationNotePath {
   type: "pcb_fabrication_note_path"
   pcb_fabrication_note_path_id: string
   pcb_component_id: string
+  subcircuit_id?: string
   layer: LayerRef
   route: Point[]
   stroke_width: Length

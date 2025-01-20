@@ -34,6 +34,8 @@ export const pcb_trace = z
     source_trace_id: z.string().optional(),
     pcb_component_id: z.string().optional(),
     pcb_trace_id: getZodPrefixedIdWithDefault("pcb_trace"),
+    pcb_group_id: z.string().optional(),
+    subcircuit_id: z.string().optional(),
     route_thickness_mode: z
       .enum(["constant", "interpolated"])
       .default("constant")
@@ -94,6 +96,8 @@ export interface PcbTrace {
   type: "pcb_trace"
   source_trace_id?: string
   pcb_component_id?: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   pcb_trace_id: string
   /**
    * The order that this trace was routed in. This can be used to debug the

@@ -9,6 +9,8 @@ export const pcb_silkscreen_pill = z
     type: z.literal("pcb_silkscreen_pill"),
     pcb_silkscreen_pill_id: getZodPrefixedIdWithDefault("pcb_silkscreen_pill"),
     pcb_component_id: z.string(),
+    pcb_group_id: z.string().optional(),
+    subcircuit_id: z.string().optional(),
     center: point,
     width: length,
     height: length,
@@ -26,6 +28,8 @@ export interface PcbSilkscreenPill {
   type: "pcb_silkscreen_pill"
   pcb_silkscreen_pill_id: string
   pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   center: Point
   width: Length
   height: Length

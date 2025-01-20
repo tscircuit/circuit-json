@@ -8,6 +8,8 @@ const pcb_smtpad_circle = z.object({
   type: z.literal("pcb_smtpad"),
   shape: z.literal("circle"),
   pcb_smtpad_id: getZodPrefixedIdWithDefault("pcb_smtpad"),
+  pcb_group_id: z.string().optional(),
+  subcircuit_id: z.string().optional(),
   x: distance,
   y: distance,
   radius: z.number(),
@@ -21,6 +23,8 @@ const pcb_smtpad_rect = z.object({
   type: z.literal("pcb_smtpad"),
   shape: z.literal("rect"),
   pcb_smtpad_id: getZodPrefixedIdWithDefault("pcb_smtpad"),
+  pcb_group_id: z.string().optional(),
+  subcircuit_id: z.string().optional(),
   x: distance,
   y: distance,
   width: z.number(),
@@ -35,6 +39,8 @@ const pcb_smtpad_rotated_rect = z.object({
   type: z.literal("pcb_smtpad"),
   shape: z.literal("rotated_rect"),
   pcb_smtpad_id: getZodPrefixedIdWithDefault("pcb_smtpad"),
+  pcb_group_id: z.string().optional(),
+  subcircuit_id: z.string().optional(),
   x: distance,
   y: distance,
   width: z.number(),
@@ -62,6 +68,8 @@ export interface PcbSmtPadCircle {
   type: "pcb_smtpad"
   shape: "circle"
   pcb_smtpad_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   x: Distance
   y: Distance
   radius: number
@@ -78,6 +86,8 @@ export interface PcbSmtPadRect {
   type: "pcb_smtpad"
   shape: "rect"
   pcb_smtpad_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   x: Distance
   y: Distance
   width: number
@@ -95,6 +105,8 @@ export interface PcbSmtPadRotatedRect {
   type: "pcb_smtpad"
   shape: "rotated_rect"
   pcb_smtpad_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   x: Distance
   y: Distance
   width: number
