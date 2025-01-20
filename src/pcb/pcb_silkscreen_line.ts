@@ -35,6 +35,8 @@ export interface PcbSilkscreenLine {
   type: "pcb_silkscreen_line"
   pcb_silkscreen_line_id: string
   pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   stroke_width: Distance
   x1: Distance
   y1: Distance
