@@ -470,6 +470,7 @@ Defines a group of components on the PCB
 interface PcbGroup {
   type: "pcb_group"
   pcb_group_id: string
+  source_group_id: string
   is_subcircuit?: boolean
   subcircuit_id?: string
   width: Length
