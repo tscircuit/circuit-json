@@ -56,6 +56,8 @@ export const pcb_smtpad_pill = z.object({
   type: z.literal("pcb_smtpad"),
   shape: z.literal("pill"),
   pcb_smtpad_id: getZodPrefixedIdWithDefault("pcb_smtpad"),
+  pcb_group_id: z.string().optional(),
+  subcircuit_id: z.string().optional(),
   x: distance,
   y: distance,
   width: z.number(),
@@ -145,6 +147,8 @@ export interface PcbSmtPadPill {
   type: "pcb_smtpad"
   shape: "pill"
   pcb_smtpad_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   x: Distance
   y: Distance
   width: number
