@@ -10,7 +10,8 @@
     "prepublish": "npm run build",
     "build": "tsup-node ./src/index.ts --format esm --dts --sourcemap",
     "format": "biome format . --write",
-    "generate-docs": "bun scripts/generate-readme-docs.ts && prettier --no-semi -w README.md",
+    "generate-readme": "bun scripts/generate-readme-docs.ts && prettier --no-semi -w README.md",
+    "generate-docs": "bun run scripts/generate-pcb-component-overview.ts && bun run scripts/generate-source-component-overview.ts && bun run scripts/generate-schematic-component-overview.ts",
     "lint:zod": "bun run scripts/zod-lint.ts"
   },
   "keywords": [],
