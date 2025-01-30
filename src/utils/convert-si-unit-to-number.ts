@@ -187,7 +187,7 @@ export const parseAndConvertSiUnit = <
 } => {
   if (typeof v === "undefined")
     return { parsedUnit: null, unitOfValue: null, value: null }
-  if (typeof v === "string" && v.match(/^[\d\.]+$/))
+  if (typeof v === "string" && v.match(/^-?[\d\.]+$/))
     return {
       value: Number.parseFloat(v) as any,
       parsedUnit: null,

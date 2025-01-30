@@ -150,4 +150,10 @@ test("parseAndConvertSiUnit", () => {
     unitOfValue: null,
     value: 10000,
   })
+
+  expect(parseAndConvertSiUnit("-6")).toEqual({
+    parsedUnit: null,
+    unitOfValue: null,
+    value: -6,
+  })
 })
