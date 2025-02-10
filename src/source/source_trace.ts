@@ -6,6 +6,7 @@ export interface SourceTrace {
   source_trace_id: string
   connected_source_port_ids: string[]
   connected_source_net_ids: string[]
+  subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
   max_length?: number
   display_name?: string
@@ -16,6 +17,7 @@ export const source_trace = z.object({
   source_trace_id: z.string(),
   connected_source_port_ids: z.array(z.string()),
   connected_source_net_ids: z.array(z.string()),
+  subcircuit_id: z.string().optional(),
   subcircuit_connectivity_map_key: z.string().optional(),
   max_length: z.number().optional(),
   display_name: z.string().optional(),
