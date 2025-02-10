@@ -214,6 +214,26 @@ export const parseAndConvertSiUnit = <
   const unit = unit_reversed.split("").reverse().join("")
 
   const numberPart = v.slice(0, -unit.length)
+  if (unit.toLowerCase().endsWith("ohm")) {
+    const prefixPart = unit.slice(0, -3)
+    if (prefixPart === "") {
+      return {
+        parsedUnit: unit,
+        unitOfValue: "Ω",
+        value: Number.parseFloat(numberPart) as any,
+      }
+    }
+    if (!(prefixPart in si_prefix_multiplier)) {
+      throw new Error(`Unsupported unit prefix: ${prefixPart}`)
+    }
+    const siMultiplier =
+      si_prefix_multiplier[prefixPart as keyof typeof si_prefix_multiplier]
+    return {
+      parsedUnit: unit,
+      unitOfValue: "Ω",
+      value: (Number.parseFloat(numberPart) * siMultiplier) as any,
+    }
+  }
   if (
     unit in si_prefix_multiplier &&
     !unitMappingAndVariantSuffixes.has(unit)
