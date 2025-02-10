@@ -197,6 +197,7 @@ interface SourcePort {
   name: string
   source_port_id: string
   source_component_id: string
+  subcircuit_id?: string
 }
 ```
 
@@ -369,6 +370,7 @@ interface SourceTrace {
   source_trace_id: string
   connected_source_port_ids: string[]
   connected_source_net_ids: string[]
+  subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
   max_length?: number
   display_name?: string
