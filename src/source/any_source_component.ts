@@ -16,6 +16,7 @@ import { source_simple_pin_header } from "./source_simple_pin_header"
 import { source_simple_resonator } from "./source_simple_resonator"
 import { source_simple_transistor } from "./source_simple_transistor"
 import { source_simple_mosfet } from "./source_simple_mosfet"
+import { source_simple_switch } from "./source_simple_switch"
 
 export const any_source_component = z.union([
   source_simple_resistor,
@@ -33,6 +34,7 @@ export const any_source_component = z.union([
   source_simple_crystal,
   source_simple_pin_header,
   source_simple_resonator,
+  source_simple_switch,
   source_simple_transistor,
   source_simple_mosfet,
 ])
