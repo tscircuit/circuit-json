@@ -9,7 +9,7 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 export const source_simple_capacitor = source_component_base.extend({
   ftype: z.literal("simple_capacitor"),
   capacitance,
-  maxVoltageRating: voltage.optional(),
+  max_voltage_rating: voltage.optional(),
   display_capacitance: z.string().optional(),
   max_decoupling_trace_length: distance.optional(),
 })
@@ -23,7 +23,7 @@ type InferredSourceSimpleCapacitor = z.infer<typeof source_simple_capacitor>
 export interface SourceSimpleCapacitor extends SourceComponentBase {
   ftype: "simple_capacitor"
   capacitance: number
-  maxVoltageRating?: number
+  max_voltage_rating?: number
   display_capacitance?: string
   max_decoupling_trace_length?: number
 }
