@@ -223,6 +223,7 @@ Defines a simple capacitor component
 interface SourceSimpleCapacitor extends SourceComponentBase {
   ftype: "simple_capacitor"
   capacitance: number
+  max_voltage_rating?: number
   display_capacitance?: string
   max_decoupling_trace_length?: number
 }
