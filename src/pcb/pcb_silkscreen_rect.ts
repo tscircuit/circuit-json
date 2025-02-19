@@ -3,6 +3,7 @@ import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
 import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
 import { length, type Length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { distance, type Distance } from "src/units"
 
 export const pcb_silkscreen_rect = z
   .object({
@@ -15,6 +16,7 @@ export const pcb_silkscreen_rect = z
     width: length,
     height: length,
     layer: layer_ref,
+    stoke_width: distance,
   })
   .describe("Defines a silkscreen rect on the PCB")
 
@@ -34,6 +36,7 @@ export interface PcbSilkscreenRect {
   width: Length
   height: Length
   layer: LayerRef
+  stoke_width: Distance
 }
 
 /**
