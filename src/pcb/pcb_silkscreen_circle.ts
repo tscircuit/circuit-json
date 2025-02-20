@@ -21,6 +21,7 @@ export const pcb_silkscreen_circle = z
     center: point,
     radius: length,
     layer: visible_layer,
+    stroke_width: length.default("1mm"),
   })
   .describe("Defines a silkscreen circle on the PCB")
 
@@ -39,6 +40,7 @@ export interface PcbSilkscreenCircle {
   center: Point
   radius: Length
   layer: VisibleLayer
+  stroke_width: Length
 }
 
 expectTypesMatch<PcbSilkscreenCircle, InferredPcbSilkscreenCircle>(true)
