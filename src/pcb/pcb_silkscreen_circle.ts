@@ -8,7 +8,6 @@ import {
 } from "src/pcb/properties/layer_ref"
 import { length, type Length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
-import { distance, type Distance } from "src/units"
 
 export const pcb_silkscreen_circle = z
   .object({
