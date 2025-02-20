@@ -652,6 +652,7 @@ interface PcbSilkscreenCircle {
   center: Point
   radius: Length
   layer: VisibleLayer
+  stroke_width: Length
 }
 ```
 
@@ -748,6 +749,7 @@ interface PcbSilkscreenRect {
   width: Length
   height: Length
   layer: LayerRef
+  stroke_width: Length
 }
 ```
 
