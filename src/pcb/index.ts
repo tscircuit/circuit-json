@@ -52,7 +52,7 @@ import type { PcbSilkscreenPath } from "./pcb_silkscreen_path"
 import type { PcbSilkscreenText } from "./pcb_silkscreen_text"
 import type { PcbSilkscreenRect } from "./pcb_silkscreen_rect"
 import type { PcbSilkscreenCircle } from "./pcb_silkscreen_circle"
-import type { AutoroutingError } from "./pcb_autorouting_error"
+import type { PcbAutoroutingError } from "./pcb_autorouting_error"
 
 export type PcbCircuitElement =
   | PcbComponent
@@ -76,4 +76,4 @@ export type PcbCircuitElement =
   | PcbSilkscreenText
   | PcbSilkscreenRect
   | PcbSilkscreenCircle
-  | AutoroutingError
+  | PcbAutoroutingError
