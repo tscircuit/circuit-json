@@ -61,6 +61,7 @@ and is the primary way that Circuit JSON is defined and maintained.
     - [SourceSimpleTransistor](#sourcesimpletransistor)
     - [SourceTrace](#sourcetrace)
   - [PCB Elements](#pcb-elements)
+    - [PcbAutoroutingError](#pcbautoroutingerror)
     - [PcbBoard](#pcbboard)
     - [PcbComponent](#pcbcomponent)
     - [PcbFabricationNotePath](#pcbfabricationnotepath)
@@ -391,6 +392,16 @@ interface SourceTrace {
 ```
 
 ## PCB Elements
+
+### PcbAutoroutingError
+
+```typescript
+interface PcbAutoroutingErrorInterface {
+  type: "pcb_autorouting_error"
+  pcb_error_id: string
+  message: string
+}
+```
 
 ### PcbBoard
 
