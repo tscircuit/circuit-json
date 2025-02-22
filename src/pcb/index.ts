@@ -29,6 +29,7 @@ export * from "./pcb_keepout"
 export * from "./pcb_missing_footprint_error"
 export * from "./pcb_manual_edit_conflict_error"
 export * from "./pcb_group"
+export * from "./pcb_autorouting_error"
 
 import type { PcbComponent } from "./pcb_component"
 import type { PcbHole } from "./pcb_hole"
@@ -51,6 +52,7 @@ import type { PcbSilkscreenPath } from "./pcb_silkscreen_path"
 import type { PcbSilkscreenText } from "./pcb_silkscreen_text"
 import type { PcbSilkscreenRect } from "./pcb_silkscreen_rect"
 import type { PcbSilkscreenCircle } from "./pcb_silkscreen_circle"
+import type { AutoroutingError } from "./pcb_autorouting_error"
 
 export type PcbCircuitElement =
   | PcbComponent
@@ -74,3 +76,4 @@ export type PcbCircuitElement =
   | PcbSilkscreenText
   | PcbSilkscreenRect
   | PcbSilkscreenCircle
+  | AutoroutingError
