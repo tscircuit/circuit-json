@@ -8,7 +8,7 @@ export const autorouting_error = z
     pcb_error_id: getZodPrefixedIdWithDefault("autorouting_error"),
     message: z.string(),
   })
-  .describe("Defines a trace error on the PCB where a port is not matched")
+  .describe("The autorouting has failed to route a portion of the board")
 
 export type AutoroutingErrorInput = z.input<typeof autorouting_error>
 type InferredAutoroutingError = z.infer<typeof autorouting_error>
