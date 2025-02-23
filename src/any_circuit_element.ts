@@ -3,7 +3,7 @@ import * as pcb from "./pcb"
 import * as sch from "./schematic"
 import * as src from "./source"
 import * as cad from "./cad"
-import { system_info } from "./system_info"
+import * as system_info from "./system_info"
 
 export const any_circuit_element = z.union([
   // TODO source_config
@@ -94,4 +94,4 @@ export type AnySoupElementInput = AnyCircuitElementInput
  * Type representing a complete Circuit JSON document, which is an array of circuit elements.
  * This is the primary type used when working with circuit-json files or API responses.
  */
-export type CircuitJson = (AnyCircuitElement | z.infer<typeof system_info>)[]
+export type CircuitJson = AnyCircuitElement
