@@ -903,7 +903,6 @@ interface SchematicBox {
 ```typescript
 interface SchematicComponent {
   type: "schematic_component"
-  rotation: number
   size: Size
   center: Point
   source_component_id: string
