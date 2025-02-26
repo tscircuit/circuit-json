@@ -1,7 +1,7 @@
 import { z } from "zod"
 import { point, type Point } from "../common/point"
 import { size, type Size } from "../common/size"
-import { length, rotation } from "../units"
+import { length } from "../units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const schematic_pin_styles = z.record(
@@ -38,7 +38,6 @@ export interface SchematicComponent {
   type: "schematic_component"
   size: Size
   center: Point
-  rotation: number
   source_component_id: string
   schematic_component_id: string
   pin_spacing?: number
@@ -116,7 +115,6 @@ export const schematic_component = z.object({
   size,
   center: point,
   source_component_id: z.string(),
-  rotation: rotation.default(0),
   schematic_component_id: z.string(),
   pin_spacing: length.optional(),
   pin_styles: schematic_pin_styles.optional(),
