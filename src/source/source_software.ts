@@ -1,15 +1,15 @@
 export interface SourceSoftware {
-  userAgent: string
-  tscircuitCoreVersion: string
-  generatedAt: string
+  user_agent: string
+  tscircuit_core_version: string
+  generated_at: string
 }
 
 export function createSourceSoftware(
-  tscircuitCoreVersion: string,
+  tscircuit_core_version: string,
 ): SourceSoftware {
   return {
-    userAgent: `tscircuit/${tscircuitCoreVersion}`,
-    tscircuitCoreVersion,
-    generatedAt: new Date().toISOString(),
+    user_agent: `tscircuit/${tscircuit_core_version}`,
+    tscircuit_core_version,
+    generated_at: new Date().toISOString(),
   }
 }

@@ -41,9 +41,9 @@ const codefence = resText
 const sourceSoftwareInfo = createSourceSoftware(version)
 
 const formattedSourceSoftwareInfo = `
-  > User Agent: "${sourceSoftwareInfo.userAgent}"
-  > tscircuit Core Version: "${sourceSoftwareInfo.tscircuitCoreVersion}"
-  > Generated At: "${sourceSoftwareInfo.generatedAt}"
+  > user_agent: "${sourceSoftwareInfo.user_agent}"
+  > tscircuit_core_version: "${sourceSoftwareInfo.tscircuit_core_version}"
+  > generated_at: "${sourceSoftwareInfo.generated_at}"
   `.trim()
 
 // Write to docs/SOURCE_COMPONENT_OVERVIEW.md
