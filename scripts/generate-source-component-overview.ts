@@ -3,8 +3,10 @@ import fs from "node:fs"
 import path from "node:path"
 import { createSourceSoftware } from "src/source"
 
-const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, "../package.json"), "utf8"));
-const version = packageJson.version;
+const packageJson = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "../package.json"), "utf8"),
+)
+const version = packageJson.version
 
 // Read all the files in the src/source directory
 const sourceDir = path.join(__dirname, "../src/source")
@@ -36,13 +38,13 @@ const codefence = resText
   .replace(/^ts\n/, "")
   .replace(/^typescript\n/, "")
 
-  const sourceSoftwareInfo = createSourceSoftware(version);
+const sourceSoftwareInfo = createSourceSoftware(version)
 
-  const formattedSourceSoftwareInfo = `
+const formattedSourceSoftwareInfo = `
   > User Agent: "${sourceSoftwareInfo.userAgent}"
   > tscircuit Core Version: "${sourceSoftwareInfo.tscircuitCoreVersion}"
   > Generated At: "${sourceSoftwareInfo.generatedAt}"
-  `.trim();
+  `.trim()
 
 // Write to docs/SOURCE_COMPONENT_OVERVIEW.md
 const template = `# Circuit JSON Specification: Source Component Overview
