@@ -1,6 +1,10 @@
 import Anthropic from "@anthropic-ai/sdk"
 import fs from "node:fs"
 import path from "node:path"
+import { createSourceSoftware } from "src/source"
+
+const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, "../package.json"), "utf8"));
+const version = packageJson.version;
 
 // Read all the files in the src/source directory
 const sourceDir = path.join(__dirname, "../src/source")
@@ -32,11 +36,22 @@ const codefence = resText
   .replace(/^ts\n/, "")
   .replace(/^typescript\n/, "")
 
+  const sourceSoftwareInfo = createSourceSoftware(version);
+
+  const formattedSourceSoftwareInfo = `
+  > User Agent: "${sourceSoftwareInfo.userAgent}"
+  > tscircuit Core Version: "${sourceSoftwareInfo.tscircuitCoreVersion}"
+  > Generated At: "${sourceSoftwareInfo.generatedAt}"
+  `.trim();
+
 // Write to docs/SOURCE_COMPONENT_OVERVIEW.md
 const template = `# Circuit JSON Specification: Source Component Overview
 
 > Created at ${new Date().toISOString()}
 > Latest Version: https://github.com/tscircuit/circuit-json/blob/main/docs/SOURCE_COMPONENT_OVERVIEW.md
+
+Source Software Information:
+${formattedSourceSoftwareInfo}
 
 Any type below can be imported from \`circuit-json\`. Every type has a corresponding
 snake_case version which is a zod type that can be used to parse unknown json,
