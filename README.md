@@ -906,6 +906,7 @@ interface SchematicComponent {
   type: "schematic_component"
   size: Size
   center: Point
+  rotation: number
   source_component_id: string
   schematic_component_id: string
   pin_spacing?: number
