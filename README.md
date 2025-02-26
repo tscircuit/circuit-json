@@ -789,6 +789,7 @@ interface PcbSilkscreenText {
     | "top_right"
     | "bottom_left"
     | "bottom_right"
+  stroke_width: Length
 }
 ```
 
