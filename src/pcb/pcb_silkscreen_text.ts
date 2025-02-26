@@ -1,7 +1,7 @@
 import { z } from "zod"
 import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
 import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
-import { distance, type Length } from "src/units"
+import { distance, length, type Length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const pcb_silkscreen_text = z
@@ -12,6 +12,7 @@ export const pcb_silkscreen_text = z
     subcircuit_id: z.string().optional(),
     font: z.literal("tscircuit2024").default("tscircuit2024"),
     font_size: distance.default("0.2mm"),
+    stroke_width: length.optional().default("1mm"),
     pcb_component_id: z.string(),
     text: z.string(),
     ccw_rotation: z.number().optional(),
@@ -49,6 +50,7 @@ export interface PcbSilkscreenText {
     | "top_right"
     | "bottom_left"
     | "bottom_right"
+  stroke_width: Length
 }
 
 /**
