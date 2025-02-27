@@ -156,4 +156,11 @@ test("parseAndConvertSiUnit", () => {
     unitOfValue: null,
     value: -6,
   })
+
+  // Test kohm unit
+  expect(parseAndConvertSiUnit("20kohm")).toEqual({
+    parsedUnit: "kohm",
+    unitOfValue: "Ω",
+    value: 20000,
+  })
 })
