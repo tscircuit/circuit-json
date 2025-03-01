@@ -3,6 +3,7 @@ import * as pcb from "./pcb"
 import * as sch from "./schematic"
 import * as src from "./source"
 import * as cad from "./cad"
+import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const any_circuit_element = z.union([
   // TODO source_config
