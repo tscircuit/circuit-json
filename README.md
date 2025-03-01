@@ -45,6 +45,7 @@ and is the primary way that Circuit JSON is defined and maintained.
     - [SourceComponentBase](#sourcecomponentbase)
     - [SourceLed](#sourceled)
     - [SourcePort](#sourceport)
+    - [SourceProjectMetadata](#sourceprojectmetadata)
     - [SourceSimpleBattery](#sourcesimplebattery)
     - [SourceSimpleCapacitor](#sourcesimplecapacitor)
     - [SourceSimpleChip](#sourcesimplechip)
@@ -200,6 +201,17 @@ interface SourcePort {
   source_port_id: string
   source_component_id: string
   subcircuit_id?: string
+}
+```
+
+### SourceProjectMetadata
+
+```typescript
+interface SourceProjectMetadata {
+  type: "source_project_metadata"
+  name?: string
+  software_used_string?: string
+  created_at?: string // ISO8601 timestamp
 }
 ```
 
