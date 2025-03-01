@@ -18,6 +18,8 @@ export const pcb_trace_route_point_via = z.object({
   route_type: z.literal("via"),
   x: distance,
   y: distance,
+  hole_diameter: distance.optional(),
+  outer_diameter: distance.optional(),
   from_layer: z.string(),
   to_layer: z.string(),
 })
@@ -43,26 +45,7 @@ export const pcb_trace = z
     route_order_index: z.number().optional(),
     should_round_corners: z.boolean().optional(),
     trace_length: z.number().optional(),
-    route: z.array(
-      z.union([
-        z.object({
-          route_type: z.literal("wire"),
-          x: distance,
-          y: distance,
-          width: distance,
-          start_pcb_port_id: z.string().optional(),
-          end_pcb_port_id: z.string().optional(),
-          layer: layer_ref,
-        }),
-        z.object({
-          route_type: z.literal("via"),
-          x: distance,
-          y: distance,
-          from_layer: z.string(),
-          to_layer: z.string(),
-        }),
-      ]),
-    ),
+    route: z.array(pcb_trace_route_point),
   })
   .describe("Defines a trace on the PCB")
 
@@ -83,6 +66,8 @@ export interface PcbTraceRoutePointVia {
   route_type: "via"
   x: Distance
   y: Distance
+  hole_diameter?: Distance
+  outer_diameter?: Distance
   from_layer: string
   to_layer: string
 }
