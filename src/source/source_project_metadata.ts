@@ -1,7 +1,7 @@
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import { z } from "zod"
 
-export interface ProjectMetadata {
+export interface SourceProjectMetadata {
   type: "source_project_metadata"
   name?: string
   software_used_string?: string
@@ -16,4 +16,4 @@ export const source_project_metadata = z.object({
 })
 
 export type InferredProjectMetadata = z.infer<typeof source_project_metadata>
-expectTypesMatch<ProjectMetadata, InferredProjectMetadata>(true)
+expectTypesMatch<SourceProjectMetadata, InferredProjectMetadata>(true)
