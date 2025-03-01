@@ -139,6 +139,6 @@ type ExpectedElementTypes =
   | "schematic_net_label"
   | "schematic_debug_object"
   | "schematic_voltage_probe"
-  | "cad_component";
-type ActualElementTypes = AnyCircuitElement["type"];
-expectTypesMatch<ActualElementTypes, ExpectedElementTypes>(true);
+  | "cad_component"
+type ActualElementTypes = AnyCircuitElement["type"]
+expectTypesMatch<ActualElementTypes, ExpectedElementTypes>(true)
