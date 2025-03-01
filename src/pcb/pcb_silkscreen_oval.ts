@@ -1,5 +1,6 @@
 import { z } from "zod"
-import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
+import { point, type Point } from "src/common"
+import { getPrimaryId } from "src/common/getPrimaryId" // Import the new function
 import {
   layer_ref,
   type LayerRef,
@@ -12,7 +13,7 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 export const pcb_silkscreen_oval = z
   .object({
     type: z.literal("pcb_silkscreen_oval"),
-    pcb_silkscreen_oval_id: getZodPrefixedIdWithDefault("pcb_silkscreen_oval"),
+    pcb_silkscreen_oval_id: getPrimaryId("pcb_silkscreen_oval"), // Use the new function
     pcb_component_id: z.string(),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
