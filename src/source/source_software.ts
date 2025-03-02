@@ -1,15 +1,19 @@
+import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
+
 export interface SourceSoftware {
+  type: "source_software"
   user_agent: string
   tscircuit_core_version: string
-  generated_at: string
+  created_at: string
 }
 
-export function createSourceSoftware(
-  tscircuit_core_version: string,
-): SourceSoftware {
-  return {
-    user_agent: `tscircuit/${tscircuit_core_version}`,
-    tscircuit_core_version,
-    generated_at: new Date().toISOString(),
-  }
-}
+export const source_software = z.object({
+  type: z.literal("source_software"),
+  user_agent: z.string(),
+  tscircuit_core_version: z.string(),
+  created_at: z.string().datetime(),
+})
+
+export type InferredSourceSoftware = z.infer<typeof source_software>
+expectTypesMatch<SourceSoftware, InferredSourceSoftware>(true)

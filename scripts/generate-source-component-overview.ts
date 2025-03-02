@@ -1,22 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk"
 import fs from "node:fs"
 import path from "node:path"
-import { createSourceSoftware } from "src/source"
-
-// Function to fetch the version from the npm registry
-async function fetchVersionFromNpm(packageName: string): Promise<string> {
-  const response = await fetch(
-    `https://registry.npmjs.org/${packageName}/latest`,
-  )
-  if (!response.ok) {
-    throw new Error("Network response was not ok")
-  }
-  const latestVersion = ((await response.json()) as { version: string }).version
-  return latestVersion
-}
-
-// Fetch the version of tscircuit/core from the npm registry
-const tscircuitCoreVersion = await fetchVersionFromNpm("@tscircuit/core")
 
 // Read all the files in the src/source directory
 const sourceDir = path.join(__dirname, "../src/source")
@@ -48,22 +32,11 @@ const codefence = resText
   .replace(/^ts\n/, "")
   .replace(/^typescript\n/, "")
 
-const sourceSoftwareInfo = createSourceSoftware(tscircuitCoreVersion)
-
-const formattedSourceSoftwareInfo = `
-> User agent: "${sourceSoftwareInfo.user_agent}"
-> @tscircuit/core version: "${sourceSoftwareInfo.tscircuit_core_version}"
-> Generated at: "${sourceSoftwareInfo.generated_at}"
-  `.trim()
-
 // Write to docs/SOURCE_COMPONENT_OVERVIEW.md
 const template = `# Circuit JSON Specification: Source Component Overview
 
 > Created at ${new Date().toISOString()}
 > Latest Version: https://github.com/tscircuit/circuit-json/blob/main/docs/SOURCE_COMPONENT_OVERVIEW.md
-
-Source Software Information:
-${formattedSourceSoftwareInfo}
 
 Any type below can be imported from \`circuit-json\`. Every type has a corresponding
 snake_case version which is a zod type that can be used to parse unknown json,
