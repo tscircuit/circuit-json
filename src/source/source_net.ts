@@ -10,6 +10,7 @@ export const source_net = z.object({
   is_digital_signal: z.boolean().optional(),
   is_analog_signal: z.boolean().optional(),
   trace_width: z.number().optional(),
+  subcircuit_id: z.string().optional(),
 })
 
 export type SourceNet = z.infer<typeof source_net>

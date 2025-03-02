@@ -30,6 +30,7 @@ export const any_circuit_element = z.union([
   src.source_simple_mosfet,
   src.source_simple_potentiometer,
   src.source_simple_push_button,
+  src.source_project_metadata,
   pcb.pcb_component,
   pcb.pcb_hole,
   pcb.pcb_missing_footprint_error,
