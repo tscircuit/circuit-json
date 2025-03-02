@@ -1,10 +1,11 @@
-import { z } from "zod"
-import { nanoid } from "nanoid"
+import { getZodPrefixedIdWithDefault } from "./getZodPrefixedIdWithDefault"
 
 /**
- * Returns the primary id schema for any element.
- * Automatically typechecked to ensure proper handling of new elements.
+ * Returns a validated primary id for any element.
  */
-export const getPrimaryId = (prefix: string) => {
-  return z.string().default(() => `${prefix}_${nanoid()}`)
+export const getPrimaryId = (prefix: string): string => {
+  const idSchema = getZodPrefixedIdWithDefault(prefix)
+  const id = idSchema.parse(undefined) // Generate the ID
+
+  return id
 }

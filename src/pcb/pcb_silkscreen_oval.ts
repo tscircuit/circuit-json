@@ -12,7 +12,7 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 export const pcb_silkscreen_oval = z
   .object({
     type: z.literal("pcb_silkscreen_oval"),
-    pcb_silkscreen_oval_id: getPrimaryId("pcb_silkscreen_oval"),
+    pcb_silkscreen_oval_id: z.string().default(() => getPrimaryId("pcb_plated_hole")),
     pcb_component_id: z.string(),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),

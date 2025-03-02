@@ -1,9 +1,8 @@
 import { z } from "zod"
 import { distance, type Distance } from "src/units"
 import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
-import { getZodPrefixedIdWithDefault } from "src/common"
+import { getPrimaryId } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
-import { getPrimaryId } from "src/common/getPrimaryId"
 
 const pcb_plated_hole_circle = z.object({
   type: z.literal("pcb_plated_hole"),
@@ -18,7 +17,7 @@ const pcb_plated_hole_circle = z.object({
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
-  pcb_plated_hole_id: getZodPrefixedIdWithDefault("pcb_plated_hole"),
+  pcb_plated_hole_id: z.string().default(() => getPrimaryId("pcb_plated_hole")),
 })
 
 /**
@@ -55,7 +54,7 @@ const pcb_plated_hole_oval = z.object({
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
-  pcb_plated_hole_id: getPrimaryId("pcb_plated_hole"),
+  pcb_plated_hole_id: z.string().default(() => getPrimaryId("pcb_plated_hole")),
 })
 
 /**
@@ -95,7 +94,7 @@ const pcb_circular_hole_with_rect_pad = z.object({
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
-  pcb_plated_hole_id: getZodPrefixedIdWithDefault("pcb_plated_hole"),
+  pcb_plated_hole_id: z.string().default(() => getPrimaryId("pcb_plated_hole")),
 })
 
 export interface PcbHoleCircularWithRectPad {
