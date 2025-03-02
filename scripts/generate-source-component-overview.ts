@@ -3,10 +3,20 @@ import fs from "node:fs"
 import path from "node:path"
 import { createSourceSoftware } from "src/source"
 
-const packageJson = JSON.parse(
-  fs.readFileSync(path.join(__dirname, "../package.json"), "utf8"),
-)
-const version = packageJson.version
+// Function to fetch the version from the npm registry
+async function fetchVersionFromNpm(packageName: string): Promise<string> {
+  const response = await fetch(
+    `https://registry.npmjs.org/${packageName}/latest`,
+  )
+  if (!response.ok) {
+    throw new Error("Network response was not ok")
+  }
+  const latestVersion = ((await response.json()) as { version: string }).version
+  return latestVersion
+}
+
+// Fetch the version of tscircuit/core from the npm registry
+const tscircuitCoreVersion = await fetchVersionFromNpm("@tscircuit/core")
 
 // Read all the files in the src/source directory
 const sourceDir = path.join(__dirname, "../src/source")
@@ -38,12 +48,12 @@ const codefence = resText
   .replace(/^ts\n/, "")
   .replace(/^typescript\n/, "")
 
-const sourceSoftwareInfo = createSourceSoftware(version)
+const sourceSoftwareInfo = createSourceSoftware(tscircuitCoreVersion)
 
 const formattedSourceSoftwareInfo = `
-  > user_agent: "${sourceSoftwareInfo.user_agent}"
-  > tscircuit_core_version: "${sourceSoftwareInfo.tscircuit_core_version}"
-  > generated_at: "${sourceSoftwareInfo.generated_at}"
+> User agent: "${sourceSoftwareInfo.user_agent}"
+> @tscircuit/core version: "${sourceSoftwareInfo.tscircuit_core_version}"
+> Generated at: "${sourceSoftwareInfo.generated_at}"
   `.trim()
 
 // Write to docs/SOURCE_COMPONENT_OVERVIEW.md
