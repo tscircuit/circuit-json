@@ -54,7 +54,7 @@ const pcb_plated_hole_oval = z.object({
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
-  pcb_plated_hole_id: z.string().default(() => getPrimaryId("pcb_plated_hole")),
+  pcb_plated_hole_id: z.string().default(getPrimaryId("pcb_plated_hole")),
 })
 
 /**

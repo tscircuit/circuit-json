@@ -14,7 +14,7 @@ export const pcb_silkscreen_oval = z
     type: z.literal("pcb_silkscreen_oval"),
     pcb_silkscreen_oval_id: z
       .string()
-      .default(() => getPrimaryId("pcb_plated_hole")),
+      .default(getPrimaryId("pcb_silkscreen_oval")),
     pcb_component_id: z.string(),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),

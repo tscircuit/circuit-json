@@ -5,7 +5,7 @@ import { getZodPrefixedIdWithDefault } from "./getZodPrefixedIdWithDefault"
  */
 export const getPrimaryId = (prefix: string): string => {
   const idSchema = getZodPrefixedIdWithDefault(prefix)
-  const id = idSchema.parse(undefined) // Generate the ID
+  const id = idSchema.parse(`${prefix}_default_id`) // Generate the ID using the prefix
 
   return id
 }
