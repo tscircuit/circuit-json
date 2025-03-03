@@ -12,7 +12,6 @@ export const pcb_silkscreen_text = z
     subcircuit_id: z.string().optional(),
     font: z.literal("tscircuit2024").default("tscircuit2024"),
     font_size: distance.default("0.2mm"),
-    stroke_width: length.optional().default("1mm"),
     pcb_component_id: z.string(),
     text: z.string(),
     ccw_rotation: z.number().optional(),
@@ -50,7 +49,6 @@ export interface PcbSilkscreenText {
     | "top_right"
     | "bottom_left"
     | "bottom_right"
-  stroke_width: Length
 }
 
 /**
