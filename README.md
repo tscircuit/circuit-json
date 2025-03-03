@@ -607,6 +607,26 @@ interface PcbPlatedHoleCircle {
   pcb_plated_hole_id: string
 }
 
+interface PcbHolePillWithRectPad {
+  type: "pcb_plated_hole"
+  shape: "pill_hole_with_rect_pad"
+  pcb_group_id?: string
+  subcircuit_id?: string
+  hole_shape: "pill"
+  pad_shape: "rect"
+  hole_width: number
+  hole_height: number
+  rect_pad_width: number
+  rect_pad_height: number
+  x: Distance
+  y: Distance
+  layers: LayerRef[]
+  port_hints?: string[]
+  pcb_component_id?: string
+  pcb_port_id?: string
+  pcb_plated_hole_id: string
+}
+
 interface PcbHoleCircularWithRectPad {
   type: "pcb_plated_hole"
   shape: "circular_hole_with_rect_pad"
