@@ -9,6 +9,7 @@ export interface SourceTrace {
   subcircuit_connectivity_map_key?: string
   max_length?: number
   display_name?: string
+  min_trace_thickness?: number
 }
 
 export const source_trace = z.object({
@@ -18,6 +19,7 @@ export const source_trace = z.object({
   connected_source_net_ids: z.array(z.string()),
   subcircuit_connectivity_map_key: z.string().optional(),
   max_length: z.number().optional(),
+  min_trace_thickness: z.number().optional(),
   display_name: z.string().optional(),
 })
 
