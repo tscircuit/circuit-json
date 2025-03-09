@@ -400,6 +400,7 @@ interface SourceTrace {
   subcircuit_connectivity_map_key?: string
   max_length?: number
   display_name?: string
+  min_trace_thickness?: number
 }
 ```
 
