@@ -107,6 +107,7 @@ const pcb_pill_hole_with_rect_pad = z.object({
   hole_height: z.number(),
   rect_pad_width: z.number(),
   rect_pad_height: z.number(),
+  radius: z.number(),
   x: distance,
   y: distance,
   layers: z.array(layer_ref),
@@ -126,6 +127,7 @@ export interface PcbHolePillWithRectPad {
   hole_height: number
   rect_pad_width: number
   rect_pad_height: number
+  radius: number
   x: Distance
   y: Distance
   layers: LayerRef[]
@@ -158,6 +160,7 @@ export const pcb_plated_hole = z.union([
   pcb_plated_hole_circle,
   pcb_plated_hole_oval,
   pcb_circular_hole_with_rect_pad,
+  pcb_pill_hole_with_rect_pad,
 ])
 export type PcbPlatedHole =
   | PcbPlatedHoleCircle
