@@ -10,6 +10,7 @@ export const any_circuit_element = z.union([
   // TODO schematic_config
   // TODO schematic_group
   src.source_trace,
+  src.source_software,
   src.source_port,
   src.any_source_component,
   src.source_led,
