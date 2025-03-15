@@ -77,7 +77,6 @@ export function getPrimaryId(element: any): string | undefined {
  * @returns true if the type is valid, otherwise false.
  */
 function isValidType(type: any): type is ExpectedElementTypes {
-  console.log("Checking type:", type) // Add a log to see what type is being checked
   return [
     "source_trace",
     "source_port",
