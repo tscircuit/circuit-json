@@ -400,6 +400,7 @@ interface SourceTrace {
   subcircuit_connectivity_map_key?: string
   max_length?: number
   display_name?: string
+  min_trace_thickness?: number
 }
 ```
 
@@ -598,6 +599,26 @@ interface PcbPlatedHoleCircle {
   subcircuit_id?: string
   outer_diameter: number
   hole_diameter: number
+  x: Distance
+  y: Distance
+  layers: LayerRef[]
+  port_hints?: string[]
+  pcb_component_id?: string
+  pcb_port_id?: string
+  pcb_plated_hole_id: string
+}
+
+interface PcbHolePillWithRectPad {
+  type: "pcb_plated_hole"
+  shape: "pill_hole_with_rect_pad"
+  pcb_group_id?: string
+  subcircuit_id?: string
+  hole_shape: "pill"
+  pad_shape: "rect"
+  hole_width: number
+  hole_height: number
+  rect_pad_width: number
+  rect_pad_height: number
   x: Distance
   y: Distance
   layers: LayerRef[]
