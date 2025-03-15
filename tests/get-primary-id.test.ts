@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { getPrimaryId } from "src/getPrimaryId"
+import { getPrimaryId } from "src/get_primary_id"
 
 test("getPrimaryId - Valid ID for pcb_smtpad", () => {
   const element = { type: "pcb_smtpad", pcb_smtpad_id: "pcb_smtpad_id_123" }
