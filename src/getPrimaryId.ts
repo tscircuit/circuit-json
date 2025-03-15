@@ -1,4 +1,6 @@
-type ExpectedElementTypes =
+import { expectTypesMatch } from "src/utils/expect-types-match"
+
+export type ExpectedElementTypes =
   | "source_trace"
   | "source_port"
   | "source_component"
@@ -44,15 +46,11 @@ type ExpectedElementTypes =
   | "schematic_voltage_probe"
   | "cad_component"
 
-/**
- * Function to get the primary ID of an element based on its type.
- * It checks for the correct field and suffix in the ID based on the element's type.
- * @param element - The circuit element object to validate.
- * @returns The ID string if found, otherwise a string indicating the error.
- */
 export function getPrimaryId(element: any): string | undefined {
+  expectTypesMatch<ExpectedElementTypes, typeof element.type>(element.type)
+
   if (!isValidType(element.type)) {
-    return `Invalid primaryId for type: '${element.type}'. Expected one of the valid types.` // Improved error message
+    return `Invalid primaryId for type: '${element.type}'. Expected one of the valid types.`
   }
 
   const expectedField = `${element.type}_id`
@@ -71,11 +69,6 @@ export function getPrimaryId(element: any): string | undefined {
   return `Invalid primaryId for type: '${element.type}'. Expected primaryId to include '${expectedField}'.`
 }
 
-/**
- * Validate if the element's type is valid.
- * @param type - The type of the circuit element to validate.
- * @returns true if the type is valid, otherwise false.
- */
 function isValidType(type: any): type is ExpectedElementTypes {
   return [
     "source_trace",
