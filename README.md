@@ -433,6 +433,7 @@ interface PcbBoard {
   num_layers: number
   center: Point
   outline?: Point[]
+  material: "fr4" | "fr1"
 }
 ```
 
