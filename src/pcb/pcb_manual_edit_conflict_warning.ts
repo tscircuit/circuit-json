@@ -5,7 +5,9 @@ import { expectTypesMatch } from "../utils/expect-types-match"
 export const pcb_manual_edit_conflict_warning = z
   .object({
     type: z.literal("pcb_manual_edit_conflict_warning"),
-    pcb_warning_id: getZodPrefixedIdWithDefault("pcb_manual_edit_conflict_warning"),
+    pcb_warning_id: getZodPrefixedIdWithDefault(
+      "pcb_manual_edit_conflict_warning",
+    ),
     message: z.string(),
     pcb_component_id: z.string(),
     pcb_group_id: z.string().optional(),

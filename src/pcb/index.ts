@@ -29,7 +29,7 @@ export * from "./pcb_keepout"
 export * from "./pcb_missing_footprint_error"
 export * from "./pcb_group"
 export * from "./pcb_autorouting_error"
-export * from "./pcb_manual_edit_conflict_warning" 
+export * from "./pcb_manual_edit_conflict_warning"
 
 import type { PcbComponent } from "./pcb_component"
 import type { PcbHole } from "./pcb_hole"
