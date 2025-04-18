@@ -87,7 +87,7 @@ and is the primary way that Circuit JSON is defined and maintained.
     - [PcbTrace](#pcbtrace)
     - [PcbTraceError](#pcbtraceerror)
     - [PcbTraceHint](#pcbtracehint)
-  - [Schematic Elements](#schematic-elements) - [SchematicBox](#schematicbox) - [SchematicComponent](#schematiccomponent) - [SchematicError](#schematicerror) - [SchematicLine](#schematicline) - [SchematicPath](#schematicpath) - [SchematicPort](#schematicport) - [SchematicText](#schematictext) - [SchematicTrace](#schematictrace) - [SchematicVoltageProbe](#schematicvoltageprobe)
+  - [Schematic Elements](#schematic-elements) - [SchematicBox](#schematicbox) - [SchematicComponent](#schematiccomponent) - [SchematicError](#schematicerror) - [SchematicLine](#schematicline) - [SchematicManualEditConflictWarning](#schematicmanualeditconflictwarning) - [SchematicPath](#schematicpath) - [SchematicPort](#schematicport) - [SchematicText](#schematictext) - [SchematicTrace](#schematictrace) - [SchematicVoltageProbe](#schematicvoltageprobe)
   <!-- toc:end -->
 
 ## Typescript Usage
@@ -986,6 +986,23 @@ interface SchematicLine {
   x2: number
   y1: number
   y2: number
+}
+```
+
+### SchematicManualEditConflictWarning
+
+Warning emitted when a component has both manual placement (via manualEdits) and explicit schX/schY coordinates
+
+```typescript
+/** Warning emitted when a component has both manual placement (via manualEdits) and explicit schX/schY coordinates */
+interface SchematicManualEditConflictWarning {
+  type: "schematic_manual_edit_conflict_warning"
+  schematic_warning_id: string
+  message: string
+  schematic_component_id: string
+  schematic_group_id?: string
+  subcircuit_id?: string
+  source_component_id: string
 }
 ```
 
