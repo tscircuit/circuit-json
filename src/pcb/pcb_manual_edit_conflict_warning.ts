@@ -5,7 +5,7 @@ import { expectTypesMatch } from "../utils/expect-types-match"
 export const pcb_manual_edit_conflict_warning = z
   .object({
     type: z.literal("pcb_manual_edit_conflict_warning"),
-    pcb_warning_id: getZodPrefixedIdWithDefault(
+    pcb_manual_edit_conflict_warning_id: getZodPrefixedIdWithDefault(
       "pcb_manual_edit_conflict_warning",
     ),
     message: z.string(),
@@ -30,7 +30,7 @@ type InferredPcbManualEditConflictWarning = z.infer<
  */
 export interface PcbManualEditConflictWarning {
   type: "pcb_manual_edit_conflict_warning"
-  pcb_warning_id: string
+  pcb_manual_edit_conflict_warning_id: string
   message: string
   pcb_component_id: string
   pcb_group_id?: string
