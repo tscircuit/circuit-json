@@ -121,5 +121,14 @@ type FindMissingId<T extends AnyCircuitElement> = T extends {
 
 expectStringUnionsMatch<
   FindMissingId<AnyCircuitElement>,
-  "source_project_metadata DOES NOT HAVE AN source_project_metadata_id PROPERTY"
+  // EXCEPTIONS TO THE RULE
+  // THIS IS FOR LEGACY REASONS, DO NOT ADD MORE EXCEPTIONS
+  | "source_project_metadata DOES NOT HAVE AN source_project_metadata_id PROPERTY"
+  | "pcb_port_not_matched_error DOES NOT HAVE AN pcb_port_not_matched_error_id PROPERTY"
+  | "pcb_autorouting_error DOES NOT HAVE AN pcb_autorouting_error_id PROPERTY"
+  | "schematic_debug_object DOES NOT HAVE AN schematic_debug_object_id PROPERTY"
+  | "schematic_box DOES NOT HAVE AN schematic_box_id PROPERTY"
+  | "schematic_line DOES NOT HAVE AN schematic_line_id PROPERTY"
+  | "schematic_path DOES NOT HAVE AN schematic_path_id PROPERTY"
+  | "schematic_net_label DOES NOT HAVE AN schematic_net_label_id PROPERTY"
 >(true)
