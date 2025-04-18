@@ -1,23 +1,71 @@
 import { z } from "zod"
-import { source_simple_resistor } from "./source_simple_resistor"
-import { source_simple_capacitor } from "./source_simple_capacitor"
-import { source_simple_diode } from "./source_simple_diode"
-import { source_simple_ground } from "./source_simple_ground"
+import {
+  source_simple_resistor,
+  type SourceSimpleResistor,
+} from "./source_simple_resistor"
+import {
+  source_simple_capacitor,
+  type SourceSimpleCapacitor,
+} from "./source_simple_capacitor"
+import {
+  source_simple_diode,
+  type SourceSimpleDiode,
+} from "./source_simple_diode"
+import {
+  source_simple_ground,
+  type SourceSimpleGround,
+} from "./source_simple_ground"
 import { source_simple_bug } from "./source_simple_bug"
-import { source_simple_chip } from "./source_simple_chip"
-import { source_led } from "./source_led"
-import { source_simple_power_source } from "./source_simple_power_source"
-import { source_simple_battery } from "./source_simple_battery"
-import { source_simple_inductor } from "./source_simple_inductor"
-import { source_simple_push_button } from "./source_simple_push_button"
-import { source_simple_potentiometer } from "./source_simple_potentiometer"
-import { source_simple_crystal } from "./source_simple_crystal"
-import { source_simple_pin_header } from "./source_simple_pin_header"
-import { source_simple_resonator } from "./source_simple_resonator"
-import { source_simple_transistor } from "./source_simple_transistor"
-import { source_simple_mosfet } from "./source_simple_mosfet"
-import { source_simple_switch } from "./source_simple_switch"
-import { source_project_metadata } from "./source_project_metadata"
+import { source_simple_chip, type SourceSimpleChip } from "./source_simple_chip"
+import { source_led, type SourceLed } from "./source_led"
+import {
+  source_simple_power_source,
+  type SourceSimplePowerSource,
+} from "./source_simple_power_source"
+import {
+  source_simple_battery,
+  type SourceSimpleBattery,
+} from "./source_simple_battery"
+import {
+  source_simple_inductor,
+  type SourceSimpleInductor,
+} from "./source_simple_inductor"
+import {
+  source_simple_push_button,
+  type SourceSimplePushButton,
+} from "./source_simple_push_button"
+import {
+  source_simple_potentiometer,
+  type SourceSimplePotentiometer,
+} from "./source_simple_potentiometer"
+import {
+  source_simple_crystal,
+  type SourceSimpleCrystal,
+} from "./source_simple_crystal"
+import {
+  source_simple_pin_header,
+  type SourceSimplePinHeader,
+} from "./source_simple_pin_header"
+import {
+  source_simple_resonator,
+  type SourceSimpleResonator,
+} from "./source_simple_resonator"
+import {
+  source_simple_transistor,
+  type SourceSimpleTransistor,
+} from "./source_simple_transistor"
+import {
+  source_simple_mosfet,
+  type SourceSimpleMosfet,
+} from "./source_simple_mosfet"
+import {
+  source_simple_switch,
+  type SourceSimpleSwitch,
+} from "./source_simple_switch"
+import {
+  source_project_metadata,
+  type SourceProjectMetadata,
+} from "./source_project_metadata"
 
 export const any_source_component = z.union([
   source_simple_resistor,
@@ -41,4 +89,27 @@ export const any_source_component = z.union([
   source_project_metadata,
 ])
 
+/**
+ * Deprecated: use `AnySourceElement` instead
+ */
 export type AnySourceComponent = z.infer<typeof any_source_component>
+
+export type AnySourceElement =
+  | SourceSimpleResistor
+  | SourceSimpleCapacitor
+  | SourceSimpleDiode
+  | SourceSimpleGround
+  | SourceSimpleChip
+  | SourceLed
+  | SourceSimplePowerSource
+  | SourceSimpleBattery
+  | SourceSimpleInductor
+  | SourceSimplePushButton
+  | SourceSimplePotentiometer
+  | SourceSimpleCrystal
+  | SourceSimplePinHeader
+  | SourceSimpleResonator
+  | SourceSimpleSwitch
+  | SourceSimpleTransistor
+  | SourceSimpleMosfet
+  | SourceProjectMetadata
