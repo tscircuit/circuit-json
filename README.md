@@ -69,7 +69,7 @@ and is the primary way that Circuit JSON is defined and maintained.
     - [PcbFabricationNoteText](#pcbfabricationnotetext)
     - [PcbGroup](#pcbgroup)
     - [PcbHole](#pcbhole)
-    - [PcbManualEditConflictError](#pcbmanualeditconflicterror)
+    - [PcbManualEditConflictWarning](#pcbmanualeditconflictwarning)
     - [PcbMissingFootprintError](#pcbmissingfootprinterror)
     - [PcbPlacementError](#pcbplacementerror)
     - [PcbPlatedHole](#pcbplatedhole)
@@ -540,15 +540,15 @@ interface PcbHoleCircleOrSquare {
 }
 ```
 
-### PcbManualEditConflictError
+### PcbManualEditConflictWarning
 
-Error emitted when a component has both manual placement (via manualEdits) and explicit pcbX/pcbY coordinates
+Warning emitted when a component has both manual placement (via manualEdits) and explicit pcbX/pcbY coordinates
 
 ```typescript
-/** Error emitted when a component has both manual placement (via manualEdits) and explicit pcbX/pcbY coordinates */
-interface PcbManualEditConflictError {
-  type: "pcb_manual_edit_conflict_error"
-  pcb_error_id: string
+/** Warning emitted when a component has both manual placement (via manualEdits) and explicit pcbX/pcbY coordinates */
+interface PcbManualEditConflictWarning {
+  type: "pcb_manual_edit_conflict_warning"
+  pcb_manual_edit_conflict_warning_id: string
   message: string
   pcb_component_id: string
   pcb_group_id?: string
@@ -997,7 +997,7 @@ Warning emitted when a component has both manual placement (via manualEdits) and
 /** Warning emitted when a component has both manual placement (via manualEdits) and explicit schX/schY coordinates */
 interface SchematicManualEditConflictWarning {
   type: "schematic_manual_edit_conflict_warning"
-  schematic_warning_id: string
+  schematic_manual_edit_conflict_warning_id: string
   message: string
   schematic_component_id: string
   schematic_group_id?: string
