@@ -27,9 +27,9 @@ export * from "./pcb_fabrication_note_text"
 export * from "./pcb_fabrication_note_path"
 export * from "./pcb_keepout"
 export * from "./pcb_missing_footprint_error"
-export * from "./pcb_manual_edit_conflict_error"
 export * from "./pcb_group"
 export * from "./pcb_autorouting_error"
+export * from "./pcb_manual_edit_conflict_warning" 
 
 import type { PcbComponent } from "./pcb_component"
 import type { PcbHole } from "./pcb_hole"
@@ -45,7 +45,7 @@ import type { PcbVia } from "./pcb_via"
 import type { PcbBoard } from "./pcb_board"
 import type { PcbPlacementError } from "./pcb_placement_error"
 import type { PcbMissingFootprintError } from "./pcb_missing_footprint_error"
-import type { PcbManualEditConflictError } from "./pcb_manual_edit_conflict_error"
+import type { PcbManualEditConflictWarning } from "./pcb_manual_edit_conflict_warning"
 import type { PcbTraceHint } from "./pcb_trace_hint"
 import type { PcbSilkscreenLine } from "./pcb_silkscreen_line"
 import type { PcbSilkscreenPath } from "./pcb_silkscreen_path"
@@ -65,7 +65,7 @@ export type PcbCircuitElement =
   | PcbTrace
   | PcbTraceError
   | PcbMissingFootprintError
-  | PcbManualEditConflictError
+  | PcbManualEditConflictWarning
   | PcbPortNotMatchedError
   | PcbVia
   | PcbBoard
