@@ -109,7 +109,9 @@ expectTypesMatch<
 >(true)
 
 // SAFETY CHECK: Every element has an id with the key name `${type}_id`
-type A<T extends AnyCircuitElement> = T extends { type: infer U extends string }
+type FindMissingId<T extends AnyCircuitElement> = T extends {
+  type: infer U extends string
+}
   ? T extends { [K in `${U}_id`]: infer V }
     ? V extends string
       ? never
@@ -118,6 +120,6 @@ type A<T extends AnyCircuitElement> = T extends { type: infer U extends string }
   : never
 
 expectStringUnionsMatch<
-  A<AnyCircuitElement>,
+  FindMissingId<AnyCircuitElement>,
   "source_project_metadata DOES NOT HAVE AN source_project_metadata_id PROPERTY"
 >(true)
