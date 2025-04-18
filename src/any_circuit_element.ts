@@ -3,6 +3,10 @@ import * as pcb from "./pcb"
 import * as sch from "./schematic"
 import * as src from "./source"
 import * as cad from "./cad"
+import {
+  expectStringUnionsMatch,
+  expectTypesMatch,
+} from "./utils/expect-types-match"
 
 export const any_circuit_element = z.union([
   // TODO source_config
@@ -95,3 +99,36 @@ export type AnySoupElementInput = AnyCircuitElementInput
  * This is the primary type used when working with circuit-json files or API responses.
  */
 export type CircuitJson = AnyCircuitElement[]
+
+// ------------------- SAFETY CHECKS -------------------
+
+// SAFETY CHECK: Every element has a type
+expectTypesMatch<
+  AnyCircuitElement extends { type: string } ? AnyCircuitElement : never,
+  AnyCircuitElement
+>(true)
+
+// SAFETY CHECK: Every element has an id with the key name `${type}_id`
+type FindMissingId<T extends AnyCircuitElement> = T extends {
+  type: infer U extends string
+}
+  ? T extends { [K in `${U}_id`]: infer V }
+    ? V extends string
+      ? never
+      : `${U} DOES NOT HAVE AN ${U}_id PROPERTY`
+    : `${U} DOES NOT HAVE AN ${U}_id PROPERTY`
+  : never
+
+expectStringUnionsMatch<
+  FindMissingId<AnyCircuitElement>,
+  // EXCEPTIONS TO THE RULE
+  // THIS IS FOR LEGACY REASONS, DO NOT ADD MORE EXCEPTIONS
+  | "source_project_metadata DOES NOT HAVE AN source_project_metadata_id PROPERTY"
+  | "pcb_port_not_matched_error DOES NOT HAVE AN pcb_port_not_matched_error_id PROPERTY"
+  | "pcb_autorouting_error DOES NOT HAVE AN pcb_autorouting_error_id PROPERTY"
+  | "schematic_debug_object DOES NOT HAVE AN schematic_debug_object_id PROPERTY"
+  | "schematic_box DOES NOT HAVE AN schematic_box_id PROPERTY"
+  | "schematic_line DOES NOT HAVE AN schematic_line_id PROPERTY"
+  | "schematic_path DOES NOT HAVE AN schematic_path_id PROPERTY"
+  | "schematic_net_label DOES NOT HAVE AN schematic_net_label_id PROPERTY"
+>(true)
