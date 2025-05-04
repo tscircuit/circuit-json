@@ -65,7 +65,7 @@ const pcb_solder_paste_rotated_rect = z.object({
 //
 const pcb_solder_paste_circular_plated_hole = z.object({
   type: z.literal("pcb_solder_paste"),
-  shape: z.literal("circular_plated_hole"),
+  shape: z.literal("circle"),
   pcb_solder_paste_id: getZodPrefixedIdWithDefault("pcb_solder_paste"),
   pcb_plated_hole_id: z.string().optional(),
   pcb_group_id: z.string().optional(),
@@ -81,13 +81,13 @@ const pcb_solder_paste_circular_plated_hole = z.object({
 })
 const pcb_solder_paste_pill_plated_hole = z.object({
   type: z.literal("pcb_solder_paste"),
-  shape: z.literal("pill_plated_hole"),
+  shape: z.literal("pill"),
   pcb_solder_paste_id: getZodPrefixedIdWithDefault("pcb_solder_paste"),
   pcb_plated_hole_id: z.string().optional(),
   pcb_group_id: z.string().optional(),
   subcircuit_id: z.string().optional(),
-  hole_width: z.number(),
-  hole_height: z.number(),
+  hole_width: z.number().optional(),
+  hole_height: z.number().optional(),
   outer_width: z.number(),
   outer_height: z.number(),
   x: distance,
@@ -125,8 +125,8 @@ const pcb_solder_paste_pill_hole_with_rect_pad = z.object({
   subcircuit_id: z.string().optional(),
   hole_shape: z.literal("pill"),
   pad_shape: z.literal("rect"),
-  hole_width: z.number(),
-  hole_height: z.number(),
+  hole_width: z.number().optional(),
+  hole_height: z.number().optional(),
   rect_pad_width: z.number(),
   rect_pad_height: z.number(),
   x: distance,
@@ -245,7 +245,7 @@ export interface PcbSolderPasteRotatedRect {
  */
 export interface PcbSolderPasteCircularPlatedHole {
   type: "pcb_solder_paste"
-  shape: "circular_plated_hole"
+  shape: "circle"
   pcb_solder_paste_id: string
   pcb_group_id?: string
   subcircuit_id?: string
@@ -264,12 +264,12 @@ export interface PcbSolderPasteCircularPlatedHole {
  */
 export interface PcbSolderPastePillPlatedHole {
   type: "pcb_solder_paste"
-  shape: "pill_plated_hole"
+  shape: "pill"
   pcb_solder_paste_id: string
   pcb_group_id?: string
   subcircuit_id?: string
-  hole_width: number
-  hole_height: number
+  hole_width?: number
+  hole_height?: number
   outer_width: number
   outer_height: number
   x: Distance
@@ -314,8 +314,8 @@ export interface PcbSolderPastePillHoleWithRectPad {
   subcircuit_id?: string
   hole_shape: "pill"
   pad_shape: "rect"
-  hole_width: number
-  hole_height: number
+  hole_width?: number
+  hole_height?: number
   rect_pad_width: number
   rect_pad_height: number
   x: Distance
