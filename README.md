@@ -37,10 +37,11 @@ and is the primary way that Circuit JSON is defined and maintained.
 <!-- toc:start -->
 
 - [Circuit JSON Specification `circuit-json`](#circuit-json-specification-circuit-json)
-
   - [Things You Can Do With Circuit JSON](#things-you-can-do-with-circuit-json)
+  - [Table of Contents](#table-of-contents)
   - [Typescript Usage](#typescript-usage)
-
+  - [Base Units](#base-units)
+  - [Element Prefixes](#element-prefixes)
   - [Source Components](#source-components)
     - [SourceComponentBase](#sourcecomponentbase)
     - [SourceLed](#sourceled)
@@ -87,8 +88,17 @@ and is the primary way that Circuit JSON is defined and maintained.
     - [PcbTrace](#pcbtrace)
     - [PcbTraceError](#pcbtraceerror)
     - [PcbTraceHint](#pcbtracehint)
-  - [Schematic Elements](#schematic-elements) - [SchematicBox](#schematicbox) - [SchematicComponent](#schematiccomponent) - [SchematicError](#schematicerror) - [SchematicLine](#schematicline) - [SchematicManualEditConflictWarning](#schematicmanualeditconflictwarning) - [SchematicPath](#schematicpath) - [SchematicPort](#schematicport) - [SchematicText](#schematictext) - [SchematicTrace](#schematictrace) - [SchematicVoltageProbe](#schematicvoltageprobe)
-  <!-- toc:end -->
+  - [Schematic Elements](#schematic-elements)
+    - [SchematicBox](#schematicbox)
+    - [SchematicComponent](#schematiccomponent)
+    - [SchematicError](#schematicerror)
+    - [SchematicLine](#schematicline)
+    - [SchematicManualEditConflictWarning](#schematicmanualeditconflictwarning)
+    - [SchematicPath](#schematicpath)
+    - [SchematicPort](#schematicport)
+    - [SchematicText](#schematictext)
+    - [SchematicTrace](#schematictrace)
+    - [SchematicVoltageProbe](#schematicvoltageprobe)
 
 ## Typescript Usage
 
