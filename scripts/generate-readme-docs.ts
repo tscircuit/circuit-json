@@ -150,6 +150,8 @@ async function generateDocs() {
     toc += `    - [${elem.name}](#${elem.name.toLowerCase()})\n`
   }
 
+  toc += "\n"
+
   let docs = ""
   docs += "## Source Components\n\n"
   for (const elem of sections.source.sort((a, b) =>
