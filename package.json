@@ -32,6 +32,7 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
+    "glob": "^11.0.2",
     "nanoid": "^5.0.7",
     "zod": "^3.23.6"
   }

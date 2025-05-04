@@ -136,19 +136,20 @@ async function generateDocs() {
     toc += `    - [${elem.name}](#${elem.name.toLowerCase()})\n`
   }
 
-  toc += "  - [PCB Elements](#pcb-elements)\n"
+  toc += "\n  - [PCB Elements](#pcb-elements)\n"
   for (const elem of sections.pcb.sort((a, b) =>
     a.name.localeCompare(b.name),
   )) {
     toc += `    - [${elem.name}](#${elem.name.toLowerCase()})\n`
   }
 
-  toc += "  - [Schematic Elements](#schematic-elements)\n"
+  toc += "\n  - [Schematic Elements](#schematic-elements)\n"
   for (const elem of sections.schematic.sort((a, b) =>
     a.name.localeCompare(b.name),
   )) {
     toc += `    - [${elem.name}](#${elem.name.toLowerCase()})\n`
   }
+  toc += "\n"
 
   let docs = ""
   docs += "## Source Components\n\n"

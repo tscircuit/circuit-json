@@ -38,7 +38,10 @@ and is the primary way that Circuit JSON is defined and maintained.
 
 - [Circuit JSON Specification `circuit-json`](#circuit-json-specification-circuit-json)
   - [Things You Can Do With Circuit JSON](#things-you-can-do-with-circuit-json)
+  - [Table of Contents](#table-of-contents)
   - [Typescript Usage](#typescript-usage)
+  - [Base Units](#base-units)
+  - [Element Prefixes](#element-prefixes)
   - [Source Components](#source-components)
     - [SourceComponentBase](#sourcecomponentbase)
     - [SourceLed](#sourceled)
