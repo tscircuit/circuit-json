@@ -87,7 +87,17 @@ and is the primary way that Circuit JSON is defined and maintained.
     - [PcbTrace](#pcbtrace)
     - [PcbTraceError](#pcbtraceerror)
     - [PcbTraceHint](#pcbtracehint)
-  - [Schematic Elements](#schematic-elements) - [SchematicBox](#schematicbox) - [SchematicComponent](#schematiccomponent) - [SchematicError](#schematicerror) - [SchematicLine](#schematicline) - [SchematicManualEditConflictWarning](#schematicmanualeditconflictwarning) - [SchematicPath](#schematicpath) - [SchematicPort](#schematicport) - [SchematicText](#schematictext) - [SchematicTrace](#schematictrace) - [SchematicVoltageProbe](#schematicvoltageprobe)
+  - [Schematic Elements](#schematic-elements)
+    - [SchematicBox](#schematicbox)
+    - [SchematicComponent](#schematiccomponent)
+    - [SchematicError](#schematicerror)
+    - [SchematicLine](#schematicline)
+    - [SchematicManualEditConflictWarning](#schematicmanualeditconflictwarning)
+    - [SchematicPath](#schematicpath)
+    - [SchematicPort](#schematicport)
+    - [SchematicText](#schematictext)
+    - [SchematicTrace](#schematictrace)
+    - [SchematicVoltageProbe](#schematicvoltageprobe)
   <!-- toc:end -->
 
 ## Typescript Usage
