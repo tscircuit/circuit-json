@@ -13,6 +13,7 @@ export interface SourceComponentBase {
   manufacturer_part_number?: string
   supplier_part_numbers?: Partial<Record<SupplierName, string[]>>
   display_value?: string
+  are_pins_interchangeable?: boolean
 }
 
 export const source_component_base = z.object({
@@ -25,6 +26,7 @@ export const source_component_base = z.object({
     .record(supplier_name, z.array(z.string()))
     .optional(),
   display_value: z.string().optional(),
+  are_pins_interchangeable: z.boolean().optional(),
 })
 
 type InferredSourceComponentBase = z.infer<typeof source_component_base>
