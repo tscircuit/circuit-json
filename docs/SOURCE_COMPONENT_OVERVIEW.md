@@ -1,6 +1,6 @@
 # Circuit JSON Specification: Source Component Overview
 
-> Created at 2024-11-12T19:07:05.930Z
+> Created at 2025-01-22T00:01:36.571Z
 > Latest Version: https://github.com/tscircuit/circuit-json/blob/main/docs/SOURCE_COMPONENT_OVERVIEW.md
 
 Any type below can be imported from `circuit-json`. Every type has a corresponding
@@ -9,9 +9,9 @@ for example `SourceComponent` has a `source_component.parse` function that you
 can also import.
 
 ```ts
-interface SourceSimpleChip {
+interface SourceComponentBase {
   type: "source_component"
-  ftype: "simple_chip"
+  ftype?: string
   source_component_id: string
   name: string
   manufacturer_part_number?: string
@@ -19,25 +19,33 @@ interface SourceSimpleChip {
   display_value?: string
 }
 
-interface SourceSimpleInductor {
-  type: "source_component"
+interface SourceSimpleTransistor extends SourceComponentBase {
+  ftype: "simple_transistor"
+  transistor_type: "npn" | "pnp"
+}
+
+interface SourceSimpleChip extends SourceComponentBase {
+  ftype: "simple_chip"
+}
+
+interface SourceSimpleCrystal extends SourceComponentBase {
+  ftype: "simple_crystal"
+  frequency: number
+  load_capacitance?: number
+}
+
+interface SourceSimpleInductor extends SourceComponentBase {
   ftype: "simple_inductor"
-  source_component_id: string
-  name: string
-  manufacturer_part_number?: string
-  supplier_part_numbers?: Partial<Record<string, string[]>>
-  display_value?: string
   inductance: number
 }
 
-interface SourceLed {
-  type: "source_component"
+interface SourceLed extends SourceComponentBase {
   ftype: "led"
-  source_component_id: string
-  name: string
-  manufacturer_part_number?: string
-  supplier_part_numbers?: Partial<Record<string, string[]>>
-  display_value?: string
+}
+
+interface SourceSimplePotentiometer extends SourceComponentBase {
+  ftype: "simple_potentiometer"
+  max_resistance: number
 }
 
 interface SourceTrace {
@@ -46,37 +54,29 @@ interface SourceTrace {
   connected_source_port_ids: string[]
   connected_source_net_ids: string[]
   subcircuit_connectivity_map_key?: string
+  max_length?: number
+  display_name?: string
 }
 
-interface SourceSimpleGround {
-  type: "source_component"
+interface SourceSimpleGround extends SourceComponentBase {
   ftype: "simple_ground"
-  source_component_id: string
-  name: string
-  manufacturer_part_number?: string
-  supplier_part_numbers?: Partial<Record<string, string[]>>
-  display_value?: string
 }
 
-interface SourceSimpleResistor {
-  type: "source_component"
+interface SourceSimpleResistor extends SourceComponentBase {
   ftype: "simple_resistor"
-  source_component_id: string
-  name: string
-  manufacturer_part_number?: string
-  supplier_part_numbers?: Partial<Record<string, string[]>>
-  display_value?: string
   resistance: number
+  display_resistance?: string
 }
 
-interface SourceSimpleBattery {
-  type: "source_component"
+interface SourceSimpleResonator extends SourceComponentBase {
+  ftype: "simple_resonator"
+  load_capacitance: number
+  equivalent_series_resistance?: number
+  frequency: number
+}
+
+interface SourceSimpleBattery extends SourceComponentBase {
   ftype: "simple_battery"
-  source_component_id: string
-  name: string
-  manufacturer_part_number?: string
-  supplier_part_numbers?: Partial<Record<string, string[]>>
-  display_value?: string
   capacity: number
 }
 
@@ -92,19 +92,25 @@ interface SourceNet {
   trace_width?: number
 }
 
-interface SourceSimpleDiode {
-  type: "source_component"
+interface SourceSimplePushButton extends SourceComponentBase {
+  ftype: "simple_push_button"
+}
+
+interface SourceSimpleMosfet extends SourceComponentBase {
+  ftype: "simple_mosfet"
+  channel_type: "n" | "p"
+  mosfet_mode: "enhancement" | "depletion"
+}
+
+interface SourceSimpleDiode extends SourceComponentBase {
   ftype: "simple_diode"
-  source_component_id: string
-  name: string
-  manufacturer_part_number?: string
-  supplier_part_numbers?: Partial<Record<string, string[]>>
-  display_value?: string
 }
 
 interface SourceGroup {
   type: "source_group"
   source_group_id: string
+  subcircuit_id?: string
+  is_subcircuit?: boolean
   name?: string
 }
 
@@ -117,35 +123,22 @@ interface SourcePort {
   source_component_id: string
 }
 
-interface SourceSimplePowerSource {
-  type: "source_component"
+interface SourceSimplePowerSource extends SourceComponentBase {
   ftype: "simple_power_source"
-  source_component_id: string
-  name: string
-  manufacturer_part_number?: string
-  supplier_part_numbers?: Partial<Record<string, string[]>>
-  display_value?: string
   voltage: number
 }
 
-interface SourceSimpleCapacitor {
-  type: "source_component"
-  ftype: "simple_capacitor"
-  source_component_id: string
-  name: string
-  manufacturer_part_number?: string
-  supplier_part_numbers?: Partial<Record<string, string[]>>
-  display_value?: string
-  capacitance: number
+interface SourceSimplePinHeader extends SourceComponentBase {
+  ftype: "simple_pin_header"
+  pin_count: number
+  gender?: "male" | "female"
 }
 
-interface SourceComponentBase {
-  type: "source_component"
-  ftype?: string
-  source_component_id: string
-  name: string
-  manufacturer_part_number?: string
-  supplier_part_numbers?: Partial<Record<string, string[]>>
-  display_value?: string
+interface SourceSimpleCapacitor extends SourceComponentBase {
+  ftype: "simple_capacitor"
+  capacitance: number
+  display_capacitance?: string
+  max_decoupling_trace_length?: number
 }
+
 ```
