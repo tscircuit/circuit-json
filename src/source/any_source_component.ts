@@ -118,3 +118,4 @@ export type AnySourceElement =
   | SourceSimpleTransistor
   | SourceSimpleMosfet
   | SourceProjectMetadata
+  | SourceMissingPropertyError

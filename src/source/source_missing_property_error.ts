@@ -8,7 +8,7 @@ export const source_missing_property_error = z
     source_missing_property_error_id: getZodPrefixedIdWithDefault(
       "source_missing_property_error",
     ),
-    source_id: z.string(),
+    source_component_id: z.string(),
     property_name: z.string(),
     error_type: z.literal("source_missing_property_error"),
     message: z.string(),
@@ -28,7 +28,7 @@ type InferredSourceMissingPropertyError = z.infer<
 export interface SourceMissingPropertyError {
   type: "source_missing_property_error"
   source_missing_property_error_id: string
-  source_id: string
+  source_component_id: string
   property_name: string
   error_type: "source_missing_property_error"
   message: string
