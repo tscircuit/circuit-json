@@ -44,6 +44,7 @@ and is the primary way that Circuit JSON is defined and maintained.
   - [Source Components](#source-components)
     - [SourceComponentBase](#sourcecomponentbase)
     - [SourceLed](#sourceled)
+    - [SourceMissingPropertyError](#sourcemissingpropertyerror)
     - [SourcePort](#sourceport)
     - [SourceProjectMetadata](#sourceprojectmetadata)
     - [SourceSimpleBattery](#sourcesimplebattery)
@@ -196,6 +197,22 @@ Defines an LED component that extends the simple diode
 /** Defines an LED component that extends the simple diode */
 interface SourceLed extends SourceComponentBase {
   ftype: "led"
+}
+```
+
+### SourceMissingPropertyError
+
+The source code is missing a property
+
+```typescript
+/** The source code is missing a property */
+interface SourceMissingPropertyError {
+  type: "source_missing_property_error"
+  source_missing_property_error_id: string
+  source_component_id: string
+  property_name: string
+  error_type: "source_missing_property_error"
+  message: string
 }
 ```
 
