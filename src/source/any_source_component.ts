@@ -66,6 +66,10 @@ import {
   source_project_metadata,
   type SourceProjectMetadata,
 } from "./source_project_metadata"
+import {
+  source_missing_property_error,
+  type SourceMissingPropertyError,
+} from "./source_missing_property_error"
 
 export const any_source_component = z.union([
   source_simple_resistor,
@@ -87,6 +91,7 @@ export const any_source_component = z.union([
   source_simple_transistor,
   source_simple_mosfet,
   source_project_metadata,
+  source_missing_property_error,
 ])
 
 /**
