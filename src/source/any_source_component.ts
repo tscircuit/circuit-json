@@ -70,6 +70,10 @@ import {
   source_missing_property_error,
   type SourceMissingPropertyError,
 } from "./source_missing_property_error"
+import {
+  source_failed_to_create_component_error,
+  type SourceFailedToCreateComponentError,
+} from "./source_failed_to_create_component_error"
 
 export const any_source_component = z.union([
   source_simple_resistor,
@@ -92,6 +96,7 @@ export const any_source_component = z.union([
   source_simple_mosfet,
   source_project_metadata,
   source_missing_property_error,
+  source_failed_to_create_component_error,
 ])
 
 /**
@@ -119,3 +124,4 @@ export type AnySourceElement =
   | SourceSimpleMosfet
   | SourceProjectMetadata
   | SourceMissingPropertyError
+  | SourceFailedToCreateComponentError
