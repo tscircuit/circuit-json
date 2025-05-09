@@ -43,6 +43,7 @@ and is the primary way that Circuit JSON is defined and maintained.
 
   - [Source Components](#source-components)
     - [SourceComponentBase](#sourcecomponentbase)
+    - [SourceFailedToCreateComponentError](#sourcefailedtocreatecomponenterror)
     - [SourceLed](#sourceled)
     - [SourceMissingPropertyError](#sourcemissingpropertyerror)
     - [SourcePort](#sourceport)
@@ -186,6 +187,22 @@ interface SourceComponentBase {
   supplier_part_numbers?: Partial<Record<SupplierName, string[]>>
   display_value?: string
   are_pins_interchangeable?: boolean
+}
+```
+
+### SourceFailedToCreateComponentError
+
+```typescript
+/** Error emitted when a component fails to be constructed.
+ * Contains details about the failure and prevents the component from being rendered. */
+interface SourceFailedToCreateComponentError {
+  type: "source_failed_to_create_component_error"
+  source_failed_to_create_component_error_id: string
+  source_component_id: string
+  message: string
+  component_name?: string
+  subcircuit_id?: string
+  parent_source_component_id?: string
 }
 ```
 
