@@ -13,6 +13,14 @@ export const source_failed_to_create_component_error = z
     parent_source_component_id: z.string().optional(),
     source_component_id: z.string(),
     message: z.string(),
+    pcb_center: z.object({
+      x: z.number().optional(),
+      y: z.number().optional(),
+    }).optional(),
+    schematic_center: z.object({
+      x: z.number().optional(),
+      y: z.number().optional(),
+    }).optional(),
   })
   .describe("Error emitted when a component fails to be constructed")
 
@@ -35,6 +43,14 @@ export interface SourceFailedToCreateComponentError {
   component_name?: string
   subcircuit_id?: string
   parent_source_component_id?: string
+  pcb_center?: {
+    x?: number
+    y?: number
+  }
+  schematic_center?: {
+    x?: number
+    y?: number
+  }
 }
 
 expectTypesMatch<
