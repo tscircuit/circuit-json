@@ -11,7 +11,6 @@ export const source_failed_to_create_component_error = z
     component_name: z.string().optional(),
     subcircuit_id: z.string().optional(),
     parent_source_component_id: z.string().optional(),
-    source_component_id: z.string(),
     message: z.string(),
     pcb_center: z
       .object({
