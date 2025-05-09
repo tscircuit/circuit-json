@@ -12,7 +12,16 @@ export interface SchematicText {
     y: number
   }
   rotation: number
-  anchor: "center" | "left" | "right" | "top" | "bottom"
+  anchor:
+    | "top_left"
+    | "top_center"
+    | "top_right"
+    | "center_left"
+    | "center"
+    | "center_right"
+    | "bottom_left"
+    | "bottom_center"
+    | "bottom_right"
   color: string
 }
 
@@ -27,7 +36,17 @@ export const schematic_text = z.object({
   }),
   rotation: z.number().default(0),
   anchor: z
-    .enum(["center", "left", "right", "top", "bottom"])
+    .enum([
+      "top_left",
+      "top_center",
+      "top_right",
+      "center_left",
+      "center",
+      "center_right",
+      "bottom_left",
+      "bottom_center",
+      "bottom_right",
+    ])
     .default("center"),
   color: z.string().default("#000000"),
 })
