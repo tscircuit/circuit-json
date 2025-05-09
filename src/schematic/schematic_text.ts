@@ -1,6 +1,10 @@
 import { z } from "zod"
 import { distance } from "../units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { ninePointAnchor } from "src/common/NinePointAnchor"
+import type { NinePointAnchor } from "src/common/NinePointAnchor"
+import type { FivePointAnchor } from "src/common/FivePointAnchor"
+import { fivePointAnchor } from "src/common/FivePointAnchor"
 
 export interface SchematicText {
   type: "schematic_text"
@@ -12,16 +16,7 @@ export interface SchematicText {
     y: number
   }
   rotation: number
-  anchor:
-    | "top_left"
-    | "top_center"
-    | "top_right"
-    | "center_left"
-    | "center"
-    | "center_right"
-    | "bottom_left"
-    | "bottom_center"
-    | "bottom_right"
+  anchor: NinePointAnchor | FivePointAnchor
   color: string
 }
 
@@ -36,17 +31,7 @@ export const schematic_text = z.object({
   }),
   rotation: z.number().default(0),
   anchor: z
-    .enum([
-      "top_left",
-      "top_center",
-      "top_right",
-      "center_left",
-      "center",
-      "center_right",
-      "bottom_left",
-      "bottom_center",
-      "bottom_right",
-    ])
+    .union([fivePointAnchor.describe("legacy"), ninePointAnchor])
     .default("center"),
   color: z.string().default("#000000"),
 })
