@@ -198,11 +198,13 @@ interface SourceComponentBase {
 interface SourceFailedToCreateComponentError {
   type: "source_failed_to_create_component_error"
   source_failed_to_create_component_error_id: string
-  source_component_id: string
   message: string
   component_name?: string
   subcircuit_id?: string
   parent_source_component_id?: string
+  pcb_center?: {
+  x?: number
+  y?: number
 }
 ```
 
