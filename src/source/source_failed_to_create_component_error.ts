@@ -41,7 +41,6 @@ type InferredSourceFailedToCreateComponentError = z.infer<
 export interface SourceFailedToCreateComponentError {
   type: "source_failed_to_create_component_error"
   source_failed_to_create_component_error_id: string
-  source_component_id: string
   message: string
   component_name?: string
   subcircuit_id?: string
