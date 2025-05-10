@@ -187,6 +187,7 @@ interface SourceComponentBase {
   supplier_part_numbers?: Partial<Record<SupplierName, string[]>>
   display_value?: string
   are_pins_interchangeable?: boolean
+  internally_connected_source_port_ids?: string[][]
 }
 ```
 
