@@ -1089,7 +1089,7 @@ interface SchematicPort {
 ```typescript
 interface SchematicText {
   type: "schematic_text"
-  schematic_component_id: string
+  schematic_component_id?: string
   schematic_text_id: string
   text: string
   position: {
