@@ -8,7 +8,7 @@ import { fivePointAnchor } from "src/common/FivePointAnchor"
 
 export interface SchematicText {
   type: "schematic_text"
-  schematic_component_id: string
+  schematic_component_id?: string
   schematic_text_id: string
   text: string
   position: {
@@ -22,7 +22,7 @@ export interface SchematicText {
 
 export const schematic_text = z.object({
   type: z.literal("schematic_text"),
-  schematic_component_id: z.string(),
+  schematic_component_id: z.string().optional(),
   schematic_text_id: z.string(),
   text: z.string(),
   position: z.object({
