@@ -26,8 +26,8 @@ export const schematic_text = z.object({
   schematic_text_id: z.string(),
   text: z.string(),
   position: z.object({
-    x: distance,
-    y: distance,
+    x: distance.default(0),
+    y: distance.default(0),
   }),
   rotation: z.number().default(0),
   anchor: z
