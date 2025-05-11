@@ -1093,6 +1093,7 @@ interface SchematicText {
   schematic_component_id?: string
   schematic_text_id: string
   text: string
+  font_size: number
   position: {
   x: number
   y: number
