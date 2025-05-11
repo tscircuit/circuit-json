@@ -11,6 +11,7 @@ export interface SchematicText {
   schematic_component_id?: string
   schematic_text_id: string
   text: string
+  font_size: number
   position: {
     x: number
     y: number
@@ -25,6 +26,7 @@ export const schematic_text = z.object({
   schematic_component_id: z.string().optional(),
   schematic_text_id: z.string(),
   text: z.string(),
+  font_size: z.number().default(1),
   position: z.object({
     x: distance.default(0),
     y: distance.default(0),
