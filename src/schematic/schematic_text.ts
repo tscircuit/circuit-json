@@ -28,8 +28,8 @@ export const schematic_text = z.object({
   text: z.string(),
   font_size: z.number().default(1),
   position: z.object({
-    x: distance.default(0),
-    y: distance.default(0),
+    x: distance,
+    y: distance,
   }),
   rotation: z.number().default(0),
   anchor: z
