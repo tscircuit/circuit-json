@@ -157,7 +157,7 @@ async function generateDocs() {
   for (const elem of sections.source.sort((a, b) =>
     a.name.localeCompare(b.name),
   )) {
-    const sourceFilePath = sourceFiles.find(file => {
+    const sourceFilePath = sourceFiles.find((file) => {
       const basename = path.basename(file, ".ts")
       const primaryName = basename
         .split("_")
@@ -165,9 +165,9 @@ async function generateDocs() {
         .join("")
       return primaryName === elem.name
     })
-    const githubSourceLink = sourceFilePath ?
-      `https://github.com/tscircuit/circuit-json/blob/main/${sourceFilePath}` :
-      null
+    const githubSourceLink = sourceFilePath
+      ? `https://github.com/tscircuit/circuit-json/blob/main/${sourceFilePath}`
+      : null
 
     docs += `### ${elem.name}\n\n`
     if (githubSourceLink) {
@@ -188,7 +188,7 @@ async function generateDocs() {
   for (const elem of sections.pcb.sort((a, b) =>
     a.name.localeCompare(b.name),
   )) {
-    const sourceFilePath = sourceFiles.find(file => {
+    const sourceFilePath = sourceFiles.find((file) => {
       const basename = path.basename(file, ".ts")
       const primaryName = basename
         .split("_")
@@ -196,9 +196,9 @@ async function generateDocs() {
         .join("")
       return primaryName === elem.name
     })
-    const githubSourceLink = sourceFilePath ?
-      `https://github.com/tscircuit/circuit-json/blob/main/${sourceFilePath}` :
-      null
+    const githubSourceLink = sourceFilePath
+      ? `https://github.com/tscircuit/circuit-json/blob/main/${sourceFilePath}`
+      : null
 
     docs += `### ${elem.name}\n\n`
     if (githubSourceLink) {
@@ -219,7 +219,7 @@ async function generateDocs() {
   for (const elem of sections.schematic.sort((a, b) =>
     a.name.localeCompare(b.name),
   )) {
-    const sourceFilePath = sourceFiles.find(file => {
+    const sourceFilePath = sourceFiles.find((file) => {
       const basename = path.basename(file, ".ts")
       const primaryName = basename
         .split("_")
@@ -227,9 +227,9 @@ async function generateDocs() {
         .join("")
       return primaryName === elem.name
     })
-    const githubSourceLink = sourceFilePath ?
-      `https://github.com/tscircuit/circuit-json/blob/main/${sourceFilePath}` :
-      null
+    const githubSourceLink = sourceFilePath
+      ? `https://github.com/tscircuit/circuit-json/blob/main/${sourceFilePath}`
+      : null
 
     docs += `### ${elem.name}\n\n`
     if (githubSourceLink) {
