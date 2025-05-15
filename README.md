@@ -35,7 +35,9 @@ and is the primary way that Circuit JSON is defined and maintained.
 ## Table of Contents
 
 <!-- toc:start -->
+
 - [Circuit JSON Specification `circuit-json`](#circuit-json-specification-circuit-json)
+
   - [Things You Can Do With Circuit JSON](#things-you-can-do-with-circuit-json)
   - [Typescript Usage](#typescript-usage)
 
@@ -170,6 +172,7 @@ There are 3 main element prefixes:
 - `schematic_` - e.g. `schematic_component`. Anything required to render the Schematic
 
 <!-- circuit-json-docs:start -->
+
 ## Source Components
 
 ### SourceComponentBase
@@ -589,7 +592,12 @@ interface PcbFabricationNoteText {
   text: string
   layer: VisibleLayer
   anchor_position: Point
-  anchor_alignment: | "center" | "top_left" | "top_right" | "bottom_left" | "bottom_right"
+  anchor_alignment:
+    | "center"
+    | "top_left"
+    | "top_right"
+    | "bottom_left"
+    | "bottom_right"
   color?: string
 }
 ```
@@ -940,7 +948,12 @@ interface PcbSilkscreenText {
   layer: LayerRef
   is_mirrored?: boolean
   anchor_position: Point
-  anchor_alignment: | "center" | "top_left" | "top_right" | "bottom_left" | "bottom_right"
+  anchor_alignment:
+    | "center"
+    | "top_left"
+    | "top_right"
+    | "bottom_left"
+    | "bottom_right"
 }
 ```
 
