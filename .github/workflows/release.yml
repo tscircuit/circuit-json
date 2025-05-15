@@ -23,7 +23,7 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun run build
       - name: Generate README docs
-        run: bun run generate-docs
+        run: bun run generate-readme
       - run: git add README.md
       - run: pver release
         env:
