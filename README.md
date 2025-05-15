@@ -4,7 +4,7 @@
 
 [![npm version](https://badge.fury.io/js/circuit-json.svg)](https://badge.fury.io/js/circuit-json)
 
-Circuit JSON a compiled intermediary low-level JSON circuit representation. It contains all the information needed to visually represent a schematic, PCB, produce Gerber files, produce bill of materials, run SPICE simulations, view warnings and more. It is designed to easily interoperate with a SQL database.
+Circuit JSON a low-level JSON-array circuit representation. It contains all the information needed to visually represent a schematic, PCB, produce Gerber files, produce bill of materials, run SPICE simulations, view warnings and more. It is designed to easily interoperate with a SQL database.
 
 You can think of Circuit JSON as a big JSON array of "Circuit Elements", each
 element can have references to other elements, for example a `source_component`
