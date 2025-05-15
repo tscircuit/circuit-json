@@ -22,7 +22,6 @@ and is the primary way that Circuit JSON is defined and maintained.
 
 https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
 
-
 ## Things You Can Do With Circuit JSON
 
 - Generate [Gerber files](https://github.com/tscircuit/circuit-json-to-gerber)
