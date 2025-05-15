@@ -35,9 +35,7 @@ and is the primary way that Circuit JSON is defined and maintained.
 ## Table of Contents
 
 <!-- toc:start -->
-
 - [Circuit JSON Specification `circuit-json`](#circuit-json-specification-circuit-json)
-
   - [Things You Can Do With Circuit JSON](#things-you-can-do-with-circuit-json)
   - [Typescript Usage](#typescript-usage)
 
@@ -172,10 +170,11 @@ There are 3 main element prefixes:
 - `schematic_` - e.g. `schematic_component`. Anything required to render the Schematic
 
 <!-- circuit-json-docs:start -->
-
 ## Source Components
 
 ### SourceComponentBase
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/base/source_component_base.ts)
 
 ```typescript
 interface SourceComponentBase {
@@ -192,6 +191,8 @@ interface SourceComponentBase {
 ```
 
 ### SourceFailedToCreateComponentError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_failed_to_create_component_error.ts)
 
 ```typescript
 /** Error emitted when a component fails to be constructed.
@@ -211,6 +212,8 @@ interface SourceFailedToCreateComponentError {
 
 ### SourceLed
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_led.ts)
+
 Defines an LED component that extends the simple diode
 
 ```typescript
@@ -221,6 +224,8 @@ interface SourceLed extends SourceComponentBase {
 ```
 
 ### SourceMissingPropertyError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_missing_property_error.ts)
 
 The source code is missing a property
 
@@ -237,6 +242,8 @@ interface SourceMissingPropertyError {
 ```
 
 ### SourcePort
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_port.ts)
 
 Defines a source port that can be connected to other components
 
@@ -255,6 +262,8 @@ interface SourcePort {
 
 ### SourceProjectMetadata
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_project_metadata.ts)
+
 ```typescript
 interface SourceProjectMetadata {
   type: "source_project_metadata"
@@ -265,6 +274,8 @@ interface SourceProjectMetadata {
 ```
 
 ### SourceSimpleBattery
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_battery.ts)
 
 Defines a simple battery component
 
@@ -277,6 +288,8 @@ interface SourceSimpleBattery extends SourceComponentBase {
 ```
 
 ### SourceSimpleCapacitor
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_capacitor.ts)
 
 Defines a simple capacitor component
 
@@ -293,6 +306,8 @@ interface SourceSimpleCapacitor extends SourceComponentBase {
 
 ### SourceSimpleChip
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_chip.ts)
+
 Defines a simple integrated circuit component
 
 ```typescript
@@ -303,6 +318,8 @@ interface SourceSimpleChip extends SourceComponentBase {
 ```
 
 ### SourceSimpleCrystal
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_crystal.ts)
 
 Defines a simple crystal oscillator component
 
@@ -317,6 +334,8 @@ interface SourceSimpleCrystal extends SourceComponentBase {
 
 ### SourceSimpleDiode
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_diode.ts)
+
 Defines a simple diode component
 
 ```typescript
@@ -327,6 +346,8 @@ interface SourceSimpleDiode extends SourceComponentBase {
 ```
 
 ### SourceSimpleGround
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_ground.ts)
 
 Defines a simple ground component
 
@@ -339,6 +360,8 @@ interface SourceSimpleGround extends SourceComponentBase {
 
 ### SourceSimpleInductor
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_inductor.ts)
+
 Defines a simple inductor component
 
 ```typescript
@@ -350,6 +373,8 @@ interface SourceSimpleInductor extends SourceComponentBase {
 ```
 
 ### SourceSimpleMosfet
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_mosfet.ts)
 
 ```typescript
 /** Defines a simple mosfet component
@@ -365,6 +390,8 @@ interface SourceSimpleMosfet extends SourceComponentBase {
 
 ### SourceSimplePowerSource
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_power_source.ts)
+
 Defines a simple power source component
 
 ```typescript
@@ -377,6 +404,8 @@ interface SourceSimplePowerSource extends SourceComponentBase {
 
 ### SourceSimplePushButton
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_push_button.ts)
+
 Defines a simple push button component
 
 ```typescript
@@ -387,6 +416,8 @@ interface SourceSimplePushButton extends SourceComponentBase {
 ```
 
 ### SourceSimpleResistor
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_resistor.ts)
 
 Defines a simple resistor component
 
@@ -400,6 +431,8 @@ interface SourceSimpleResistor extends SourceComponentBase {
 ```
 
 ### SourceSimpleResonator
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_resonator.ts)
 
 Defines a simple resonator component
 
@@ -415,6 +448,8 @@ interface SourceSimpleResonator extends SourceComponentBase {
 
 ### SourceSimpleSwitch
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_switch.ts)
+
 Defines a simple switch component
 
 ```typescript
@@ -425,6 +460,8 @@ interface SourceSimpleSwitch extends SourceComponentBase {
 ```
 
 ### SourceSimpleTransistor
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_transistor.ts)
 
 ```typescript
 /** Defines a simple transistor component
@@ -438,6 +475,8 @@ interface SourceSimpleTransistor extends SourceComponentBase {
 ```
 
 ### SourceTrace
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_trace.ts)
 
 ```typescript
 interface SourceTrace {
@@ -457,6 +496,8 @@ interface SourceTrace {
 
 ### PcbAutoroutingError
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_autorouting_error.ts)
+
 ```typescript
 interface PcbAutoroutingErrorInterface {
   type: "pcb_autorouting_error"
@@ -466,6 +507,8 @@ interface PcbAutoroutingErrorInterface {
 ```
 
 ### PcbBoard
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_board.ts)
 
 Defines the board outline of the PCB
 
@@ -488,6 +531,8 @@ interface PcbBoard {
 
 ### PcbComponent
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_component.ts)
+
 Defines a component on the PCB
 
 ```typescript
@@ -507,6 +552,8 @@ interface PcbComponent {
 
 ### PcbFabricationNotePath
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_fabrication_note_path.ts)
+
 Defines a fabrication path on the PCB for fabricators or assemblers
 
 ```typescript
@@ -525,6 +572,8 @@ interface PcbFabricationNotePath {
 
 ### PcbFabricationNoteText
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_fabrication_note_text.ts)
+
 Defines a fabrication note in text on the PCB, useful for leaving notes for assemblers or fabricators
 
 ```typescript
@@ -540,17 +589,14 @@ interface PcbFabricationNoteText {
   text: string
   layer: VisibleLayer
   anchor_position: Point
-  anchor_alignment:
-    | "center"
-    | "top_left"
-    | "top_right"
-    | "bottom_left"
-    | "bottom_right"
+  anchor_alignment: | "center" | "top_left" | "top_right" | "bottom_left" | "bottom_right"
   color?: string
 }
 ```
 
 ### PcbGroup
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_group.ts)
 
 Defines a group of components on the PCB
 
@@ -573,6 +619,8 @@ interface PcbGroup {
 
 ### PcbHole
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_hole.ts)
+
 Defines a circular or square hole on the PCB
 
 ```typescript
@@ -591,6 +639,8 @@ interface PcbHoleCircleOrSquare {
 
 ### PcbManualEditConflictWarning
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_manual_edit_conflict_warning.ts)
+
 Warning emitted when a component has both manual placement (via manualEdits) and explicit pcbX/pcbY coordinates
 
 ```typescript
@@ -607,6 +657,8 @@ interface PcbManualEditConflictWarning {
 ```
 
 ### PcbMissingFootprintError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_missing_footprint_error.ts)
 
 Defines a placement error on the PCB
 
@@ -625,6 +677,8 @@ interface PcbMissingFootprintError {
 
 ### PcbPlacementError
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_placement_error.ts)
+
 Defines a placement error on the PCB
 
 ```typescript
@@ -637,6 +691,8 @@ interface PcbPlacementError {
 ```
 
 ### PcbPlatedHole
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_plated_hole.ts)
 
 Defines a circular plated hole on the PCB
 
@@ -700,6 +756,8 @@ interface PcbHoleCircularWithRectPad {
 
 ### PcbPort
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_port.ts)
+
 Defines a port on the PCB
 
 ```typescript
@@ -719,6 +777,8 @@ interface PcbPort {
 
 ### PcbPortNotMatchedError
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_port_not_matched_error.ts)
+
 Defines a trace error on the PCB where a port is not matched
 
 ```typescript
@@ -732,6 +792,8 @@ interface PcbPortNotMatchedError {
 ```
 
 ### PcbSilkscreenCircle
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_silkscreen_circle.ts)
 
 Defines a silkscreen circle on the PCB
 
@@ -751,6 +813,8 @@ interface PcbSilkscreenCircle {
 ```
 
 ### PcbSilkscreenLine
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_silkscreen_line.ts)
 
 Defines a silkscreen line on the PCB
 
@@ -773,6 +837,8 @@ interface PcbSilkscreenLine {
 
 ### PcbSilkscreenOval
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_silkscreen_oval.ts)
+
 Defines a silkscreen oval on the PCB
 
 ```typescript
@@ -792,6 +858,8 @@ interface PcbSilkscreenOval {
 
 ### PcbSilkscreenPath
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_silkscreen_path.ts)
+
 Defines a silkscreen path on the PCB
 
 ```typescript
@@ -809,6 +877,8 @@ interface PcbSilkscreenPath {
 ```
 
 ### PcbSilkscreenPill
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_silkscreen_pill.ts)
 
 Defines a silkscreen pill on the PCB
 
@@ -828,6 +898,8 @@ interface PcbSilkscreenPill {
 ```
 
 ### PcbSilkscreenRect
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_silkscreen_rect.ts)
 
 Defines a silkscreen rect on the PCB
 
@@ -849,6 +921,8 @@ interface PcbSilkscreenRect {
 
 ### PcbSilkscreenText
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_silkscreen_text.ts)
+
 Defines silkscreen text on the PCB
 
 ```typescript
@@ -866,16 +940,13 @@ interface PcbSilkscreenText {
   layer: LayerRef
   is_mirrored?: boolean
   anchor_position: Point
-  anchor_alignment:
-    | "center"
-    | "top_left"
-    | "top_right"
-    | "bottom_left"
-    | "bottom_right"
+  anchor_alignment: | "center" | "top_left" | "top_right" | "bottom_left" | "bottom_right"
 }
 ```
 
 ### PcbSolderPaste
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_solder_paste.ts)
 
 Defines solderpaste on the PCB
 
@@ -897,6 +968,8 @@ interface PcbSolderPasteCircle {
 ```
 
 ### PcbText
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_text.ts)
 
 Defines text on the PCB
 
@@ -920,6 +993,8 @@ interface PcbText {
 
 ### PcbTrace
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_trace.ts)
+
 ```typescript
 interface PcbTraceRoutePointWire {
   route_type: "wire"
@@ -933,6 +1008,8 @@ interface PcbTraceRoutePointWire {
 ```
 
 ### PcbTraceError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_trace_error.ts)
 
 Defines a trace error on the PCB
 
@@ -953,6 +1030,8 @@ interface PcbTraceError {
 
 ### PcbTraceHint
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_trace_hint.ts)
+
 A hint that can be used during generation of a PCB trace.
 
 ```typescript
@@ -970,6 +1049,8 @@ interface PcbTraceHint {
 
 ### SchematicBox
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_box.ts)
+
 ```typescript
 interface SchematicBox {
   type: "schematic_box"
@@ -982,6 +1063,8 @@ interface SchematicBox {
 ```
 
 ### SchematicComponent
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_component.ts)
 
 ```typescript
 interface SchematicComponent {
@@ -1013,6 +1096,8 @@ interface SchematicPortArrangementBySides {
 
 ### SchematicError
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_error.ts)
+
 ```typescript
 interface SchematicError {
   type: "schematic_error"
@@ -1023,6 +1108,8 @@ interface SchematicError {
 ```
 
 ### SchematicLine
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_line.ts)
 
 ```typescript
 /** Defines a line on the schematic, this can be used for adding arbitrary lines
@@ -1039,6 +1126,8 @@ interface SchematicLine {
 ```
 
 ### SchematicManualEditConflictWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_manual_edit_conflict_warning.ts)
 
 Warning emitted when a component has both manual placement (via manualEdits) and explicit schX/schY coordinates
 
@@ -1057,6 +1146,8 @@ interface SchematicManualEditConflictWarning {
 
 ### SchematicPath
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_path.ts)
+
 ```typescript
 interface SchematicPath {
   type: "schematic_path"
@@ -1068,6 +1159,8 @@ interface SchematicPath {
 ```
 
 ### SchematicPort
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_port.ts)
 
 ```typescript
 interface SchematicPort {
@@ -1087,6 +1180,8 @@ interface SchematicPort {
 
 ### SchematicText
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_text.ts)
+
 ```typescript
 interface SchematicText {
   type: "schematic_text"
@@ -1102,6 +1197,8 @@ interface SchematicText {
 
 ### SchematicTrace
 
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_trace.ts)
+
 ```typescript
 interface SchematicTraceEdge {
   from: {
@@ -1111,6 +1208,8 @@ interface SchematicTraceEdge {
 ```
 
 ### SchematicVoltageProbe
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_voltage_probe.ts)
 
 ```typescript
 interface SchematicVoltageProbe {
