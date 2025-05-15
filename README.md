@@ -1,6 +1,6 @@
 # Circuit JSON Specification `circuit-json`
 
-[tscircuit](https://github.com/tscircuit/tscircuit) · [discord](https://tscircuit.com/join)
+[tscircuit](https://github.com/tscircuit/tscircuit) · [discord](https://tscircuit.com/join) · [circuit json viewer](https://circuitjson.com/)
 
 [![npm version](https://badge.fury.io/js/circuit-json.svg)](https://badge.fury.io/js/circuit-json)
 
@@ -21,6 +21,8 @@ This module has the zod definitions and conversion functions for using circuit j
 and is the primary way that Circuit JSON is defined and maintained.
 
 https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
+
+> To quickly generate Circuit JSON with tscircuit, use [tscircuit/eval](https://github.com/tscircuit/eval)
 
 ## Things You Can Do With Circuit JSON
 
