@@ -158,6 +158,7 @@ export const pcb_plated_hole = z.union([
   pcb_plated_hole_circle,
   pcb_plated_hole_oval,
   pcb_circular_hole_with_rect_pad,
+  pcb_pill_hole_with_rect_pad,
 ])
 export type PcbPlatedHole =
   | PcbPlatedHoleCircle
@@ -172,6 +173,10 @@ expectTypesMatch<PcbPlatedHoleOval, z.infer<typeof pcb_plated_hole_oval>>(true)
 expectTypesMatch<
   PcbHoleCircularWithRectPad,
   z.infer<typeof pcb_circular_hole_with_rect_pad>
+>(true)
+expectTypesMatch<
+  PcbHolePillWithRectPad,
+  z.infer<typeof pcb_pill_hole_with_rect_pad>
 >(true)
 /**
  * @deprecated use PcbPlatedHole
