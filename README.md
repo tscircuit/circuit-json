@@ -97,6 +97,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicBox](#schematicbox)
     - [SchematicComponent](#schematiccomponent)
     - [SchematicError](#schematicerror)
+    - [SchematicGroup](#schematicgroup)
     - [SchematicLine](#schematicline)
     - [SchematicManualEditConflictWarning](#schematicmanualeditconflictwarning)
     - [SchematicPath](#schematicpath)
@@ -1121,6 +1122,29 @@ interface SchematicError {
   schematic_error_id: string
   error_type: "schematic_port_not_found"
   message: string
+}
+```
+
+### SchematicGroup
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_group.ts)
+
+Defines a group of components on the schematic
+
+```typescript
+/** Defines a group of components on the schematic */
+interface SchematicGroup {
+  type: "schematic_group"
+  schematic_group_id: string
+  source_group_id: string
+  is_subcircuit?: boolean
+  subcircuit_id?: string
+  width: Length
+  height: Length
+  center: Point
+  schematic_component_ids: string[]
+  name?: string
+  description?: string
 }
 ```
 
