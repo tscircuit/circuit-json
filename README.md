@@ -71,6 +71,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbAutoroutingError](#pcbautoroutingerror)
     - [PcbBoard](#pcbboard)
     - [PcbComponent](#pcbcomponent)
+    - [PcbCutout](#pcbcutout)
     - [PcbFabricationNotePath](#pcbfabricationnotepath)
     - [PcbFabricationNoteText](#pcbfabricationnotetext)
     - [PcbGroup](#pcbgroup)
@@ -555,6 +556,27 @@ interface PcbComponent {
   rotation: Rotation
   width: Length
   height: Length
+}
+```
+
+### PcbCutout
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_cutout.ts)
+
+Defines a rectangular cutout on the PCB.
+
+```typescript
+/** Defines a rectangular cutout on the PCB. */
+interface PcbCutoutRect {
+  type: "pcb_cutout"
+  pcb_cutout_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  shape: "rect"
+  center: Point
+  width: Length
+  height: Length
+  rotation?: Rotation
 }
 ```
 
