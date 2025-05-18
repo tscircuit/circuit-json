@@ -62,6 +62,7 @@ export const any_circuit_element = z.union([
   pcb.pcb_fabrication_note_path,
   pcb.pcb_fabrication_note_text,
   pcb.pcb_autorouting_error,
+  pcb.pcb_cutout,
   sch.schematic_box,
   sch.schematic_text,
   sch.schematic_line,
