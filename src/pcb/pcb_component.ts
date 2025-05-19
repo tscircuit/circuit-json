@@ -15,6 +15,7 @@ export const pcb_component = z
     width: length,
     height: length,
     subcircuit_id: z.string().optional(),
+    pcb_group_id: z.string().optional(),
   })
   .describe("Defines a component on the PCB")
 
@@ -34,6 +35,7 @@ export interface PcbComponent {
   rotation: Rotation
   width: Length
   height: Length
+  pcb_group_id?: string
 }
 
 /**
