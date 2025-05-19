@@ -196,6 +196,7 @@ interface SourceComponentBase {
   display_value?: string
   are_pins_interchangeable?: boolean
   internally_connected_source_port_ids?: string[][]
+  source_group_id?: string
 }
 ```
 
@@ -556,6 +557,7 @@ interface PcbComponent {
   rotation: Rotation
   width: Length
   height: Length
+  pcb_group_id?: string
 }
 ```
 
