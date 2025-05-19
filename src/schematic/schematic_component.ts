@@ -55,6 +55,7 @@ export interface SchematicComponent {
   port_arrangement?: SchematicPortArrangement
   port_labels?: Record<string, string>
   symbol_display_value?: string
+  subcircuit_id?: string
   schematic_group_id?: string
 }
 
@@ -124,6 +125,7 @@ export const schematic_component = z.object({
   port_arrangement: port_arrangement.optional(),
   port_labels: z.record(z.string()).optional(),
   symbol_display_value: z.string().optional(),
+  subcircuit_id: z.string().optional(),
   schematic_group_id: z.string().optional(),
 })
 
