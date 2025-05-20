@@ -101,6 +101,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicGroup](#schematicgroup)
     - [SchematicLine](#schematicline)
     - [SchematicManualEditConflictWarning](#schematicmanualeditconflictwarning)
+    - [SchematicNetLabel](#schematicnetlabel)
     - [SchematicPath](#schematicpath)
     - [SchematicPort](#schematicport)
     - [SchematicText](#schematictext)
@@ -1206,6 +1207,24 @@ interface SchematicManualEditConflictWarning {
   schematic_group_id?: string
   subcircuit_id?: string
   source_component_id: string
+}
+```
+
+### SchematicNetLabel
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_net_label.ts)
+
+```typescript
+interface SchematicNetLabel {
+  type: "schematic_net_label"
+  schematic_net_label_id: string
+  schematic_trace_id?: string
+  source_net_id: string
+  center: Point
+  anchor_position?: Point | undefined
+  anchor_side: "top" | "bottom" | "left" | "right"
+  text: string
+  symbol_name?: string | undefined
 }
 ```
 
