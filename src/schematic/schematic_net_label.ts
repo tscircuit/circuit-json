@@ -1,8 +1,23 @@
 import { z } from "zod"
-import { point } from "../common/point"
+import { point, type Point } from "../common/point"
+import { expectTypesMatch } from "src/utils/expect-types-match"
+
+export interface SchematicNetLabel {
+  type: "schematic_net_label"
+  schematic_net_label_id: string
+  schematic_trace_id?: string
+  source_net_id: string
+  center: Point
+  anchor_position?: Point | undefined
+  anchor_side: "top" | "bottom" | "left" | "right"
+  text: string
+  symbol_name?: string | undefined
+}
 
 export const schematic_net_label = z.object({
   type: z.literal("schematic_net_label"),
+  schematic_net_label_id: z.string(),
+  schematic_trace_id: z.string().optional(),
   source_net_id: z.string(),
   center: point,
   anchor_position: point.optional(),
@@ -12,4 +27,6 @@ export const schematic_net_label = z.object({
 })
 
 export type SchematicNetLabelInput = z.input<typeof schematic_net_label>
-export type SchematicNetLabel = z.infer<typeof schematic_net_label>
+export type InferredSchematicNetLabel = z.infer<typeof schematic_net_label>
+
+expectTypesMatch<SchematicNetLabel, InferredSchematicNetLabel>(true)
