@@ -130,5 +130,4 @@ expectStringUnionsMatch<
   | "schematic_box DOES NOT HAVE AN schematic_box_id PROPERTY"
   | "schematic_line DOES NOT HAVE AN schematic_line_id PROPERTY"
   | "schematic_path DOES NOT HAVE AN schematic_path_id PROPERTY"
-  | "schematic_net_label DOES NOT HAVE AN schematic_net_label_id PROPERTY"
 >(true)
