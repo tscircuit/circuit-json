@@ -11,6 +11,7 @@ import {
   source_simple_diode,
   type SourceSimpleDiode,
 } from "./source_simple_diode"
+import { source_simple_led, type SourceSimpleLed } from "./source_simple_led"
 import {
   source_simple_ground,
   type SourceSimpleGround,
@@ -79,6 +80,7 @@ export const any_source_component = z.union([
   source_simple_resistor,
   source_simple_capacitor,
   source_simple_diode,
+  source_simple_led,
   source_simple_ground,
   source_simple_chip,
   source_simple_bug,
@@ -108,6 +110,7 @@ export type AnySourceElement =
   | SourceSimpleResistor
   | SourceSimpleCapacitor
   | SourceSimpleDiode
+  | SourceSimpleLed
   | SourceSimpleGround
   | SourceSimpleChip
   | SourceLed
