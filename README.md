@@ -1219,6 +1219,7 @@ interface SchematicNetLabel {
   type: "schematic_net_label"
   schematic_net_label_id: string
   schematic_trace_id?: string
+  source_trace_id?: string
   source_net_id: string
   center: Point
   anchor_position?: Point | undefined
