@@ -10,6 +10,7 @@ export interface SchematicBox {
   padding?: number
   title?: string
   overlay: string[]
+  stroke_style: "solid" | "dashed"
   x: number
   y: number
 }
@@ -23,6 +24,7 @@ export const schematic_box = z
     padding: distance.optional(),
     title: z.string().optional(),
     overlay: z.string().array(),
+    stroke_style: z.enum(["solid", "dashed"]).default("solid"),
     x: distance,
     y: distance,
   })
