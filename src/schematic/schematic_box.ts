@@ -7,6 +7,9 @@ export interface SchematicBox {
   schematic_component_id: string
   width: number
   height: number
+  padding?: number
+  title?: string
+  overlay?: string
   x: number
   y: number
 }
@@ -17,6 +20,9 @@ export const schematic_box = z
     schematic_component_id: z.string(),
     width: distance,
     height: distance,
+    padding: distance.optional(),
+    title: z.string().optional(),
+    overlay: z.string().optional(),
     x: distance,
     y: distance,
   })
