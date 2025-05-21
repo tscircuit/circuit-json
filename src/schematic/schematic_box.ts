@@ -23,7 +23,7 @@ export const schematic_box = z
     height: distance,
     padding: distance.optional(),
     title: z.string().optional(),
-    overlay: z.string().array(),
+    overlay: z.array(z.string()),
     stroke_style: z.enum(["solid", "dashed"]).default("solid"),
     x: distance,
     y: distance,
