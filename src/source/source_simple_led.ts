@@ -7,6 +7,8 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const source_simple_led = source_component_base.extend({
   ftype: z.literal("simple_led"),
+  color: z.string().optional(),
+  wavelength: z.string().optional(),
 })
 
 export type SourceSimpleLedInput = z.input<typeof source_simple_led>
@@ -17,6 +19,8 @@ type InferredSourceSimpleLed = z.infer<typeof source_simple_led>
  */
 export interface SourceSimpleLed extends SourceComponentBase {
   ftype: "simple_led"
+  color?: string
+  wavelength?: string
 }
 
 expectTypesMatch<SourceSimpleLed, InferredSourceSimpleLed>(true)
