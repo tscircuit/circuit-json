@@ -13,6 +13,7 @@ export interface SchematicSection {
     y: number
   }
   rotation: number
+  color: string
 }
 
 export const schematic_section = z.object({
@@ -26,6 +27,7 @@ export const schematic_section = z.object({
     y: distance,
   }),
   rotation: z.number().default(0),
+  color: z.string().default("#000000"),
 })
 
 export type SchematicSectionInput = z.input<typeof schematic_section>
