@@ -65,6 +65,7 @@ export const any_circuit_element = z.union([
   pcb.pcb_cutout,
   sch.schematic_box,
   sch.schematic_text,
+  sch.schematic_section,
   sch.schematic_line,
   sch.schematic_component,
   sch.schematic_port,

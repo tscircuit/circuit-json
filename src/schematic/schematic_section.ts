@@ -24,7 +24,7 @@ export const schematic_section = z.object({
   rotation: z.number().default(0),
 })
 
-export type SchematicTextInput = z.input<typeof schematic_section>
-type InferredSchematicText = z.infer<typeof schematic_section>
+export type SchematicSectionInput = z.input<typeof schematic_section>
+type InferredSchematicSection = z.infer<typeof schematic_section>
 
-expectTypesMatch<SchematicSection, InferredSchematicText>(true)
+expectTypesMatch<SchematicSection, InferredSchematicSection>(true)
