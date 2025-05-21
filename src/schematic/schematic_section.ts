@@ -6,6 +6,8 @@ export interface SchematicSection {
   type: "schematic_section"
   schematic_component_id?: string
   schematic_section_id: string
+  width: number
+  height: number
   position: {
     x: number
     y: number
@@ -17,6 +19,8 @@ export const schematic_section = z.object({
   type: z.literal("schematic_section"),
   schematic_component_id: z.string().optional(),
   schematic_section_id: z.string(),
+  width: distance,
+  height: distance,
   position: z.object({
     x: distance,
     y: distance,
