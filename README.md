@@ -1095,6 +1095,7 @@ interface SchematicBox {
   schematic_component_id: string
   width: number
   height: number
+  is_dashed: boolean
   x: number
   y: number
 }
