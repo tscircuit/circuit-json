@@ -7,6 +7,7 @@ export interface SchematicBox {
   schematic_component_id: string
   width: number
   height: number
+  is_dashed: boolean
   x: number
   y: number
 }
@@ -17,6 +18,7 @@ export const schematic_box = z
     schematic_component_id: z.string(),
     width: distance,
     height: distance,
+    is_dashed: z.boolean().default(false),
     x: distance,
     y: distance,
   })
