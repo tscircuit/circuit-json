@@ -978,12 +978,7 @@ interface PcbSilkscreenText {
   layer: LayerRef
   is_mirrored?: boolean
   anchor_position: Point
-  anchor_alignment:
-    | "center"
-    | "top_left"
-    | "top_right"
-    | "bottom_left"
-    | "bottom_right"
+  anchor_alignment: NinePointAnchor
 }
 ```
 

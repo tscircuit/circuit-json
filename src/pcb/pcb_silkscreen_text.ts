@@ -3,6 +3,10 @@ import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
 import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
 import { distance, length, type Length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import {
+  ninePointAnchor,
+  type NinePointAnchor,
+} from "src/common/NinePointAnchor"
 
 export const pcb_silkscreen_text = z
   .object({
@@ -18,9 +22,7 @@ export const pcb_silkscreen_text = z
     layer: layer_ref,
     is_mirrored: z.boolean().default(false).optional(),
     anchor_position: point.default({ x: 0, y: 0 }),
-    anchor_alignment: z
-      .enum(["center", "top_left", "top_right", "bottom_left", "bottom_right"])
-      .default("center"),
+    anchor_alignment: ninePointAnchor.default("center"),
   })
   .describe("Defines silkscreen text on the PCB")
 
@@ -43,12 +45,7 @@ export interface PcbSilkscreenText {
   layer: LayerRef
   is_mirrored?: boolean
   anchor_position: Point
-  anchor_alignment:
-    | "center"
-    | "top_left"
-    | "top_right"
-    | "bottom_left"
-    | "bottom_right"
+  anchor_alignment: NinePointAnchor
 }
 
 /**
