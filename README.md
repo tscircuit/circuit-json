@@ -59,6 +59,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceSimpleDiode](#sourcesimplediode)
     - [SourceSimpleGround](#sourcesimpleground)
     - [SourceSimpleInductor](#sourcesimpleinductor)
+    - [SourceSimpleLed](#sourcesimpleled)
     - [SourceSimpleMosfet](#sourcesimplemosfet)
     - [SourceSimplePowerSource](#sourcesimplepowersource)
     - [SourceSimplePushButton](#sourcesimplepushbutton)
@@ -380,6 +381,21 @@ Defines a simple inductor component
 interface SourceSimpleInductor extends SourceComponentBase {
   ftype: "simple_inductor"
   inductance: number
+}
+```
+
+### SourceSimpleLed
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_led.ts)
+
+Defines a simple led component
+
+```typescript
+/** Defines a simple led component */
+interface SourceSimpleLed extends Omit<SourceSimpleDiode, "ftype"> {
+  ftype: "simple_led"
+  color?: string
+  wavelength?: string
 }
 ```
 
