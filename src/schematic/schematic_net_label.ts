@@ -9,6 +9,7 @@ export interface SchematicNetLabel {
   schematic_trace_id?: string
   source_trace_id?: string
   source_net_id: string
+  rotation: number
   center: Point
   anchor_position?: Point | undefined
   anchor_side: "top" | "bottom" | "left" | "right"
@@ -22,6 +23,7 @@ export const schematic_net_label = z.object({
   schematic_trace_id: z.string().optional(),
   source_trace_id: z.string().optional(),
   source_net_id: z.string(),
+  rotation: z.number().default(0),
   center: point,
   anchor_position: point.optional(),
   anchor_side: z.enum(["top", "bottom", "left", "right"]),
