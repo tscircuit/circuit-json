@@ -1,5 +1,8 @@
 import { z } from "zod"
-import { source_component_base, type SourceComponentBase } from "./base/source_component_base"
+import {
+  source_component_base,
+  type SourceComponentBase,
+} from "./base/source_component_base"
 
 export const source_simple_fuse = source_component_base.extend({
   ftype: z.literal("simple_fuse"),

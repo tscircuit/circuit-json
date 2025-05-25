@@ -7,10 +7,7 @@ import {
   source_simple_capacitor,
   type SourceSimpleCapacitor,
 } from "./source_simple_capacitor"
-import {
-  source_simple_fuse,
-  type SourceSimpleFuse,
-} from "./source_simple_fuse"
+import { source_simple_fuse, type SourceSimpleFuse } from "./source_simple_fuse"
 import {
   source_simple_diode,
   type SourceSimpleDiode,
