@@ -12,7 +12,7 @@
     "format": "biome format . --write",
     "generate-docs": "bun scripts/generate-readme-docs.ts && prettier --no-semi -w README.md",
     "lint:zod": "bun run scripts/zod-lint.ts",
-    "lint:snake-case": "bun scripts/check-snake-case.ts"
+    "lint:snake-case": "bun scripts/validate-snake-case.ts"
   },
   "keywords": [],
   "author": "",
