@@ -7,9 +7,9 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const source_simple_fuse = source_component_base.extend({
   ftype: z.literal("simple_fuse"),
-  currentRating: z.union([z.number(), z.string()]),
-  voltageRating: z.union([z.number(), z.string()]).optional(),
-  schShowRatings: z.boolean().optional(),
+  current_rating: z.union([z.number(), z.string()]),
+  voltage_rating: z.union([z.number(), z.string()]).optional(),
+  schShow_ratings: z.boolean().optional(),
 })
 
 export interface SourceSimpleFuse extends SourceComponentBase {
@@ -17,17 +17,17 @@ export interface SourceSimpleFuse extends SourceComponentBase {
   /**
    * Current rating of the fuse
    */
-  currentRating: number | string
+  current_rating: number | string
 
   /**
    * Voltage rating of the fuse
    */
-  voltageRating?: number | string
+  voltage_rating?: number | string
 
   /**
    * Whether to show ratings on schematic
    */
-  schShowRatings?: boolean
+  schShow_ratings?: boolean
 }
 
 export type SourceSimpleFuseInput = z.input<typeof source_simple_fuse>
