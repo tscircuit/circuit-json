@@ -26,7 +26,7 @@ export const schematic_text = z.object({
   schematic_component_id: z.string().optional(),
   schematic_text_id: z.string(),
   text: z.string(),
-  font_size: z.number().default(1),
+  font_size: z.number().default(0.18),
   position: z.object({
     x: distance,
     y: distance,
