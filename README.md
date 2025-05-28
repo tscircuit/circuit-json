@@ -57,6 +57,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceSimpleChip](#sourcesimplechip)
     - [SourceSimpleCrystal](#sourcesimplecrystal)
     - [SourceSimpleDiode](#sourcesimplediode)
+    - [SourceSimpleFuse](#sourcesimplefuse)
     - [SourceSimpleGround](#sourcesimpleground)
     - [SourceSimpleInductor](#sourcesimpleinductor)
     - [SourceSimpleLed](#sourcesimpleled)
@@ -354,6 +355,18 @@ Defines a simple diode component
 /** Defines a simple diode component */
 interface SourceSimpleDiode extends SourceComponentBase {
   ftype: "simple_diode"
+}
+```
+
+### SourceSimpleFuse
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_fuse.ts)
+
+```typescript
+interface SourceSimpleFuse extends SourceComponentBase {
+  ftype: "simple_fuse"
+  current_rating_amps: number
+  voltage_rating_volts: number
 }
 ```
 
