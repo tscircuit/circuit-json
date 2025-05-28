@@ -7,6 +7,7 @@ import {
   source_simple_capacitor,
   type SourceSimpleCapacitor,
 } from "./source_simple_capacitor"
+import { source_simple_fuse, type SourceSimpleFuse } from "./source_simple_fuse"
 import {
   source_simple_diode,
   type SourceSimpleDiode,
@@ -96,6 +97,7 @@ export const any_source_component = z.union([
   source_simple_switch,
   source_simple_transistor,
   source_simple_mosfet,
+  source_simple_fuse,
   source_project_metadata,
   source_missing_property_error,
   source_failed_to_create_component_error,
@@ -125,6 +127,7 @@ export type AnySourceElement =
   | SourceSimpleSwitch
   | SourceSimpleTransistor
   | SourceSimpleMosfet
+  | SourceSimpleFuse
   | SourceProjectMetadata
   | SourceMissingPropertyError
   | SourceFailedToCreateComponentError
