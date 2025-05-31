@@ -983,7 +983,9 @@ interface PcbSilkscreenRect {
   height: Length
   layer: LayerRef
   stroke_width: Length
-  filled?: boolean
+  is_filled?: boolean
+  has_stroke?: boolean
+  is_stroke_dashed?: boolean
 }
 ```
 
