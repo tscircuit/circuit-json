@@ -16,6 +16,7 @@ export const pcb_silkscreen_rect = z
     height: length,
     layer: layer_ref,
     stroke_width: length.default("1mm"),
+    filled: z.boolean().default(true).optional(),
   })
   .describe("Defines a silkscreen rect on the PCB")
 
@@ -36,6 +37,7 @@ export interface PcbSilkscreenRect {
   height: Length
   layer: LayerRef
   stroke_width: Length
+  filled?: boolean
 }
 
 /**
