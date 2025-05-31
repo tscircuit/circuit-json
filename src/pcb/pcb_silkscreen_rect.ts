@@ -18,7 +18,7 @@ export const pcb_silkscreen_rect = z
     stroke_width: length.default("1mm"),
     is_filled: z.boolean().default(true).optional(),
     has_stroke: z.boolean().optional(),
-    stroke_dashed: z.boolean().optional(),
+    is_stroke_dashed: z.boolean().optional(),
   })
   .describe("Defines a silkscreen rect on the PCB")
 
@@ -41,7 +41,7 @@ export interface PcbSilkscreenRect {
   stroke_width: Length
   is_filled?: boolean
   has_stroke?: boolean
-  stroke_dashed?: boolean
+  is_stroke_dashed?: boolean
 }
 
 /**
