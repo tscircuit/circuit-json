@@ -214,6 +214,7 @@ interface SourceComponentBase {
 interface SourceFailedToCreateComponentError {
   type: "source_failed_to_create_component_error"
   source_failed_to_create_component_error_id: string
+  error_type: "source_failed_to_create_component_error"
   message: string
   component_name?: string
   subcircuit_id?: string
@@ -544,6 +545,7 @@ interface SourceTrace {
 interface PcbAutoroutingErrorInterface {
   type: "pcb_autorouting_error"
   pcb_error_id: string
+  error_type: "pcb_autorouting_error"
   message: string
 }
 ```
@@ -755,6 +757,7 @@ Defines a placement error on the PCB
 interface PcbPlacementError {
   type: "pcb_placement_error"
   pcb_placement_error_id: string
+  error_type: "pcb_placement_error"
   message: string
 }
 ```
@@ -855,6 +858,7 @@ Defines a trace error on the PCB where a port is not matched
 interface PcbPortNotMatchedError {
   type: "pcb_port_not_matched_error"
   pcb_error_id: string
+  error_type: "pcb_port_not_matched_error"
   message: string
   pcb_component_ids: string[]
 }
@@ -1211,6 +1215,7 @@ interface SchematicGroup {
 interface SchematicLayoutError {
   type: "schematic_layout_error"
   schematic_layout_error_id: string
+  error_type: "schematic_layout_error"
   message: string
   source_group_id: string
   schematic_group_id: string

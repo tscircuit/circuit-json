@@ -33,6 +33,7 @@ export interface PcbComponent {
 export interface PcbPortNotMatchedError {
   type: "pcb_port_not_matched_error"
   pcb_error_id: string
+  error_type: "pcb_port_not_matched_error"
   message: string
   pcb_component_ids: string[]
 }
@@ -237,6 +238,7 @@ export interface PcbSilkscreenOval {
 export interface PcbPlacementError {
   type: "pcb_placement_error"
   pcb_placement_error_id: string
+  error_type: "pcb_placement_error"
   message: string
 }
 

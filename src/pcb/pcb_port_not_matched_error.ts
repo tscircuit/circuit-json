@@ -6,6 +6,9 @@ export const pcb_port_not_matched_error = z
   .object({
     type: z.literal("pcb_port_not_matched_error"),
     pcb_error_id: getZodPrefixedIdWithDefault("pcb_error"),
+    error_type: z
+      .literal("pcb_port_not_matched_error")
+      .default("pcb_port_not_matched_error"),
     message: z.string(),
     pcb_component_ids: z.array(z.string()),
   })
@@ -22,6 +25,7 @@ type InferredPcbPortNotMatchedError = z.infer<typeof pcb_port_not_matched_error>
 export interface PcbPortNotMatchedError {
   type: "pcb_port_not_matched_error"
   pcb_error_id: string
+  error_type: "pcb_port_not_matched_error"
   message: string
   pcb_component_ids: string[]
 }

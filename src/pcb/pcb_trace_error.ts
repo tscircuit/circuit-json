@@ -6,7 +6,7 @@ export const pcb_trace_error = z
   .object({
     type: z.literal("pcb_trace_error"),
     pcb_trace_error_id: getZodPrefixedIdWithDefault("pcb_trace_error"),
-    error_type: z.literal("pcb_trace_error"),
+    error_type: z.literal("pcb_trace_error").default("pcb_trace_error"),
     message: z.string(),
     center: point.optional(),
     pcb_trace_id: z.string(),

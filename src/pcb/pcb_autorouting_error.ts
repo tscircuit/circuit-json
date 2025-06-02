@@ -6,6 +6,9 @@ export const pcb_autorouting_error = z
   .object({
     type: z.literal("pcb_autorouting_error"),
     pcb_error_id: getZodPrefixedIdWithDefault("pcb_autorouting_error"),
+    error_type: z
+      .literal("pcb_autorouting_error")
+      .default("pcb_autorouting_error"),
     message: z.string(),
   })
   .describe("The autorouting has failed to route a portion of the board")
@@ -16,6 +19,7 @@ type PcbInferredAutoroutingError = z.infer<typeof pcb_autorouting_error>
 export interface PcbAutoroutingErrorInterface {
   type: "pcb_autorouting_error"
   pcb_error_id: string
+  error_type: "pcb_autorouting_error"
   message: string
 }
 

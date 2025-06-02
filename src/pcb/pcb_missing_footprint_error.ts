@@ -10,7 +10,9 @@ export const pcb_missing_footprint_error = z
     ),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
-    error_type: z.literal("pcb_missing_footprint_error"),
+    error_type: z
+      .literal("pcb_missing_footprint_error")
+      .default("pcb_missing_footprint_error"),
     source_component_id: z.string(),
     message: z.string(),
   })
