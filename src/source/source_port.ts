@@ -9,6 +9,7 @@ export const source_port = z.object({
   source_port_id: z.string(),
   source_component_id: z.string(),
   subcircuit_id: z.string().optional(),
+  subcircuit_connectivity_map_key: z.string().optional(),
 })
 
 export type SourcePortInput = z.input<typeof source_port>
@@ -25,6 +26,7 @@ export interface SourcePort {
   source_port_id: string
   source_component_id: string
   subcircuit_id?: string
+  subcircuit_connectivity_map_key?: string
 }
 
 expectTypesMatch<SourcePort, InferredSourcePort>(true)

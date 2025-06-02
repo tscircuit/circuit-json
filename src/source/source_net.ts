@@ -11,6 +11,7 @@ export const source_net = z.object({
   is_analog_signal: z.boolean().optional(),
   trace_width: z.number().optional(),
   subcircuit_id: z.string().optional(),
+  subcircuit_connectivity_map_key: z.string().optional(),
 })
 
 export type SourceNet = z.infer<typeof source_net>

@@ -90,6 +90,8 @@ interface SourceNet {
   is_digital_signal?: boolean
   is_analog_signal?: boolean
   trace_width?: number
+  subcircuit_id?: string
+  subcircuit_connectivity_map_key?: string
 }
 
 interface SourceSimpleDiode {
@@ -115,6 +117,8 @@ interface SourcePort {
   name: string
   source_port_id: string
   source_component_id: string
+  subcircuit_id?: string
+  subcircuit_connectivity_map_key?: string
 }
 
 interface SourceSimplePowerSource {
