@@ -39,9 +39,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
 ## Table of Contents
 
 <!-- toc:start -->
-
 - [Circuit JSON Specification `circuit-json`](#circuit-json-specification-circuit-json)
-
   - [Things You Can Do With Circuit JSON](#things-you-can-do-with-circuit-json)
   - [Typescript Usage](#typescript-usage)
 
@@ -101,6 +99,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicComponent](#schematiccomponent)
     - [SchematicError](#schematicerror)
     - [SchematicGroup](#schematicgroup)
+    - [SchematicLayoutError](#schematiclayouterror)
     - [SchematicLine](#schematicline)
     - [SchematicManualEditConflictWarning](#schematicmanualeditconflictwarning)
     - [SchematicNetLabel](#schematicnetlabel)
@@ -181,7 +180,6 @@ There are 3 main element prefixes:
 - `schematic_` - e.g. `schematic_component`. Anything required to render the Schematic
 
 <!-- circuit-json-docs:start -->
-
 ## Source Components
 
 ### SourceComponentBase
@@ -652,12 +650,7 @@ interface PcbFabricationNoteText {
   text: string
   layer: VisibleLayer
   anchor_position: Point
-  anchor_alignment:
-    | "center"
-    | "top_left"
-    | "top_right"
-    | "bottom_left"
-    | "bottom_right"
+  anchor_alignment: | "center" | "top_left" | "top_right" | "bottom_left" | "bottom_right"
   color?: string
 }
 ```
@@ -1199,6 +1192,20 @@ interface SchematicGroup {
   schematic_component_ids: string[]
   name?: string
   description?: string
+}
+```
+
+### SchematicLayoutError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_layout_error.ts)
+
+```typescript
+interface SchematicLayoutError {
+  type: "schematic_layout_error"
+  schematic_layout_error_id: string
+  message: string
+  source_group_id: string
+  schematic_group_id: string
 }
 ```
 
