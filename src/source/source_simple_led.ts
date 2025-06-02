@@ -12,7 +12,7 @@ import {
 export const source_simple_led = source_simple_diode.extend({
   ftype: z.literal("simple_led"),
   color: z.string().optional(),
-  wavelength: z.string().optional(),
+  wave_length: z.string().optional(),
   sch_val_label: z.string().optional(),
 })
 
@@ -25,7 +25,7 @@ type InferredSourceSimpleLed = z.infer<typeof source_simple_led>
 export interface SourceSimpleLed extends Omit<SourceSimpleDiode, "ftype"> {
   ftype: "simple_led"
   color?: string
-  wavelength?: string
+  wave_length?: string
   sch_val_label?: string
 }
 
