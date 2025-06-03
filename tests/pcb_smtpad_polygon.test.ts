@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { pcb_smtpad } from "../src/pcb/pcb_smtpad"
+import { pcb_smtpad, type PcbSmtPadPolygon } from "../src/pcb/pcb_smtpad"
 
 test("parse polygon smt pad", () => {
   const pad = pcb_smtpad.parse({
@@ -14,5 +14,5 @@ test("parse polygon smt pad", () => {
     layer: "top",
   })
   expect(pad.shape).toBe("polygon")
-  expect(pad.points.length).toBe(3)
+  expect((pad as PcbSmtPadPolygon).points.length).toBe(3)
 })
