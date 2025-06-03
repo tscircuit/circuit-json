@@ -1,7 +1,7 @@
 import { z } from "zod"
 import { distance, type Distance, rotation, type Rotation } from "src/units"
 import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
-import { getZodPrefixedIdWithDefault } from "src/common"
+import { getZodPrefixedIdWithDefault, point, type Point } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 const pcb_smtpad_circle = z.object({
@@ -69,12 +69,26 @@ export const pcb_smtpad_pill = z.object({
   pcb_port_id: z.string().optional(),
 })
 
+const pcb_smtpad_polygon = z.object({
+  type: z.literal("pcb_smtpad"),
+  shape: z.literal("polygon"),
+  pcb_smtpad_id: getZodPrefixedIdWithDefault("pcb_smtpad"),
+  pcb_group_id: z.string().optional(),
+  subcircuit_id: z.string().optional(),
+  points: z.array(point),
+  layer: layer_ref,
+  port_hints: z.array(z.string()).optional(),
+  pcb_component_id: z.string().optional(),
+  pcb_port_id: z.string().optional(),
+})
+
 export const pcb_smtpad = z
   .union([
     pcb_smtpad_circle,
     pcb_smtpad_rect,
     pcb_smtpad_rotated_rect,
     pcb_smtpad_pill,
+    pcb_smtpad_polygon,
   ])
   .describe("Defines an SMT pad on the PCB")
 
@@ -83,6 +97,7 @@ type PCBSMTPadCircle = z.infer<typeof pcb_smtpad_circle>
 type PCBSMTPadRect = z.infer<typeof pcb_smtpad_rect>
 type PCBSMTPadRotatedRect = z.infer<typeof pcb_smtpad_rotated_rect>
 type PCBSMTPadPill = z.infer<typeof pcb_smtpad_pill>
+type PCBSMTPadPolygon = z.infer<typeof pcb_smtpad_polygon>
 
 /**
  * Defines a circular SMT pad on the PCB
@@ -160,11 +175,28 @@ export interface PcbSmtPadPill {
   pcb_port_id?: string
 }
 
+/**
+ * Defines a polygonal SMT pad on the PCB
+ */
+export interface PcbSmtPadPolygon {
+  type: "pcb_smtpad"
+  shape: "polygon"
+  pcb_smtpad_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  points: Point[]
+  layer: LayerRef
+  port_hints?: string[]
+  pcb_component_id?: string
+  pcb_port_id?: string
+}
+
 export type PcbSmtPad =
   | PcbSmtPadCircle
   | PcbSmtPadRect
   | PcbSmtPadRotatedRect
   | PcbSmtPadPill
+  | PcbSmtPadPolygon
 
 /**
  * @deprecated use PcbSmtPad
@@ -175,3 +207,4 @@ expectTypesMatch<PcbSmtPadCircle, PCBSMTPadCircle>(true)
 expectTypesMatch<PcbSmtPadRect, PCBSMTPadRect>(true)
 expectTypesMatch<PcbSmtPadRotatedRect, PCBSMTPadRotatedRect>(true)
 expectTypesMatch<PcbSmtPadPill, PCBSMTPadPill>(true)
+expectTypesMatch<PcbSmtPadPolygon, PCBSMTPadPolygon>(true)
