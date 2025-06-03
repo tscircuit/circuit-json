@@ -277,16 +277,20 @@ export interface PcbSmtPadRect {
   pcb_port_id?: string
 }
 
+
 export interface PcbSmtPadPolygon {
   type: "pcb_smtpad"
   shape: "polygon"
   pcb_smtpad_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   points: Point[]
   layer: LayerRef
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
 }
+
 
 export type PcbSmtPad =
   | PcbSmtPadCircle
