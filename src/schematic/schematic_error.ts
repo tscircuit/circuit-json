@@ -13,7 +13,9 @@ export const schematic_error = z
     type: z.literal("schematic_error"),
     schematic_error_id: z.string(),
     // eventually each error type should be broken out into a dir of files
-    error_type: z.literal("schematic_port_not_found"),
+    error_type: z
+      .literal("schematic_port_not_found")
+      .default("schematic_port_not_found"),
     message: z.string(),
   })
   .describe("Defines a schematic error on the schematic")

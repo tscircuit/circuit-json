@@ -8,6 +8,9 @@ export const schematic_layout_error = z
     schematic_layout_error_id: getZodPrefixedIdWithDefault(
       "schematic_layout_error",
     ),
+    error_type: z
+      .literal("schematic_layout_error")
+      .default("schematic_layout_error"),
     message: z.string(),
     source_group_id: z.string(),
     schematic_group_id: z.string(),
@@ -20,6 +23,7 @@ type InferredSchematicLayoutError = z.infer<typeof schematic_layout_error>
 export interface SchematicLayoutError {
   type: "schematic_layout_error"
   schematic_layout_error_id: string
+  error_type: "schematic_layout_error"
   message: string
   source_group_id: string
   schematic_group_id: string

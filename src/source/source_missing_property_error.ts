@@ -10,7 +10,9 @@ export const source_missing_property_error = z
     ),
     source_component_id: z.string(),
     property_name: z.string(),
-    error_type: z.literal("source_missing_property_error"),
+    error_type: z
+      .literal("source_missing_property_error")
+      .default("source_missing_property_error"),
     message: z.string(),
   })
   .describe("The source code is missing a property")

@@ -8,6 +8,9 @@ export const source_failed_to_create_component_error = z
     source_failed_to_create_component_error_id: getZodPrefixedIdWithDefault(
       "source_failed_to_create_component_error",
     ),
+    error_type: z
+      .literal("source_failed_to_create_component_error")
+      .default("source_failed_to_create_component_error"),
     component_name: z.string().optional(),
     subcircuit_id: z.string().optional(),
     parent_source_component_id: z.string().optional(),
@@ -41,6 +44,7 @@ type InferredSourceFailedToCreateComponentError = z.infer<
 export interface SourceFailedToCreateComponentError {
   type: "source_failed_to_create_component_error"
   source_failed_to_create_component_error_id: string
+  error_type: "source_failed_to_create_component_error"
   message: string
   component_name?: string
   subcircuit_id?: string
