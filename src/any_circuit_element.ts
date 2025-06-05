@@ -16,7 +16,6 @@ export const any_circuit_element = z.union([
   src.source_trace,
   src.source_port,
   src.any_source_component,
-  src.source_led,
   src.source_net,
   src.source_group,
   src.source_simple_bug,
