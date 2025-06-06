@@ -67,6 +67,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceSimpleResistor](#sourcesimpleresistor)
     - [SourceSimpleResonator](#sourcesimpleresonator)
     - [SourceSimpleSwitch](#sourcesimpleswitch)
+    - [SourceSimpleTestPoint](#sourcesimpletestpoint)
     - [SourceSimpleTransistor](#sourcesimpletransistor)
     - [SourceTrace](#sourcetrace)
   - [PCB Elements](#pcb-elements)
@@ -498,6 +499,25 @@ Defines a simple switch component
 /** Defines a simple switch component */
 interface SourceSimpleSwitch extends SourceComponentBase {
   ftype: "simple_switch"
+}
+```
+
+### SourceSimpleTestPoint
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_test_point.ts)
+
+```typescript
+/** Defines a simple test point component
+ * Can be surface-mount or through-hole.
+ * Pad shape and dimensions configurable for different use cases. */
+interface SourceSimpleTestPoint extends SourceComponentBase {
+  ftype: "simple_test_point"
+  footprint_variant?: "pad" | "through_hole"
+  pad_shape?: "rect" | "circle"
+  pad_diameter?: number | string
+  hole_diameter?: number | string
+  width?: number | string
+  height?: number | string
 }
 ```
 
