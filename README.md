@@ -48,7 +48,6 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
   - [Source Components](#source-components)
     - [SourceComponentBase](#sourcecomponentbase)
     - [SourceFailedToCreateComponentError](#sourcefailedtocreatecomponenterror)
-    - [SourceLed](#sourceled)
     - [SourceMissingPropertyError](#sourcemissingpropertyerror)
     - [SourcePort](#sourceport)
     - [SourceProjectMetadata](#sourceprojectmetadata)
@@ -222,19 +221,6 @@ interface SourceFailedToCreateComponentError {
   pcb_center?: {
   x?: number
   y?: number
-}
-```
-
-### SourceLed
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_led.ts)
-
-Defines an LED component that extends the simple diode
-
-```typescript
-/** Defines an LED component that extends the simple diode */
-interface SourceLed extends SourceComponentBase {
-  ftype: "led"
 }
 ```
 
