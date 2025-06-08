@@ -10,6 +10,7 @@ export const pcb_breakout_point = z
     pcb_group_id: z.string(),
     subcircuit_id: z.string().optional(),
     source_trace_id: z.string().optional(),
+    source_port_id: z.string().optional(),
     source_net_id: z.string().optional(),
     x: distance,
     y: distance,
@@ -30,6 +31,7 @@ export interface PcbBreakoutPoint {
   pcb_group_id: string
   subcircuit_id?: string
   source_trace_id?: string
+  source_port_id?: string
   source_net_id?: string
   x: Distance
   y: Distance
