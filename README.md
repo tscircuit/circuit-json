@@ -72,6 +72,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
   - [PCB Elements](#pcb-elements)
     - [PcbAutoroutingError](#pcbautoroutingerror)
     - [PcbBoard](#pcbboard)
+    - [PcbBreakoutPoint](#pcbbreakoutpoint)
     - [PcbComponent](#pcbcomponent)
     - [PcbCutout](#pcbcutout)
     - [PcbFabricationNotePath](#pcbfabricationnotepath)
@@ -574,6 +575,26 @@ interface PcbBoard {
   center: Point
   outline?: Point[]
   material: "fr4" | "fr1"
+}
+```
+
+### PcbBreakoutPoint
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_breakout_point.ts)
+
+Defines a routing target within a pcb_group for a source_trace or source_net
+
+```typescript
+/** Defines a routing target within a pcb_group for a source_trace or source_net */
+interface PcbBreakoutPoint {
+  type: "pcb_breakout_point"
+  pcb_breakout_point_id: string
+  pcb_group_id: string
+  subcircuit_id?: string
+  source_trace_id?: string
+  source_net_id?: string
+  x: Distance
+  y: Distance
 }
 ```
 
