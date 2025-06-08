@@ -272,6 +272,7 @@ interface SourceProjectMetadata {
   type: "source_project_metadata"
   name?: string
   software_used_string?: string
+  project_url?: string
   created_at?: string // ISO8601 timestamp
 }
 ```
