@@ -31,6 +31,7 @@ export * from "./pcb_missing_footprint_error"
 export * from "./pcb_group"
 export * from "./pcb_autorouting_error"
 export * from "./pcb_manual_edit_conflict_warning"
+export * from "./pcb_breakout_point"
 
 import type { PcbComponent } from "./pcb_component"
 import type { PcbHole } from "./pcb_hole"
@@ -55,6 +56,7 @@ import type { PcbSilkscreenRect } from "./pcb_silkscreen_rect"
 import type { PcbSilkscreenCircle } from "./pcb_silkscreen_circle"
 import type { PcbAutoroutingError } from "./pcb_autorouting_error"
 import type { PcbCutout } from "./pcb_cutout"
+import type { PcbBreakoutPoint } from "./pcb_breakout_point"
 
 export type PcbCircuitElement =
   | PcbComponent
@@ -80,3 +82,4 @@ export type PcbCircuitElement =
   | PcbSilkscreenCircle
   | PcbAutoroutingError
   | PcbCutout
+  | PcbBreakoutPoint
