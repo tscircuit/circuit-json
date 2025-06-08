@@ -361,6 +361,17 @@ export interface PcbTrace {
   route: Array<PcbTraceRoutePoint>
 }
 
+export interface PcbBreakoutPoint {
+  type: "pcb_breakout_point"
+  pcb_breakout_point_id: string
+  pcb_group_id: string
+  subcircuit_id?: string
+  source_trace_id?: string
+  source_net_id?: string
+  x: Distance
+  y: Distance
+}
+
 export interface PcbBoard {
   type: "pcb_board"
   pcb_board_id: string
