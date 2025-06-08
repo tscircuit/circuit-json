@@ -6,6 +6,7 @@ export const pcb_placement_error = z
   .object({
     type: z.literal("pcb_placement_error"),
     pcb_placement_error_id: getZodPrefixedIdWithDefault("pcb_placement_error"),
+    error_type: z.literal("pcb_placement_error").default("pcb_placement_error"),
     message: z.string(),
   })
   .describe("Defines a placement error on the PCB")
@@ -19,6 +20,7 @@ type InferredPcbPlacementError = z.infer<typeof pcb_placement_error>
 export interface PcbPlacementError {
   type: "pcb_placement_error"
   pcb_placement_error_id: string
+  error_type: "pcb_placement_error"
   message: string
 }
 
