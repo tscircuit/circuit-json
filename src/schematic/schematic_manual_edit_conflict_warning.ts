@@ -8,6 +8,9 @@ export const schematic_manual_edit_conflict_warning = z
     schematic_manual_edit_conflict_warning_id: getZodPrefixedIdWithDefault(
       "schematic_manual_edit_conflict_warning",
     ),
+    warning_type: z
+      .literal("schematic_manual_edit_conflict_warning")
+      .default("schematic_manual_edit_conflict_warning"),
     message: z.string(),
     schematic_component_id: z.string(),
     schematic_group_id: z.string().optional(),
@@ -31,6 +34,7 @@ type InferredSchematicManualEditConflictWarning = z.infer<
 export interface SchematicManualEditConflictWarning {
   type: "schematic_manual_edit_conflict_warning"
   schematic_manual_edit_conflict_warning_id: string
+  warning_type: "schematic_manual_edit_conflict_warning"
   message: string
   schematic_component_id: string
   schematic_group_id?: string
