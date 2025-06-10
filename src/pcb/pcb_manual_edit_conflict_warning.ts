@@ -8,6 +8,9 @@ export const pcb_manual_edit_conflict_warning = z
     pcb_manual_edit_conflict_warning_id: getZodPrefixedIdWithDefault(
       "pcb_manual_edit_conflict_warning",
     ),
+    warning_type: z
+      .literal("pcb_manual_edit_conflict_warning")
+      .default("pcb_manual_edit_conflict_warning"),
     message: z.string(),
     pcb_component_id: z.string(),
     pcb_group_id: z.string().optional(),
@@ -31,6 +34,7 @@ type InferredPcbManualEditConflictWarning = z.infer<
 export interface PcbManualEditConflictWarning {
   type: "pcb_manual_edit_conflict_warning"
   pcb_manual_edit_conflict_warning_id: string
+  warning_type: "pcb_manual_edit_conflict_warning"
   message: string
   pcb_component_id: string
   pcb_group_id?: string

@@ -748,6 +748,7 @@ Warning emitted when a component has both manual placement (via manualEdits) and
 interface PcbManualEditConflictWarning {
   type: "pcb_manual_edit_conflict_warning"
   pcb_manual_edit_conflict_warning_id: string
+  warning_type: "pcb_manual_edit_conflict_warning"
   message: string
   pcb_component_id: string
   pcb_group_id?: string
@@ -1280,6 +1281,7 @@ Warning emitted when a component has both manual placement (via manualEdits) and
 interface SchematicManualEditConflictWarning {
   type: "schematic_manual_edit_conflict_warning"
   schematic_manual_edit_conflict_warning_id: string
+  warning_type: "schematic_manual_edit_conflict_warning"
   message: string
   schematic_component_id: string
   schematic_group_id?: string
