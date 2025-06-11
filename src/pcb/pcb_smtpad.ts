@@ -83,7 +83,7 @@ const pcb_smtpad_polygon = z.object({
 })
 
 export const pcb_smtpad = z
-  .union([
+  .discriminatedUnion("shape", [
     pcb_smtpad_circle,
     pcb_smtpad_rect,
     pcb_smtpad_rotated_rect,
