@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { expectTypesMatch } from "src/utils/expect-types-match"
 import {
   source_simple_resistor,
   type SourceSimpleResistor,
@@ -17,7 +18,7 @@ import {
   source_simple_ground,
   type SourceSimpleGround,
 } from "./source_simple_ground"
-import { source_simple_bug } from "./source_simple_bug"
+import { source_simple_bug, type SourceSimpleBug } from "./source_simple_bug"
 import { source_simple_chip, type SourceSimpleChip } from "./source_simple_chip"
 import {
   source_simple_power_source,
@@ -117,6 +118,7 @@ export type AnySourceElement =
   | SourceSimpleDiode
   | SourceSimpleLed
   | SourceSimpleGround
+  | SourceSimpleBug
   | SourceSimpleChip
   | SourceSimplePowerSource
   | SourceSimpleBattery
@@ -134,3 +136,5 @@ export type AnySourceElement =
   | SourceProjectMetadata
   | SourceMissingPropertyError
   | SourceFailedToCreateComponentError
+
+expectTypesMatch<AnySourceElement, AnySourceComponent>(true)
