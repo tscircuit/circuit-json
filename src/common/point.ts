@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { distance } from "../units"
+import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const point = z.object({
   x: distance,
@@ -8,7 +9,20 @@ export const point = z.object({
 
 export const position = point
 
-export type Point = z.infer<typeof point>
 export type InputPoint = z.input<typeof point>
 export type InputPosition = z.input<typeof position>
-export type Position = z.infer<typeof position>
+type InferredPoint = z.infer<typeof point>
+type InferredPosition = z.infer<typeof position>
+
+export interface Point {
+  x: number
+  y: number
+}
+
+export interface Position {
+  x: number
+  y: number
+}
+
+expectTypesMatch<Point, InferredPoint>(true)
+expectTypesMatch<Position, InferredPosition>(true)

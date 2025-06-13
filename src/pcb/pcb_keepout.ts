@@ -1,6 +1,7 @@
 import { z } from "zod"
-import { point } from "../common"
+import { point, type Point } from "../common"
 import { distance } from "../units"
+import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const pcb_keepout = z
   .object({
@@ -30,4 +31,33 @@ export const pcb_keepout = z
   )
 
 export type PCBKeepoutInput = z.input<typeof pcb_keepout>
-export type PCBKeepout = z.infer<typeof pcb_keepout>
+type InferredPCBKeepout = z.infer<typeof pcb_keepout>
+
+export interface PCBKeepoutRect {
+  type: "pcb_keepout"
+  shape: "rect"
+  pcb_group_id?: string
+  subcircuit_id?: string
+  center: Point
+  width: number
+  height: number
+  pcb_keepout_id: string
+  layers: string[]
+  description?: string
+}
+
+export interface PCBKeepoutCircle {
+  type: "pcb_keepout"
+  shape: "circle"
+  pcb_group_id?: string
+  subcircuit_id?: string
+  center: Point
+  radius: number
+  pcb_keepout_id: string
+  layers: string[]
+  description?: string
+}
+
+export type PCBKeepout = PCBKeepoutRect | PCBKeepoutCircle
+
+expectTypesMatch<PCBKeepout, InferredPCBKeepout>(true)
