@@ -32,6 +32,9 @@ export * from "./pcb_group"
 export * from "./pcb_autorouting_error"
 export * from "./pcb_manual_edit_conflict_warning"
 export * from "./pcb_breakout_point"
+export * from "./pcb_ground_plane"
+export * from "./pcb_ground_plane_region"
+export * from "./pcb_thermal_spoke"
 
 import type { PcbComponent } from "./pcb_component"
 import type { PcbHole } from "./pcb_hole"
@@ -57,6 +60,9 @@ import type { PcbSilkscreenCircle } from "./pcb_silkscreen_circle"
 import type { PcbAutoroutingError } from "./pcb_autorouting_error"
 import type { PcbCutout } from "./pcb_cutout"
 import type { PcbBreakoutPoint } from "./pcb_breakout_point"
+import type { PcbGroundPlane } from "./pcb_ground_plane"
+import type { PcbGroundPlaneRegion } from "./pcb_ground_plane_region"
+import type { PcbThermalSpoke } from "./pcb_thermal_spoke"
 
 export type PcbCircuitElement =
   | PcbComponent
@@ -83,3 +89,6 @@ export type PcbCircuitElement =
   | PcbAutoroutingError
   | PcbCutout
   | PcbBreakoutPoint
+  | PcbGroundPlane
+  | PcbGroundPlaneRegion
+  | PcbThermalSpoke
