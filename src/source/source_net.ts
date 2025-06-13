@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const source_net = z.object({
   type: z.literal("source_net"),
@@ -14,5 +15,21 @@ export const source_net = z.object({
   subcircuit_connectivity_map_key: z.string().optional(),
 })
 
-export type SourceNet = z.infer<typeof source_net>
 export type SourceNetInput = z.input<typeof source_net>
+type InferredSourceNet = z.infer<typeof source_net>
+
+export interface SourceNet extends SourceNetInput {
+  type: "source_net"
+  source_net_id: string
+  name: string
+  member_source_group_ids: string[]
+  is_power?: boolean
+  is_ground?: boolean
+  is_digital_signal?: boolean
+  is_analog_signal?: boolean
+  trace_width?: number
+  subcircuit_id?: string
+  subcircuit_connectivity_map_key?: string
+}
+
+expectTypesMatch<SourceNet, InferredSourceNet>(true)
