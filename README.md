@@ -48,7 +48,9 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
   - [Source Components](#source-components)
     - [SourceComponentBase](#sourcecomponentbase)
     - [SourceFailedToCreateComponentError](#sourcefailedtocreatecomponenterror)
+    - [SourceGroup](#sourcegroup)
     - [SourceMissingPropertyError](#sourcemissingpropertyerror)
+    - [SourceNet](#sourcenet)
     - [SourcePcbGroundPlane](#sourcepcbgroundplane)
     - [SourcePort](#sourceport)
     - [SourceProjectMetadata](#sourceprojectmetadata)
@@ -230,6 +232,21 @@ interface SourceFailedToCreateComponentError {
 }
 ```
 
+### SourceGroup
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_group.ts)
+
+```typescript
+interface SourceGroup {
+  type: "source_group"
+  source_group_id: string
+  subcircuit_id?: string
+  parent_subcircuit_id?: string
+  is_subcircuit?: boolean
+  name?: string
+}
+```
+
 ### SourceMissingPropertyError
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_missing_property_error.ts)
@@ -245,6 +262,26 @@ interface SourceMissingPropertyError {
   property_name: string
   error_type: "source_missing_property_error"
   message: string
+}
+```
+
+### SourceNet
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_net.ts)
+
+```typescript
+interface SourceNet {
+  type: "source_net"
+  source_net_id: string
+  name: string
+  member_source_group_ids: string[]
+  is_power?: boolean
+  is_ground?: boolean
+  is_digital_signal?: boolean
+  is_analog_signal?: boolean
+  trace_width?: number
+  subcircuit_id?: string
+  subcircuit_connectivity_map_key?: string
 }
 ```
 
