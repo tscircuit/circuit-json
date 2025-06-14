@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export type NinePointAnchor =
   | "top_left"
@@ -22,3 +23,7 @@ export const ninePointAnchor = z.enum([
   "bottom_center",
   "bottom_right",
 ])
+
+type InferredNinePointAnchor = z.infer<typeof ninePointAnchor>
+
+expectTypesMatch<NinePointAnchor, InferredNinePointAnchor>(true)

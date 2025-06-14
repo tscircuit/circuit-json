@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const source_group = z.object({
   type: z.literal("source_group"),
@@ -9,5 +10,16 @@ export const source_group = z.object({
   name: z.string().optional(),
 })
 
-export type SourceGroup = z.infer<typeof source_group>
 export type SourceGroupInput = z.input<typeof source_group>
+type InferredSourceGroup = z.infer<typeof source_group>
+
+export interface SourceGroup {
+  type: "source_group"
+  source_group_id: string
+  subcircuit_id?: string
+  parent_subcircuit_id?: string
+  is_subcircuit?: boolean
+  name?: string
+}
+
+expectTypesMatch<SourceGroup, InferredSourceGroup>(true)

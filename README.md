@@ -48,7 +48,10 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
   - [Source Components](#source-components)
     - [SourceComponentBase](#sourcecomponentbase)
     - [SourceFailedToCreateComponentError](#sourcefailedtocreatecomponenterror)
+    - [SourceGroup](#sourcegroup)
     - [SourceMissingPropertyError](#sourcemissingpropertyerror)
+    - [SourceNet](#sourcenet)
+    - [SourcePcbGroundPlane](#sourcepcbgroundplane)
     - [SourcePort](#sourceport)
     - [SourceProjectMetadata](#sourceprojectmetadata)
     - [SourceSimpleBattery](#sourcesimplebattery)
@@ -77,6 +80,8 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbCutout](#pcbcutout)
     - [PcbFabricationNotePath](#pcbfabricationnotepath)
     - [PcbFabricationNoteText](#pcbfabricationnotetext)
+    - [PcbGroundPlane](#pcbgroundplane)
+    - [PcbGroundPlaneRegion](#pcbgroundplaneregion)
     - [PcbGroup](#pcbgroup)
     - [PcbHole](#pcbhole)
     - [PcbManualEditConflictWarning](#pcbmanualeditconflictwarning)
@@ -94,6 +99,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbSilkscreenText](#pcbsilkscreentext)
     - [PcbSolderPaste](#pcbsolderpaste)
     - [PcbText](#pcbtext)
+    - [PcbThermalSpoke](#pcbthermalspoke)
     - [PcbTrace](#pcbtrace)
     - [PcbTraceError](#pcbtraceerror)
     - [PcbTraceHint](#pcbtracehint)
@@ -226,6 +232,21 @@ interface SourceFailedToCreateComponentError {
 }
 ```
 
+### SourceGroup
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_group.ts)
+
+```typescript
+interface SourceGroup {
+  type: "source_group"
+  source_group_id: string
+  subcircuit_id?: string
+  parent_subcircuit_id?: string
+  is_subcircuit?: boolean
+  name?: string
+}
+```
+
 ### SourceMissingPropertyError
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_missing_property_error.ts)
@@ -241,6 +262,43 @@ interface SourceMissingPropertyError {
   property_name: string
   error_type: "source_missing_property_error"
   message: string
+}
+```
+
+### SourceNet
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_net.ts)
+
+```typescript
+interface SourceNet {
+  type: "source_net"
+  source_net_id: string
+  name: string
+  member_source_group_ids: string[]
+  is_power?: boolean
+  is_ground?: boolean
+  is_digital_signal?: boolean
+  is_analog_signal?: boolean
+  trace_width?: number
+  subcircuit_id?: string
+  subcircuit_connectivity_map_key?: string
+}
+```
+
+### SourcePcbGroundPlane
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_pcb_ground_plane.ts)
+
+Defines a ground plane in the source domain
+
+```typescript
+/** Defines a ground plane in the source domain */
+interface SourcePcbGroundPlane {
+  type: "source_pcb_ground_plane"
+  source_pcb_ground_plane_id: string
+  source_group_id: string
+  source_net_id: string
+  subcircuit_id?: string
 }
 ```
 
@@ -694,6 +752,43 @@ interface PcbFabricationNoteText {
 }
 ```
 
+### PcbGroundPlane
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_ground_plane.ts)
+
+Defines a ground plane on the PCB
+
+```typescript
+/** Defines a ground plane on the PCB */
+interface PcbGroundPlane {
+  type: "pcb_ground_plane"
+  pcb_ground_plane_id: string
+  source_pcb_ground_plane_id: string
+  source_net_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+}
+```
+
+### PcbGroundPlaneRegion
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_ground_plane_region.ts)
+
+Defines a polygon region of a ground plane
+
+```typescript
+/** Defines a polygon region of a ground plane */
+interface PcbGroundPlaneRegion {
+  type: "pcb_ground_plane_region"
+  pcb_ground_plane_region_id: string
+  pcb_ground_plane_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  layer: LayerRef
+  points: Point[]
+}
+```
+
 ### PcbGroup
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_group.ts)
@@ -1094,6 +1189,27 @@ interface PcbText {
   lines: number
   // @ts-ignore
   align: "bottom-left"
+}
+```
+
+### PcbThermalSpoke
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_thermal_spoke.ts)
+
+Pattern for connecting a ground plane to a plated hole
+
+```typescript
+/** Pattern for connecting a ground plane to a plated hole */
+interface PcbThermalSpoke {
+  type: "pcb_thermal_spoke"
+  pcb_thermal_spoke_id: string
+  pcb_ground_plane_id: string
+  shape: string
+  spoke_count: number
+  spoke_thickness: Distance
+  spoke_inner_diameter: Distance
+  spoke_outer_diameter: Distance
+  pcb_plated_hole_id?: string
 }
 ```
 

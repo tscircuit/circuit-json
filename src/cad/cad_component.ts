@@ -1,7 +1,8 @@
 import { z } from "zod"
-import { point3 } from "../common"
-import { rotation, length } from "../units"
-import { layer_ref } from "src/pcb"
+import { point3, type Point3 } from "../common"
+import { rotation, length, type Rotation, type Length } from "../units"
+import { layer_ref, type LayerRef } from "src/pcb"
+import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const cad_component = z
   .object({
@@ -24,4 +25,22 @@ export const cad_component = z
   .describe("Defines a component on the PCB")
 
 export type CadComponentInput = z.input<typeof cad_component>
-export type CadComponent = z.infer<typeof cad_component>
+type InferredCadComponent = z.infer<typeof cad_component>
+
+export interface CadComponent {
+  type: "cad_component"
+  cad_component_id: string
+  pcb_component_id: string
+  source_component_id: string
+  position: Point3
+  rotation?: Point3
+  size?: Point3
+  layer?: LayerRef
+  footprinter_string?: string
+  model_obj_url?: string
+  model_stl_url?: string
+  model_3mf_url?: string
+  model_jscad?: any
+}
+
+expectTypesMatch<CadComponent, InferredCadComponent>(true)
