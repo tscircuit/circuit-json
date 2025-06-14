@@ -18,7 +18,7 @@ export const source_net = z.object({
 export type SourceNetInput = z.input<typeof source_net>
 type InferredSourceNet = z.infer<typeof source_net>
 
-export interface SourceNet {
+export interface SourceNet extends SourceNetInput {
   type: "source_net"
   source_net_id: string
   name: string
