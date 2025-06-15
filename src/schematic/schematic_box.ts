@@ -4,7 +4,7 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export interface SchematicBox {
   type: "schematic_box"
-  schematic_component_id: string
+  schematic_component_id?: string
   width: number
   height: number
   is_dashed: boolean
@@ -15,7 +15,7 @@ export interface SchematicBox {
 export const schematic_box = z
   .object({
     type: z.literal("schematic_box"),
-    schematic_component_id: z.string(),
+    schematic_component_id: z.string().optional(),
     width: distance,
     height: distance,
     is_dashed: z.boolean().default(false),

@@ -1276,7 +1276,7 @@ interface PcbTraceHint {
 ```typescript
 interface SchematicBox {
   type: "schematic_box"
-  schematic_component_id: string
+  schematic_component_id?: string
   width: number
   height: number
   is_dashed: boolean
