@@ -29,7 +29,7 @@ interface SchematicTrace {
 
 interface SchematicBox {
   type: "schematic_box"
-  schematic_component_id: string
+  schematic_component_id?: string
   width: number
   height: number
   x: number
