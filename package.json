@@ -1,6 +1,6 @@
 {
   "name": "circuit-json",
-  "version": "0.0.209",
+  "version": "0.0.210",
   "description": "Definitions for the tscircuit intermediary JSON format",
   "main": "dist/index.mjs",
   "files": [
@@ -33,6 +33,9 @@
   },
   "dependencies": {
     "nanoid": "^5.0.7",
-    "zod": "^3.25.64"
+    "zod": "*"
+  },
+  "peerDependencies": {
+    "zod": "*"
   }
 }

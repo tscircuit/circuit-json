@@ -5,7 +5,7 @@
       "name": "circuit-json",
       "dependencies": {
         "nanoid": "^5.0.7",
-        "zod": "^3.25.64",
+        "zod": "*",
       },
       "devDependencies": {
         "@anthropic-ai/sdk": "^0.30.1",
@@ -21,6 +21,9 @@
         "ts-node": "^10.9.2",
         "tsup": "^8.3.0",
         "typescript": "^5.7.2",
+      },
+      "peerDependencies": {
+        "zod": "*",
       },
     },
   },
