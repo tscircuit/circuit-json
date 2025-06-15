@@ -444,6 +444,7 @@ Defines a simple inductor component
 interface SourceSimpleInductor extends SourceComponentBase {
   ftype: "simple_inductor"
   inductance: number
+  max_current_rating?: number
 }
 ```
 
