@@ -36,14 +36,33 @@ async function generateDocs() {
       .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
       .join("")
 
-    const exportBlocks =
-      content.match(
-        /\/\*\*[\s\S]*?\*\/\s*export\s+(interface|type)\s+[A-Z][^=]*?(?:{[\s\S]*?}|=[^;]*?;)|export\s+(interface|type)\s+[A-Z][^=]*?(?:{[\s\S]*?}|=[^;]*?;)/gm,
-      ) ?? []
+    const exportBlocks: string[] = []
+    const exportRegex =
+      /export\s+(interface|type)\s+[A-Z][^=]*?(?:{[\s\S]*?}|=[^;]*?;)/gm
+    for (const match of content.matchAll(exportRegex)) {
+      const start = match.index ?? 0
+      const before = content.slice(0, start)
+      const comments = before.match(/\/\*\*[\s\S]*?\*\//g)
+      const comment =
+        comments && comments.length > 0 ? comments[comments.length - 1]! : ""
+      exportBlocks.push(comment + match[0])
+    }
 
     const cleanBlocks = exportBlocks
       .filter((block) => {
-        const isDeprecated = block.includes("@deprecated")
+        const interfaceIndex = block.indexOf("export interface")
+        const typeIndex = block.indexOf("export type")
+        const exportIndex =
+          interfaceIndex !== -1
+            ? interfaceIndex
+            : typeIndex !== -1
+              ? typeIndex
+              : 0
+        const beforeExport = block.slice(0, exportIndex)
+        const comments = beforeExport.match(/\/\*\*[\s\S]*?\*\/\s*/g)
+        const comment =
+          comments && comments.length > 0 ? comments[comments.length - 1]! : ""
+        const isDeprecated = comment.includes("@deprecated")
         const isZodRelated =
           block.includes("z.") ||
           block.includes("Inferred") ||
