@@ -43,7 +43,8 @@ async function generateDocs() {
       const start = match.index ?? 0
       const before = content.slice(0, start)
       const comments = before.match(/\/\*\*[\s\S]*?\*\//g)
-      const comment = comments ? comments[comments.length - 1] : ""
+      const comment =
+        comments && comments.length > 0 ? comments[comments.length - 1]! : ""
       exportBlocks.push(comment + match[0])
     }
 
@@ -59,7 +60,8 @@ async function generateDocs() {
               : 0
         const beforeExport = block.slice(0, exportIndex)
         const comments = beforeExport.match(/\/\*\*[\s\S]*?\*\/\s*/g)
-        const comment = comments ? comments[comments.length - 1] : ""
+        const comment =
+          comments && comments.length > 0 ? comments[comments.length - 1]! : ""
         const isDeprecated = comment.includes("@deprecated")
         const isZodRelated =
           block.includes("z.") ||

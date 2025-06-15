@@ -9,7 +9,8 @@ function parseExportBlocks(content: string): string[] {
     const start = match.index ?? 0
     const before = content.slice(0, start)
     const comments = before.match(/\/\*\*[\s\S]*?\*\//g)
-    const comment = comments ? comments[comments.length - 1] : ""
+    const comment =
+      comments && comments.length > 0 ? comments[comments.length - 1]! : ""
     blocks.push(comment + match[0])
   }
   return blocks
@@ -22,7 +23,8 @@ function filterBlocks(blocks: string[]): string[] {
     const exportIndex = interfaceIndex !== -1 ? interfaceIndex : typeIndex
     const beforeExport = block.slice(0, exportIndex)
     const comments = beforeExport.match(/\/\*\*[\s\S]*?\*\/\s*/g)
-    const comment = comments ? comments[comments.length - 1] : ""
+    const comment =
+      comments && comments.length > 0 ? comments[comments.length - 1]! : ""
     const isDeprecated = comment.includes("@deprecated")
     const isZodRelated =
       block.includes("z.") ||
