@@ -209,6 +209,7 @@ interface SourceComponentBase {
   are_pins_interchangeable?: boolean
   internally_connected_source_port_ids?: string[][]
   source_group_id?: string
+  subcircuit_id?: string
 }
 ```
 
@@ -259,6 +260,7 @@ The source code is missing a property
   source_missing_property_error_id: string
   source_component_id: string
   property_name: string
+  subcircuit_id?: string
   error_type: "source_missing_property_error"
   message: string
 }
@@ -609,6 +611,7 @@ interface PcbAutoroutingErrorInterface {
   pcb_error_id: string
   error_type: "pcb_autorouting_error"
   message: string
+  subcircuit_id?: string
 }
 ```
 
@@ -867,6 +870,7 @@ Defines a placement error on the PCB
   pcb_placement_error_id: string
   error_type: "pcb_placement_error"
   message: string
+  subcircuit_id?: string
 }
 ```
 
@@ -966,6 +970,7 @@ Defines a trace error on the PCB where a port is not matched
   error_type: "pcb_port_not_matched_error"
   message: string
   pcb_component_ids: string[]
+  subcircuit_id?: string
 }
 ```
 
@@ -1180,6 +1185,7 @@ Pattern for connecting a ground plane to a plated hole
   spoke_inner_diameter: Distance
   spoke_outer_diameter: Distance
   pcb_plated_hole_id?: string
+  subcircuit_id?: string
 }
 ```
 
@@ -1216,6 +1222,7 @@ Defines a trace error on the PCB
   source_trace_id: string
   pcb_component_ids: string[]
   pcb_port_ids: string[]
+  subcircuit_id?: string
 }
 ```
 
@@ -1232,6 +1239,7 @@ A hint that can be used during generation of a PCB trace.
   pcb_port_id: string
   pcb_component_id: string
   route: RouteHintPoint[]
+  subcircuit_id?: string
 }
 ```
 
@@ -1275,6 +1283,7 @@ interface SchematicBox {
   is_dashed: boolean
   x: number
   y: number
+  subcircuit_id?: string
 }
 ```
 
@@ -1320,6 +1329,7 @@ interface SchematicError {
   schematic_error_id: string
   error_type: "schematic_port_not_found"
   message: string
+  subcircuit_id?: string
 }
 ```
 
@@ -1357,6 +1367,7 @@ interface SchematicLayoutError {
   message: string
   source_group_id: string
   schematic_group_id: string
+  subcircuit_id?: string
 }
 ```
 
@@ -1374,6 +1385,7 @@ interface SchematicLayoutError {
   x2: number
   y1: number
   y2: number
+  subcircuit_id?: string
 }
 ```
 
@@ -1412,6 +1424,7 @@ interface SchematicNetLabel {
   anchor_side: "top" | "bottom" | "left" | "right"
   text: string
   symbol_name?: string | undefined
+  subcircuit_id?: string
 }
 ```
 
@@ -1426,6 +1439,7 @@ interface SchematicPath {
   fill_color?: "red" | "blue"
   is_filled?: boolean
   points: Point[]
+  subcircuit_id?: string
 }
 ```
 
@@ -1446,6 +1460,7 @@ interface SchematicPort {
   true_ccw_index?: number
   pin_number?: number
   display_pin_label?: string
+  subcircuit_id?: string
 }
 ```
 
@@ -1489,6 +1504,7 @@ interface SchematicVoltageProbe {
   position: Point
   schematic_trace_id: string
   voltage?: number
+  subcircuit_id?: string
 }
 ```
 
