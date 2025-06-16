@@ -13,6 +13,7 @@ export const pcb_trace_error = z
     source_trace_id: z.string(),
     pcb_component_ids: z.array(z.string()),
     pcb_port_ids: z.array(z.string()),
+    subcircuit_id: z.string().optional(),
   })
   .describe("Defines a trace error on the PCB")
 
@@ -32,6 +33,7 @@ export interface PcbTraceError {
   source_trace_id: string
   pcb_component_ids: string[]
   pcb_port_ids: string[]
+  subcircuit_id?: string
 }
 
 /**

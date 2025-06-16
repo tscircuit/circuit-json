@@ -8,6 +8,7 @@ export const pcb_placement_error = z
     pcb_placement_error_id: getZodPrefixedIdWithDefault("pcb_placement_error"),
     error_type: z.literal("pcb_placement_error").default("pcb_placement_error"),
     message: z.string(),
+    subcircuit_id: z.string().optional(),
   })
   .describe("Defines a placement error on the PCB")
 
@@ -22,6 +23,7 @@ export interface PcbPlacementError {
   pcb_placement_error_id: string
   error_type: "pcb_placement_error"
   message: string
+  subcircuit_id?: string
 }
 
 /**

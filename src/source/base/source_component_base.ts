@@ -16,6 +16,7 @@ export interface SourceComponentBase {
   are_pins_interchangeable?: boolean
   internally_connected_source_port_ids?: string[][]
   source_group_id?: string
+  subcircuit_id?: string
 }
 
 export const source_component_base = z.object({
@@ -31,6 +32,7 @@ export const source_component_base = z.object({
   are_pins_interchangeable: z.boolean().optional(),
   internally_connected_source_port_ids: z.array(z.array(z.string())).optional(),
   source_group_id: z.string().optional(),
+  subcircuit_id: z.string().optional(),
 })
 
 type InferredSourceComponentBase = z.infer<typeof source_component_base>

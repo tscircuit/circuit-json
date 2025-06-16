@@ -14,6 +14,7 @@ export interface SchematicPort {
   true_ccw_index?: number
   pin_number?: number
   display_pin_label?: string
+  subcircuit_id?: string
 }
 
 export const schematic_port = z
@@ -29,6 +30,7 @@ export const schematic_port = z
     true_ccw_index: z.number().optional(),
     pin_number: z.number().optional(),
     display_pin_label: z.string().optional(),
+    subcircuit_id: z.string().optional(),
   })
   .describe("Defines a port on a schematic component")
 

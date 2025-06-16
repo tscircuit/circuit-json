@@ -11,6 +11,7 @@ export const pcb_port_not_matched_error = z
       .default("pcb_port_not_matched_error"),
     message: z.string(),
     pcb_component_ids: z.array(z.string()),
+    subcircuit_id: z.string().optional(),
   })
   .describe("Defines a trace error on the PCB where a port is not matched")
 
@@ -28,6 +29,7 @@ export interface PcbPortNotMatchedError {
   error_type: "pcb_port_not_matched_error"
   message: string
   pcb_component_ids: string[]
+  subcircuit_id?: string
 }
 
 /**

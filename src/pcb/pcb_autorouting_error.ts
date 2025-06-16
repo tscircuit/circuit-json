@@ -10,6 +10,7 @@ export const pcb_autorouting_error = z
       .literal("pcb_autorouting_error")
       .default("pcb_autorouting_error"),
     message: z.string(),
+    subcircuit_id: z.string().optional(),
   })
   .describe("The autorouting has failed to route a portion of the board")
 
@@ -21,6 +22,7 @@ export interface PcbAutoroutingErrorInterface {
   pcb_error_id: string
   error_type: "pcb_autorouting_error"
   message: string
+  subcircuit_id?: string
 }
 
 export type PcbAutoroutingError = PcbAutoroutingErrorInterface

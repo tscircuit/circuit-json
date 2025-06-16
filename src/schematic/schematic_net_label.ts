@@ -14,6 +14,7 @@ export interface SchematicNetLabel {
   anchor_side: "top" | "bottom" | "left" | "right"
   text: string
   symbol_name?: string | undefined
+  subcircuit_id?: string
 }
 
 export const schematic_net_label = z.object({
@@ -27,6 +28,7 @@ export const schematic_net_label = z.object({
   anchor_side: z.enum(["top", "bottom", "left", "right"]),
   text: z.string(),
   symbol_name: z.string().optional(),
+  subcircuit_id: z.string().optional(),
 })
 
 export type SchematicNetLabelInput = z.input<typeof schematic_net_label>

@@ -6,6 +6,7 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 export const schematic_debug_object_base = z.object({
   type: z.literal("schematic_debug_object"),
   label: z.string().optional(),
+  subcircuit_id: z.string().optional(),
 })
 
 export const schematic_debug_rect = schematic_debug_object_base.extend({
@@ -38,6 +39,7 @@ export interface SchematicDebugRect {
   shape: "rect"
   center: Point
   size: Size
+  subcircuit_id?: string
 }
 
 export interface SchematicDebugLine {
@@ -46,6 +48,7 @@ export interface SchematicDebugLine {
   shape: "line"
   start: Point
   end: Point
+  subcircuit_id?: string
 }
 
 export interface SchematicDebugPoint {
@@ -53,6 +56,7 @@ export interface SchematicDebugPoint {
   label?: string
   shape: "point"
   center: Point
+  subcircuit_id?: string
 }
 
 export type SchematicDebugObject =

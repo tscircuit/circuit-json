@@ -14,6 +14,7 @@ export const pcb_thermal_spoke = z
     spoke_inner_diameter: distance,
     spoke_outer_diameter: distance,
     pcb_plated_hole_id: z.string().optional(),
+    subcircuit_id: z.string().optional(),
   })
   .describe("Pattern for connecting a ground plane to a plated hole")
 
@@ -33,6 +34,7 @@ export interface PcbThermalSpoke {
   spoke_inner_diameter: Distance
   spoke_outer_diameter: Distance
   pcb_plated_hole_id?: string
+  subcircuit_id?: string
 }
 
 expectTypesMatch<PcbThermalSpoke, InferredPcbThermalSpoke>(true)

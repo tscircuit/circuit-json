@@ -14,6 +14,7 @@ export interface SchematicLine {
   x2: number
   y1: number
   y2: number
+  subcircuit_id?: string
 }
 
 export const schematic_line = z.object({
@@ -23,6 +24,7 @@ export const schematic_line = z.object({
   x2: distance,
   y1: distance,
   y2: distance,
+  subcircuit_id: z.string().optional(),
 })
 
 export type SchematicLineInput = z.input<typeof schematic_line>

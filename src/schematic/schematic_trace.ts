@@ -25,6 +25,7 @@ export interface SchematicTrace {
     y: number
   }[]
   edges: SchematicTraceEdge[]
+  subcircuit_id?: string
 }
 
 export const schematic_trace = z.object({
@@ -52,6 +53,7 @@ export const schematic_trace = z.object({
       to_schematic_port_id: z.string().optional(),
     }),
   ),
+  subcircuit_id: z.string().optional(),
 })
 
 export type SchematicTraceInput = z.input<typeof schematic_trace>

@@ -12,6 +12,7 @@ export interface PcbTraceHint {
   pcb_port_id: string
   pcb_component_id: string
   route: RouteHintPoint[]
+  subcircuit_id?: string
 }
 
 export const pcb_trace_hint = z
@@ -21,6 +22,7 @@ export const pcb_trace_hint = z
     pcb_port_id: z.string(),
     pcb_component_id: z.string(),
     route: z.array(route_hint_point),
+    subcircuit_id: z.string().optional(),
   })
   .describe("A hint that can be used during generation of a PCB trace")
 
