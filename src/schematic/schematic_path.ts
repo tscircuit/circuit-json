@@ -8,6 +8,7 @@ export interface SchematicPath {
   fill_color?: "red" | "blue"
   is_filled?: boolean
   points: Point[]
+  subcircuit_id?: string
 }
 
 export const schematic_path = z.object({
@@ -16,6 +17,7 @@ export const schematic_path = z.object({
   fill_color: z.enum(["red", "blue"]).optional(),
   is_filled: z.boolean().optional(),
   points: z.array(point),
+  subcircuit_id: z.string().optional(),
 })
 
 export type SchematicPathInput = z.input<typeof schematic_path>

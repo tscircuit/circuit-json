@@ -10,6 +10,7 @@ export const source_missing_property_error = z
     ),
     source_component_id: z.string(),
     property_name: z.string(),
+    subcircuit_id: z.string().optional(),
     error_type: z
       .literal("source_missing_property_error")
       .default("source_missing_property_error"),
@@ -32,6 +33,7 @@ export interface SourceMissingPropertyError {
   source_missing_property_error_id: string
   source_component_id: string
   property_name: string
+  subcircuit_id?: string
   error_type: "source_missing_property_error"
   message: string
 }

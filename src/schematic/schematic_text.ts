@@ -19,6 +19,7 @@ export interface SchematicText {
   rotation: number
   anchor: NinePointAnchor | FivePointAnchor
   color: string
+  subcircuit_id?: string
 }
 
 export const schematic_text = z.object({
@@ -36,6 +37,7 @@ export const schematic_text = z.object({
     .union([fivePointAnchor.describe("legacy"), ninePointAnchor])
     .default("center"),
   color: z.string().default("#000000"),
+  subcircuit_id: z.string().optional(),
 })
 
 export type SchematicTextInput = z.input<typeof schematic_text>

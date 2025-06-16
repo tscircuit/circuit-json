@@ -10,6 +10,7 @@ export interface SchematicBox {
   is_dashed: boolean
   x: number
   y: number
+  subcircuit_id?: string
 }
 
 export const schematic_box = z
@@ -21,6 +22,7 @@ export const schematic_box = z
     is_dashed: z.boolean().default(false),
     x: distance,
     y: distance,
+    subcircuit_id: z.string().optional(),
   })
   .describe("Draws a box on the schematic")
 

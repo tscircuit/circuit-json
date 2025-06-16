@@ -14,6 +14,7 @@ export const cad_component = z
     rotation: point3.optional(),
     size: point3.optional(),
     layer: layer_ref.optional(),
+    subcircuit_id: z.string().optional(),
 
     // These are all ways to generate/load the 3d model
     footprinter_string: z.string().optional(),
@@ -36,6 +37,7 @@ export interface CadComponent {
   rotation?: Point3
   size?: Point3
   layer?: LayerRef
+  subcircuit_id?: string
   footprinter_string?: string
   model_obj_url?: string
   model_stl_url?: string

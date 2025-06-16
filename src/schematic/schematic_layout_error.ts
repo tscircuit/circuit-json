@@ -14,6 +14,7 @@ export const schematic_layout_error = z
     message: z.string(),
     source_group_id: z.string(),
     schematic_group_id: z.string(),
+    subcircuit_id: z.string().optional(),
   })
   .describe("Error emitted when schematic layout fails for a group")
 
@@ -27,6 +28,7 @@ export interface SchematicLayoutError {
   message: string
   source_group_id: string
   schematic_group_id: string
+  subcircuit_id?: string
 }
 
 expectTypesMatch<SchematicLayoutError, InferredSchematicLayoutError>(true)

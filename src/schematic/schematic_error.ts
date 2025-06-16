@@ -6,6 +6,7 @@ export interface SchematicError {
   schematic_error_id: string
   error_type: "schematic_port_not_found"
   message: string
+  subcircuit_id?: string
 }
 
 export const schematic_error = z
@@ -17,6 +18,7 @@ export const schematic_error = z
       .literal("schematic_port_not_found")
       .default("schematic_port_not_found"),
     message: z.string(),
+    subcircuit_id: z.string().optional(),
   })
   .describe("Defines a schematic error on the schematic")
 
