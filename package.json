@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "nanoid": "^5.0.7",
-    "zod": "^3.25.67"
+    "zod": "*"
   },
   "peerDependencies": {
     "zod": "*"
