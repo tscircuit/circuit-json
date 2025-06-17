@@ -132,6 +132,7 @@ interface SchematicNetLabel {
   center: { x: number; y: number }
   anchor_side: "top" | "bottom" | "left" | "right"
   text: string
+  is_movable?: boolean
 }
 
 interface SchematicPath {
