@@ -14,6 +14,11 @@ export interface SchematicNetLabel {
   anchor_side: "top" | "bottom" | "left" | "right"
   text: string
   symbol_name?: string | undefined
+  /**
+   * When true the net label can be repositioned. When false the label's
+   * position is fixed by the element it is attached to.
+   */
+  is_movable?: boolean
   subcircuit_id?: string
 }
 
@@ -28,6 +33,7 @@ export const schematic_net_label = z.object({
   anchor_side: z.enum(["top", "bottom", "left", "right"]),
   text: z.string(),
   symbol_name: z.string().optional(),
+  is_movable: z.boolean().optional(),
   subcircuit_id: z.string().optional(),
 })
 
