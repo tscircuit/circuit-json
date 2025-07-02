@@ -1,6 +1,34 @@
 import fs from "node:fs"
 import path from "node:path"
 import { glob } from "glob"
+import ts from "typescript"
+
+function parseExportBlocks(content: string): string[] {
+  const source = ts.createSourceFile(
+    "temp.ts",
+    content,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TS,
+  )
+  const blocks: string[] = []
+  const visit = (node: ts.Node) => {
+    if (
+      (ts.isInterfaceDeclaration(node) || ts.isTypeAliasDeclaration(node)) &&
+      node.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword)
+    ) {
+      const comments = ts.getLeadingCommentRanges(content, node.pos) || []
+      let commentText = ""
+      for (const range of comments) {
+        commentText += content.slice(range.pos, range.end)
+      }
+      blocks.push(commentText + content.slice(node.getStart(source), node.end))
+    }
+    ts.forEachChild(node, visit)
+  }
+  ts.forEachChild(source, visit)
+  return blocks
+}
 
 interface ElementDoc {
   name: string
@@ -36,17 +64,7 @@ async function generateDocs() {
       .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
       .join("")
 
-    const exportBlocks: string[] = []
-    const exportRegex =
-      /export\s+(interface|type)\s+[A-Z][^=]*?(?:{[\s\S]*?}|=[^;]*?;)/gm
-    for (const match of content.matchAll(exportRegex)) {
-      const start = match.index ?? 0
-      const before = content.slice(0, start)
-      const comments = before.match(/\/\*\*[\s\S]*?\*\//g)
-      const comment =
-        comments && comments.length > 0 ? comments[comments.length - 1]! : ""
-      exportBlocks.push(comment + match[0])
-    }
+    const exportBlocks = parseExportBlocks(content)
 
     const cleanBlocks = exportBlocks
       .filter((block) => {
@@ -80,7 +98,7 @@ async function generateDocs() {
           .replace(/\)\)/g, ")")
           // Format JSDoc comment
           .replace(/\/\*\*\s*\n\s*\*\s*/g, "/** ")
-          .replace(/\n\s*\*\//g, " */")
+          .replace(/\n\s*\*\//g, " */\n")
           // Clean up whitespace while preserving structure
           .replace(/{\n\s*([^}]*)\n\s*}/g, (_, content) => {
             const lines = content.trim().split("\n")

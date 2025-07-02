@@ -39,9 +39,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
 ## Table of Contents
 
 <!-- toc:start -->
-
 - [Circuit JSON Specification `circuit-json`](#circuit-json-specification-circuit-json)
-
   - [Things You Can Do With Circuit JSON](#things-you-can-do-with-circuit-json)
   - [Typescript Usage](#typescript-usage)
 
@@ -90,6 +88,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbPlatedHole](#pcbplatedhole)
     - [PcbPort](#pcbport)
     - [PcbPortNotMatchedError](#pcbportnotmatchederror)
+    - [PcbRouteHints](#pcbroutehints)
     - [PcbSilkscreenCircle](#pcbsilkscreencircle)
     - [PcbSilkscreenLine](#pcbsilkscreenline)
     - [PcbSilkscreenOval](#pcbsilkscreenoval)
@@ -107,6 +106,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
   - [Schematic Elements](#schematic-elements)
     - [SchematicBox](#schematicbox)
     - [SchematicComponent](#schematiccomponent)
+    - [SchematicDebugObject](#schematicdebugobject)
     - [SchematicError](#schematicerror)
     - [SchematicGroup](#schematicgroup)
     - [SchematicLayoutError](#schematiclayouterror)
@@ -190,7 +190,6 @@ There are 3 main element prefixes:
 - `schematic_` - e.g. `schematic_component`. Anything required to render the Schematic
 
 <!-- circuit-json-docs:start -->
-
 ## Source Components
 
 ### SourceComponentBase
@@ -219,7 +218,8 @@ interface SourceComponentBase {
 
 ```typescript
 /** Error emitted when a component fails to be constructed.
- * Contains details about the failure and prevents the component from being rendered. */interface SourceFailedToCreateComponentError {
+ * Contains details about the failure and prevents the component from being rendered. */
+interface SourceFailedToCreateComponentError {
   type: "source_failed_to_create_component_error"
   source_failed_to_create_component_error_id: string
   error_type: "source_failed_to_create_component_error"
@@ -230,6 +230,11 @@ interface SourceComponentBase {
   pcb_center?: {
   x?: number
   y?: number
+}
+  schematic_center?: {
+  x?: number
+  y?: number
+}
 }
 ```
 
@@ -255,7 +260,8 @@ interface SourceGroup {
 The source code is missing a property
 
 ```typescript
-/** The source code is missing a property */ interface SourceMissingPropertyError {
+/** The source code is missing a property */
+interface SourceMissingPropertyError {
   type: "source_missing_property_error"
   source_missing_property_error_id: string
   source_component_id: string
@@ -293,7 +299,8 @@ interface SourceNet {
 Defines a ground plane in the source domain
 
 ```typescript
-/** Defines a ground plane in the source domain */ interface SourcePcbGroundPlane {
+/** Defines a ground plane in the source domain */
+interface SourcePcbGroundPlane {
   type: "source_pcb_ground_plane"
   source_pcb_ground_plane_id: string
   source_group_id: string
@@ -309,7 +316,8 @@ Defines a ground plane in the source domain
 Defines a source port that can be connected to other components
 
 ```typescript
-/** Defines a source port that can be connected to other components */ interface SourcePort {
+/** Defines a source port that can be connected to other components */
+interface SourcePort {
   type: "source_port"
   pin_number?: number
   port_hints?: string[]
@@ -342,8 +350,8 @@ interface SourceProjectMetadata {
 Defines a simple battery component
 
 ```typescript
-/** Defines a simple battery component */ interface SourceSimpleBattery
-  extends SourceComponentBase {
+/** Defines a simple battery component */
+interface SourceSimpleBattery extends SourceComponentBase {
   ftype: "simple_battery"
   capacity: number
 }
@@ -356,8 +364,8 @@ Defines a simple battery component
 Defines a simple capacitor component
 
 ```typescript
-/** Defines a simple capacitor component */ interface SourceSimpleCapacitor
-  extends SourceComponentBase {
+/** Defines a simple capacitor component */
+interface SourceSimpleCapacitor extends SourceComponentBase {
   ftype: "simple_capacitor"
   capacitance: number
   max_voltage_rating?: number
@@ -373,8 +381,8 @@ Defines a simple capacitor component
 Defines a simple integrated circuit component
 
 ```typescript
-/** Defines a simple integrated circuit component */ interface SourceSimpleChip
-  extends SourceComponentBase {
+/** Defines a simple integrated circuit component */
+interface SourceSimpleChip extends SourceComponentBase {
   ftype: "simple_chip"
 }
 ```
@@ -386,8 +394,8 @@ Defines a simple integrated circuit component
 Defines a simple crystal oscillator component
 
 ```typescript
-/** Defines a simple crystal oscillator component */ interface SourceSimpleCrystal
-  extends SourceComponentBase {
+/** Defines a simple crystal oscillator component */
+interface SourceSimpleCrystal extends SourceComponentBase {
   ftype: "simple_crystal"
   frequency: number
   load_capacitance?: number
@@ -401,8 +409,8 @@ Defines a simple crystal oscillator component
 Defines a simple diode component
 
 ```typescript
-/** Defines a simple diode component */ interface SourceSimpleDiode
-  extends SourceComponentBase {
+/** Defines a simple diode component */
+interface SourceSimpleDiode extends SourceComponentBase {
   ftype: "simple_diode"
 }
 ```
@@ -426,8 +434,8 @@ interface SourceSimpleFuse extends SourceComponentBase {
 Defines a simple ground component
 
 ```typescript
-/** Defines a simple ground component */ interface SourceSimpleGround
-  extends SourceComponentBase {
+/** Defines a simple ground component */
+interface SourceSimpleGround extends SourceComponentBase {
   ftype: "simple_ground"
 }
 ```
@@ -439,8 +447,8 @@ Defines a simple ground component
 Defines a simple inductor component
 
 ```typescript
-/** Defines a simple inductor component */ interface SourceSimpleInductor
-  extends SourceComponentBase {
+/** Defines a simple inductor component */
+interface SourceSimpleInductor extends SourceComponentBase {
   ftype: "simple_inductor"
   inductance: number
   max_current_rating?: number
@@ -454,8 +462,8 @@ Defines a simple inductor component
 Defines a simple led component
 
 ```typescript
-/** Defines a simple led component */ interface SourceSimpleLed
-  extends Omit<SourceSimpleDiode, "ftype"> {
+/** Defines a simple led component */
+interface SourceSimpleLed extends Omit<SourceSimpleDiode, "ftype"> {
   ftype: "simple_led"
   color?: string
   wavelength?: string
@@ -469,8 +477,8 @@ Defines a simple led component
 ```typescript
 /** Defines a simple mosfet component
  * This is a three-pin semiconductor device (source, gate, drain)
- * Pin configuration is handled by the schematic port system */ interface SourceSimpleMosfet
-  extends SourceComponentBase {
+ * Pin configuration is handled by the schematic port system */
+interface SourceSimpleMosfet extends SourceComponentBase {
   ftype: "simple_mosfet"
   channel_type: "n" | "p"
   mosfet_mode: "enhancement" | "depletion"
@@ -484,8 +492,8 @@ Defines a simple led component
 Defines a simple power source component
 
 ```typescript
-/** Defines a simple power source component */ interface SourceSimplePowerSource
-  extends SourceComponentBase {
+/** Defines a simple power source component */
+interface SourceSimplePowerSource extends SourceComponentBase {
   ftype: "simple_power_source"
   voltage: number
 }
@@ -498,8 +506,8 @@ Defines a simple power source component
 Defines a simple push button component
 
 ```typescript
-/** Defines a simple push button component */ interface SourceSimplePushButton
-  extends SourceComponentBase {
+/** Defines a simple push button component */
+interface SourceSimplePushButton extends SourceComponentBase {
   ftype: "simple_push_button"
 }
 ```
@@ -511,8 +519,8 @@ Defines a simple push button component
 Defines a simple resistor component
 
 ```typescript
-/** Defines a simple resistor component */ interface SourceSimpleResistor
-  extends SourceComponentBase {
+/** Defines a simple resistor component */
+interface SourceSimpleResistor extends SourceComponentBase {
   ftype: "simple_resistor"
   resistance: number
   display_resistance?: string
@@ -526,8 +534,8 @@ Defines a simple resistor component
 Defines a simple resonator component
 
 ```typescript
-/** Defines a simple resonator component */ interface SourceSimpleResonator
-  extends SourceComponentBase {
+/** Defines a simple resonator component */
+interface SourceSimpleResonator extends SourceComponentBase {
   ftype: "simple_resonator"
   load_capacitance: number
   equivalent_series_resistance?: number
@@ -542,8 +550,8 @@ Defines a simple resonator component
 Defines a simple switch component
 
 ```typescript
-/** Defines a simple switch component */ interface SourceSimpleSwitch
-  extends SourceComponentBase {
+/** Defines a simple switch component */
+interface SourceSimpleSwitch extends SourceComponentBase {
   ftype: "simple_switch"
 }
 ```
@@ -555,8 +563,8 @@ Defines a simple switch component
 ```typescript
 /** Defines a simple test point component
  * Can be surface-mount or through-hole.
- * Pad shape and dimensions configurable for different use cases. */ interface SourceSimpleTestPoint
-  extends SourceComponentBase {
+ * Pad shape and dimensions configurable for different use cases. */
+interface SourceSimpleTestPoint extends SourceComponentBase {
   ftype: "simple_test_point"
   footprint_variant?: "pad" | "through_hole"
   pad_shape?: "rect" | "circle"
@@ -574,8 +582,8 @@ Defines a simple switch component
 ```typescript
 /** Defines a simple transistor component
  * This is a three-pin semiconductor device (emitter, base, collector)
- * Pin configuration is handled by the schematic port system */ interface SourceSimpleTransistor
-  extends SourceComponentBase {
+ * Pin configuration is handled by the schematic port system */
+interface SourceSimpleTransistor extends SourceComponentBase {
   ftype: "simple_transistor"
   transistor_type: "npn" | "pnp"
 }
@@ -622,7 +630,8 @@ interface PcbAutoroutingErrorInterface {
 Defines the board outline of the PCB
 
 ```typescript
-/** Defines the board outline of the PCB */ interface PcbBoard {
+/** Defines the board outline of the PCB */
+interface PcbBoard {
   type: "pcb_board"
   pcb_board_id: string
   is_subcircuit?: boolean
@@ -644,7 +653,8 @@ Defines the board outline of the PCB
 Defines a routing target within a pcb_group for a source_trace or source_net
 
 ```typescript
-/** Defines a routing target within a pcb_group for a source_trace or source_net */ interface PcbBreakoutPoint {
+/** Defines a routing target within a pcb_group for a source_trace or source_net */
+interface PcbBreakoutPoint {
   type: "pcb_breakout_point"
   pcb_breakout_point_id: string
   pcb_group_id: string
@@ -664,7 +674,8 @@ Defines a routing target within a pcb_group for a source_trace or source_net
 Defines a component on the PCB
 
 ```typescript
-/** Defines a component on the PCB */ interface PcbComponent {
+/** Defines a component on the PCB */
+interface PcbComponent {
   type: "pcb_component"
   pcb_component_id: string
   source_component_id: string
@@ -685,7 +696,8 @@ Defines a component on the PCB
 Defines a rectangular cutout on the PCB.
 
 ```typescript
-/** Defines a rectangular cutout on the PCB. */ interface PcbCutoutRect {
+/** Defines a rectangular cutout on the PCB. */
+interface PcbCutoutRect {
   type: "pcb_cutout"
   pcb_cutout_id: string
   pcb_group_id?: string
@@ -705,7 +717,8 @@ Defines a rectangular cutout on the PCB.
 Defines a fabrication path on the PCB for fabricators or assemblers
 
 ```typescript
-/** Defines a fabrication path on the PCB for fabricators or assemblers */ interface PcbFabricationNotePath {
+/** Defines a fabrication path on the PCB for fabricators or assemblers */
+interface PcbFabricationNotePath {
   type: "pcb_fabrication_note_path"
   pcb_fabrication_note_path_id: string
   pcb_component_id: string
@@ -724,7 +737,8 @@ Defines a fabrication path on the PCB for fabricators or assemblers
 Defines a fabrication note in text on the PCB, useful for leaving notes for assemblers or fabricators
 
 ```typescript
-/** Defines a fabrication note in text on the PCB, useful for leaving notes for assemblers or fabricators */ interface PcbFabricationNoteText {
+/** Defines a fabrication note in text on the PCB, useful for leaving notes for assemblers or fabricators */
+interface PcbFabricationNoteText {
   type: "pcb_fabrication_note_text"
   pcb_fabrication_note_text_id: string
   subcircuit_id?: string
@@ -735,12 +749,7 @@ Defines a fabrication note in text on the PCB, useful for leaving notes for asse
   text: string
   layer: VisibleLayer
   anchor_position: Point
-  anchor_alignment:
-    | "center"
-    | "top_left"
-    | "top_right"
-    | "bottom_left"
-    | "bottom_right"
+  anchor_alignment: | "center" | "top_left" | "top_right" | "bottom_left" | "bottom_right"
   color?: string
 }
 ```
@@ -752,7 +761,8 @@ Defines a fabrication note in text on the PCB, useful for leaving notes for asse
 Defines a ground plane on the PCB
 
 ```typescript
-/** Defines a ground plane on the PCB */ interface PcbGroundPlane {
+/** Defines a ground plane on the PCB */
+interface PcbGroundPlane {
   type: "pcb_ground_plane"
   pcb_ground_plane_id: string
   source_pcb_ground_plane_id: string
@@ -769,7 +779,8 @@ Defines a ground plane on the PCB
 Defines a polygon region of a ground plane
 
 ```typescript
-/** Defines a polygon region of a ground plane */ interface PcbGroundPlaneRegion {
+/** Defines a polygon region of a ground plane */
+interface PcbGroundPlaneRegion {
   type: "pcb_ground_plane_region"
   pcb_ground_plane_region_id: string
   pcb_ground_plane_id: string
@@ -787,7 +798,8 @@ Defines a polygon region of a ground plane
 Defines a group of components on the PCB
 
 ```typescript
-/** Defines a group of components on the PCB */ interface PcbGroup {
+/** Defines a group of components on the PCB */
+interface PcbGroup {
   type: "pcb_group"
   pcb_group_id: string
   source_group_id: string
@@ -809,7 +821,8 @@ Defines a group of components on the PCB
 Defines a circular or square hole on the PCB
 
 ```typescript
-/** Defines a circular or square hole on the PCB */ interface PcbHoleCircleOrSquare {
+/** Defines a circular or square hole on the PCB */
+interface PcbHoleCircleOrSquare {
   type: "pcb_hole"
   pcb_hole_id: string
   pcb_group_id?: string
@@ -828,7 +841,8 @@ Defines a circular or square hole on the PCB
 Warning emitted when a component has both manual placement (via manualEdits) and explicit pcbX/pcbY coordinates
 
 ```typescript
-/** Warning emitted when a component has both manual placement (via manualEdits) and explicit pcbX/pcbY coordinates */ interface PcbManualEditConflictWarning {
+/** Warning emitted when a component has both manual placement (via manualEdits) and explicit pcbX/pcbY coordinates */
+interface PcbManualEditConflictWarning {
   type: "pcb_manual_edit_conflict_warning"
   pcb_manual_edit_conflict_warning_id: string
   warning_type: "pcb_manual_edit_conflict_warning"
@@ -847,7 +861,8 @@ Warning emitted when a component has both manual placement (via manualEdits) and
 Defines a placement error on the PCB
 
 ```typescript
-/** Defines a placement error on the PCB */ interface PcbMissingFootprintError {
+/** Defines a placement error on the PCB */
+interface PcbMissingFootprintError {
   type: "pcb_missing_footprint_error"
   pcb_missing_footprint_error_id: string
   pcb_group_id?: string
@@ -865,7 +880,8 @@ Defines a placement error on the PCB
 Defines a placement error on the PCB
 
 ```typescript
-/** Defines a placement error on the PCB */ interface PcbPlacementError {
+/** Defines a placement error on the PCB */
+interface PcbPlacementError {
   type: "pcb_placement_error"
   pcb_placement_error_id: string
   error_type: "pcb_placement_error"
@@ -881,7 +897,8 @@ Defines a placement error on the PCB
 Defines a circular plated hole on the PCB
 
 ```typescript
-/** Defines a circular plated hole on the PCB */ interface PcbPlatedHoleCircle {
+/** Defines a circular plated hole on the PCB */
+interface PcbPlatedHoleCircle {
   type: "pcb_plated_hole"
   shape: "circle"
   pcb_group_id?: string
@@ -897,7 +914,7 @@ Defines a circular plated hole on the PCB
   pcb_plated_hole_id: string
 }
 
-/** Defines an oval or pill-shaped plated hole on the PCB */ interface PcbHolePillWithRectPad {
+interface PcbHolePillWithRectPad {
   type: "pcb_plated_hole"
   shape: "pill_hole_with_rect_pad"
   pcb_group_id?: string
@@ -917,7 +934,7 @@ Defines a circular plated hole on the PCB
   pcb_plated_hole_id: string
 }
 
-/** Defines an oval or pill-shaped plated hole on the PCB */ interface PcbHoleCircularWithRectPad {
+interface PcbHoleCircularWithRectPad {
   type: "pcb_plated_hole"
   shape: "circular_hole_with_rect_pad"
   pcb_group_id?: string
@@ -944,7 +961,8 @@ Defines a circular plated hole on the PCB
 Defines a port on the PCB
 
 ```typescript
-/** Defines a port on the PCB */ interface PcbPort {
+/** Defines a port on the PCB */
+interface PcbPort {
   type: "pcb_port"
   pcb_port_id: string
   pcb_group_id?: string
@@ -964,13 +982,29 @@ Defines a port on the PCB
 Defines a trace error on the PCB where a port is not matched
 
 ```typescript
-/** Defines a trace error on the PCB where a port is not matched */ interface PcbPortNotMatchedError {
+/** Defines a trace error on the PCB where a port is not matched */
+interface PcbPortNotMatchedError {
   type: "pcb_port_not_matched_error"
   pcb_error_id: string
   error_type: "pcb_port_not_matched_error"
   message: string
   pcb_component_ids: string[]
   subcircuit_id?: string
+}
+```
+
+### PcbRouteHints
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/properties/pcb_route_hints.ts)
+
+```typescript
+type PcbRouteHints = PcbRouteHint[]
+
+interface PcbRouteHint {
+  x: number
+  y: number
+  via?: boolean
+  via_to_layer?: LayerRef
 }
 ```
 
@@ -981,7 +1015,8 @@ Defines a trace error on the PCB where a port is not matched
 Defines a silkscreen circle on the PCB
 
 ```typescript
-/** Defines a silkscreen circle on the PCB */ interface PcbSilkscreenCircle {
+/** Defines a silkscreen circle on the PCB */
+interface PcbSilkscreenCircle {
   type: "pcb_silkscreen_circle"
   pcb_silkscreen_circle_id: string
   pcb_component_id: string
@@ -1001,7 +1036,8 @@ Defines a silkscreen circle on the PCB
 Defines a silkscreen line on the PCB
 
 ```typescript
-/** Defines a silkscreen line on the PCB */ interface PcbSilkscreenLine {
+/** Defines a silkscreen line on the PCB */
+interface PcbSilkscreenLine {
   type: "pcb_silkscreen_line"
   pcb_silkscreen_line_id: string
   pcb_component_id: string
@@ -1023,7 +1059,8 @@ Defines a silkscreen line on the PCB
 Defines a silkscreen oval on the PCB
 
 ```typescript
-/** Defines a silkscreen oval on the PCB */ interface PcbSilkscreenOval {
+/** Defines a silkscreen oval on the PCB */
+interface PcbSilkscreenOval {
   type: "pcb_silkscreen_oval"
   pcb_silkscreen_oval_id: string
   pcb_component_id: string
@@ -1043,7 +1080,8 @@ Defines a silkscreen oval on the PCB
 Defines a silkscreen path on the PCB
 
 ```typescript
-/** Defines a silkscreen path on the PCB */ interface PcbSilkscreenPath {
+/** Defines a silkscreen path on the PCB */
+interface PcbSilkscreenPath {
   type: "pcb_silkscreen_path"
   pcb_silkscreen_path_id: string
   pcb_component_id: string
@@ -1062,7 +1100,8 @@ Defines a silkscreen path on the PCB
 Defines a silkscreen pill on the PCB
 
 ```typescript
-/** Defines a silkscreen pill on the PCB */ interface PcbSilkscreenPill {
+/** Defines a silkscreen pill on the PCB */
+interface PcbSilkscreenPill {
   type: "pcb_silkscreen_pill"
   pcb_silkscreen_pill_id: string
   pcb_component_id: string
@@ -1082,7 +1121,8 @@ Defines a silkscreen pill on the PCB
 Defines a silkscreen rect on the PCB
 
 ```typescript
-/** Defines a silkscreen rect on the PCB */ interface PcbSilkscreenRect {
+/** Defines a silkscreen rect on the PCB */
+interface PcbSilkscreenRect {
   type: "pcb_silkscreen_rect"
   pcb_silkscreen_rect_id: string
   pcb_component_id: string
@@ -1106,7 +1146,8 @@ Defines a silkscreen rect on the PCB
 Defines silkscreen text on the PCB
 
 ```typescript
-/** Defines silkscreen text on the PCB */ interface PcbSilkscreenText {
+/** Defines silkscreen text on the PCB */
+interface PcbSilkscreenText {
   type: "pcb_silkscreen_text"
   pcb_silkscreen_text_id: string
   pcb_group_id?: string
@@ -1130,7 +1171,8 @@ Defines silkscreen text on the PCB
 Defines solderpaste on the PCB
 
 ```typescript
-/** Defines solderpaste on the PCB */ interface PcbSolderPasteCircle {
+/** Defines solderpaste on the PCB */
+interface PcbSolderPasteCircle {
   type: "pcb_solder_paste"
   shape: "circle"
   pcb_solder_paste_id: string
@@ -1152,7 +1194,8 @@ Defines solderpaste on the PCB
 Defines text on the PCB
 
 ```typescript
-/** Defines text on the PCB */ interface PcbText {
+/** Defines text on the PCB */
+interface PcbText {
   type: "pcb_text"
   pcb_text_id: string
   pcb_group_id?: string
@@ -1175,7 +1218,8 @@ Defines text on the PCB
 Pattern for connecting a ground plane to a plated hole
 
 ```typescript
-/** Pattern for connecting a ground plane to a plated hole */ interface PcbThermalSpoke {
+/** Pattern for connecting a ground plane to a plated hole */
+interface PcbThermalSpoke {
   type: "pcb_thermal_spoke"
   pcb_thermal_spoke_id: string
   pcb_ground_plane_id: string
@@ -1203,6 +1247,8 @@ interface PcbTraceRoutePointWire {
   end_pcb_port_id?: string
   layer: LayerRef
 }
+
+type PcbTraceRoutePoint = PcbTraceRoutePointWire | PcbTraceRoutePointVia
 ```
 
 ### PcbTraceError
@@ -1212,7 +1258,8 @@ interface PcbTraceRoutePointWire {
 Defines a trace error on the PCB
 
 ```typescript
-/** Defines a trace error on the PCB */ interface PcbTraceError {
+/** Defines a trace error on the PCB */
+interface PcbTraceError {
   type: "pcb_trace_error"
   pcb_trace_error_id: string
   error_type: "pcb_trace_error"
@@ -1233,7 +1280,8 @@ Defines a trace error on the PCB
 A hint that can be used during generation of a PCB trace.
 
 ```typescript
-/** A hint that can be used during generation of a PCB trace. */ interface PcbTraceHint {
+/** A hint that can be used during generation of a PCB trace. */
+interface PcbTraceHint {
   type: "pcb_trace_hint"
   pcb_trace_hint_id: string
   pcb_port_id: string
@@ -1250,7 +1298,8 @@ A hint that can be used during generation of a PCB trace.
 Defines a via on the PCB
 
 ```typescript
-/** Defines a via on the PCB */ interface PcbVia {
+/** Defines a via on the PCB */
+interface PcbVia {
   type: "pcb_via"
   pcb_via_id: string
   pcb_group_id?: string
@@ -1307,6 +1356,15 @@ interface SchematicComponent {
   top_margin?: number
   bottom_margin?: number
 }
+  >
+  box_width?: number
+  symbol_name?: string
+  port_arrangement?: SchematicPortArrangement
+  port_labels?: Record<string, string>
+  symbol_display_value?: string
+  subcircuit_id?: string
+  schematic_group_id?: string
+}
 
 interface SchematicPortArrangementBySize {
   left_size: number
@@ -1317,6 +1375,49 @@ interface SchematicPortArrangementBySize {
 
 interface SchematicPortArrangementBySides {
   left_side?: { pins: number[]; direction?: "top-to-bottom" | "bottom-to-top" }
+  right_side?: { pins: number[]; direction?: "top-to-bottom" | "bottom-to-top" }
+  top_side?: { pins: number[]; direction?: "left-to-right" | "right-to-left" }
+  bottom_side?: {
+  pins: number[]
+  direction?: "left-to-right" | "right-to-left"
+}
+}
+
+type SchematicPortArrangement = | SchematicPortArrangementBySize | SchematicPortArrangementBySides
+```
+
+### SchematicDebugObject
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_debug_object.ts)
+
+```typescript
+type SchematicDebugObject = | SchematicDebugRect | SchematicDebugLine | SchematicDebugPoint
+
+interface SchematicDebugRect {
+  type: "schematic_debug_object"
+  label?: string
+  shape: "rect"
+  center: Point
+  size: Size
+  subcircuit_id?: string
+}
+
+interface SchematicDebugLine {
+  type: "schematic_debug_object"
+  label?: string
+  shape: "line"
+  start: Point
+  end: Point
+  subcircuit_id?: string
+}
+
+interface SchematicDebugPoint {
+  type: "schematic_debug_object"
+  label?: string
+  shape: "point"
+  center: Point
+  subcircuit_id?: string
+}
 ```
 
 ### SchematicError
@@ -1340,7 +1441,8 @@ interface SchematicError {
 Defines a group of components on the schematic
 
 ```typescript
-/** Defines a group of components on the schematic */ interface SchematicGroup {
+/** Defines a group of components on the schematic */
+interface SchematicGroup {
   type: "schematic_group"
   schematic_group_id: string
   source_group_id: string
@@ -1378,7 +1480,8 @@ interface SchematicLayoutError {
 ```typescript
 /** Defines a line on the schematic, this can be used for adding arbitrary lines
  * to a schematic, but don't use it for drawing traces, schematic boxes or where
- * other schematic elements are more appropriate. */ interface SchematicLine {
+ * other schematic elements are more appropriate. */
+interface SchematicLine {
   type: "schematic_line"
   schematic_component_id: string
   x1: number
@@ -1396,7 +1499,8 @@ interface SchematicLayoutError {
 Warning emitted when a component has both manual placement (via manualEdits) and explicit schX/schY coordinates
 
 ```typescript
-/** Warning emitted when a component has both manual placement (via manualEdits) and explicit schX/schY coordinates */ interface SchematicManualEditConflictWarning {
+/** Warning emitted when a component has both manual placement (via manualEdits) and explicit schX/schY coordinates */
+interface SchematicManualEditConflictWarning {
   type: "schematic_manual_edit_conflict_warning"
   schematic_manual_edit_conflict_warning_id: string
   warning_type: "schematic_manual_edit_conflict_warning"
@@ -1425,7 +1529,8 @@ interface SchematicNetLabel {
   text: string
   symbol_name?: string | undefined
   /** When true the net label can be repositioned. When false the label's
-   * position is fixed by the element it is attached to. */
+  * position is fixed by the element it is attached to. */
+  
   is_movable?: boolean
   subcircuit_id?: string
 }
@@ -1482,6 +1587,11 @@ interface SchematicText {
   x: number
   y: number
 }
+  rotation: number
+  anchor: NinePointAnchor | FivePointAnchor
+  color: string
+  subcircuit_id?: string
+}
 ```
 
 ### SchematicTrace
@@ -1493,6 +1603,14 @@ interface SchematicTraceEdge {
   from: {
   x: number
   y: number
+}
+  to: {
+  x: number
+  y: number
+}
+  is_crossing?: boolean
+  from_schematic_port_id?: string
+  to_schematic_port_id?: string
 }
 ```
 
