@@ -1,18 +1,31 @@
 import { test, expect } from "bun:test"
 import fs from "node:fs"
+import ts from "typescript"
 
 function parseExportBlocks(content: string): string[] {
+  const source = ts.createSourceFile(
+    "tmp.ts",
+    content,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TS,
+  )
   const blocks: string[] = []
-  const regex =
-    /export\s+(interface|type)\s+[A-Z][^=]*?(?:{[\s\S]*?}|=[^;]*?;)/gm
-  for (const match of content.matchAll(regex)) {
-    const start = match.index ?? 0
-    const before = content.slice(0, start)
-    const comments = before.match(/\/\*\*[\s\S]*?\*\//g)
-    const comment =
-      comments && comments.length > 0 ? comments[comments.length - 1]! : ""
-    blocks.push(comment + match[0])
+  const visit = (node: ts.Node) => {
+    if (
+      (ts.isInterfaceDeclaration(node) || ts.isTypeAliasDeclaration(node)) &&
+      node.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword)
+    ) {
+      const comments = ts.getLeadingCommentRanges(content, node.pos) || []
+      let commentText = ""
+      for (const range of comments) {
+        commentText += content.slice(range.pos, range.end)
+      }
+      blocks.push(commentText + content.slice(node.getStart(source), node.end))
+    }
+    ts.forEachChild(node, visit)
   }
+  ts.forEachChild(source, visit)
   return blocks
 }
 
@@ -40,4 +53,18 @@ test("PcbVia interface is retained by docs generator filter", () => {
   const exportBlocks = parseExportBlocks(content)
   const clean = filterBlocks(exportBlocks)
   expect(clean.some((b) => b.includes("interface PcbVia"))).toBeTrue()
+})
+
+test("SourceFailedToCreateComponentError interface is fully captured", () => {
+  const content = fs.readFileSync(
+    "src/source/source_failed_to_create_component_error.ts",
+    "utf8",
+  )
+  const exportBlocks = parseExportBlocks(content)
+  const clean = filterBlocks(exportBlocks)
+  const block = clean.find((b) =>
+    b.includes("interface SourceFailedToCreateComponentError"),
+  )
+  expect(block).toBeDefined()
+  expect(block!.includes("schematic_center?")).toBeTrue()
 })
