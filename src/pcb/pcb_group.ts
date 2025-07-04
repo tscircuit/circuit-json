@@ -16,6 +16,12 @@ export const pcb_group = z
     pcb_component_ids: z.array(z.string()),
     name: z.string().optional(),
     description: z.string().optional(),
+    autorouter_configuration: z
+      .object({
+        trace_clearance: length,
+      })
+      .optional(),
+    autorouter_used_string: z.string().optional(),
   })
   .describe("Defines a group of components on the PCB")
 
@@ -37,6 +43,10 @@ export interface PcbGroup {
   pcb_component_ids: string[]
   name?: string
   description?: string
+  autorouter_configuration?: {
+    trace_clearance: Length
+  }
+  autorouter_used_string?: string
 }
 
 expectTypesMatch<PcbGroup, InferredPcbGroup>(true)
