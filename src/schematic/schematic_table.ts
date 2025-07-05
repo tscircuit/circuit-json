@@ -30,7 +30,7 @@ export const schematic_table = z
     type: z.literal("schematic_table"),
     schematic_table_id: z.string(),
     position: point,
-    rows: z.array(z.array(schematic_table_cell)),
+    cells: z.array(z.array(schematic_table_cell)),
     column_widths: z.array(distance),
     row_heights: z.array(distance),
     cell_padding: distance.optional(),
@@ -51,7 +51,7 @@ export interface SchematicTable {
   type: "schematic_table"
   schematic_table_id: string
   position: Point
-  rows: SchematicTableCell[][]
+  cells: SchematicTableCell[][]
   column_widths: Length[]
   row_heights: Length[]
   cell_padding?: Length
