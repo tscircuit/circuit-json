@@ -117,6 +117,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicNetLabel](#schematicnetlabel)
     - [SchematicPath](#schematicpath)
     - [SchematicPort](#schematicport)
+    - [SchematicTable](#schematictable)
     - [SchematicText](#schematictext)
     - [SchematicTrace](#schematictrace)
     - [SchematicVoltageProbe](#schematicvoltageprobe)
@@ -1587,6 +1588,19 @@ interface SchematicPort {
   display_pin_label?: string
   subcircuit_id?: string
   is_connected?: boolean
+}
+```
+
+### SchematicTable
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_table.ts)
+
+```typescript
+interface SchematicTableCell {
+  text: string
+  horizontal_align?: "left" | "center" | "right"
+  vertical_align?: "top" | "middle" | "bottom"
+  font_size?: Length
 }
 ```
 
