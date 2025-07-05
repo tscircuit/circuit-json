@@ -4,6 +4,7 @@ import { schematic_table } from "../src/schematic/schematic_table"
 test("schematic_table parse", () => {
   const table = schematic_table.parse({
     type: "schematic_table",
+    schematic_table_id: "table1",
     position: { x: 0, y: 0 },
     rows: [
       [{ text: "A1" }, { text: "B1" }],
