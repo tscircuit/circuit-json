@@ -5,17 +5,12 @@ test("schematic_table parse", () => {
   const table = schematic_table.parse({
     type: "schematic_table",
     schematic_table_id: "table1",
-    position: { x: 0, y: 0 },
-    cells: [
-      [{ text: "A1" }, { text: "B1" }],
-      [{ text: "A2" }, { text: "B2" }],
-    ],
+    anchor_position: { x: 0, y: 0 },
     column_widths: [5, 5],
     row_heights: [2, 2],
   })
   expect(table.type).toBe("schematic_table")
-  expect(table.cells.length).toBe(2)
-  expect(table.cells[0]!.length).toBe(2)
-  expect(table.cells[0]![0]!.text).toBe("A1")
-  expect(table.schematic_table_id).toBeString()
+  expect(table.column_widths.length).toBe(2)
+  expect(table.row_heights.length).toBe(2)
+  expect(table.schematic_table_id).toBe("table1")
 })

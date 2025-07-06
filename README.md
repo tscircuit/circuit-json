@@ -118,6 +118,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicPath](#schematicpath)
     - [SchematicPort](#schematicport)
     - [SchematicTable](#schematictable)
+    - [SchematicTableCell](#schematictablecell)
     - [SchematicText](#schematictext)
     - [SchematicTrace](#schematictrace)
     - [SchematicVoltageProbe](#schematicvoltageprobe)
@@ -1595,12 +1596,48 @@ interface SchematicPort {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_table.ts)
 
+Defines a table on the schematic, useful for displaying data in a structured format.
+
 ```typescript
+/** Defines a table on the schematic, useful for displaying data in a structured format. */
+interface SchematicTable {
+  type: "schematic_table"
+  schematic_table_id: string
+  anchor_position: Point
+  column_widths: Length[]
+  row_heights: Length[]
+  cell_padding?: Length
+  border_width?: Length
+  subcircuit_id?: string
+  schematic_component_id?: string
+  anchor?: NinePointAnchor
+}
+```
+
+### SchematicTableCell
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_table_cell.ts)
+
+Defines a cell within a schematic_table
+
+```typescript
+/** Defines a cell within a schematic_table */
 interface SchematicTableCell {
-  text: string
+  type: "schematic_table_cell"
+  schematic_table_cell_id: string
+  schematic_table_id: string
+  start_row_index: number
+  end_row_index: number
+  start_column_index: number
+  end_column_index: number
+  text?: string
+  center: Point
+  width: Length
+  height: Length
   horizontal_align?: "left" | "center" | "right"
   vertical_align?: "top" | "middle" | "bottom"
   font_size?: Length
+  subcircuit_id?: string
 }
 ```
 
