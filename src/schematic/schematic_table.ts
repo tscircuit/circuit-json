@@ -9,28 +9,12 @@ import {
 import { distance, type Length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-export const schematic_table_cell = z.object({
-  text: z.string(),
-  horizontal_align: z.enum(["left", "center", "right"]).optional(),
-  vertical_align: z.enum(["top", "middle", "bottom"]).optional(),
-  font_size: distance.optional(),
-})
-
-export interface SchematicTableCell {
-  text: string
-  horizontal_align?: "left" | "center" | "right"
-  vertical_align?: "top" | "middle" | "bottom"
-  font_size?: Length
-}
-
-expectTypesMatch<SchematicTableCell, z.infer<typeof schematic_table_cell>>(true)
-
 export const schematic_table = z
   .object({
     type: z.literal("schematic_table"),
-    schematic_table_id: z.string(),
+    schematic_table_id: getZodPrefixedIdWithDefault("schematic_table"),
     position: point,
-    cells: z.array(z.array(schematic_table_cell)),
+    schematic_table_cell_ids: z.array(z.array(z.string())),
     column_widths: z.array(distance),
     row_heights: z.array(distance),
     cell_padding: distance.optional(),
@@ -51,7 +35,7 @@ export interface SchematicTable {
   type: "schematic_table"
   schematic_table_id: string
   position: Point
-  cells: SchematicTableCell[][]
+  schematic_table_cell_ids: string[][]
   column_widths: Length[]
   row_heights: Length[]
   cell_padding?: Length
