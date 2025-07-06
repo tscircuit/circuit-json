@@ -5,7 +5,7 @@ test("schematic_table parse", () => {
   const table = schematic_table.parse({
     type: "schematic_table",
     schematic_table_id: "table1",
-    position: { x: 0, y: 0 },
+    anchor_position: { x: 0, y: 0 },
     column_widths: [5, 5],
     row_heights: [2, 2],
   })

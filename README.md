@@ -1603,7 +1603,7 @@ Defines a table on the schematic, useful for displaying data in a structured for
 interface SchematicTable {
   type: "schematic_table"
   schematic_table_id: string
-  position: Point
+  anchor_position: Point
   column_widths: Length[]
   row_heights: Length[]
   cell_padding?: Length
@@ -1626,9 +1626,14 @@ interface SchematicTableCell {
   type: "schematic_table_cell"
   schematic_table_cell_id: string
   schematic_table_id: string
-  row_index: number
-  column_index: number
-  text: string
+  start_row_index: number
+  end_row_index: number
+  start_column_index: number
+  end_column_index: number
+  text?: string
+  center: Point
+  width: Length
+  height: Length
   horizontal_align?: "left" | "center" | "right"
   vertical_align?: "top" | "middle" | "bottom"
   font_size?: Length

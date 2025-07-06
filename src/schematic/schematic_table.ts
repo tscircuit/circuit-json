@@ -13,7 +13,7 @@ export const schematic_table = z
   .object({
     type: z.literal("schematic_table"),
     schematic_table_id: getZodPrefixedIdWithDefault("schematic_table"),
-    position: point,
+    anchor_position: point,
     column_widths: z.array(distance),
     row_heights: z.array(distance),
     cell_padding: distance.optional(),
@@ -33,7 +33,7 @@ type InferredSchematicTable = z.infer<typeof schematic_table>
 export interface SchematicTable {
   type: "schematic_table"
   schematic_table_id: string
-  position: Point
+  anchor_position: Point
   column_widths: Length[]
   row_heights: Length[]
   cell_padding?: Length
