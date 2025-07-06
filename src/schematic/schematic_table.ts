@@ -14,7 +14,6 @@ export const schematic_table = z
     type: z.literal("schematic_table"),
     schematic_table_id: getZodPrefixedIdWithDefault("schematic_table"),
     position: point,
-    schematic_table_cell_ids: z.array(z.array(z.string())),
     column_widths: z.array(distance),
     row_heights: z.array(distance),
     cell_padding: distance.optional(),
@@ -35,7 +34,6 @@ export interface SchematicTable {
   type: "schematic_table"
   schematic_table_id: string
   position: Point
-  schematic_table_cell_ids: string[][]
   column_widths: Length[]
   row_heights: Length[]
   cell_padding?: Length

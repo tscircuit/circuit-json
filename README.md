@@ -1604,7 +1604,6 @@ interface SchematicTable {
   type: "schematic_table"
   schematic_table_id: string
   position: Point
-  schematic_table_cell_ids: string[][]
   column_widths: Length[]
   row_heights: Length[]
   cell_padding?: Length
