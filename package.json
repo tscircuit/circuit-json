@@ -1,21 +1,11 @@
 {
   "name": "circuit-json",
   "version": "0.0.218",
-  "description": "Definitions for the tscircuit intermediary JSON format",
-  "main": "dist/index.mjs",
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "prepublish": "npm run build",
-    "build": "tsup-node ./src/index.ts --format esm --dts --sourcemap",
-    "format": "biome format . --write",
-    "generate-docs": "bun scripts/generate-readme-docs.ts && prettier --no-semi -w README.md",
-    "lint:zod": "bun run scripts/zod-lint.ts"
-  },
-  "keywords": [],
   "author": "",
-  "license": "ISC",
+  "main": "dist/index.mjs",
+  "dependencies": {
+    "nanoid": "^5.0.7"
+  },
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.30.1",
     "@biomejs/biome": "^1.9.4",
@@ -29,13 +19,20 @@
     "ts-expect": "^1.3.0",
     "ts-node": "^10.9.2",
     "tsup": "^8.3.0",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "zod": "3"
   },
-  "dependencies": {
-    "nanoid": "^5.0.7",
-    "zod": "*"
-  },
-  "peerDependencies": {
-    "zod": "*"
+  "description": "Definitions for the tscircuit intermediary JSON format",
+  "files": [
+    "dist"
+  ],
+  "keywords": [],
+  "license": "ISC",
+  "scripts": {
+    "prepublish": "npm run build",
+    "build": "tsup-node ./src/index.ts --format esm --dts --sourcemap",
+    "format": "biome format . --write",
+    "generate-docs": "bun scripts/generate-readme-docs.ts && prettier --no-semi -w README.md",
+    "lint:zod": "bun run scripts/zod-lint.ts"
   }
 }
