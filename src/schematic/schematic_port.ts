@@ -16,6 +16,7 @@ export interface SchematicPort {
   display_pin_label?: string
   subcircuit_id?: string
   is_connected?: boolean
+  is_intentionally_not_connected?: boolean
 }
 
 export const schematic_port = z
@@ -33,6 +34,7 @@ export const schematic_port = z
     display_pin_label: z.string().optional(),
     subcircuit_id: z.string().optional(),
     is_connected: z.boolean().optional(),
+    is_intentionally_not_connected: z.boolean().optional(),
   })
   .describe("Defines a port on a schematic component")
 
