@@ -254,6 +254,7 @@ interface SourceGroup {
   source_group_id: string
   subcircuit_id?: string
   parent_subcircuit_id?: string
+  parent_source_group_id?: string
   is_subcircuit?: boolean
   name?: string
 }
