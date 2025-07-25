@@ -6,6 +6,7 @@ export const source_group = z.object({
   source_group_id: z.string(),
   subcircuit_id: z.string().optional(),
   parent_subcircuit_id: z.string().optional(),
+  parent_source_group_id: z.string().optional(),
   is_subcircuit: z.boolean().optional(),
   name: z.string().optional(),
 })
@@ -18,6 +19,7 @@ export interface SourceGroup {
   source_group_id: string
   subcircuit_id?: string
   parent_subcircuit_id?: string
+  parent_source_group_id?: string
   is_subcircuit?: boolean
   name?: string
 }
