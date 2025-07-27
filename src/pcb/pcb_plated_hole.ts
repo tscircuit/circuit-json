@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { distance, type Distance } from "src/units"
+import { distance, type Distance, rotation, type Rotation } from "src/units"
 import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
@@ -115,6 +115,27 @@ const pcb_pill_hole_with_rect_pad = z.object({
   pcb_port_id: z.string().optional(),
   pcb_plated_hole_id: getZodPrefixedIdWithDefault("pcb_plated_hole"),
 })
+const pcb_rotated_pill_hole_with_rect_pad = z.object({
+  type: z.literal("pcb_plated_hole"),
+  shape: z.literal("rotated_pill_hole_with_rect_pad"),
+  pcb_group_id: z.string().optional(),
+  subcircuit_id: z.string().optional(),
+  hole_shape: z.literal("rotated_pill"),
+  pad_shape: z.literal("rect"),
+  hole_width: z.number(),
+  hole_height: z.number(),
+  hole_ccw_rotation: rotation,
+  rect_pad_width: z.number(),
+  rect_pad_height: z.number(),
+  rect_ccw_rotation: rotation,
+  x: distance,
+  y: distance,
+  layers: z.array(layer_ref),
+  port_hints: z.array(z.string()).optional(),
+  pcb_component_id: z.string().optional(),
+  pcb_port_id: z.string().optional(),
+  pcb_plated_hole_id: getZodPrefixedIdWithDefault("pcb_plated_hole"),
+})
 export interface PcbHolePillWithRectPad {
   type: "pcb_plated_hole"
   shape: "pill_hole_with_rect_pad"
@@ -126,6 +147,28 @@ export interface PcbHolePillWithRectPad {
   hole_height: number
   rect_pad_width: number
   rect_pad_height: number
+  x: Distance
+  y: Distance
+  layers: LayerRef[]
+  port_hints?: string[]
+  pcb_component_id?: string
+  pcb_port_id?: string
+  pcb_plated_hole_id: string
+}
+
+export interface PcbHoleRotatedPillWithRectPad {
+  type: "pcb_plated_hole"
+  shape: "rotated_pill_hole_with_rect_pad"
+  pcb_group_id?: string
+  subcircuit_id?: string
+  hole_shape: "rotated_pill"
+  pad_shape: "rect"
+  hole_width: number
+  hole_height: number
+  hole_ccw_rotation: Rotation
+  rect_pad_width: number
+  rect_pad_height: number
+  rect_ccw_rotation: Rotation
   x: Distance
   y: Distance
   layers: LayerRef[]
@@ -159,12 +202,14 @@ export const pcb_plated_hole = z.union([
   pcb_plated_hole_oval,
   pcb_circular_hole_with_rect_pad,
   pcb_pill_hole_with_rect_pad,
+  pcb_rotated_pill_hole_with_rect_pad,
 ])
 export type PcbPlatedHole =
   | PcbPlatedHoleCircle
   | PcbPlatedHoleOval
   | PcbHoleCircularWithRectPad
   | PcbHolePillWithRectPad
+  | PcbHoleRotatedPillWithRectPad
 
 expectTypesMatch<PcbPlatedHoleCircle, z.infer<typeof pcb_plated_hole_circle>>(
   true,
@@ -177,6 +222,10 @@ expectTypesMatch<
 expectTypesMatch<
   PcbHolePillWithRectPad,
   z.infer<typeof pcb_pill_hole_with_rect_pad>
+>(true)
+expectTypesMatch<
+  PcbHoleRotatedPillWithRectPad,
+  z.infer<typeof pcb_rotated_pill_hole_with_rect_pad>
 >(true)
 /**
  * @deprecated use PcbPlatedHole
