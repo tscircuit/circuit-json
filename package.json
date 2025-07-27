@@ -1,6 +1,6 @@
 {
   "name": "circuit-json",
-  "version": "0.0.222",
+  "version": "0.0.223",
   "author": "",
   "main": "dist/index.mjs",
   "dependencies": {
