@@ -39,9 +39,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
 ## Table of Contents
 
 <!-- toc:start -->
-
 - [Circuit JSON Specification `circuit-json`](#circuit-json-specification-circuit-json)
-
   - [Things You Can Do With Circuit JSON](#things-you-can-do-with-circuit-json)
   - [Typescript Usage](#typescript-usage)
 
@@ -72,6 +70,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceSimpleTestPoint](#sourcesimpletestpoint)
     - [SourceSimpleTransistor](#sourcesimpletransistor)
     - [SourceTrace](#sourcetrace)
+    - [SourceTraceNotConnected](#sourcetracenotconnected)
   - [PCB Elements](#pcb-elements)
     - [PcbAutoroutingError](#pcbautoroutingerror)
     - [PcbBoard](#pcbboard)
@@ -197,7 +196,6 @@ There are 3 main element prefixes:
 - `schematic_` - e.g. `schematic_component`. Anything required to render the Schematic
 
 <!-- circuit-json-docs:start -->
-
 ## Source Components
 
 ### SourceComponentBase
@@ -236,13 +234,13 @@ interface SourceFailedToCreateComponentError {
   subcircuit_id?: string
   parent_source_component_id?: string
   pcb_center?: {
-    x?: number
-    y?: number
-  }
+  x?: number
+  y?: number
+}
   schematic_center?: {
-    x?: number
-    y?: number
-  }
+  x?: number
+  y?: number
+}
 }
 ```
 
@@ -616,6 +614,27 @@ interface SourceTrace {
 }
 ```
 
+### SourceTraceNotConnected
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_trace_not_connected.ts)
+
+Occurs when a source trace selector does not match any ports
+
+```typescript
+/** Occurs when a source trace selector does not match any ports */
+interface SourceTraceNotConnected {
+  type: "source_trace_not_connected"
+  source_trace_not_connected_id: string
+  error_type: "source_trace_not_connected"
+  message: string
+  subcircuit_id?: string
+  source_group_id?: string
+  source_trace_id?: string
+  connected_source_port_ids?: string[]
+  selectors_not_found?: string[]
+}
+```
+
 ## PCB Elements
 
 ### PcbAutoroutingError
@@ -758,12 +777,7 @@ interface PcbFabricationNoteText {
   text: string
   layer: VisibleLayer
   anchor_position: Point
-  anchor_alignment:
-    | "center"
-    | "top_left"
-    | "top_right"
-    | "bottom_left"
-    | "bottom_right"
+  anchor_alignment: | "center" | "top_left" | "top_right" | "bottom_left" | "bottom_right"
   color?: string
 }
 ```
@@ -775,7 +789,7 @@ interface PcbFabricationNoteText {
 Error emitted when a pcb footprint overlaps with another element
 
 ```typescript
-/** Error emitted when a pcb footprint overlaps with another element */ interface PcbFootprintOverlapError {
+/** Error emitted when a pcb footprint overlaps with another element */interface PcbFootprintOverlapError {
   type: "pcb_footprint_overlap_error"
   pcb_error_id: string
   error_type: "pcb_footprint_overlap_error"
@@ -845,8 +859,8 @@ interface PcbGroup {
   name?: string
   description?: string
   autorouter_configuration?: {
-    trace_clearance: Length
-  }
+  trace_clearance: Length
+}
   autorouter_used_string?: string
 }
 ```
@@ -1408,13 +1422,13 @@ interface SchematicComponent {
   schematic_component_id: string
   pin_spacing?: number
   pin_styles?: Record<
-    string,
-    {
-      left_margin?: number
-      right_margin?: number
-      top_margin?: number
-      bottom_margin?: number
-    }
+  string,
+  {
+  left_margin?: number
+  right_margin?: number
+  top_margin?: number
+  bottom_margin?: number
+}
   >
   box_width?: number
   symbol_name?: string
@@ -1437,14 +1451,12 @@ interface SchematicPortArrangementBySides {
   right_side?: { pins: number[]; direction?: "top-to-bottom" | "bottom-to-top" }
   top_side?: { pins: number[]; direction?: "left-to-right" | "right-to-left" }
   bottom_side?: {
-    pins: number[]
-    direction?: "left-to-right" | "right-to-left"
-  }
+  pins: number[]
+  direction?: "left-to-right" | "right-to-left"
+}
 }
 
-type SchematicPortArrangement =
-  | SchematicPortArrangementBySize
-  | SchematicPortArrangementBySides
+type SchematicPortArrangement = | SchematicPortArrangementBySize | SchematicPortArrangementBySides
 ```
 
 ### SchematicDebugObject
@@ -1452,10 +1464,7 @@ type SchematicPortArrangement =
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_debug_object.ts)
 
 ```typescript
-type SchematicDebugObject =
-  | SchematicDebugRect
-  | SchematicDebugLine
-  | SchematicDebugPoint
+type SchematicDebugObject = | SchematicDebugRect | SchematicDebugLine | SchematicDebugPoint
 
 interface SchematicDebugRect {
   type: "schematic_debug_object"
@@ -1593,8 +1602,8 @@ interface SchematicNetLabel {
   text: string
   symbol_name?: string | undefined
   /** When true the net label can be repositioned. When false the label's
-   * position is fixed by the element it is attached to. */
-
+  * position is fixed by the element it is attached to. */
+  
   is_movable?: boolean
   subcircuit_id?: string
 }
@@ -1698,9 +1707,9 @@ interface SchematicText {
   text: string
   font_size: number
   position: {
-    x: number
-    y: number
-  }
+  x: number
+  y: number
+}
   rotation: number
   anchor: NinePointAnchor | FivePointAnchor
   color: string
@@ -1715,13 +1724,13 @@ interface SchematicText {
 ```typescript
 interface SchematicTraceEdge {
   from: {
-    x: number
-    y: number
-  }
+  x: number
+  y: number
+}
   to: {
-    x: number
-    y: number
-  }
+  x: number
+  y: number
+}
   is_crossing?: boolean
   from_schematic_port_id?: string
   to_schematic_port_id?: string
