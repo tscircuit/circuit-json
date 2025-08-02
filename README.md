@@ -866,6 +866,7 @@ interface PcbGroup {
   pcb_component_ids: string[]
   name?: string
   description?: string
+  layout_mode?: string
   autorouter_configuration?: {
     trace_clearance: Length
   }
