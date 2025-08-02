@@ -27,3 +27,26 @@ test("pcb_group.autorouter_used_string is optional", () => {
   })
   expect(group.autorouter_used_string).toBeUndefined()
 })
+
+test("pcb_group.layout_mode is optional string", () => {
+  const group = pcb_group.parse({
+    type: "pcb_group",
+    source_group_id: "g1",
+    width: 10,
+    height: 10,
+    center: { x: 0, y: 0 },
+    pcb_component_ids: [],
+    layout_mode: "manual",
+  })
+  expect(group.layout_mode).toBe("manual")
+
+  const withoutLayoutMode = pcb_group.parse({
+    type: "pcb_group",
+    source_group_id: "g1",
+    width: 10,
+    height: 10,
+    center: { x: 0, y: 0 },
+    pcb_component_ids: [],
+  })
+  expect(withoutLayoutMode.layout_mode).toBeUndefined()
+})
