@@ -1779,7 +1779,9 @@ interface SimulationVoltageSource {
   type: "simulation_voltage_source"
   simulation_voltage_source_id: string
   positive_source_port_id: string
+  positive_source_net_id: string
   negative_source_port_id: string
+  negative_source_net_id: string
   voltage: number
 }
 ```
