@@ -60,6 +60,7 @@ export const any_circuit_element = z.union([
   pcb.pcb_silkscreen_circle,
   pcb.pcb_silkscreen_oval,
   pcb.pcb_trace_error,
+  pcb.pcb_trace_missing_error,
   pcb.pcb_placement_error,
   pcb.pcb_port_not_matched_error,
   pcb.pcb_fabrication_note_path,
