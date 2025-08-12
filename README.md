@@ -1069,7 +1069,7 @@ Defines an error when a pcb port is not connected to any trace
 /** Defines an error when a pcb port is not connected to any trace */
 interface PcbPortNotConnectedError {
   type: "pcb_port_not_connected_error"
-  pcb_error_id: string
+  pcb_port_not_connected_error_id: string
   error_type: "pcb_port_not_connected_error"
   message: string
   pcb_port_ids: string[]
