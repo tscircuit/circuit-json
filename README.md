@@ -91,8 +91,8 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbPlacementError](#pcbplacementerror)
     - [PcbPlatedHole](#pcbplatedhole)
     - [PcbPort](#pcbport)
-    - [PcbPortNotMatchedError](#pcbportnotmatchederror)
     - [PcbPortNotConnectedError](#pcbportnotconnectederror)
+    - [PcbPortNotMatchedError](#pcbportnotmatchederror)
     - [PcbRouteHints](#pcbroutehints)
     - [PcbSilkscreenCircle](#pcbsilkscreencircle)
     - [PcbSilkscreenLine](#pcbsilkscreenline)
@@ -1059,6 +1059,25 @@ interface PcbPort {
 }
 ```
 
+### PcbPortNotConnectedError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_port_not_connected_error.ts)
+
+Defines an error when a pcb port is not connected to any trace
+
+```typescript
+/** Defines an error when a pcb port is not connected to any trace */
+interface PcbPortNotConnectedError {
+  type: "pcb_port_not_connected_error"
+  pcb_error_id: string
+  error_type: "pcb_port_not_connected_error"
+  message: string
+  pcb_port_ids: string[]
+  pcb_component_ids: string[]
+  subcircuit_id?: string
+}
+```
+
 ### PcbPortNotMatchedError
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_port_not_matched_error.ts)
@@ -1072,25 +1091,6 @@ interface PcbPortNotMatchedError {
   pcb_error_id: string
   error_type: "pcb_port_not_matched_error"
   message: string
-  pcb_component_ids: string[]
-  subcircuit_id?: string
-}
-```
-
-### PcbPortNotConnectedError
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_port_not_connected_error.ts)
-
-Defines an error when a PCB port is not connected to any trace
-
-```typescript
-/** Defines an error when a PCB port is not connected to any trace */
-interface PcbPortNotConnectedError {
-  type: "pcb_port_not_connected_error"
-  pcb_error_id: string
-  error_type: "pcb_port_not_connected_error"
-  message: string
-  pcb_port_ids: string[]
   pcb_component_ids: string[]
   subcircuit_id?: string
 }
