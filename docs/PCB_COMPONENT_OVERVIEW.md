@@ -40,7 +40,7 @@ export interface PcbPortNotMatchedError {
 
 export interface PcbPortNotConnectedError {
   type: "pcb_port_not_connected_error"
-  pcb_error_id: string
+  pcb_port_not_connected_error_id: string
   error_type: "pcb_port_not_connected_error"
   message: string
   pcb_port_ids: string[]
