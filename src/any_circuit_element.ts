@@ -37,7 +37,7 @@ export const any_circuit_element = z.union([
   src.source_simple_push_button,
   src.source_pcb_ground_plane,
   src.source_project_metadata,
-  src.source_trace_not_connected,
+  src.source_trace_not_connected_error,
   pcb.pcb_component,
   pcb.pcb_hole,
   pcb.pcb_missing_footprint_error,

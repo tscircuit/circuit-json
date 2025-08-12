@@ -80,9 +80,9 @@ import {
   type SourceFailedToCreateComponentError,
 } from "./source_failed_to_create_component_error"
 import {
-  source_trace_not_connected,
-  type SourceTraceNotConnected,
-} from "./source_trace_not_connected"
+  source_trace_not_connected_error,
+  type SourceTraceNotConnectedError,
+} from "./source_trace_not_connected_error"
 
 export const any_source_component = z.union([
   source_simple_resistor,
@@ -107,7 +107,7 @@ export const any_source_component = z.union([
   source_project_metadata,
   source_missing_property_error,
   source_failed_to_create_component_error,
-  source_trace_not_connected,
+  source_trace_not_connected_error,
 ])
 
 /**
@@ -138,6 +138,6 @@ export type AnySourceElement =
   | SourceProjectMetadata
   | SourceMissingPropertyError
   | SourceFailedToCreateComponentError
-  | SourceTraceNotConnected
+  | SourceTraceNotConnectedError
 
 expectTypesMatch<AnySourceElement, AnySourceComponent>(true)
