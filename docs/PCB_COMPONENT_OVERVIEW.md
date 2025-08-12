@@ -38,6 +38,16 @@ export interface PcbPortNotMatchedError {
   pcb_component_ids: string[]
 }
 
+export interface PcbPortNotConnectedError {
+  type: "pcb_port_not_connected_error"
+  pcb_error_id: string
+  error_type: "pcb_port_not_connected_error"
+  message: string
+  pcb_port_ids: string[]
+  pcb_component_ids: string[]
+  subcircuit_id?: string
+}
+
 export interface PcbSolderPasteCircle {
   type: "pcb_solder_paste"
   shape: "circle"
