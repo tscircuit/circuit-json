@@ -9,10 +9,12 @@ test("pcb_port_not_connected_error parses", () => {
     pcb_port_ids: [],
     pcb_component_ids: [],
   })
-  expect(error.pcb_error_id).toBeDefined()
-  expect(error.pcb_error_id.startsWith("pcb_port_not_connected_error")).toBe(
-    true,
-  )
+  expect(error.pcb_port_not_connected_error_id).toBeDefined()
+  expect(
+    error.pcb_port_not_connected_error_id.startsWith(
+      "pcb_port_not_connected_error",
+    ),
+  ).toBe(true)
 })
 
 test("any_circuit_element includes pcb_port_not_connected_error", () => {
