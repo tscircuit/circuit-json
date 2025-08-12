@@ -141,7 +141,6 @@ expectStringUnionsMatch<
   // THIS IS FOR LEGACY REASONS, DO NOT ADD MORE EXCEPTIONS
   | "source_project_metadata DOES NOT HAVE AN source_project_metadata_id PROPERTY"
   | "pcb_port_not_matched_error DOES NOT HAVE AN pcb_port_not_matched_error_id PROPERTY"
-  | "pcb_port_not_connected_error DOES NOT HAVE AN pcb_port_not_connected_error_id PROPERTY"
   | "pcb_autorouting_error DOES NOT HAVE AN pcb_autorouting_error_id PROPERTY"
   | "pcb_footprint_overlap_error DOES NOT HAVE AN pcb_footprint_overlap_error_id PROPERTY"
   | "schematic_debug_object DOES NOT HAVE AN schematic_debug_object_id PROPERTY"
