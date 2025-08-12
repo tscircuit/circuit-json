@@ -72,7 +72,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceSimpleTestPoint](#sourcesimpletestpoint)
     - [SourceSimpleTransistor](#sourcesimpletransistor)
     - [SourceTrace](#sourcetrace)
-    - [SourceTraceNotConnected](#sourcetracenotconnected)
+    - [SourceTraceNotConnectedError](#sourcetracenotconnectederror)
   - [PCB Elements](#pcb-elements)
     - [PcbAutoroutingError](#pcbautoroutingerror)
     - [PcbBoard](#pcbboard)
@@ -617,18 +617,18 @@ interface SourceTrace {
 }
 ```
 
-### SourceTraceNotConnected
+### SourceTraceNotConnectedError
 
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_trace_not_connected.ts)
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_trace_not_connected_error.ts)
 
 Occurs when a source trace selector does not match any ports
 
 ```typescript
 /** Occurs when a source trace selector does not match any ports */
-interface SourceTraceNotConnected {
-  type: "source_trace_not_connected"
-  source_trace_not_connected_id: string
-  error_type: "source_trace_not_connected"
+interface SourceTraceNotConnectedError {
+  type: "source_trace_not_connected_error"
+  source_trace_not_connected_error_id: string
+  error_type: "source_trace_not_connected_error"
   message: string
   subcircuit_id?: string
   source_group_id?: string
