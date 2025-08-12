@@ -106,6 +106,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbTrace](#pcbtrace)
     - [PcbTraceError](#pcbtraceerror)
     - [PcbTraceHint](#pcbtracehint)
+    - [PcbTraceMissingError](#pcbtracemissingerror)
     - [PcbVia](#pcbvia)
   - [Schematic Elements](#schematic-elements)
     - [SchematicBox](#schematicbox)
@@ -1369,6 +1370,27 @@ interface PcbTraceHint {
   pcb_port_id: string
   pcb_component_id: string
   route: RouteHintPoint[]
+  subcircuit_id?: string
+}
+```
+
+### PcbTraceMissingError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_trace_missing_error.ts)
+
+Defines an error when a source trace has no corresponding PCB trace
+
+```typescript
+/** Defines an error when a source trace has no corresponding PCB trace */
+interface PcbTraceMissingError {
+  type: "pcb_trace_missing_error"
+  pcb_trace_missing_error_id: string
+  error_type: "pcb_trace_missing_error"
+  message: string
+  center?: Point
+  source_trace_id: string
+  pcb_component_ids: string[]
+  pcb_port_ids: string[]
   subcircuit_id?: string
 }
 ```

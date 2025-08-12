@@ -95,6 +95,17 @@ export interface PcbTraceError {
   pcb_port_ids: string[]
 }
 
+export interface PcbTraceMissingError {
+  type: "pcb_trace_missing_error"
+  pcb_trace_missing_error_id: string
+  error_type: "pcb_trace_missing_error"
+  message: string
+  center?: Point
+  source_trace_id: string
+  pcb_component_ids: string[]
+  pcb_port_ids: string[]
+}
+
 export interface PcbSilkscreenPill {
   type: "pcb_silkscreen_pill"
   pcb_silkscreen_pill_id: string
