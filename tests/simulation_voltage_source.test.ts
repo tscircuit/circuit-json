@@ -54,3 +54,18 @@ test("simulation_voltage_source AC parse", () => {
   expect(acSource.wave_shape).toBe("sinewave")
   expect(acSource.simulation_voltage_source_id).toBeString()
 })
+
+test("simulation_voltage_source DC parse with optional port/net ids", () => {
+  const source = simulation_voltage_source.parse({
+    type: "simulation_voltage_source",
+    is_dc_source: true,
+    voltage: 3.3,
+  })
+  const dcSource = source as SimulationDcVoltageSource
+  expect(dcSource.voltage).toBe(3.3)
+  expect(dcSource.is_dc_source).toBe(true)
+  expect(dcSource.positive_source_port_id).toBeUndefined()
+  expect(dcSource.positive_source_net_id).toBeUndefined()
+  expect(dcSource.negative_source_port_id).toBeUndefined()
+  expect(dcSource.negative_source_net_id).toBeUndefined()
+})

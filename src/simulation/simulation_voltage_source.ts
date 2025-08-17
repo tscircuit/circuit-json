@@ -13,10 +13,10 @@ export const simulation_dc_voltage_source = z
       "simulation_voltage_source",
     ),
     is_dc_source: z.literal(true).optional().default(true),
-    positive_source_port_id: z.string(),
-    negative_source_port_id: z.string(),
-    positive_source_net_id: z.string(),
-    negative_source_net_id: z.string(),
+    positive_source_port_id: z.string().optional(),
+    negative_source_port_id: z.string().optional(),
+    positive_source_net_id: z.string().optional(),
+    negative_source_net_id: z.string().optional(),
     voltage: voltage,
   })
   .describe("Defines a DC voltage source for simulation")
@@ -28,10 +28,10 @@ export const simulation_ac_voltage_source = z
       "simulation_voltage_source",
     ),
     is_dc_source: z.literal(false),
-    terminal1_source_port_id: z.string(),
-    terminal2_source_port_id: z.string(),
-    terminal1_source_net_id: z.string(),
-    terminal2_source_net_id: z.string(),
+    terminal1_source_port_id: z.string().optional(),
+    terminal2_source_port_id: z.string().optional(),
+    terminal1_source_net_id: z.string().optional(),
+    terminal2_source_net_id: z.string().optional(),
     voltage: voltage.optional(),
     frequency: frequency.optional(),
     peak_to_peak_voltage: voltage.optional(),
@@ -57,10 +57,10 @@ export interface SimulationDcVoltageSource {
   type: "simulation_voltage_source"
   simulation_voltage_source_id: string
   is_dc_source: true
-  positive_source_port_id: string
-  positive_source_net_id: string
-  negative_source_port_id: string
-  negative_source_net_id: string
+  positive_source_port_id?: string
+  positive_source_net_id?: string
+  negative_source_port_id?: string
+  negative_source_net_id?: string
   voltage: number
 }
 
@@ -71,10 +71,10 @@ export interface SimulationAcVoltageSource {
   type: "simulation_voltage_source"
   simulation_voltage_source_id: string
   is_dc_source: false
-  terminal1_source_port_id: string
-  terminal2_source_port_id: string
-  terminal1_source_net_id: string
-  terminal2_source_net_id: string
+  terminal1_source_port_id?: string
+  terminal2_source_port_id?: string
+  terminal1_source_net_id?: string
+  terminal2_source_net_id?: string
   voltage?: number
   frequency?: number
   peak_to_peak_voltage?: number
