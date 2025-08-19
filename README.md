@@ -1815,16 +1815,37 @@ interface SchematicVoltageProbe {
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_voltage_source.ts)
 
 ```typescript
-/** Defines a voltage source for simulation purposes. It applies a voltage
+type SimulationVoltageSource =
+  | SimulationDcVoltageSource
+  | SimulationAcVoltageSource
+
+/** Defines a DC voltage source for simulation purposes. It applies a voltage
  * difference between two source ports. */
-interface SimulationVoltageSource {
+interface SimulationDcVoltageSource {
   type: "simulation_voltage_source"
   simulation_voltage_source_id: string
-  positive_source_port_id: string
-  positive_source_net_id: string
-  negative_source_port_id: string
-  negative_source_net_id: string
+  is_dc_source: true
+  positive_source_port_id?: string
+  positive_source_net_id?: string
+  negative_source_port_id?: string
+  negative_source_net_id?: string
   voltage: number
+}
+
+/** Defines an AC voltage source for simulation purposes. */
+interface SimulationAcVoltageSource {
+  type: "simulation_voltage_source"
+  simulation_voltage_source_id: string
+  is_dc_source: false
+  terminal1_source_port_id?: string
+  terminal2_source_port_id?: string
+  terminal1_source_net_id?: string
+  terminal2_source_net_id?: string
+  voltage?: number
+  frequency?: number
+  peak_to_peak_voltage?: number
+  wave_shape?: WaveShape
+  phase?: number
 }
 ```
 
