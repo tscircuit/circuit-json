@@ -140,7 +140,7 @@ interface SourceSimpleCapacitor {
   manufacturer_part_number?: string
   supplier_part_numbers?: Partial<Record<string, string[]>>
   display_value?: string
-  capacitance: number
+  capacitance: number | string
 }
 
 interface SourceComponentBase {

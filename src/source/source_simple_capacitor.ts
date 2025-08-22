@@ -22,7 +22,7 @@ type InferredSourceSimpleCapacitor = z.infer<typeof source_simple_capacitor>
  */
 export interface SourceSimpleCapacitor extends SourceComponentBase {
   ftype: "simple_capacitor"
-  capacitance: number
+  capacitance: number | string
   max_voltage_rating?: number
   display_capacitance?: string
   max_decoupling_trace_length?: number

@@ -58,13 +58,13 @@ export const resistance = z
   .or(z.number())
   .transform((v) => parseAndConvertSiUnit(v).value!)
 
-export const capacitance = z
-  .string()
-  .or(z.number())
-  .transform((v) => parseAndConvertSiUnit(v).value!)
-  .transform((value) => {
-    return Number.parseFloat(value.toPrecision(12)) // Round to 12 significant digits
-  })
+export const capacitance = z.union([
+  z.string(),
+  z
+    .number()
+    .transform((v) => parseAndConvertSiUnit(v).value!)
+    .transform((value) => Number.parseFloat(value.toPrecision(12))),
+])
 
 export const inductance = z
   .string()

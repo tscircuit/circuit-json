@@ -379,7 +379,7 @@ Defines a simple capacitor component
 /** Defines a simple capacitor component */
 interface SourceSimpleCapacitor extends SourceComponentBase {
   ftype: "simple_capacitor"
-  capacitance: number
+  capacitance: number | string
   max_voltage_rating?: number
   display_capacitance?: string
   max_decoupling_trace_length?: number
@@ -549,7 +549,7 @@ Defines a simple resonator component
 /** Defines a simple resonator component */
 interface SourceSimpleResonator extends SourceComponentBase {
   ftype: "simple_resonator"
-  load_capacitance: number
+  load_capacitance: number | string
   equivalent_series_resistance?: number
   frequency: number
 }

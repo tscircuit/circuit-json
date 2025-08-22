@@ -21,7 +21,7 @@ type InferredSourceSimpleResonator = z.infer<typeof source_simple_resonator>
  */
 export interface SourceSimpleResonator extends SourceComponentBase {
   ftype: "simple_resonator"
-  load_capacitance: number
+  load_capacitance: number | string
   equivalent_series_resistance?: number
   frequency: number
 }
