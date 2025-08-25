@@ -83,6 +83,10 @@ import {
   source_trace_not_connected_error,
   type SourceTraceNotConnectedError,
 } from "./source_trace_not_connected_error"
+import {
+  source_property_ignored_warning,
+  type SourcePropertyIgnoredWarning,
+} from "./source_property_ignored_warning"
 
 export const any_source_component = z.union([
   source_simple_resistor,
@@ -108,6 +112,7 @@ export const any_source_component = z.union([
   source_missing_property_error,
   source_failed_to_create_component_error,
   source_trace_not_connected_error,
+  source_property_ignored_warning,
 ])
 
 /**
@@ -139,5 +144,6 @@ export type AnySourceElement =
   | SourceMissingPropertyError
   | SourceFailedToCreateComponentError
   | SourceTraceNotConnectedError
+  | SourcePropertyIgnoredWarning
 
 expectTypesMatch<AnySourceElement, AnySourceComponent>(true)

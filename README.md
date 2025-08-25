@@ -50,6 +50,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceFailedToCreateComponentError](#sourcefailedtocreatecomponenterror)
     - [SourceGroup](#sourcegroup)
     - [SourceMissingPropertyError](#sourcemissingpropertyerror)
+    - [SourcePropertyIgnoredWarning](#sourcepropertyignoredwarning)
     - [SourceNet](#sourcenet)
     - [SourcePcbGroundPlane](#sourcepcbgroundplane)
     - [SourcePort](#sourceport)
@@ -280,6 +281,25 @@ interface SourceMissingPropertyError {
   property_name: string
   subcircuit_id?: string
   error_type: "source_missing_property_error"
+  message: string
+}
+```
+
+### SourcePropertyIgnoredWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_property_ignored_warning.ts)
+
+The source property was ignored
+
+```typescript
+/** The source property was ignored */
+interface SourcePropertyIgnoredWarning {
+  type: "source_property_ignored_warning"
+  source_property_ignored_warning_id: string
+  source_component_id: string
+  property_name: string
+  subcircuit_id?: string
+  error_type: "source_property_ignored_warning"
   message: string
 }
 ```
