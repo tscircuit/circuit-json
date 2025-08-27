@@ -26,6 +26,7 @@ export interface SchematicTrace {
   }[]
   edges: SchematicTraceEdge[]
   subcircuit_id?: string
+  stroke?: string
 }
 
 export const schematic_trace = z.object({
@@ -54,6 +55,7 @@ export const schematic_trace = z.object({
     }),
   ),
   subcircuit_id: z.string().optional(),
+  stroke: z.string().optional(),
 })
 
 export type SchematicTraceInput = z.input<typeof schematic_trace>
