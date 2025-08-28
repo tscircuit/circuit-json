@@ -6,6 +6,24 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 export const wave_shape = z.enum(["sinewave", "square", "triangle", "sawtooth"])
 export type WaveShape = z.infer<typeof wave_shape>
 
+const percentage = z
+  .union([z.string(), z.number()])
+  .transform((val) => {
+    if (typeof val === "string") {
+      if (val.endsWith("%")) {
+        return parseFloat(val.slice(0, -1)) / 100
+      }
+      return parseFloat(val)
+    }
+    return val
+  })
+  .pipe(
+    z
+      .number()
+      .min(0, "Duty cycle must be non-negative")
+      .max(1, "Duty cycle cannot be greater than 100%"),
+  )
+
 export const simulation_dc_voltage_source = z
   .object({
     type: z.literal("simulation_voltage_source"),
@@ -37,8 +55,13 @@ export const simulation_ac_voltage_source = z
     peak_to_peak_voltage: voltage.optional(),
     wave_shape: wave_shape.optional(),
     phase: rotation.optional(),
+    duty_cycle: percentage.optional(),
   })
   .describe("Defines an AC voltage source for simulation")
+
+export type SimulationAcVoltageSourceInput = z.input<
+  typeof simulation_ac_voltage_source
+>
 
 export const simulation_voltage_source = z
   .union([simulation_dc_voltage_source, simulation_ac_voltage_source])
@@ -80,6 +103,7 @@ export interface SimulationAcVoltageSource {
   peak_to_peak_voltage?: number
   wave_shape?: WaveShape
   phase?: number
+  duty_cycle?: number
 }
 
 export type SimulationVoltageSource =
