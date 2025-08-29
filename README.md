@@ -1739,6 +1739,8 @@ interface SchematicPort {
   display_pin_label?: string
   subcircuit_id?: string
   is_connected?: boolean
+  has_input_arrow?: boolean
+  has_output_arrow?: boolean
 }
 ```
 
