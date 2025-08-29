@@ -52,10 +52,10 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceMissingPropertyError](#sourcemissingpropertyerror)
     - [SourceNet](#sourcenet)
     - [SourcePcbGroundPlane](#sourcepcbgroundplane)
+    - [SourcePinMissingTraceWarning](#sourcepinmissingtracewarning)
     - [SourcePort](#sourceport)
     - [SourceProjectMetadata](#sourceprojectmetadata)
     - [SourcePropertyIgnoredWarning](#sourcepropertyignoredwarning)
-    - [SourcePinMissingTraceWarning](#sourcepinmissingtracewarning)
     - [SourceSimpleBattery](#sourcesimplebattery)
     - [SourceSimpleCapacitor](#sourcesimplecapacitor)
     - [SourceSimpleChip](#sourcesimplechip)
@@ -323,6 +323,25 @@ interface SourcePcbGroundPlane {
 }
 ```
 
+### SourcePinMissingTraceWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_pin_missing_trace_warning.ts)
+
+Warning emitted when a source component pin is missing a trace connection
+
+```typescript
+/** Warning emitted when a source component pin is missing a trace connection */
+interface SourcePinMissingTraceWarning {
+  type: "source_pin_missing_trace_warning"
+  source_pin_missing_trace_warning_id: string
+  warning_type: "source_pin_missing_trace_warning"
+  message: string
+  source_component_id: string
+  source_port_id: string
+  subcircuit_id?: string
+}
+```
+
 ### SourcePort
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_port.ts)
@@ -373,25 +392,6 @@ interface SourcePropertyIgnoredWarning {
   subcircuit_id?: string
   error_type: "source_property_ignored_warning"
   message: string
-}
-```
-
-### SourcePinMissingTraceWarning
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_pin_missing_trace_warning.ts)
-
-Warning emitted when a source component pin is missing a trace connection
-
-```typescript
-/** Warning emitted when a source component pin is missing a trace connection */
-interface SourcePinMissingTraceWarning {
-  type: "source_pin_missing_trace_warning"
-  source_pin_missing_trace_warning_id: string
-  warning_type: "source_pin_missing_trace_warning"
-  message: string
-  source_component_id: string
-  source_pin_id: string
-  subcircuit_id?: string
 }
 ```
 
