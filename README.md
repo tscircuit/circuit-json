@@ -1886,6 +1886,7 @@ interface SimulationAcVoltageSource {
   peak_to_peak_voltage?: number
   wave_shape?: WaveShape
   phase?: number
+  duty_cycle?: number
 }
 ```
 
