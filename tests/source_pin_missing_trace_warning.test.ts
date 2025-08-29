@@ -7,7 +7,7 @@ test("source_pin_missing_trace_warning parses", () => {
     type: "source_pin_missing_trace_warning",
     message: "pin missing trace",
     source_component_id: "comp1",
-    source_pin_id: "pin1",
+    source_port_id: "pin1",
   })
   expect(warning.source_pin_missing_trace_warning_id).toBeDefined()
   expect(
@@ -22,7 +22,7 @@ test("any_circuit_element includes source_pin_missing_trace_warning", () => {
     type: "source_pin_missing_trace_warning",
     message: "pin missing trace",
     source_component_id: "comp1",
-    source_pin_id: "pin1",
+    source_port_id: "pin1",
   })
   expect(parsed.type).toBe("source_pin_missing_trace_warning")
 })

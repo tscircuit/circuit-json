@@ -13,7 +13,7 @@ export const source_pin_missing_trace_warning = z
       .default("source_pin_missing_trace_warning"),
     message: z.string(),
     source_component_id: z.string(),
-    source_pin_id: z.string(),
+    source_port_id: z.string(),
     subcircuit_id: z.string().optional(),
   })
   .describe(
@@ -36,7 +36,7 @@ export interface SourcePinMissingTraceWarning {
   warning_type: "source_pin_missing_trace_warning"
   message: string
   source_component_id: string
-  source_pin_id: string
+  source_port_id: string
   subcircuit_id?: string
 }
 
