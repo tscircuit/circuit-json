@@ -2,6 +2,7 @@ import { test, expect } from "bun:test"
 import {
   simulation_voltage_source,
   type SimulationAcVoltageSource,
+  type SimulationAcVoltageSourceInput,
   type SimulationDcVoltageSource,
 } from "../src/simulation/simulation_voltage_source"
 
@@ -68,4 +69,30 @@ test("simulation_voltage_source DC parse with optional port/net ids", () => {
   expect(dcSource.positive_source_net_id).toBeUndefined()
   expect(dcSource.negative_source_port_id).toBeUndefined()
   expect(dcSource.negative_source_net_id).toBeUndefined()
+})
+
+test("simulation_voltage_source AC with duty_cycle", () => {
+  const source_obj: SimulationAcVoltageSourceInput = {
+    type: "simulation_voltage_source",
+    is_dc_source: false,
+    voltage: "5V",
+    frequency: "60Hz",
+    wave_shape: "square",
+    duty_cycle: "50%",
+  }
+  const source = simulation_voltage_source.parse(source_obj)
+  const acSource = source as SimulationAcVoltageSource
+  expect(acSource.duty_cycle).toBe(0.5)
+
+  const source2_obj: SimulationAcVoltageSourceInput = {
+    type: "simulation_voltage_source",
+    is_dc_source: false,
+    voltage: "5V",
+    frequency: "60Hz",
+    wave_shape: "square",
+    duty_cycle: 0.25,
+  }
+  const source2 = simulation_voltage_source.parse(source2_obj)
+  const acSource2 = source2 as SimulationAcVoltageSource
+  expect(acSource2.duty_cycle).toBe(0.25)
 })
