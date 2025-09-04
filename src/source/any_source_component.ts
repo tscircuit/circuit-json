@@ -48,6 +48,10 @@ import {
   type SourceSimplePinHeader,
 } from "./source_simple_pin_header"
 import {
+  source_simple_pinout,
+  type SourceSimplePinout,
+} from "./source_simple_pinout"
+import {
   source_simple_resonator,
   type SourceSimpleResonator,
 } from "./source_simple_resonator"
@@ -106,6 +110,7 @@ export const any_source_component = z.union([
   source_simple_potentiometer,
   source_simple_crystal,
   source_simple_pin_header,
+  source_simple_pinout,
   source_simple_resonator,
   source_simple_switch,
   source_simple_transistor,
@@ -139,6 +144,7 @@ export type AnySourceElement =
   | SourceSimplePotentiometer
   | SourceSimpleCrystal
   | SourceSimplePinHeader
+  | SourceSimplePinout
   | SourceSimpleResonator
   | SourceSimpleSwitch
   | SourceSimpleTransistor
