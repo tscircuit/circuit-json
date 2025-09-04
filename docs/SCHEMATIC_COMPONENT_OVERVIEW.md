@@ -12,7 +12,8 @@ can also import.
 interface SchematicTrace {
   type: "schematic_trace"
   schematic_trace_id: string
-  source_trace_id: string
+  source_trace_id?: string
+  subcircuit_connectivity_map_key?: string // will be required in future
   edges: Array<{
     from: {
       x: number
