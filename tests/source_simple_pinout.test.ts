@@ -19,5 +19,9 @@ test("any_circuit_element includes source_simple_pinout", () => {
     source_component_id: "pinout1",
     name: "P1",
   })
-  expect(parsed.ftype).toBe("simple_pinout")
+  if ("ftype" in parsed) {
+    expect(parsed.ftype).toBe("simple_pinout")
+  } else {
+    throw new Error("Parsed element missing ftype")
+  }
 })
