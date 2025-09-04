@@ -66,6 +66,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceSimpleInductor](#sourcesimpleinductor)
     - [SourceSimpleLed](#sourcesimpleled)
     - [SourceSimpleMosfet](#sourcesimplemosfet)
+    - [SourceSimplePinout](#sourcesimplepinout)
     - [SourceSimplePowerSource](#sourcesimplepowersource)
     - [SourceSimplePushButton](#sourcesimplepushbutton)
     - [SourceSimpleResistor](#sourcesimpleresistor)
@@ -534,6 +535,19 @@ interface SourceSimpleMosfet extends SourceComponentBase {
   ftype: "simple_mosfet"
   channel_type: "n" | "p"
   mosfet_mode: "enhancement" | "depletion"
+}
+```
+
+### SourceSimplePinout
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_pinout.ts)
+
+Defines a simple pinout component
+
+```typescript
+/** Defines a simple pinout component */
+interface SourceSimplePinout extends SourceComponentBase {
+  ftype: "simple_pinout"
 }
 ```
 
