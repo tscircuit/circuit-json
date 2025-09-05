@@ -38,6 +38,7 @@ export * from "./pcb_breakout_point"
 export * from "./pcb_ground_plane"
 export * from "./pcb_ground_plane_region"
 export * from "./pcb_thermal_spoke"
+export * from "./pcb_copper_pour"
 
 import type { PcbComponent } from "./pcb_component"
 import type { PcbHole } from "./pcb_hole"
@@ -69,6 +70,7 @@ import type { PcbBreakoutPoint } from "./pcb_breakout_point"
 import type { PcbGroundPlane } from "./pcb_ground_plane"
 import type { PcbGroundPlaneRegion } from "./pcb_ground_plane_region"
 import type { PcbThermalSpoke } from "./pcb_thermal_spoke"
+import type { PcbCopperPour } from "./pcb_copper_pour"
 
 export type PcbCircuitElement =
   | PcbComponent
@@ -101,3 +103,4 @@ export type PcbCircuitElement =
   | PcbGroundPlane
   | PcbGroundPlaneRegion
   | PcbThermalSpoke
+  | PcbCopperPour
