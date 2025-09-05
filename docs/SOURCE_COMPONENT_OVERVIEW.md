@@ -89,6 +89,7 @@ interface SourceNet {
   is_ground?: boolean
   is_digital_signal?: boolean
   is_analog_signal?: boolean
+  is_positive_voltage_source?: boolean
   trace_width?: number
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
