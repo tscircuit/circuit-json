@@ -41,7 +41,6 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
 <!-- toc:start -->
 
 - [Circuit JSON Specification `circuit-json`](#circuit-json-specification-circuit-json)
-
   - [Things You Can Do With Circuit JSON](#things-you-can-do-with-circuit-json)
   - [Typescript Usage](#typescript-usage)
 
@@ -49,6 +48,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceComponentBase](#sourcecomponentbase)
     - [SourceFailedToCreateComponentError](#sourcefailedtocreatecomponenterror)
     - [SourceGroup](#sourcegroup)
+    - [SourceManuallyPlacedVia](#sourcemanuallyplacedvia)
     - [SourceMissingPropertyError](#sourcemissingpropertyerror)
     - [SourceNet](#sourcenet)
     - [SourcePcbGroundPlane](#sourcepcbgroundplane)
@@ -265,6 +265,27 @@ interface SourceGroup {
   parent_source_group_id?: string
   is_subcircuit?: boolean
   name?: string
+}
+```
+
+### SourceManuallyPlacedVia
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_manually_placed_via.ts)
+
+Defines a via that is manually placed in the source domain
+
+```typescript
+/** Defines a via that is manually placed in the source domain */
+interface SourceManuallyPlacedVia {
+  type: "source_manually_placed_via"
+  source_manually_placed_via_id: string
+  source_group_id: string
+  source_net_id: string
+  x: Distance
+  y: Distance
+  layers: LayerRef[]
+  subcircuit_id?: string
+  source_trace_id?: string
 }
 ```
 
