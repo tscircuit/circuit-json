@@ -28,7 +28,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
 
 - Generate [Gerber files](https://github.com/tscircuit/circuit-json-to-gerber)
 - Generate and read [Specctra DSN Autorouting files](https://github.com/tscircuit/dsn-converter)
-- Generate [Pick'n'Place Files](https://github.com/tscircuit/circuit-json-to-pnp)
+- Generate [Pick'n'Place Files](https://github.com/tscircuit/circuit-json-to-pnp-csv)
 - Generate [PCB and Schematic SVGs](https://github.com/tscircuit/circuit-to-svg)
 - Generate [Bill of Materials](https://github.com/tscircuit/circuit-json-to-bom)
 - Generate [SPICE netlists and simulations](https://github.com/tscircuit/circuit-json-to-spice)
