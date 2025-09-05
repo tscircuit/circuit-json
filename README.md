@@ -82,6 +82,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbBoard](#pcbboard)
     - [PcbBreakoutPoint](#pcbbreakoutpoint)
     - [PcbComponent](#pcbcomponent)
+    - [PcbCopperPour](#pcbcopperpour)
     - [PcbCutout](#pcbcutout)
     - [PcbFabricationNotePath](#pcbfabricationnotepath)
     - [PcbFabricationNoteText](#pcbfabricationnotetext)
@@ -796,6 +797,29 @@ interface PcbComponent {
   width: Length
   height: Length
   pcb_group_id?: string
+}
+```
+
+### PcbCopperPour
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_copper_pour.ts)
+
+Defines a rectangular copper pour on the PCB.
+
+```typescript
+/** Defines a rectangular copper pour on the PCB. */
+interface PcbCopperPourRect {
+  type: "pcb_copper_pour"
+  pcb_copper_pour_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  layer: LayerRef
+  source_net_id?: string
+  shape: "rect"
+  center: Point
+  width: Length
+  height: Length
+  rotation?: Rotation
 }
 ```
 
