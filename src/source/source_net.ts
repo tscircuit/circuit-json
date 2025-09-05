@@ -10,6 +10,7 @@ export const source_net = z.object({
   is_ground: z.boolean().optional(),
   is_digital_signal: z.boolean().optional(),
   is_analog_signal: z.boolean().optional(),
+  is_positive_voltage_source: z.boolean().optional(),
   trace_width: z.number().optional(),
   subcircuit_id: z.string().optional(),
   subcircuit_connectivity_map_key: z.string().optional(),
@@ -27,6 +28,7 @@ export interface SourceNet {
   is_ground?: boolean
   is_digital_signal?: boolean
   is_analog_signal?: boolean
+  is_positive_voltage_source?: boolean
   trace_width?: number
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
