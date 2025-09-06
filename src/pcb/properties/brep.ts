@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { distance } from "src/units"
+import { distance, type Distance } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const point_with_bulge = z.object({
@@ -9,8 +9,8 @@ export const point_with_bulge = z.object({
 })
 
 export interface PointWithBulge {
-  x: number
-  y: number
+  x: Distance
+  y: Distance
   bulge?: number
 }
 type InferredPointWithBulge = z.infer<typeof point_with_bulge>
