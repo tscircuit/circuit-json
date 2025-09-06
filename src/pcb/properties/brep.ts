@@ -17,23 +17,32 @@ type InferredPointWithBulge = z.infer<typeof point_with_bulge>
 expectTypesMatch<PointWithBulge, InferredPointWithBulge>(true)
 
 export const ring = z.object({
-  cwVertices: z.array(point_with_bulge),
+  vertices: z.array(point_with_bulge),
 })
 
 export interface Ring {
-  cwVertices: PointWithBulge[]
+  vertices: PointWithBulge[]
 }
 type InferredRing = z.infer<typeof ring>
 expectTypesMatch<Ring, InferredRing>(true)
 
 export const brep_shape = z.object({
-  outerRing: ring,
-  innerRings: z.array(ring),
+  outer_ring: ring,
+  inner_rings: z.array(ring),
 })
 
+/**
+ * B-rep shape defined by an outer ring and inner rings (holes).
+ */
 export interface BRepShape {
-  outerRing: Ring
-  innerRings: Ring[]
+  /**
+   * The outer boundary of the shape. Vertices must be in clockwise order.
+   */
+  outer_ring: Ring
+  /**
+   * Inner boundaries (holes). Vertices must be in counter-clockwise order.
+   */
+  inner_rings: Ring[]
 }
 type InferredBRepShape = z.infer<typeof brep_shape>
 expectTypesMatch<BRepShape, InferredBRepShape>(true)
