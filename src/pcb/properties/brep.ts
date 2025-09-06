@@ -28,7 +28,7 @@ expectTypesMatch<Ring, InferredRing>(true)
 
 export const brep_shape = z.object({
   outer_ring: ring,
-  inner_rings: z.array(ring),
+  inner_rings: z.array(ring).default([]),
 })
 
 /**

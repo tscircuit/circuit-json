@@ -31,7 +31,6 @@ test("pcb_copper_pour brep parses", () => {
           { x: 1, y: 1 },
         ],
       },
-      inner_rings: [],
     },
     layer: "top",
     source_net_id: "net1",
@@ -39,6 +38,7 @@ test("pcb_copper_pour brep parses", () => {
   expect(pour.shape).toBe("brep")
   if (pour.shape === "brep") {
     expect(pour.brep_shape.outer_ring.vertices.length).toBe(2)
+    expect(pour.brep_shape.inner_rings).toEqual([])
   }
   expect((pour as any).pcb_copper_pour_id).toBeDefined()
   expect(any_circuit_element.parse(pour)).toBeDefined()
