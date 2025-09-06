@@ -20,18 +20,25 @@ test("pcb_copper_pour rect parses", () => {
   expect(any_circuit_element.parse(pour)).toBeDefined()
 })
 
-test("pcb_copper_pour circle parses", () => {
+test("pcb_copper_pour brep parses", () => {
   const pour = pcb_copper_pour.parse({
     type: "pcb_copper_pour",
-    shape: "circle",
-    center: { x: 0, y: 0 },
-    radius: 5,
+    shape: "brep",
+    brep_shape: {
+      outerRing: {
+        cwVertices: [
+          { x: 0, y: 0, bulge: 1 },
+          { x: 1, y: 1 },
+        ],
+      },
+      innerRings: [],
+    },
     layer: "top",
     source_net_id: "net1",
   })
-  expect(pour.shape).toBe("circle")
-  if (pour.shape === "circle") {
-    expect(pour.radius).toBe(5)
+  expect(pour.shape).toBe("brep")
+  if (pour.shape === "brep") {
+    expect(pour.brep_shape.outerRing.cwVertices.length).toBe(2)
   }
   expect((pour as any).pcb_copper_pour_id).toBeDefined()
   expect(any_circuit_element.parse(pour)).toBeDefined()

@@ -3,6 +3,7 @@ import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
 import { length, type Length, rotation, type Rotation } from "src/units"
 import { layer_ref, type LayerRef } from "./properties/layer_ref"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { brep_shape, type BRepShape } from "./properties/brep"
 
 // Common properties base for all pour shapes (internal)
 const pcb_copper_pour_base = z.object({
@@ -42,29 +43,27 @@ export interface PcbCopperPourRect {
 }
 expectTypesMatch<PcbCopperPourRect, InferredPcbCopperPourRect>(true)
 
-// Circular Pour
-export const pcb_copper_pour_circle = pcb_copper_pour_base.extend({
-  shape: z.literal("circle"),
-  center: point,
-  radius: length,
+// BRep Pour
+export const pcb_copper_pour_brep = pcb_copper_pour_base.extend({
+  shape: z.literal("brep"),
+  brep_shape: brep_shape,
 })
-export type PcbCopperPourCircleInput = z.input<typeof pcb_copper_pour_circle>
-type InferredPcbCopperPourCircle = z.infer<typeof pcb_copper_pour_circle>
+export type PcbCopperPourBRepInput = z.input<typeof pcb_copper_pour_brep>
+type InferredPcbCopperPourBRep = z.infer<typeof pcb_copper_pour_brep>
 /**
- * Defines a circular copper pour on the PCB.
+ * Defines a BRep copper pour on the PCB.
  */
-export interface PcbCopperPourCircle {
+export interface PcbCopperPourBRep {
   type: "pcb_copper_pour"
   pcb_copper_pour_id: string
   pcb_group_id?: string
   subcircuit_id?: string
   layer: LayerRef
   source_net_id?: string
-  shape: "circle"
-  center: Point
-  radius: Length
+  shape: "brep"
+  brep_shape: BRepShape
 }
-expectTypesMatch<PcbCopperPourCircle, InferredPcbCopperPourCircle>(true)
+expectTypesMatch<PcbCopperPourBRep, InferredPcbCopperPourBRep>(true)
 
 // Polygon Pour
 export const pcb_copper_pour_polygon = pcb_copper_pour_base.extend({
@@ -93,7 +92,7 @@ expectTypesMatch<PcbCopperPourPolygon, InferredPcbCopperPourPolygon>(true)
 export const pcb_copper_pour = z
   .discriminatedUnion("shape", [
     pcb_copper_pour_rect,
-    pcb_copper_pour_circle,
+    pcb_copper_pour_brep,
     pcb_copper_pour_polygon,
   ])
   .describe("Defines a copper pour on the PCB.")
@@ -101,7 +100,7 @@ export const pcb_copper_pour = z
 export type PcbCopperPourInput = z.input<typeof pcb_copper_pour>
 export type PcbCopperPour =
   | PcbCopperPourRect
-  | PcbCopperPourCircle
+  | PcbCopperPourBRep
   | PcbCopperPourPolygon
 
 type InferredPcbCopperPour = z.infer<typeof pcb_copper_pour>
