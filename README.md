@@ -283,9 +283,6 @@ interface SourceManuallyPlacedVia {
   source_manually_placed_via_id: string
   source_group_id: string
   source_net_id: string
-  x: Distance
-  y: Distance
-  layers: LayerRef[]
   subcircuit_id?: string
   source_trace_id?: string
 }
