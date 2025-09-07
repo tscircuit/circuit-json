@@ -24,6 +24,7 @@ export const cad_component = z
     model_gltf_url: z.string().optional(),
     model_glb_url: z.string().optional(),
     model_step_url: z.string().optional(),
+    model_wrl_url: z.string().optional(),
     model_jscad: z.any().optional(),
   })
   .describe("Defines a component on the PCB")
@@ -48,6 +49,7 @@ export interface CadComponent {
   model_gltf_url?: string
   model_glb_url?: string
   model_step_url?: string
+  model_wrl_url?: string
   model_jscad?: any
 }
 
