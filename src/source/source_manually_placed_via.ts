@@ -9,7 +9,6 @@ export const source_manually_placed_via = z
     source_manually_placed_via_id: z.string(),
     source_group_id: z.string(),
     source_net_id: z.string(),
-    layers: z.array(layer_ref),
     subcircuit_id: z.string().optional(),
     source_trace_id: z.string().optional(),
   })
@@ -30,7 +29,6 @@ export interface SourceManuallyPlacedVia {
   source_manually_placed_via_id: string
   source_group_id: string
   source_net_id: string
-  layers: LayerRef[]
   subcircuit_id?: string
   source_trace_id?: string
 }
