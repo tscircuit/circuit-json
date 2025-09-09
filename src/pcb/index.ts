@@ -32,6 +32,7 @@ export * from "./pcb_footprint_overlap_error"
 export * from "./pcb_keepout"
 export * from "./pcb_cutout"
 export * from "./pcb_missing_footprint_error"
+export * from "./external_footprint_load_error"
 export * from "./pcb_group"
 export * from "./pcb_autorouting_error"
 export * from "./pcb_manual_edit_conflict_warning"
@@ -57,6 +58,7 @@ import type { PcbVia } from "./pcb_via"
 import type { PcbBoard } from "./pcb_board"
 import type { PcbPlacementError } from "./pcb_placement_error"
 import type { PcbMissingFootprintError } from "./pcb_missing_footprint_error"
+import type { ExternalFootprintLoadError } from "./external_footprint_load_error"
 import type { PcbManualEditConflictWarning } from "./pcb_manual_edit_conflict_warning"
 import type { PcbTraceHint } from "./pcb_trace_hint"
 import type { PcbSilkscreenLine } from "./pcb_silkscreen_line"
@@ -85,6 +87,7 @@ export type PcbCircuitElement =
   | PcbTraceError
   | PcbTraceMissingError
   | PcbMissingFootprintError
+  | ExternalFootprintLoadError
   | PcbManualEditConflictWarning
   | PcbPortNotMatchedError
   | PcbPortNotConnectedError

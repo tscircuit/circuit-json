@@ -78,6 +78,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceTrace](#sourcetrace)
     - [SourceTraceNotConnectedError](#sourcetracenotconnectederror)
   - [PCB Elements](#pcb-elements)
+    - [ExternalFootprintLoadError](#externalfootprintloaderror)
     - [PcbAutoroutingError](#pcbautoroutingerror)
     - [PcbBoard](#pcbboard)
     - [PcbBreakoutPoint](#pcbbreakoutpoint)
@@ -716,6 +717,27 @@ interface SourceTraceNotConnectedError {
 ```
 
 ## PCB Elements
+
+### ExternalFootprintLoadError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/external_footprint_load_error.ts)
+
+Defines an error that occurs when an external footprint fails to load
+
+```typescript
+/** Defines an error that occurs when an external footprint fails to load */
+interface ExternalFootprintLoadError {
+  type: "external_footprint_load_error"
+  external_footprint_load_error_id: string
+  pcb_component_id: string
+  source_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  footprinter_string?: string
+  error_type: "external_footprint_load_error"
+  message: string
+}
+```
 
 ### PcbAutoroutingError
 
