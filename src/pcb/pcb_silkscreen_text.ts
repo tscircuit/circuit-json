@@ -18,6 +18,12 @@ export const pcb_silkscreen_text = z
     font_size: distance.default("0.2mm"),
     pcb_component_id: z.string(),
     text: z.string(),
+    knockout: z
+      .object({
+        padding: distance.default("0.2mm").optional(),
+        corner_radius: distance.default("0mm").optional(),
+      })
+      .optional(),
     ccw_rotation: z.number().optional(),
     layer: layer_ref,
     is_mirrored: z.boolean().default(false).optional(),
@@ -41,6 +47,10 @@ export interface PcbSilkscreenText {
   font_size: Length
   pcb_component_id: string
   text: string
+  knockout?: {
+    padding?: Length
+    corner_radius?: Length
+  }
   ccw_rotation?: number
   layer: LayerRef
   is_mirrored?: boolean
