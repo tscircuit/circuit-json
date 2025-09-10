@@ -1153,6 +1153,8 @@ interface PcbHoleCircularWithRectPad {
   hole_diameter: number
   rect_pad_width: number
   rect_pad_height: number
+  hole_x: Distance
+  hole_y: Distance
   x: Distance
   y: Distance
   layers: LayerRef[]

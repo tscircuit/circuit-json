@@ -88,6 +88,8 @@ const pcb_circular_hole_with_rect_pad = z.object({
   hole_diameter: z.number(),
   rect_pad_width: z.number(),
   rect_pad_height: z.number(),
+  hole_x: distance,
+  hole_y: distance,
   x: distance,
   y: distance,
   layers: z.array(layer_ref),
@@ -188,6 +190,8 @@ export interface PcbHoleCircularWithRectPad {
   hole_diameter: number
   rect_pad_width: number
   rect_pad_height: number
+  hole_x: Distance
+  hole_y: Distance
   x: Distance
   y: Distance
   layers: LayerRef[]
