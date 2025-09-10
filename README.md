@@ -41,7 +41,6 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
 <!-- toc:start -->
 
 - [Circuit JSON Specification `circuit-json`](#circuit-json-specification-circuit-json)
-
   - [Things You Can Do With Circuit JSON](#things-you-can-do-with-circuit-json)
   - [Typescript Usage](#typescript-usage)
 
@@ -101,6 +100,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbPortNotMatchedError](#pcbportnotmatchederror)
     - [PcbRouteHints](#pcbroutehints)
     - [PcbSilkscreenCircle](#pcbsilkscreencircle)
+    - [PcbSilkscreenKnockoutText](#pcbsilkscreenknockouttext)
     - [PcbSilkscreenLine](#pcbsilkscreenline)
     - [PcbSilkscreenOval](#pcbsilkscreenoval)
     - [PcbSilkscreenPath](#pcbsilkscreenpath)
@@ -1256,6 +1256,33 @@ interface PcbSilkscreenCircle {
   radius: Length
   layer: VisibleLayer
   stroke_width: Length
+}
+```
+
+### PcbSilkscreenKnockoutText
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_silkscreen_knockout_text.ts)
+
+Defines knockout silkscreen text on the PCB
+
+```typescript
+/** Defines knockout silkscreen text on the PCB */
+interface PcbSilkscreenKnockoutText {
+  type: "pcb_silkscreen_knockout_text"
+  pcb_silkscreen_knockout_text_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  font: "tscircuit2024"
+  font_size: Length
+  pcb_component_id: string
+  text: string
+  padding?: Length
+  corner_radius?: Length
+  ccw_rotation?: number
+  layer: LayerRef
+  is_mirrored?: boolean
+  anchor_position: Point
+  anchor_alignment: NinePointAnchor
 }
 ```
 
