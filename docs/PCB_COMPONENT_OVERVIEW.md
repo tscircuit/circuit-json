@@ -163,7 +163,9 @@ export interface PcbHoleCircularWithRectPad {
   pad_shape: "rect"
   hole_diameter: number
   rect_pad_width: number
-  rect_pad_height: number 
+  rect_pad_height: number
+  hole_offset_x: Distance
+  hole_offset_y: Distance
   x: Distance
   y: Distance
   layers: LayerRef[]
