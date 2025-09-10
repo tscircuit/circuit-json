@@ -149,7 +149,6 @@ expectStringUnionsMatch<
   | "pcb_port_not_matched_error DOES NOT HAVE AN pcb_port_not_matched_error_id PROPERTY"
   | "pcb_autorouting_error DOES NOT HAVE AN pcb_autorouting_error_id PROPERTY"
   | "pcb_footprint_overlap_error DOES NOT HAVE AN pcb_footprint_overlap_error_id PROPERTY"
-  | "pcb_component_outside_board_error DOES NOT HAVE AN pcb_component_outside_board_error_id PROPERTY"
   | "schematic_debug_object DOES NOT HAVE AN schematic_debug_object_id PROPERTY"
   | "schematic_box DOES NOT HAVE AN schematic_box_id PROPERTY"
   | "schematic_line DOES NOT HAVE AN schematic_line_id PROPERTY"
