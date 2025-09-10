@@ -78,6 +78,7 @@ export const any_circuit_element = z.union([
   pcb.pcb_ground_plane_region,
   pcb.pcb_thermal_spoke,
   pcb.pcb_copper_pour,
+  pcb.pcb_component_outside_board_error,
   sch.schematic_box,
   sch.schematic_text,
   sch.schematic_line,

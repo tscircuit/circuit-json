@@ -5,6 +5,7 @@ import type {
   PcbAutoroutingError,
   PcbFootprintOverlapError,
   PcbMissingFootprintError,
+  PcbComponentOutsideBoardError,
 } from "src/pcb"
 import type { SchematicError } from "src/schematic"
 
@@ -15,4 +16,5 @@ export type CircuitJsonError =
   | PcbAutoroutingError
   | PcbFootprintOverlapError
   | PcbMissingFootprintError
+  | PcbComponentOutsideBoardError
   | SchematicError
