@@ -82,6 +82,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbBoard](#pcbboard)
     - [PcbBreakoutPoint](#pcbbreakoutpoint)
     - [PcbComponent](#pcbcomponent)
+    - [PcbComponentOutsideBoardError](#pcbcomponentoutsideboarderror)
     - [PcbCopperPour](#pcbcopperpour)
     - [PcbCutout](#pcbcutout)
     - [PcbFabricationNotePath](#pcbfabricationnotepath)
@@ -794,6 +795,32 @@ interface PcbComponent {
   width: Length
   height: Length
   pcb_group_id?: string
+}
+```
+
+### PcbComponentOutsideBoardError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_component_outside_board_error.ts)
+
+Error emitted when a PCB component is placed outside the board boundaries
+
+```typescript
+/** Error emitted when a PCB component is placed outside the board boundaries */ interface PcbComponentOutsideBoardError {
+  type: "pcb_component_outside_board_error"
+  pcb_component_outside_board_error_id: string
+  error_type: "pcb_component_outside_board_error"
+  message: string
+  pcb_component_id: string
+  pcb_board_id: string
+  component_center: Point
+  component_bounds: {
+    min_x: number
+    max_x: number
+    min_y: number
+    max_y: number
+  }
+  subcircuit_id?: string
+  source_component_id?: string
 }
 ```
 
