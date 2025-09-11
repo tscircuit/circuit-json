@@ -1386,7 +1386,12 @@ interface PcbSilkscreenText {
   pcb_component_id: string
   text: string
   is_knockout?: boolean
-  knockout_padding?: Length
+  knockout_padding?: {
+    left: Length
+    top: Length
+    bottom: Length
+    right: Length
+  }
   ccw_rotation?: number
   layer: LayerRef
   is_mirrored?: boolean
