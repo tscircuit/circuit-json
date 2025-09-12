@@ -1112,6 +1112,7 @@ interface PcbHolePillWithRectPad {
   hole_height: number
   rect_pad_width: number
   rect_pad_height: number
+  rect_border_radius?: number
   x: Distance
   y: Distance
   layers: LayerRef[]
@@ -1133,6 +1134,7 @@ interface PcbHoleRotatedPillWithRectPad {
   hole_ccw_rotation: Rotation
   rect_pad_width: number
   rect_pad_height: number
+  rect_border_radius?: number
   rect_ccw_rotation: Rotation
   x: Distance
   y: Distance
@@ -1153,6 +1155,7 @@ interface PcbHoleCircularWithRectPad {
   hole_diameter: number
   rect_pad_width: number
   rect_pad_height: number
+  rect_border_radius?: number
   hole_offset_x: Distance
   hole_offset_y: Distance
   x: Distance
