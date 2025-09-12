@@ -15,6 +15,7 @@ test("parse rotated pill hole with rect pad", () => {
     hole_ccw_rotation: 45,
     rect_pad_width: 3,
     rect_pad_height: 4,
+    rect_border_radius: 0.1,
     rect_ccw_rotation: 45,
     x: 0,
     y: 0,
@@ -22,4 +23,5 @@ test("parse rotated pill hole with rect pad", () => {
   })
   expect(hole.shape).toBe("rotated_pill_hole_with_rect_pad")
   expect((hole as PcbHoleRotatedPillWithRectPad).hole_ccw_rotation).toBe(45)
+  expect((hole as PcbHoleRotatedPillWithRectPad).rect_border_radius).toBe(0.1)
 })
