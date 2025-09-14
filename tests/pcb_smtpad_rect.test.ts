@@ -11,7 +11,9 @@ test("parse rect smt pad with border radius", () => {
     height: 2,
     rect_border_radius: 0.1,
     layer: "top",
+    is_covered_with_solder_mask: true,
   })
   expect(pad.shape).toBe("rect")
   expect((pad as PcbSmtPadRect).rect_border_radius).toBe(0.1)
+  expect((pad as PcbSmtPadRect).is_covered_with_solder_mask).toBe(true)
 })

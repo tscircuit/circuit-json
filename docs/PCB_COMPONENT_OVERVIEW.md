@@ -287,6 +287,7 @@ export interface PcbSmtPadCircle {
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
+  is_covered_with_solder_mask?: boolean
 }
 
 export interface PcbSmtPadRect {
@@ -302,6 +303,7 @@ export interface PcbSmtPadRect {
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
+  is_covered_with_solder_mask?: boolean
 }
 
 
@@ -316,6 +318,7 @@ export interface PcbSmtPadPolygon {
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
+  is_covered_with_solder_mask?: boolean
 }
 
 
