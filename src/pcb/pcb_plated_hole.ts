@@ -50,6 +50,7 @@ const pcb_plated_hole_oval = z.object({
   hole_height: z.number(),
   x: distance,
   y: distance,
+  ccw_rotation: rotation,
   layers: z.array(layer_ref),
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
@@ -58,7 +59,7 @@ const pcb_plated_hole_oval = z.object({
 })
 
 /**
- * Defines an oval or pill-shaped plated hole on the PCB
+ * Defines an oval or pill-shaped plated ho le on the PCB
  */
 export interface PcbPlatedHoleOval {
   type: "pcb_plated_hole"
@@ -71,6 +72,7 @@ export interface PcbPlatedHoleOval {
   hole_height: number
   x: Distance
   y: Distance
+  ccw_rotation: Rotation
   layers: LayerRef[]
   port_hints?: string[]
   pcb_component_id?: string
