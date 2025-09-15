@@ -38,7 +38,7 @@ export interface SchematicComponent {
   type: "schematic_component"
   size: Size
   center: Point
-  source_component_id: string
+  source_component_id?: string
   schematic_component_id: string
   pin_spacing?: number
   pin_styles?: Record<
@@ -57,7 +57,7 @@ export interface SchematicComponent {
   symbol_display_value?: string
   subcircuit_id?: string
   schematic_group_id?: string
-  is_schematic_group?: boolean
+  is_schematic_group?: string
 }
 
 export const schematic_component_port_arrangement_by_size = z.object({
@@ -117,7 +117,7 @@ export const schematic_component = z.object({
   type: z.literal("schematic_component"),
   size,
   center: point,
-  source_component_id: z.string(),
+  source_component_id: z.string().optional(),
   schematic_component_id: z.string(),
   pin_spacing: length.optional(),
   pin_styles: schematic_pin_styles.optional(),
@@ -128,7 +128,7 @@ export const schematic_component = z.object({
   symbol_display_value: z.string().optional(),
   subcircuit_id: z.string().optional(),
   schematic_group_id: z.string().optional(),
-  is_schematic_group: z.boolean().optional(),
+  is_schematic_group: z.string().optional(),
 })
 
 export type SchematicComponentInput = z.input<typeof schematic_component>
