@@ -274,6 +274,7 @@ export interface PcbPort {
   x: Distance
   y: Distance
   layers: LayerRef[]
+  is_board_pinout?: boolean
 }
 
 export interface PcbSmtPadCircle {
