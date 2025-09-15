@@ -267,6 +267,7 @@ interface SourceGroup {
   parent_subcircuit_id?: string
   parent_source_group_id?: string
   is_subcircuit?: boolean
+  show_as_schematic_box?: boolean
   name?: string
 }
 ```
@@ -1606,7 +1607,7 @@ interface SchematicComponent {
   type: "schematic_component"
   size: Size
   center: Point
-  source_component_id: string
+  source_component_id?: string
   schematic_component_id: string
   pin_spacing?: number
   pin_styles?: Record<
@@ -1625,6 +1626,8 @@ interface SchematicComponent {
   symbol_display_value?: string
   subcircuit_id?: string
   schematic_group_id?: string
+  is_schematic_group?: boolean
+  source_group_id?: string
 }
 
 interface SchematicPortArrangementBySize {
@@ -1718,6 +1721,7 @@ interface SchematicGroup {
   height: Length
   center: Point
   schematic_component_ids: string[]
+  show_as_schematic_box?: boolean
   name?: string
   description?: string
 }
