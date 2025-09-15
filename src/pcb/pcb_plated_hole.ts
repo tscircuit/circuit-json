@@ -59,7 +59,7 @@ const pcb_plated_hole_oval = z.object({
 })
 
 /**
- * Defines an oval or pill-shaped plated ho le on the PCB
+ * Defines an oval or pill-shaped plated hole on the PCB
  */
 export interface PcbPlatedHoleOval {
   type: "pcb_plated_hole"
