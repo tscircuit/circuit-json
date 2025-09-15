@@ -14,6 +14,7 @@ export const schematic_group = z
     height: length,
     center: point,
     schematic_component_ids: z.array(z.string()),
+    show_as_schematic_box: z.boolean().optional(),
     name: z.string().optional(),
     description: z.string().optional(),
   })
@@ -35,6 +36,7 @@ export interface SchematicGroup {
   height: Length
   center: Point
   schematic_component_ids: string[]
+  show_as_schematic_box?: boolean
   name?: string
   description?: string
 }
