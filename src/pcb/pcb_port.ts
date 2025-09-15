@@ -15,6 +15,7 @@ export const pcb_port = z
     x: distance,
     y: distance,
     layers: z.array(layer_ref),
+    is_board_pinout: z.boolean().optional(),
   })
   .describe("Defines a port on the PCB")
 
@@ -34,6 +35,7 @@ export interface PcbPort {
   x: Distance
   y: Distance
   layers: LayerRef[]
+  is_board_pinout?: boolean
 }
 
 /**
