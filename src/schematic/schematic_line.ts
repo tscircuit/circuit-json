@@ -1,5 +1,4 @@
 import { z } from "zod"
-import { point, type Point } from "../common/point"
 import { distance } from "../units"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
@@ -9,9 +8,11 @@ export interface SchematicLine {
   type: "schematic_line"
   schematic_line_id: string
   schematic_component_id: string
-  start: Point
-  end: Point
-  stroke_width: number
+  x1: number
+  y1: number
+  x2: number
+  y2: number
+  stroke_width?: number | null
   color: string
   is_dashed: boolean
   subcircuit_id?: string
@@ -22,9 +23,11 @@ export const schematic_line = z
     type: z.literal("schematic_line"),
     schematic_line_id: getZodPrefixedIdWithDefault("schematic_line"),
     schematic_component_id: z.string(),
-    start: point,
-    end: point,
-    stroke_width: distance.default(0.02),
+    x1: distance,
+    y1: distance,
+    x2: distance,
+    y2: distance,
+    stroke_width: distance.nullable().optional(),
     color: z.string().default("#000000"),
     is_dashed: z.boolean().default(false),
     subcircuit_id: z.string().optional(),

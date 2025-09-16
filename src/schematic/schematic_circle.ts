@@ -11,7 +11,7 @@ export interface SchematicCircle {
   schematic_component_id: string
   center: Point
   radius: number
-  stroke_width: number
+  stroke_width?: number | null
   color: string
   is_filled: boolean
   fill_color?: string
@@ -26,7 +26,7 @@ export const schematic_circle = z
     schematic_component_id: z.string(),
     center: point,
     radius: distance,
-    stroke_width: distance.default(0.02),
+    stroke_width: distance.nullable().optional(),
     color: z.string().default("#000000"),
     is_filled: z.boolean().default(false),
     fill_color: z.string().optional(),

@@ -11,10 +11,10 @@ export interface SchematicArc {
   schematic_component_id: string
   center: Point
   radius: number
-  start_angle: number
+  start_angle_degrees: number
   end_angle: number
   direction: "clockwise" | "counterclockwise"
-  stroke_width: number
+  stroke_width?: number | null
   color: string
   is_dashed: boolean
   subcircuit_id?: string
@@ -27,12 +27,12 @@ export const schematic_arc = z
     schematic_component_id: z.string(),
     center: point,
     radius: distance,
-    start_angle: rotation,
+    start_angle_degrees: rotation,
     end_angle: rotation,
     direction: z
       .enum(["clockwise", "counterclockwise"])
       .default("counterclockwise"),
-    stroke_width: distance.default(0.02),
+    stroke_width: distance.nullable().optional(),
     color: z.string().default("#000000"),
     is_dashed: z.boolean().default(false),
     subcircuit_id: z.string().optional(),
