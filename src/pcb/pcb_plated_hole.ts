@@ -113,6 +113,8 @@ const pcb_pill_hole_with_rect_pad = z.object({
   rect_pad_width: z.number(),
   rect_pad_height: z.number(),
   rect_border_radius: z.number().optional(),
+  hole_offset_x: distance.default(0),
+  hole_offset_y: distance.default(0),
   x: distance,
   y: distance,
   layers: z.array(layer_ref),
@@ -135,6 +137,8 @@ const pcb_rotated_pill_hole_with_rect_pad = z.object({
   rect_pad_height: z.number(),
   rect_border_radius: z.number().optional(),
   rect_ccw_rotation: rotation,
+  hole_offset_x: distance.default(0),
+  hole_offset_y: distance.default(0),
   x: distance,
   y: distance,
   layers: z.array(layer_ref),
@@ -155,6 +159,8 @@ export interface PcbHolePillWithRectPad {
   rect_pad_width: number
   rect_pad_height: number
   rect_border_radius?: number
+  hole_offset_x: Distance
+  hole_offset_y: Distance
   x: Distance
   y: Distance
   layers: LayerRef[]
@@ -178,6 +184,8 @@ export interface PcbHoleRotatedPillWithRectPad {
   rect_pad_height: number
   rect_border_radius?: number
   rect_ccw_rotation: Rotation
+  hole_offset_x: Distance
+  hole_offset_y: Distance
   x: Distance
   y: Distance
   layers: LayerRef[]
