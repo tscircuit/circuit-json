@@ -33,6 +33,7 @@ export * from "./pcb_keepout"
 export * from "./pcb_cutout"
 export * from "./pcb_missing_footprint_error"
 export * from "./external_footprint_load_error"
+export * from "./circuit_json_footprint_load_error"
 export * from "./pcb_group"
 export * from "./pcb_autorouting_error"
 export * from "./pcb_manual_edit_conflict_warning"
@@ -76,6 +77,7 @@ import type { PcbGroundPlaneRegion } from "./pcb_ground_plane_region"
 import type { PcbThermalSpoke } from "./pcb_thermal_spoke"
 import type { PcbCopperPour } from "./pcb_copper_pour"
 import type { PcbComponentOutsideBoardError } from "./pcb_component_outside_board_error"
+import type { CircuitJsonFootprintLoadError } from "./circuit_json_footprint_load_error"
 
 export type PcbCircuitElement =
   | PcbComponent
@@ -90,6 +92,7 @@ export type PcbCircuitElement =
   | PcbTraceMissingError
   | PcbMissingFootprintError
   | ExternalFootprintLoadError
+  | CircuitJsonFootprintLoadError
   | PcbManualEditConflictWarning
   | PcbPortNotMatchedError
   | PcbPortNotConnectedError
