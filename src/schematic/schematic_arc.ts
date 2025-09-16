@@ -29,7 +29,9 @@ export const schematic_arc = z
     radius: distance,
     start_angle: rotation,
     end_angle: rotation,
-    direction: z.enum(["clockwise", "counterclockwise"]).default("counterclockwise"),
+    direction: z
+      .enum(["clockwise", "counterclockwise"])
+      .default("counterclockwise"),
     stroke_width: distance.default(0.02),
     color: z.string().default("#000000"),
     is_dashed: z.boolean().default(false),
