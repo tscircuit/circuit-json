@@ -39,11 +39,16 @@ interface SchematicBox {
 
 interface SchematicLine {
   type: "schematic_line"
+  schematic_line_id: string
   schematic_component_id: string
   x1: number
   x2: number
   y1: number
   y2: number
+  stroke_width: number
+  color: string
+  is_dashed: boolean
+  subcircuit_id?: string
 }
 
 interface SchematicError {

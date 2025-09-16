@@ -82,6 +82,9 @@ export const any_circuit_element = z.union([
   sch.schematic_box,
   sch.schematic_text,
   sch.schematic_line,
+  sch.schematic_rect,
+  sch.schematic_circle,
+  sch.schematic_arc,
   sch.schematic_component,
   sch.schematic_port,
   sch.schematic_trace,
@@ -151,6 +154,5 @@ expectStringUnionsMatch<
   | "pcb_footprint_overlap_error DOES NOT HAVE AN pcb_footprint_overlap_error_id PROPERTY"
   | "schematic_debug_object DOES NOT HAVE AN schematic_debug_object_id PROPERTY"
   | "schematic_box DOES NOT HAVE AN schematic_box_id PROPERTY"
-  | "schematic_line DOES NOT HAVE AN schematic_line_id PROPERTY"
   | "schematic_path DOES NOT HAVE AN schematic_path_id PROPERTY"
 >(true)
