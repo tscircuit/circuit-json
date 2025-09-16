@@ -1,31 +1,35 @@
 import { z } from "zod"
+import { point, type Point } from "../common/point"
 import { distance } from "../units"
+import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-/**
- * Defines a line on the schematic, this can be used for adding arbitrary lines
- * to a schematic, but don't use it for drawing traces, schematic boxes or where
- * other schematic elements are more appropriate.
- */
+/** Draws a styled line on the schematic */
 export interface SchematicLine {
   type: "schematic_line"
+  schematic_line_id: string
   schematic_component_id: string
-  x1: number
-  x2: number
-  y1: number
-  y2: number
+  start: Point
+  end: Point
+  stroke_width: number
+  color: string
+  is_dashed: boolean
   subcircuit_id?: string
 }
 
-export const schematic_line = z.object({
-  type: z.literal("schematic_line"),
-  schematic_component_id: z.string(),
-  x1: distance,
-  x2: distance,
-  y1: distance,
-  y2: distance,
-  subcircuit_id: z.string().optional(),
-})
+export const schematic_line = z
+  .object({
+    type: z.literal("schematic_line"),
+    schematic_line_id: getZodPrefixedIdWithDefault("schematic_line"),
+    schematic_component_id: z.string(),
+    start: point,
+    end: point,
+    stroke_width: distance.default(0.02),
+    color: z.string().default("#000000"),
+    is_dashed: z.boolean().default(false),
+    subcircuit_id: z.string().optional(),
+  })
+  .describe("Draws a styled line on the schematic")
 
 export type SchematicLineInput = z.input<typeof schematic_line>
 type InferredSchematicLine = z.infer<typeof schematic_line>
