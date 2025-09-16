@@ -18,6 +18,7 @@ const pcb_plated_hole_circle = z.object({
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
   pcb_plated_hole_id: getZodPrefixedIdWithDefault("pcb_plated_hole"),
+  is_covered_with_solder_mask: z.boolean().optional(),
 })
 
 /**
@@ -37,6 +38,7 @@ export interface PcbPlatedHoleCircle {
   pcb_component_id?: string
   pcb_port_id?: string
   pcb_plated_hole_id: string
+  is_covered_with_solder_mask?: boolean
 }
 
 const pcb_plated_hole_oval = z.object({
@@ -56,6 +58,7 @@ const pcb_plated_hole_oval = z.object({
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
   pcb_plated_hole_id: getZodPrefixedIdWithDefault("pcb_plated_hole"),
+  is_covered_with_solder_mask: z.boolean().optional(),
 })
 
 /**
@@ -78,6 +81,7 @@ export interface PcbPlatedHoleOval {
   pcb_component_id?: string
   pcb_port_id?: string
   pcb_plated_hole_id: string
+  is_covered_with_solder_mask?: boolean
 }
 
 const pcb_circular_hole_with_rect_pad = z.object({
@@ -100,6 +104,7 @@ const pcb_circular_hole_with_rect_pad = z.object({
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
   pcb_plated_hole_id: getZodPrefixedIdWithDefault("pcb_plated_hole"),
+  is_covered_with_solder_mask: z.boolean().optional(),
 })
 const pcb_pill_hole_with_rect_pad = z.object({
   type: z.literal("pcb_plated_hole"),
@@ -122,6 +127,7 @@ const pcb_pill_hole_with_rect_pad = z.object({
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
   pcb_plated_hole_id: getZodPrefixedIdWithDefault("pcb_plated_hole"),
+  is_covered_with_solder_mask: z.boolean().optional(),
 })
 const pcb_rotated_pill_hole_with_rect_pad = z.object({
   type: z.literal("pcb_plated_hole"),
@@ -146,6 +152,7 @@ const pcb_rotated_pill_hole_with_rect_pad = z.object({
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
   pcb_plated_hole_id: getZodPrefixedIdWithDefault("pcb_plated_hole"),
+  is_covered_with_solder_mask: z.boolean().optional(),
 })
 export interface PcbHolePillWithRectPad {
   type: "pcb_plated_hole"
@@ -168,6 +175,7 @@ export interface PcbHolePillWithRectPad {
   pcb_component_id?: string
   pcb_port_id?: string
   pcb_plated_hole_id: string
+  is_covered_with_solder_mask?: boolean
 }
 
 export interface PcbHoleRotatedPillWithRectPad {
@@ -193,6 +201,7 @@ export interface PcbHoleRotatedPillWithRectPad {
   pcb_component_id?: string
   pcb_port_id?: string
   pcb_plated_hole_id: string
+  is_covered_with_solder_mask?: boolean
 }
 
 export interface PcbHoleCircularWithRectPad {
@@ -215,6 +224,7 @@ export interface PcbHoleCircularWithRectPad {
   pcb_component_id?: string
   pcb_port_id?: string
   pcb_plated_hole_id: string
+  is_covered_with_solder_mask?: boolean
 }
 
 export const pcb_plated_hole = z.union([
