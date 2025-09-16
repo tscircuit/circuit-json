@@ -116,7 +116,9 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbTraceMissingError](#pcbtracemissingerror)
     - [PcbVia](#pcbvia)
   - [Schematic Elements](#schematic-elements)
+    - [SchematicArc](#schematicarc)
     - [SchematicBox](#schematicbox)
+    - [SchematicCircle](#schematiccircle)
     - [SchematicComponent](#schematiccomponent)
     - [SchematicDebugObject](#schematicdebugobject)
     - [SchematicError](#schematicerror)
@@ -127,8 +129,6 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicNetLabel](#schematicnetlabel)
     - [SchematicPath](#schematicpath)
     - [SchematicPort](#schematicport)
-    - [SchematicArc](#schematicarc)
-    - [SchematicCircle](#schematiccircle)
     - [SchematicRect](#schematicrect)
     - [SchematicTable](#schematictable)
     - [SchematicTableCell](#schematictablecell)
@@ -1589,6 +1589,29 @@ interface PcbVia {
 
 ## Schematic Elements
 
+### SchematicArc
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_arc.ts)
+
+Draws a styled arc on the schematic
+
+```typescript
+/** Draws a styled arc on the schematic */ interface SchematicArc {
+  type: "schematic_arc"
+  schematic_arc_id: string
+  schematic_component_id: string
+  center: Point
+  radius: number
+  start_angle_degrees: number
+  end_angle_degrees: number
+  direction: "clockwise" | "counterclockwise"
+  stroke_width?: number | null
+  color: string
+  is_dashed: boolean
+  subcircuit_id?: string
+}
+```
+
 ### SchematicBox
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_box.ts)
@@ -1602,6 +1625,28 @@ interface SchematicBox {
   is_dashed: boolean
   x: number
   y: number
+  subcircuit_id?: string
+}
+```
+
+### SchematicCircle
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_circle.ts)
+
+Draws a styled circle on the schematic
+
+```typescript
+/** Draws a styled circle on the schematic */ interface SchematicCircle {
+  type: "schematic_circle"
+  schematic_circle_id: string
+  schematic_component_id: string
+  center: Point
+  radius: number
+  stroke_width?: number | null
+  color: string
+  is_filled: boolean
+  fill_color?: string
+  is_dashed: boolean
   subcircuit_id?: string
 }
 ```
@@ -1763,10 +1808,10 @@ Draws a styled line on the schematic
   schematic_line_id: string
   schematic_component_id: string
   x1: number
-  x2: number
   y1: number
+  x2: number
   y2: number
-  stroke_width: number
+  stroke_width?: number | null
   color: string
   is_dashed: boolean
   subcircuit_id?: string
@@ -1856,51 +1901,6 @@ interface SchematicPort {
 }
 ```
 
-### SchematicArc
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_arc.ts)
-
-Draws a styled arc on the schematic
-
-```typescript
-/** Draws a styled arc on the schematic */ interface SchematicArc {
-  type: "schematic_arc"
-  schematic_arc_id: string
-  schematic_component_id: string
-  center: Point
-  radius: number
-  start_angle_degree: number
-  end_angle_degree: number
-  direction: "clockwise" | "counterclockwise"
-  stroke_width: number
-  color: string
-  is_dashed: boolean
-  subcircuit_id?: string
-}
-```
-
-### SchematicCircle
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_circle.ts)
-
-Draws a styled circle on the schematic
-
-```typescript
-/** Draws a styled circle on the schematic */ interface SchematicCircle {
-  type: "schematic_circle"
-  schematic_circle_id: string
-  schematic_component_id: string
-  center: Point
-  radius: number
-  stroke_width: number
-  color: string
-  is_filled: boolean
-  fill_color?: string
-  is_dashed: boolean
-  subcircuit_id?: string
-}
-```
-
 ### SchematicRect
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_rect.ts)
@@ -1916,7 +1916,7 @@ Draws a styled rectangle on the schematic
   width: number
   height: number
   rotation: number
-  stroke_width: number
+  stroke_width?: number | null
   color: string
   is_filled: boolean
   fill_color?: string
