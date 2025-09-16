@@ -12,7 +12,7 @@ export interface SchematicArc {
   center: Point
   radius: number
   start_angle_degrees: number
-  end_angle: number
+  end_angle_degrees: number
   direction: "clockwise" | "counterclockwise"
   stroke_width?: number | null
   color: string
@@ -28,7 +28,7 @@ export const schematic_arc = z
     center: point,
     radius: distance,
     start_angle_degrees: rotation,
-    end_angle: rotation,
+    end_angle_degrees: rotation,
     direction: z
       .enum(["clockwise", "counterclockwise"])
       .default("counterclockwise"),
