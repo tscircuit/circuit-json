@@ -1762,8 +1762,10 @@ Draws a styled line on the schematic
   type: "schematic_line"
   schematic_line_id: string
   schematic_component_id: string
-  start: Point
-  end: Point
+  x1: number
+  x2: number
+  y1: number
+  y2: number
   stroke_width: number
   color: string
   is_dashed: boolean
@@ -1867,8 +1869,8 @@ Draws a styled arc on the schematic
   schematic_component_id: string
   center: Point
   radius: number
-  start_angle: number
-  end_angle: number
+  start_angle_degree: number
+  end_angle_degree: number
   direction: "clockwise" | "counterclockwise"
   stroke_width: number
   color: string
