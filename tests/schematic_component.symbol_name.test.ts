@@ -1,6 +1,5 @@
-import { describe, it, expect } from "bun:test"
+import { test, expect } from "bun:test"
 import { schematic_component } from "../src/schematic/schematic_component"
-
 
 test("schematic_component.symbol_name accepts symbol_name string", () => {
   const sc = schematic_component.parse({
@@ -14,4 +13,3 @@ test("schematic_component.symbol_name accepts symbol_name string", () => {
   })
   expect(sc.symbol_name).toBe("resistor")
 })
-
