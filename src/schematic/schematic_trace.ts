@@ -14,6 +14,7 @@ export interface SchematicTraceEdge {
   is_crossing?: boolean
   from_schematic_port_id?: string
   to_schematic_port_id?: string
+  color?: string
 }
 
 export interface SchematicTrace {
@@ -28,6 +29,7 @@ export interface SchematicTrace {
   subcircuit_id?: string
   /** Optional for now, but will be required in a future release */
   subcircuit_connectivity_map_key?: string
+  color?: string
 }
 
 export const schematic_trace = z.object({
@@ -53,11 +55,13 @@ export const schematic_trace = z.object({
       is_crossing: z.boolean().optional(),
       from_schematic_port_id: z.string().optional(),
       to_schematic_port_id: z.string().optional(),
+      color: z.string().optional(),
     }),
   ),
   subcircuit_id: z.string().optional(),
   // TODO: make required in a future release
   subcircuit_connectivity_map_key: z.string().optional(),
+  color: z.string().optional(),
 })
 
 export type SchematicTraceInput = z.input<typeof schematic_trace>

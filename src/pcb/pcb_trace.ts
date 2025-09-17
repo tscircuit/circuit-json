@@ -12,6 +12,7 @@ export const pcb_trace_route_point_wire = z.object({
   start_pcb_port_id: z.string().optional(),
   end_pcb_port_id: z.string().optional(),
   layer: layer_ref,
+  color: z.string().optional(),
 })
 
 export const pcb_trace_route_point_via = z.object({
@@ -47,6 +48,7 @@ export const pcb_trace = z
     trace_length: z.number().optional(),
     rats_nest_color: z.string().optional(),
     route: z.array(pcb_trace_route_point),
+    color: z.string().optional(),
   })
   .describe("Defines a trace on the PCB")
 
@@ -61,6 +63,7 @@ export interface PcbTraceRoutePointWire {
   start_pcb_port_id?: string
   end_pcb_port_id?: string
   layer: LayerRef
+  color?: string
 }
 
 export interface PcbTraceRoutePointVia {
@@ -97,6 +100,7 @@ export interface PcbTrace {
   trace_length?: number
   rats_nest_color?: string
   route: Array<PcbTraceRoutePoint>
+  color?: string
 }
 
 /**
