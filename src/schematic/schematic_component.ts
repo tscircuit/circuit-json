@@ -34,7 +34,6 @@ export type SchematicPortArrangement =
   | SchematicPortArrangementBySize
   | SchematicPortArrangementBySides
 
-
 export interface SchematicComponent {
   type: "schematic_component"
   size: Size

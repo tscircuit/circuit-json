@@ -1,5 +1,5 @@
-import { describe, it, expect } from "bun:test";
-import { schematic_component } from "../src/schematic/schematic_component";
+import { describe, it, expect } from "bun:test"
+import { schematic_component } from "../src/schematic/schematic_component"
 
 describe("schematic_component.symbol_name", () => {
   it("accepts symbol_name string", () => {
@@ -11,7 +11,7 @@ describe("schematic_component.symbol_name", () => {
       rotation: 0,
       size: { width: 10, height: 5 },
       symbol_name: "resistor",
-    });
-    expect(sc.symbol_name).toBe("resistor");
-  });
-});
+    })
+    expect(sc.symbol_name).toBe("resistor")
+  })
+})
