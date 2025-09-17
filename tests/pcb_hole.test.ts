@@ -1,5 +1,9 @@
 import { expect, test } from "bun:test"
-import { pcb_hole, type PcbHoleOval } from "../src/pcb/pcb_hole"
+import {
+  pcb_hole,
+  type PcbHoleCircleOrSquare,
+  type PcbHoleOval,
+} from "../src/pcb/pcb_hole"
 
 test("parse circle hole", () => {
   const hole = pcb_hole.parse({
@@ -8,7 +12,7 @@ test("parse circle hole", () => {
     hole_diameter: 1.5,
     x: 0,
     y: 0,
-  })
+  }) as PcbHoleCircleOrSquare
 
   expect(hole.hole_shape).toBe("circle")
   expect(hole.hole_diameter).toBe(1.5)
@@ -21,7 +25,7 @@ test("parse square hole", () => {
     hole_diameter: 2.0,
     x: 0,
     y: 0,
-  })
+  }) as PcbHoleCircleOrSquare
 
   expect(hole.hole_shape).toBe("square")
   expect(hole.hole_diameter).toBe(2.0)
