@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { pin_attributes, type PinAttributes } from "./pin_attributes"
 
 export const source_port = z.object({
   type: z.literal("source_port"),
@@ -10,6 +11,7 @@ export const source_port = z.object({
   source_component_id: z.string(),
   subcircuit_id: z.string().optional(),
   subcircuit_connectivity_map_key: z.string().optional(),
+  pin_attributes: pin_attributes.optional(),
 })
 
 export type SourcePortInput = z.input<typeof source_port>
@@ -27,6 +29,7 @@ export interface SourcePort {
   source_component_id: string
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
+  pin_attributes?: PinAttributes
 }
 
 expectTypesMatch<SourcePort, InferredSourcePort>(true)
