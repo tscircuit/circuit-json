@@ -12,6 +12,7 @@ export const pcb_trace_route_point_wire = z.object({
   start_pcb_port_id: z.string().optional(),
   end_pcb_port_id: z.string().optional(),
   layer: layer_ref,
+  color: z.string().optional(),
 })
 
 export const pcb_trace_route_point_via = z.object({
@@ -22,6 +23,8 @@ export const pcb_trace_route_point_via = z.object({
   outer_diameter: distance.optional(),
   from_layer: z.string(),
   to_layer: z.string(),
+  // Allow color to be specified on vias for type uniformity, though it may be ignored downstream
+  color: z.string().optional(),
 })
 
 export const pcb_trace_route_point = z.union([
@@ -46,7 +49,10 @@ export const pcb_trace = z
     should_round_corners: z.boolean().optional(),
     trace_length: z.number().optional(),
     rats_nest_color: z.string().optional(),
-    route: z.array(pcb_trace_route_point),
+    // Non-empty route to avoid undefined at index 0 in consumers/tests
+    route: z.tuple([pcb_trace_route_point]).rest(pcb_trace_route_point),
+    // Optional explicit color for entire trace; per-point colors take precedence downstream
+    color: z.string().optional(),
   })
   .describe("Defines a trace on the PCB")
 
@@ -61,6 +67,7 @@ export interface PcbTraceRoutePointWire {
   start_pcb_port_id?: string
   end_pcb_port_id?: string
   layer: LayerRef
+  color?: string
 }
 
 export interface PcbTraceRoutePointVia {
@@ -71,6 +78,7 @@ export interface PcbTraceRoutePointVia {
   outer_diameter?: Distance
   from_layer: string
   to_layer: string
+  color?: string
 }
 
 export type PcbTraceRoutePoint = PcbTraceRoutePointWire | PcbTraceRoutePointVia
@@ -96,7 +104,10 @@ export interface PcbTrace {
   should_round_corners?: boolean
   trace_length?: number
   rats_nest_color?: string
-  route: Array<PcbTraceRoutePoint>
+  // At least one route point is required
+  route: [PcbTraceRoutePoint, ...PcbTraceRoutePoint[]]
+  // Optional explicit color at trace-level
+  color?: string
 }
 
 /**
