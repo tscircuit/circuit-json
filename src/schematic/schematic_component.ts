@@ -3,7 +3,6 @@ import { point, type Point } from "../common/point"
 import { size, type Size } from "../common/size"
 import { length } from "../units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
-import { schematic_symbol } from "./schematic_symbol"
 
 export const schematic_pin_styles = z.record(
   z.object({
@@ -35,7 +34,6 @@ export type SchematicPortArrangement =
   | SchematicPortArrangementBySize
   | SchematicPortArrangementBySides
 
-export type SchematicSymbol = z.infer<typeof schematic_symbol>
 
 export interface SchematicComponent {
   type: "schematic_component"
@@ -62,7 +60,6 @@ export interface SchematicComponent {
   schematic_group_id?: string
   is_schematic_group?: boolean
   source_group_id?: string
-  symbol?: SchematicSymbol
 }
 
 export const schematic_component_port_arrangement_by_size = z.object({
@@ -135,7 +132,6 @@ export const schematic_component = z.object({
   schematic_group_id: z.string().optional(),
   is_schematic_group: z.boolean().optional(),
   source_group_id: z.string().optional(),
-  symbol: schematic_symbol.optional(),
 })
 
 export type SchematicComponentInput = z.input<typeof schematic_component>
