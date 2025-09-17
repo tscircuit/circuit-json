@@ -16,6 +16,7 @@ export * from "./pcb_trace_error"
 export * from "./pcb_trace_missing_error"
 export * from "./pcb_port_not_matched_error"
 export * from "./pcb_port_not_connected_error"
+export * from "./pcb_net"
 export * from "./pcb_via"
 export * from "./pcb_board"
 export * from "./pcb_placement_error"
@@ -57,6 +58,7 @@ import type { PcbTraceMissingError } from "./pcb_trace_missing_error"
 import type { PcbPortNotMatchedError } from "./pcb_port_not_matched_error"
 import type { PcbPortNotConnectedError } from "./pcb_port_not_connected_error"
 import type { PcbVia } from "./pcb_via"
+import type { PcbNet } from "./pcb_net"
 import type { PcbBoard } from "./pcb_board"
 import type { PcbPlacementError } from "./pcb_placement_error"
 import type { PcbMissingFootprintError } from "./pcb_missing_footprint_error"
@@ -97,6 +99,7 @@ export type PcbCircuitElement =
   | PcbPortNotMatchedError
   | PcbPortNotConnectedError
   | PcbVia
+  | PcbNet
   | PcbBoard
   | PcbPlacementError
   | PcbTraceHint

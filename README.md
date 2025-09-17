@@ -94,6 +94,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbHole](#pcbhole)
     - [PcbManualEditConflictWarning](#pcbmanualeditconflictwarning)
     - [PcbMissingFootprintError](#pcbmissingfootprinterror)
+    - [PcbNet](#pcbnet)
     - [PcbPlacementError](#pcbplacementerror)
     - [PcbPlatedHole](#pcbplatedhole)
     - [PcbPort](#pcbport)
@@ -1061,6 +1062,22 @@ interface PcbMissingFootprintError {
   error_type: "pcb_missing_footprint_error"
   source_component_id: string
   message: string
+}
+```
+
+### PcbNet
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_net.ts)
+
+Defines a net on the PCB
+
+```typescript
+/** Defines a net on the PCB */
+interface PcbNet {
+  type: "pcb_net"
+  pcb_net_id: string
+  source_net_id?: string
+  rats_nest_color?: string
 }
 ```
 
