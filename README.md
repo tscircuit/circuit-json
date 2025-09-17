@@ -1698,6 +1698,7 @@ interface SchematicComponent {
   schematic_group_id?: string
   is_schematic_group?: boolean
   source_group_id?: string
+  is_box_with_pins: boolean
 }
 
 interface SchematicPortArrangementBySize {

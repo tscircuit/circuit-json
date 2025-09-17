@@ -103,6 +103,7 @@ interface SchematicComponent {
         }
       }
   port_labels?: Record<string, string>
+  is_box_with_pins: boolean
 }
 
 interface SchematicDebugRect {
