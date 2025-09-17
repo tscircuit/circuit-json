@@ -50,6 +50,7 @@ export const any_circuit_element = z.union([
   pcb.pcb_plated_hole,
   pcb.pcb_keepout,
   pcb.pcb_port,
+  pcb.pcb_net,
   pcb.pcb_text,
   pcb.pcb_trace,
   pcb.pcb_via,

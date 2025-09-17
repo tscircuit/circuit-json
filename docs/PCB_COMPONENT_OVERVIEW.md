@@ -434,11 +434,22 @@ export interface PcbTrace {
   type: "pcb_trace"
   source_trace_id?: string
   pcb_component_id?: string
+  pcb_group_id?: string
+  subcircuit_id?: string
   pcb_trace_id: string
   route_order_index?: number
   route_thickness_mode?: "constant" | "interpolated"
   should_round_corners?: boolean
+  trace_length?: number
+  rats_nest_color?: string
   route: Array<PcbTraceRoutePoint>
+}
+
+export interface PcbNet {
+  type: "pcb_net"
+  pcb_net_id: string
+  source_net_id?: string
+  rats_nest_color?: string
 }
 
 export interface PcbBreakoutPoint {
