@@ -45,7 +45,7 @@ const pcb_hole_oval = z.object({
   pcb_hole_id: getZodPrefixedIdWithDefault("pcb_hole"),
   pcb_group_id: z.string().optional(),
   subcircuit_id: z.string().optional(),
-  hole_shape: z.literal("oval"),
+  hole_shape: z.enum(["oval", "pill"]),
   hole_width: z.number(),
   hole_height: z.number(),
   x: distance,
@@ -53,21 +53,21 @@ const pcb_hole_oval = z.object({
 })
 
 export const pcb_hole_oval_shape = pcb_hole_oval.describe(
-  "Defines an oval hole on the PCB",
+  "Defines an oval or pill-shaped hole on the PCB",
 )
 
 export type PcbHoleOvalInput = z.input<typeof pcb_hole_oval>
 type InferredPcbHoleOval = z.infer<typeof pcb_hole_oval>
 
 /**
- * Defines an oval hole on the PCB
+ * Defines an oval or pill-shaped hole on the PCB
  */
 export interface PcbHoleOval {
   type: "pcb_hole"
   pcb_hole_id: string
   pcb_group_id?: string
   subcircuit_id?: string
-  hole_shape: "oval"
+  hole_shape: "oval" | "pill"
   hole_width: number
   hole_height: number
   x: Distance
