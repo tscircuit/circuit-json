@@ -59,6 +59,7 @@ export interface SchematicComponent {
   schematic_group_id?: string
   is_schematic_group?: boolean
   source_group_id?: string
+  is_box_with_pins: boolean
 }
 
 export const schematic_component_port_arrangement_by_size = z.object({
@@ -131,6 +132,7 @@ export const schematic_component = z.object({
   schematic_group_id: z.string().optional(),
   is_schematic_group: z.boolean().optional(),
   source_group_id: z.string().optional(),
+  is_box_with_pins: z.boolean().optional().default(true),
 })
 
 export type SchematicComponentInput = z.input<typeof schematic_component>
