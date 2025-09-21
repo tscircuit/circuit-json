@@ -232,7 +232,6 @@ interface SourceComponentBase {
   internally_connected_source_port_ids?: string[][]
   source_group_id?: string
   subcircuit_id?: string
-  do_not_place: boolean
 }
 ```
 
@@ -825,6 +824,7 @@ interface PcbComponent {
   rotation: Rotation
   width: Length
   height: Length
+  do_not_place: boolean
   pcb_group_id?: string
 }
 ```
