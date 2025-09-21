@@ -441,7 +441,7 @@ export interface PcbTrace {
   route_thickness_mode?: "constant" | "interpolated"
   should_round_corners?: boolean
   trace_length?: number
-  rats_nest_color?: string
+  highlight_color?: string
   route: Array<PcbTraceRoutePoint>
 }
 
@@ -449,7 +449,7 @@ export interface PcbNet {
   type: "pcb_net"
   pcb_net_id: string
   source_net_id?: string
-  rats_nest_color?: string
+  highlight_color?: string
 }
 
 export interface PcbBreakoutPoint {
