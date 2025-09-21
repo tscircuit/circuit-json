@@ -67,7 +67,9 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceSimpleInductor](#sourcesimpleinductor)
     - [SourceSimpleLed](#sourcesimpleled)
     - [SourceSimpleMosfet](#sourcesimplemosfet)
+    - [SourceSimplePinHeader](#sourcesimplepinheader)
     - [SourceSimplePinout](#sourcesimplepinout)
+    - [SourceSimplePotentiometer](#sourcesimplepotentiometer)
     - [SourceSimplePowerSource](#sourcesimplepowersource)
     - [SourceSimplePushButton](#sourcesimplepushbutton)
     - [SourceSimpleResistor](#sourcesimpleresistor)
@@ -230,6 +232,7 @@ interface SourceComponentBase {
   internally_connected_source_port_ids?: string[][]
   source_group_id?: string
   subcircuit_id?: string
+  do_not_place: boolean
 }
 ```
 
@@ -565,6 +568,18 @@ interface SourceSimpleMosfet extends SourceComponentBase {
 }
 ```
 
+### SourceSimplePinHeader
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_pin_header.ts)
+
+```typescript
+interface SourceSimplePinHeader extends SourceComponentBase {
+  ftype: "simple_pin_header"
+  pin_count: number
+  gender: "male" | "female"
+}
+```
+
 ### SourceSimplePinout
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_pinout.ts)
@@ -575,6 +590,17 @@ Defines a simple pinout component
 /** Defines a simple pinout component */
 interface SourceSimplePinout extends SourceComponentBase {
   ftype: "simple_pinout"
+}
+```
+
+### SourceSimplePotentiometer
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_potentiometer.ts)
+
+```typescript
+interface SourceSimplePotentiometer extends SourceComponentBase {
+  ftype: "simple_potentiometer"
+  max_resistance: number
 }
 ```
 
