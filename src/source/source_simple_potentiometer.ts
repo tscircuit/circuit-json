@@ -1,5 +1,8 @@
 import { z } from "zod"
-import { source_component_base } from "src/source/base/source_component_base"
+import {
+  source_component_base,
+  type SourceComponentBase,
+} from "src/source/base/source_component_base"
 import { resistance } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
@@ -15,8 +18,7 @@ type InferredSourceSimplePotentiometer = z.infer<
   typeof source_simple_potentiometer
 >
 
-export interface SourceSimplePotentiometer
-  extends SourceSimplePotentiometerInput {
+export interface SourceSimplePotentiometer extends SourceComponentBase {
   ftype: "simple_potentiometer"
   max_resistance: number
 }
