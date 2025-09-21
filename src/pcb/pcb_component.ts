@@ -14,6 +14,7 @@ export const pcb_component = z
     rotation: rotation,
     width: length,
     height: length,
+    do_not_place: z.boolean().optional().default(false),
     subcircuit_id: z.string().optional(),
     pcb_group_id: z.string().optional(),
   })
@@ -35,6 +36,7 @@ export interface PcbComponent {
   rotation: Rotation
   width: Length
   height: Length
+  do_not_place: boolean
   pcb_group_id?: string
 }
 
