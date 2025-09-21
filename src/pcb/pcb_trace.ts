@@ -45,7 +45,7 @@ export const pcb_trace = z
     route_order_index: z.number().optional(),
     should_round_corners: z.boolean().optional(),
     trace_length: z.number().optional(),
-    rats_nest_color: z.string().optional(),
+    highlight_color: z.string().optional(),
     route: z.array(pcb_trace_route_point),
   })
   .describe("Defines a trace on the PCB")
@@ -95,7 +95,7 @@ export interface PcbTrace {
   route_thickness_mode?: "constant" | "interpolated"
   should_round_corners?: boolean
   trace_length?: number
-  rats_nest_color?: string
+  highlight_color?: string
   route: Array<PcbTraceRoutePoint>
 }
 

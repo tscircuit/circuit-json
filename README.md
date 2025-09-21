@@ -1077,7 +1077,7 @@ interface PcbNet {
   type: "pcb_net"
   pcb_net_id: string
   source_net_id?: string
-  rats_nest_color?: string
+  highlight_color?: string
 }
 ```
 

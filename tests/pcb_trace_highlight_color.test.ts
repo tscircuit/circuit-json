@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test"
 import { pcb_trace } from "../src/pcb/pcb_trace"
 
-test("pcb_trace.rats_nest_color defaults to undefined", () => {
+test("pcb_trace.highlight_color defaults to undefined", () => {
   const trace = pcb_trace.parse({
     type: "pcb_trace",
     route: [
@@ -15,13 +15,13 @@ test("pcb_trace.rats_nest_color defaults to undefined", () => {
     ],
   })
 
-  expect(trace.rats_nest_color).toBeUndefined()
+  expect(trace.highlight_color).toBeUndefined()
 })
 
-test("pcb_trace.rats_nest_color can be specified", () => {
+test("pcb_trace.highlight_color can be specified", () => {
   const trace = pcb_trace.parse({
     type: "pcb_trace",
-    rats_nest_color: "#00ffcc",
+    highlight_color: "#00ffcc",
     route: [
       {
         route_type: "wire",
@@ -33,5 +33,5 @@ test("pcb_trace.rats_nest_color can be specified", () => {
     ],
   })
 
-  expect(trace.rats_nest_color).toBe("#00ffcc")
+  expect(trace.highlight_color).toBe("#00ffcc")
 })

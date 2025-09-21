@@ -9,7 +9,7 @@ test("pcb_net optional fields default to undefined", () => {
   expect(net.pcb_net_id).toBeDefined()
   expect(net.pcb_net_id.startsWith("pcb_net")).toBe(true)
   expect(net.source_net_id).toBeUndefined()
-  expect(net.rats_nest_color).toBeUndefined()
+  expect(net.highlight_color).toBeUndefined()
 })
 
 test("pcb_net optional fields can be provided", () => {
@@ -17,10 +17,10 @@ test("pcb_net optional fields can be provided", () => {
     type: "pcb_net",
     pcb_net_id: "pcb_net_123",
     source_net_id: "source_net_1",
-    rats_nest_color: "#ffaa00",
+    highlight_color: "#ffaa00",
   })
 
   expect(net.pcb_net_id).toBe("pcb_net_123")
   expect(net.source_net_id).toBe("source_net_1")
-  expect(net.rats_nest_color).toBe("#ffaa00")
+  expect(net.highlight_color).toBe("#ffaa00")
 })
