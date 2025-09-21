@@ -1,4 +1,7 @@
-import { source_component_base } from "src/source/base/source_component_base"
+import {
+  source_component_base,
+  type SourceComponentBase,
+} from "src/source/base/source_component_base"
 import { z } from "zod"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
@@ -13,7 +16,7 @@ export type SourceSimplePinHeaderInput = z.input<
 >
 type InferredSourceSimplePinHeader = z.infer<typeof source_simple_pin_header>
 
-export interface SourceSimplePinHeader extends SourceSimplePinHeaderInput {
+export interface SourceSimplePinHeader extends SourceComponentBase {
   ftype: "simple_pin_header"
   pin_count: number
   gender: "male" | "female"
