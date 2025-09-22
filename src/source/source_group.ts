@@ -1,5 +1,9 @@
 import { z } from "zod"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import {
+  schematic_pin_arrangement,
+  type SchematicPinArrangement,
+} from "../schematic/schematic_component"
 
 export const source_group = z.object({
   type: z.literal("source_group"),
@@ -9,6 +13,8 @@ export const source_group = z.object({
   parent_source_group_id: z.string().optional(),
   is_subcircuit: z.boolean().optional(),
   show_as_schematic_box: z.boolean().optional(),
+  schematic_box_port_alias_map: z.record(z.string()).optional(),
+  schematic_box_pin_arrangement: schematic_pin_arrangement.optional(),
   name: z.string().optional(),
 })
 
@@ -23,6 +29,8 @@ export interface SourceGroup {
   parent_source_group_id?: string
   is_subcircuit?: boolean
   show_as_schematic_box?: boolean
+  schematic_box_port_alias_map?: Record<string, string>
+  schematic_box_pin_arrangement?: SchematicPinArrangement
   name?: string
 }
 

@@ -20,12 +20,23 @@ export interface SchematicPortArrangementBySize {
   bottom_size?: number
 }
 
+export type SchematicPortArrangementPin = number | string
+
 export interface SchematicPortArrangementBySides {
-  left_side?: { pins: number[]; direction?: "top-to-bottom" | "bottom-to-top" }
-  right_side?: { pins: number[]; direction?: "top-to-bottom" | "bottom-to-top" }
-  top_side?: { pins: number[]; direction?: "left-to-right" | "right-to-left" }
+  left_side?: {
+    pins: SchematicPortArrangementPin[]
+    direction?: "top-to-bottom" | "bottom-to-top"
+  }
+  right_side?: {
+    pins: SchematicPortArrangementPin[]
+    direction?: "top-to-bottom" | "bottom-to-top"
+  }
+  top_side?: {
+    pins: SchematicPortArrangementPin[]
+    direction?: "left-to-right" | "right-to-left"
+  }
   bottom_side?: {
-    pins: number[]
+    pins: SchematicPortArrangementPin[]
     direction?: "left-to-right" | "right-to-left"
   }
 }
@@ -33,6 +44,8 @@ export interface SchematicPortArrangementBySides {
 export type SchematicPortArrangement =
   | SchematicPortArrangementBySize
   | SchematicPortArrangementBySides
+
+export type SchematicPinArrangement = SchematicPortArrangement
 
 export interface SchematicComponent {
   type: "schematic_component"
@@ -52,13 +65,16 @@ export interface SchematicComponent {
   >
   box_width?: number
   symbol_name?: string
+  /** @deprecated use schematic_pin_arrangement */
   port_arrangement?: SchematicPortArrangement
+  schematic_pin_arrangement?: SchematicPinArrangement
   port_labels?: Record<string, string>
   symbol_display_value?: string
   subcircuit_id?: string
   schematic_group_id?: string
   is_schematic_group?: boolean
   source_group_id?: string
+  schematic_box_port_alias_map?: Record<string, string>
   is_box_with_pins: boolean
 }
 
@@ -74,31 +90,33 @@ expectTypesMatch<
   z.infer<typeof schematic_component_port_arrangement_by_size>
 >(true)
 
+const schematic_port_arrangement_pin = z.union([z.number(), z.string()])
+
 export const schematic_component_port_arrangement_by_sides = z.object({
   left_side: z
     .object({
-      pins: z.array(z.number()),
+      pins: z.array(schematic_port_arrangement_pin),
       // @ts-ignore
       direction: z.enum(["top-to-bottom", "bottom-to-top"]).optional(),
     })
     .optional(),
   right_side: z
     .object({
-      pins: z.array(z.number()),
+      pins: z.array(schematic_port_arrangement_pin),
       // @ts-ignore
       direction: z.enum(["top-to-bottom", "bottom-to-top"]).optional(),
     })
     .optional(),
   top_side: z
     .object({
-      pins: z.array(z.number()),
+      pins: z.array(schematic_port_arrangement_pin),
       // @ts-ignore
       direction: z.enum(["left-to-right", "right-to-left"]).optional(),
     })
     .optional(),
   bottom_side: z
     .object({
-      pins: z.array(z.number()),
+      pins: z.array(schematic_port_arrangement_pin),
       // @ts-ignore
       direction: z.enum(["left-to-right", "right-to-left"]).optional(),
     })
@@ -110,10 +128,12 @@ expectTypesMatch<
   z.infer<typeof schematic_component_port_arrangement_by_sides>
 >(true)
 
-export const port_arrangement = z.union([
+export const schematic_pin_arrangement = z.union([
   schematic_component_port_arrangement_by_size,
   schematic_component_port_arrangement_by_sides,
 ])
+
+export const port_arrangement = schematic_pin_arrangement
 
 export const schematic_component = z.object({
   type: z.literal("schematic_component"),
@@ -125,13 +145,15 @@ export const schematic_component = z.object({
   pin_styles: schematic_pin_styles.optional(),
   box_width: length.optional(),
   symbol_name: z.string().optional(),
-  port_arrangement: port_arrangement.optional(),
+  port_arrangement: schematic_pin_arrangement.optional(),
+  schematic_pin_arrangement: schematic_pin_arrangement.optional(),
   port_labels: z.record(z.string()).optional(),
   symbol_display_value: z.string().optional(),
   subcircuit_id: z.string().optional(),
   schematic_group_id: z.string().optional(),
   is_schematic_group: z.boolean().optional(),
   source_group_id: z.string().optional(),
+  schematic_box_port_alias_map: z.record(z.string()).optional(),
   is_box_with_pins: z.boolean().optional().default(true),
 })
 

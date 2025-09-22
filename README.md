@@ -266,6 +266,8 @@ interface SourceFailedToCreateComponentError {
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_group.ts)
 
 ```typescript
+type SchematicPinArrangement = SchematicPortArrangement
+
 interface SourceGroup {
   type: "source_group"
   source_group_id: string
@@ -274,6 +276,8 @@ interface SourceGroup {
   parent_source_group_id?: string
   is_subcircuit?: boolean
   show_as_schematic_box?: boolean
+  schematic_box_port_alias_map?: Record<string, string>
+  schematic_box_pin_arrangement?: SchematicPinArrangement
   name?: string
 }
 ```
@@ -1717,13 +1721,14 @@ interface SchematicComponent {
   >
   box_width?: number
   symbol_name?: string
-  port_arrangement?: SchematicPortArrangement
+  schematic_pin_arrangement?: SchematicPinArrangement
   port_labels?: Record<string, string>
   symbol_display_value?: string
   subcircuit_id?: string
   schematic_group_id?: string
   is_schematic_group?: boolean
   source_group_id?: string
+  schematic_box_port_alias_map?: Record<string, string>
   is_box_with_pins: boolean
 }
 
@@ -1735,11 +1740,20 @@ interface SchematicPortArrangementBySize {
 }
 
 interface SchematicPortArrangementBySides {
-  left_side?: { pins: number[]; direction?: "top-to-bottom" | "bottom-to-top" }
-  right_side?: { pins: number[]; direction?: "top-to-bottom" | "bottom-to-top" }
-  top_side?: { pins: number[]; direction?: "left-to-right" | "right-to-left" }
+  left_side?: {
+    pins: Array<number | string>
+    direction?: "top-to-bottom" | "bottom-to-top"
+  }
+  right_side?: {
+    pins: Array<number | string>
+    direction?: "top-to-bottom" | "bottom-to-top"
+  }
+  top_side?: {
+    pins: Array<number | string>
+    direction?: "left-to-right" | "right-to-left"
+  }
   bottom_side?: {
-    pins: number[]
+    pins: Array<number | string>
     direction?: "left-to-right" | "right-to-left"
   }
 }
@@ -1819,6 +1833,8 @@ interface SchematicGroup {
   center: Point
   schematic_component_ids: string[]
   show_as_schematic_box?: boolean
+  schematic_box_port_alias_map?: Record<string, string>
+  schematic_box_pin_arrangement?: SchematicPinArrangement
   name?: string
   description?: string
 }

@@ -58,6 +58,36 @@ interface SchematicError {
   message: string
 }
 
+type SchematicPortArrangementBySize = {
+  left_size: number
+  right_size: number
+  top_size?: number
+  bottom_size?: number
+}
+
+type SchematicPortArrangementBySides = {
+  left_side?: {
+    pins: Array<number | string>
+    direction?: "top-to-bottom" | "bottom-to-top"
+  }
+  right_side?: {
+    pins: Array<number | string>
+    direction?: "top-to-bottom" | "bottom-to-top"
+  }
+  top_side?: {
+    pins: Array<number | string>
+    direction?: "left-to-right" | "right-to-left"
+  }
+  bottom_side?: {
+    pins: Array<number | string>
+    direction?: "left-to-right" | "right-to-left"
+  }
+}
+
+type SchematicPinArrangement =
+  | SchematicPortArrangementBySize
+  | SchematicPortArrangementBySides
+
 interface SchematicComponent {
   type: "schematic_component"
   rotation: number
@@ -77,32 +107,9 @@ interface SchematicComponent {
   >
   box_width?: number
   symbol_name?: string
-  port_arrangement?:
-    | {
-        left_size: number
-        right_size: number
-        top_size?: number
-        bottom_size?: number
-      }
-    | {
-        left_side?: {
-          pins: number[]
-          direction?: "top-to-bottom" | "bottom-to-top"
-        }
-        right_side?: {
-          pins: number[]
-          direction?: "top-to-bottom" | "bottom-to-top"
-        }
-        top_side?: {
-          pins: number[]
-          direction?: "left-to-right" | "right-to-left"
-        }
-        bottom_side?: {
-          pins: number[]
-          direction?: "left-to-right" | "right-to-left"
-        }
-      }
+  schematic_pin_arrangement?: SchematicPinArrangement
   port_labels?: Record<string, string>
+  schematic_box_port_alias_map?: Record<string, string>
   is_box_with_pins: boolean
 }
 

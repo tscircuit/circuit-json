@@ -2,6 +2,10 @@ import { z } from "zod"
 import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
 import { length, type Length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import {
+  schematic_pin_arrangement,
+  type SchematicPinArrangement,
+} from "./schematic_component"
 
 export const schematic_group = z
   .object({
@@ -15,6 +19,8 @@ export const schematic_group = z
     center: point,
     schematic_component_ids: z.array(z.string()),
     show_as_schematic_box: z.boolean().optional(),
+    schematic_box_port_alias_map: z.record(z.string()).optional(),
+    schematic_box_pin_arrangement: schematic_pin_arrangement.optional(),
     name: z.string().optional(),
     description: z.string().optional(),
   })
@@ -37,6 +43,8 @@ export interface SchematicGroup {
   center: Point
   schematic_component_ids: string[]
   show_as_schematic_box?: boolean
+  schematic_box_port_alias_map?: Record<string, string>
+  schematic_box_pin_arrangement?: SchematicPinArrangement
   name?: string
   description?: string
 }
