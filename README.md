@@ -824,7 +824,7 @@ interface PcbComponent {
   rotation: Rotation
   width: Length
   height: Length
-  do_not_place: boolean
+  do_not_place?: boolean
   pcb_group_id?: string
 }
 ```
