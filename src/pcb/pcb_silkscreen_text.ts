@@ -18,21 +18,24 @@ export const pcb_silkscreen_text = z
     font_size: distance.default("0.2mm"),
     pcb_component_id: z.string(),
     text: z.string(),
-    is_knockout: z.boolean().default(false).optional(),
-    knockout_padding: z
-      .object({
-        left: length,
-        top: length,
-        bottom: length,
-        right: length,
-      })
-      .default({
-        left: "0.2mm",
-        top: "0.2mm",
-        bottom: "0.2mm",
-        right: "0.2mm",
-      })
-      .optional(),
+  is_knockout: z.boolean().default(false).optional(),
+  knockout_padding: z
+    .object({
+      left: length,
+      top: length,
+      bottom: length,
+      right: length,
+    })
+    .default({
+      left: "0.2mm",
+      top: "0.2mm",
+      bottom: "0.2mm",
+      right: "0.2mm",
+    })
+    .optional(),
+  knockout_corner_radius: length.optional(),
+  knockout_border_width: length.optional(),
+  knockout_color: z.string().optional(),
     ccw_rotation: z.number().optional(),
     layer: layer_ref,
     is_mirrored: z.boolean().default(false).optional(),
@@ -63,6 +66,9 @@ export interface PcbSilkscreenText {
     bottom: Length
     right: Length
   }
+  knockout_corner_radius?: Length
+  knockout_border_width?: Length
+  knockout_color?: string
   ccw_rotation?: number
   layer: LayerRef
   is_mirrored?: boolean
