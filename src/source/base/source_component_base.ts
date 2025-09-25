@@ -1,6 +1,6 @@
 import {
-  supplier_name,
   type SupplierName,
+  supplier_name,
 } from "src/pcb/properties/supplier_name"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import { z } from "zod"

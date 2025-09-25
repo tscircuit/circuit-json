@@ -1,8 +1,8 @@
-import { z } from "zod"
-import { distance, type Distance, rotation, type Rotation } from "src/units"
-import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
 import { getZodPrefixedIdWithDefault } from "src/common"
+import { type LayerRef, layer_ref } from "src/pcb/properties/layer_ref"
+import { type Distance, type Rotation, distance, rotation } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 const pcb_plated_hole_circle = z.object({
   type: z.literal("pcb_plated_hole"),

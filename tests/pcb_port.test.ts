@@ -1,6 +1,6 @@
-import { test, expect } from "bun:test"
-import { pcb_port } from "../src/pcb/pcb_port"
+import { expect, test } from "bun:test"
 import { any_circuit_element } from "../src/any_circuit_element"
+import { pcb_port } from "../src/pcb/pcb_port"
 
 test("pcb_port parses with is_board_pinout", () => {
   const port = pcb_port.parse({

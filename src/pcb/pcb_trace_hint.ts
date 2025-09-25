@@ -1,7 +1,7 @@
-import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
-import { route_hint_point, type RouteHintPoint } from "src/pcb"
+import { type RouteHintPoint, route_hint_point } from "src/pcb"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 /**
  * A hint that can be used during generation of a PCB trace.

@@ -1,7 +1,7 @@
-import { z } from "zod"
-import { point, type Point } from "../common/point"
-import { expectTypesMatch } from "src/utils/expect-types-match"
 import { voltage } from "src/units"
+import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
+import { type Point, point } from "../common/point"
 
 export interface SchematicVoltageProbe {
   type: "schematic_voltage_probe"

@@ -1,13 +1,13 @@
-import { z } from "zod"
-import { point, type Point } from "src/common"
-import { distance, type Length } from "src/units"
+import { type Point, point } from "src/common"
+import { getZodPrefixedIdWithDefault } from "src/common/getZodPrefixedIdWithDefault"
 import {
-  visible_layer,
   type LayerRef,
   type VisibleLayer,
+  visible_layer,
 } from "src/pcb/properties/layer_ref"
-import { getZodPrefixedIdWithDefault } from "src/common/getZodPrefixedIdWithDefault"
+import { type Length, distance } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const pcb_fabrication_note_text = z
   .object({

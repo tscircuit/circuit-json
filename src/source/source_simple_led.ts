@@ -1,12 +1,12 @@
 import {
-  source_component_base,
   type SourceComponentBase,
+  source_component_base,
 } from "src/source/base/source_component_base"
-import { z } from "zod"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 import {
-  source_simple_diode,
   type SourceSimpleDiode,
+  source_simple_diode,
 } from "./source_simple_diode"
 
 export const source_simple_led = source_simple_diode.extend({

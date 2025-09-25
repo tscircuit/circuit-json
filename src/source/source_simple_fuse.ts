@@ -1,9 +1,9 @@
+import { expectTypesMatch } from "src/utils/expect-types-match"
 import { z } from "zod"
 import {
-  source_component_base,
   type SourceComponentBase,
+  source_component_base,
 } from "./base/source_component_base"
-import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const source_simple_fuse = source_component_base.extend({
   ftype: z.literal("simple_fuse"),

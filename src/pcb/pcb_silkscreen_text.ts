@@ -1,12 +1,12 @@
-import { z } from "zod"
-import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
-import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
-import { distance, length, type Length } from "src/units"
-import { expectTypesMatch } from "src/utils/expect-types-match"
+import { type Point, getZodPrefixedIdWithDefault, point } from "src/common"
 import {
-  ninePointAnchor,
   type NinePointAnchor,
+  ninePointAnchor,
 } from "src/common/NinePointAnchor"
+import { type LayerRef, layer_ref } from "src/pcb/properties/layer_ref"
+import { type Length, distance, length } from "src/units"
+import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const pcb_silkscreen_text = z
   .object({

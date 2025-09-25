@@ -1,8 +1,8 @@
 import { expect, test } from "bun:test"
+import { schematic_arc } from "../src/schematic/schematic_arc"
+import { schematic_circle } from "../src/schematic/schematic_circle"
 import { schematic_line } from "../src/schematic/schematic_line"
 import { schematic_rect } from "../src/schematic/schematic_rect"
-import { schematic_circle } from "../src/schematic/schematic_circle"
-import { schematic_arc } from "../src/schematic/schematic_arc"
 
 test("schematic_line defaults stroke width and color", () => {
   const line = schematic_line.parse({

@@ -1,6 +1,6 @@
-import Anthropic from "@anthropic-ai/sdk"
 import fs from "node:fs"
 import path from "node:path"
+import Anthropic from "@anthropic-ai/sdk"
 
 // Read all the files in the src/source directory
 const sourceDir = path.join(__dirname, "../src/source")

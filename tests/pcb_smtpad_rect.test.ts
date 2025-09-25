@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { pcb_smtpad, type PcbSmtPadRect } from "../src/pcb/pcb_smtpad"
+import { type PcbSmtPadRect, pcb_smtpad } from "../src/pcb/pcb_smtpad"
 
 test("parse rect smt pad with border radius", () => {
   const pad = pcb_smtpad.parse({

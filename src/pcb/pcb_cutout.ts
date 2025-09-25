@@ -1,7 +1,7 @@
-import { z } from "zod"
-import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
-import { length, type Length, rotation, type Rotation } from "src/units"
+import { type Point, getZodPrefixedIdWithDefault, point } from "src/common"
+import { type Length, type Rotation, length, rotation } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 // Common properties base for all cutout shapes (internal)
 const pcb_cutout_base = z.object({

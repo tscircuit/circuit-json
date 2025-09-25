@@ -1,13 +1,13 @@
-import { z } from "zod"
 import {
+  type NinePointAnchor,
+  type Point,
   getZodPrefixedIdWithDefault,
   ninePointAnchor,
   point,
-  type NinePointAnchor,
-  type Point,
 } from "src/common"
-import { distance, type Length } from "src/units"
+import { type Length, distance } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const schematic_table = z
   .object({

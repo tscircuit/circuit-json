@@ -1,6 +1,6 @@
-import { test, expect } from "bun:test"
-import { circuit_json_footprint_load_error } from "../src/pcb/circuit_json_footprint_load_error"
+import { expect, test } from "bun:test"
 import { any_circuit_element } from "../src/any_circuit_element"
+import { circuit_json_footprint_load_error } from "../src/pcb/circuit_json_footprint_load_error"
 
 test("circuit_json_footprint_load_error parses", () => {
   const error = circuit_json_footprint_load_error.parse({

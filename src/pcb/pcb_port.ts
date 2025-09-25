@@ -1,8 +1,8 @@
-import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
-import { distance, type Distance } from "src/units"
-import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
+import { type LayerRef, layer_ref } from "src/pcb/properties/layer_ref"
+import { type Distance, distance } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const pcb_port = z
   .object({

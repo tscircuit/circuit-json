@@ -1,9 +1,9 @@
-import { z } from "zod"
-import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
-import { length, type Length, rotation, type Rotation } from "src/units"
-import { layer_ref, type LayerRef } from "./properties/layer_ref"
+import { type Point, getZodPrefixedIdWithDefault, point } from "src/common"
+import { type Length, type Rotation, length, rotation } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
-import { brep_shape, type BRepShape } from "./properties/brep"
+import { z } from "zod"
+import { type BRepShape, brep_shape } from "./properties/brep"
+import { type LayerRef, layer_ref } from "./properties/layer_ref"
 
 // Common properties base for all pour shapes (internal)
 const pcb_copper_pour_base = z.object({

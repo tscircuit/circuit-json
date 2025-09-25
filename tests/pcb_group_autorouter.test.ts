@@ -1,4 +1,4 @@
-import { test, expect } from "bun:test"
+import { expect, test } from "bun:test"
 import { pcb_group } from "../src/pcb/pcb_group"
 
 // Test autorouter_configuration optional and shape

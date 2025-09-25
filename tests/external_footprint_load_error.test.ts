@@ -1,6 +1,6 @@
-import { test, expect } from "bun:test"
-import { external_footprint_load_error } from "../src/pcb/external_footprint_load_error"
+import { expect, test } from "bun:test"
 import { any_circuit_element } from "../src/any_circuit_element"
+import { external_footprint_load_error } from "../src/pcb/external_footprint_load_error"
 
 test("external_footprint_load_error parses", () => {
   const error = external_footprint_load_error.parse({

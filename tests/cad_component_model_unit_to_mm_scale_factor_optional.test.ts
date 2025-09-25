@@ -1,4 +1,4 @@
-import { test, expect } from "bun:test"
+import { expect, test } from "bun:test"
 import { cad_component } from "../src/cad/cad_component"
 
 test("cad_component.model_unit_to_mm_scale_factor is optional", () => {

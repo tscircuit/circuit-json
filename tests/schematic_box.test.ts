@@ -1,4 +1,4 @@
-import { test, expect } from "bun:test"
+import { expect, test } from "bun:test"
 import { schematic_box } from "../src/schematic/schematic_box"
 
 test("schematic_box.schematic_component_id is optional", () => {

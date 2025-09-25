@@ -1,12 +1,11 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.2.4/schema.json",
-  "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "formatter": {
     "enabled": true,
     "indentStyle": "space"
   },
   "files": {
-    "includes": ["**", "!**/cosmos-export", "!**/dist", "!**/package.json"]
+    "ignore": ["cosmos-export", "dist", "package.json"]
   },
   "javascript": {
     "formatter": {

@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test"
 import {
-  pcb_plated_hole,
   type PcbHoleRotatedPillWithRectPad,
+  pcb_plated_hole,
 } from "../src/pcb/pcb_plated_hole"
 
 test("parse rotated pill hole with rect pad", () => {

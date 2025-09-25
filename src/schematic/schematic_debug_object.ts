@@ -1,7 +1,7 @@
-import { z } from "zod"
-import { point, type Point } from "../common/point"
-import { size, type Size } from "../common/size"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
+import { type Point, point } from "../common/point"
+import { type Size, size } from "../common/size"
 
 export const schematic_debug_object_base = z.object({
   type: z.literal("schematic_debug_object"),

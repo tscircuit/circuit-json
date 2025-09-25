@@ -1,6 +1,6 @@
-import { test, expect } from "bun:test"
-import { source_pin_missing_trace_warning } from "../src/source/source_pin_missing_trace_warning"
+import { expect, test } from "bun:test"
 import { any_circuit_element } from "../src/any_circuit_element"
+import { source_pin_missing_trace_warning } from "../src/source/source_pin_missing_trace_warning"
 
 test("source_pin_missing_trace_warning parses", () => {
   const warning = source_pin_missing_trace_warning.parse({

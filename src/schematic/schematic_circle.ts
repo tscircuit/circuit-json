@@ -1,8 +1,8 @@
-import { z } from "zod"
-import { point, type Point } from "../common/point"
-import { distance } from "../units"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
+import { type Point, point } from "../common/point"
+import { distance } from "../units"
 
 /** Draws a styled circle on the schematic */
 export interface SchematicCircle {

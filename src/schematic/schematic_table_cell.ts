@@ -1,7 +1,7 @@
-import { z } from "zod"
-import { getZodPrefixedIdWithDefault, point, type Point } from "src/common"
-import { distance, type Length } from "src/units"
+import { type Point, getZodPrefixedIdWithDefault, point } from "src/common"
+import { type Length, distance } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const schematic_table_cell = z
   .object({

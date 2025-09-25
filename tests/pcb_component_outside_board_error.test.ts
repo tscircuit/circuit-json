@@ -1,6 +1,6 @@
-import { test, expect } from "bun:test"
-import { pcb_component_outside_board_error } from "src/pcb/pcb_component_outside_board_error"
+import { expect, test } from "bun:test"
 import { any_circuit_element } from "src/any_circuit_element"
+import { pcb_component_outside_board_error } from "src/pcb/pcb_component_outside_board_error"
 
 test("pcb_component_outside_board_error parses", () => {
   const errorData = {

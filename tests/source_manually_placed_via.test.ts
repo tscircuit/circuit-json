@@ -1,6 +1,6 @@
-import { test, expect } from "bun:test"
-import { source_manually_placed_via } from "../src/source/source_manually_placed_via"
+import { expect, test } from "bun:test"
 import { any_circuit_element } from "../src/any_circuit_element"
+import { source_manually_placed_via } from "../src/source/source_manually_placed_via"
 
 test("source_manually_placed_via parses", () => {
   const via = source_manually_placed_via.parse({

@@ -1,11 +1,11 @@
 import type {
-  PcbTraceError,
-  PcbPlacementError,
-  PcbPortNotMatchedError,
   PcbAutoroutingError,
+  PcbComponentOutsideBoardError,
   PcbFootprintOverlapError,
   PcbMissingFootprintError,
-  PcbComponentOutsideBoardError,
+  PcbPlacementError,
+  PcbPortNotMatchedError,
+  PcbTraceError,
 } from "src/pcb"
 import type { SchematicError } from "src/schematic"
 

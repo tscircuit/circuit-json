@@ -1,6 +1,6 @@
-import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const circuit_json_footprint_load_error = z
   .object({

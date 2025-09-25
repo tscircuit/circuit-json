@@ -1,7 +1,7 @@
-import { z } from "zod"
-import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
-import { length, type Length } from "src/units"
+import { type Point, getZodPrefixedIdWithDefault, point } from "src/common"
+import { type Length, length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const pcb_board = z
   .object({

@@ -1,7 +1,7 @@
-import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { frequency, rotation, voltage } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const wave_shape = z.enum(["sinewave", "square", "triangle", "sawtooth"])
 export type WaveShape = z.infer<typeof wave_shape>
@@ -11,9 +11,9 @@ const percentage = z
   .transform((val) => {
     if (typeof val === "string") {
       if (val.endsWith("%")) {
-        return parseFloat(val.slice(0, -1)) / 100
+        return Number.parseFloat(val.slice(0, -1)) / 100
       }
-      return parseFloat(val)
+      return Number.parseFloat(val)
     }
     return val
   })

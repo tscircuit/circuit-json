@@ -1,7 +1,7 @@
-import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
-import { point, type Point } from "src/common"
+import { type Point, point } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const pcb_component_outside_board_error = z
   .object({

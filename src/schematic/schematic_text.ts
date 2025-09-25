@@ -1,10 +1,10 @@
-import { z } from "zod"
-import { distance } from "../units"
-import { expectTypesMatch } from "src/utils/expect-types-match"
-import { ninePointAnchor } from "src/common/NinePointAnchor"
-import type { NinePointAnchor } from "src/common/NinePointAnchor"
 import type { FivePointAnchor } from "src/common/FivePointAnchor"
 import { fivePointAnchor } from "src/common/FivePointAnchor"
+import { ninePointAnchor } from "src/common/NinePointAnchor"
+import type { NinePointAnchor } from "src/common/NinePointAnchor"
+import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
+import { distance } from "../units"
 
 export interface SchematicText {
   type: "schematic_text"

@@ -1,6 +1,6 @@
-import { test, expect } from "bun:test"
-import { pcb_copper_pour } from "../src/pcb/pcb_copper_pour"
+import { expect, test } from "bun:test"
 import { any_circuit_element } from "../src/any_circuit_element"
+import { pcb_copper_pour } from "../src/pcb/pcb_copper_pour"
 
 test("pcb_copper_pour rect parses", () => {
   const pour = pcb_copper_pour.parse({
