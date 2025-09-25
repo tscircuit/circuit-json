@@ -1,4 +1,4 @@
-import { test, expect } from "bun:test"
+import { expect, test } from "bun:test"
 import { schematic_table_cell } from "../src/schematic/schematic_table_cell"
 
 test("schematic_table_cell parse", () => {

@@ -1,7 +1,7 @@
-import { z } from "zod"
-import { point, type Point } from "../common"
-import { distance } from "../units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
+import { type Point, point } from "../common"
+import { distance } from "../units"
 
 export const pcb_keepout = z
   .object({

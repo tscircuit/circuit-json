@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { pcb_smtpad, type PcbSmtPadPolygon } from "../src/pcb/pcb_smtpad"
+import { type PcbSmtPadPolygon, pcb_smtpad } from "../src/pcb/pcb_smtpad"
 
 test("parse polygon smt pad", () => {
   const pad = pcb_smtpad.parse({

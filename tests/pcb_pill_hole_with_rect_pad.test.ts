@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test"
 import {
-  pcb_plated_hole,
   type PcbHolePillWithRectPad,
+  pcb_plated_hole,
 } from "../src/pcb/pcb_plated_hole"
 
 test("parse pill hole with rect pad defaults hole offset to 0", () => {

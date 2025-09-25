@@ -1,4 +1,4 @@
-import { test, expect } from "bun:test"
+import { expect, test } from "bun:test"
 import { source_net } from "../src/source/source_net"
 
 test("source_net.is_positive_voltage_source defaults to undefined", () => {

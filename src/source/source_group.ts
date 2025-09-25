@@ -1,5 +1,5 @@
-import { z } from "zod"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const source_group = z.object({
   type: z.literal("source_group"),

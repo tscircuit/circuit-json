@@ -1,6 +1,6 @@
-import { z } from "zod"
-import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
+import { type Point, getZodPrefixedIdWithDefault, point } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const pcb_trace_missing_error = z
   .object({

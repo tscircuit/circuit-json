@@ -1,6 +1,6 @@
+import { expectTypesMatch } from "src/utils/expect-types-match"
 import { z } from "zod"
 import { distance } from "../units"
-import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export interface SchematicTraceEdge {
   from: {

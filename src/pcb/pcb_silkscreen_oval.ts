@@ -1,13 +1,13 @@
-import { z } from "zod"
-import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
+import { type Point, getZodPrefixedIdWithDefault, point } from "src/common"
 import {
-  layer_ref,
   type LayerRef,
-  visible_layer,
   type VisibleLayer,
+  layer_ref,
+  visible_layer,
 } from "src/pcb/properties/layer_ref"
-import { distance, type Distance } from "src/units"
+import { type Distance, distance } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const pcb_silkscreen_oval = z
   .object({
