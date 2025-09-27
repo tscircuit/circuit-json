@@ -23,11 +23,15 @@ export interface PcbComponent {
   type: "pcb_component"
   pcb_component_id: string
   source_component_id: string
+  subcircuit_id?: string
   center: Point
   layer: LayerRef
   rotation: Rotation
   width: Length
   height: Length
+  do_not_place?: boolean
+  pcb_group_id?: string
+  obstructs_within_bounds: boolean
 }
 
 export interface PcbPortNotMatchedError {

@@ -826,6 +826,7 @@ interface PcbComponent {
   height: Length
   do_not_place?: boolean
   pcb_group_id?: string
+  obstructs_within_bounds: boolean
 }
 ```
 
