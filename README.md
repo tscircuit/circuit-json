@@ -2,7 +2,7 @@
 
 Circuit JSON a low-level JSON-array circuit representation. It contains all the information needed to visually represent a schematic, PCB, produce Gerber files, produce bill of materials, run SPICE simulations, view warnings and more. It is designed to easily interoperate with a SQL database.
 
-[tscircuit](https://github.com/tscircuit/tscircuit) · [discord](https://tscircuit.com/join) · [online circuit json viewer](https://circuitjson.com/) · [example.json](https://github.com/tscircuit/circuitjson.com/blob/main/assets/usb-c-flashlight.json)
+[tscircuit](https://github.com/tscircuit/tscircuit) · [discord](https://tscircuit.com/join) · [online circuit json viewer](https://circuitjson.com/) · [example.json](https://github.com/tscircuit/circuitjson.com/blob/main/assets/usb-c-flashlight.json) · [Introduction to Circuit JSON Video](https://www.youtube.com/watch?v=QMWobH5tmqo)
 
 [![npm version](https://badge.fury.io/js/circuit-json.svg)](https://badge.fury.io/js/circuit-json)
 
