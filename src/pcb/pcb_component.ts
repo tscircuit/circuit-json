@@ -17,6 +17,12 @@ export const pcb_component = z
     do_not_place: z.boolean().optional(),
     subcircuit_id: z.string().optional(),
     pcb_group_id: z.string().optional(),
+    obstructs_within_bounds: z
+      .boolean()
+      .default(true)
+      .describe(
+        "Does this component take up all the space within its bounds on a layer. This is generally true except for when separated pin headers are being represented by a single component (in which case, chips can be placed between the pin headers) or for tall modules where chips fit underneath",
+      ),
   })
   .describe("Defines a component on the PCB")
 
@@ -38,6 +44,7 @@ export interface PcbComponent {
   height: Length
   do_not_place?: boolean
   pcb_group_id?: string
+  obstructs_within_bounds: boolean
 }
 
 /**
