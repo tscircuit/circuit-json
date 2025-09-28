@@ -139,6 +139,8 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicTrace](#schematictrace)
     - [SchematicVoltageProbe](#schematicvoltageprobe)
   - [Simulation Elements](#simulation-elements)
+    - [SimulationExperiment](#simulationexperiment)
+    - [SimulationTransientVoltageGraph](#simulationtransientvoltagegraph)
     - [SimulationVoltageSource](#simulationvoltagesource)
 
 <!-- toc:end -->
@@ -2077,6 +2079,39 @@ interface SchematicVoltageProbe {
 ```
 
 ## Simulation Elements
+
+### SimulationExperiment
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_experiment.ts)
+
+```typescript
+interface SimulationExperiment {
+  type: "simulation_experiment"
+  simulation_experiment_id: string
+  name: string
+  experiment_type: ExperimentType
+}
+```
+
+### SimulationTransientVoltageGraph
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_transient_voltage_graph.ts)
+
+```typescript
+interface SimulationTransientVoltageGraph {
+  type: "simulation_transient_voltage_graph"
+  simulation_transient_voltage_graph_id: string
+  simulation_experiment_id: string
+  timestamps_ms?: number[]
+  voltage_levels: number[]
+  schematic_voltage_probe_id?: string
+  subcircuit_connecivity_map_key?: string
+  time_per_step: number
+  start_time_ms: number
+  end_time_ms: number
+  name?: string
+}
+```
 
 ### SimulationVoltageSource
 
