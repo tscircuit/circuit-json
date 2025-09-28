@@ -5,6 +5,7 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 export interface SimulationTransientVoltageGraph {
   type: "simulation_transient_voltage_graph"
   simulation_transient_voltage_graph_id: string
+  simulation_experiment_id: string
   timestamps_ms?: number[]
   voltage_levels: number[]
   schematic_voltage_probe_id?: string
@@ -21,6 +22,7 @@ export const simulation_transient_voltage_graph = z
     simulation_transient_voltage_graph_id: getZodPrefixedIdWithDefault(
       "simulation_transient_voltage_graph",
     ),
+    simulation_experiment_id: z.string(),
     timestamps_ms: z.array(z.number()).optional(),
     voltage_levels: z.array(z.number()),
     schematic_voltage_probe_id: z.string().optional(),

@@ -20,6 +20,7 @@ test("simulation_experiment requires valid experiment_type", () => {
 test("simulation_transient_voltage_graph parses required data", () => {
   const graph = simulation_transient_voltage_graph.parse({
     type: "simulation_transient_voltage_graph",
+    simulation_experiment_id: "simulation_experiment_123",
     voltage_levels: [0, 1, 0.5],
     time_per_step: 0.1,
     start_time_ms: 0,
@@ -28,6 +29,7 @@ test("simulation_transient_voltage_graph parses required data", () => {
   })
 
   expect(graph.simulation_transient_voltage_graph_id).toBeString()
+  expect(graph.simulation_experiment_id).toBe("simulation_experiment_123")
   expect(graph.voltage_levels).toEqual([0, 1, 0.5])
   expect(graph.timestamps_ms).toBeUndefined()
 })
