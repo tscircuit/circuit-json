@@ -118,6 +118,8 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbTraceHint](#pcbtracehint)
     - [PcbTraceMissingError](#pcbtracemissingerror)
     - [PcbVia](#pcbvia)
+  - [CAD Elements](#cad-elements)
+    - [CadComponent](#cadcomponent)
   - [Schematic Elements](#schematic-elements)
     - [SchematicArc](#schematicarc)
     - [SchematicBox](#schematicbox)
@@ -1632,6 +1634,44 @@ interface PcbVia {
   pcb_trace_id?: string
 }
 ```
+
+## CAD Elements
+
+### CadComponent
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_component.ts)
+
+Represents the 3D CAD metadata that links a `pcb_component` to downloadable models or
+procedurally generated geometry.
+
+```typescript
+/** Represents the 3D CAD metadata tied to a PCB component */
+interface CadComponent {
+  type: "cad_component"
+  cad_component_id: string
+  pcb_component_id: string
+  source_component_id: string
+  position: Point3
+  rotation?: Point3
+  size?: Point3
+  layer?: LayerRef
+  subcircuit_id?: string
+  footprinter_string?: string
+  model_obj_url?: string
+  model_stl_url?: string
+  model_3mf_url?: string
+  model_gltf_url?: string
+  model_glb_url?: string
+  model_step_url?: string
+  model_wrl_url?: string
+  model_unit_to_mm_scale_factor?: number
+  model_jscad?: any
+}
+```
+
+Use `model_unit_to_mm_scale_factor` to describe how to scale imported CAD files whose
+native units are not millimeters. For example, if the uploaded model was designed in
+inches you could set this factor to `25.4` to convert inches to millimeters.
 
 ## Schematic Elements
 
