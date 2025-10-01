@@ -39,9 +39,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
 ## Table of Contents
 
 <!-- toc:start -->
-
 - [Circuit JSON Specification `circuit-json`](#circuit-json-specification-circuit-json)
-
   - [Things You Can Do With Circuit JSON](#things-you-can-do-with-circuit-json)
   - [Typescript Usage](#typescript-usage)
 
@@ -79,6 +77,8 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceSimpleTransistor](#sourcesimpletransistor)
     - [SourceTrace](#sourcetrace)
     - [SourceTraceNotConnectedError](#sourcetracenotconnectederror)
+  - [CAD Components](#cad-components)
+    - [CadComponent](#cadcomponent)
   - [PCB Elements](#pcb-elements)
     - [PcbAutoroutingError](#pcbautoroutingerror)
     - [PcbBoard](#pcbboard)
@@ -214,7 +214,6 @@ There are 3 main element prefixes:
 - `schematic_` - e.g. `schematic_component`. Anything required to render the Schematic
 
 <!-- circuit-json-docs:start -->
-
 ## Source Components
 
 ### SourceComponentBase
@@ -253,13 +252,13 @@ interface SourceFailedToCreateComponentError {
   subcircuit_id?: string
   parent_source_component_id?: string
   pcb_center?: {
-    x?: number
-    y?: number
-  }
+  x?: number
+  y?: number
+}
   schematic_center?: {
-    x?: number
-    y?: number
-  }
+  x?: number
+  y?: number
+}
 }
 ```
 
@@ -748,6 +747,36 @@ interface SourceTraceNotConnectedError {
 }
 ```
 
+## CAD Components
+
+### CadComponent
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_component.ts)
+
+```typescript
+interface CadComponent {
+  type: "cad_component"
+  cad_component_id: string
+  pcb_component_id: string
+  source_component_id: string
+  position: Point3
+  rotation?: Point3
+  size?: Point3
+  layer?: LayerRef
+  subcircuit_id?: string
+  footprinter_string?: string
+  model_obj_url?: string
+  model_stl_url?: string
+  model_3mf_url?: string
+  model_gltf_url?: string
+  model_glb_url?: string
+  model_step_url?: string
+  model_wrl_url?: string
+  model_unit_to_mm_scale_factor?: number
+  model_jscad?: any
+}
+```
+
 ## PCB Elements
 
 ### PcbAutoroutingError
@@ -839,7 +868,8 @@ interface PcbComponent {
 Error emitted when a PCB component is placed outside the board boundaries
 
 ```typescript
-/** Error emitted when a PCB component is placed outside the board boundaries */ interface PcbComponentOutsideBoardError {
+/** Error emitted when a PCB component is placed outside the board boundaries */
+interface PcbComponentOutsideBoardError {
   type: "pcb_component_outside_board_error"
   pcb_component_outside_board_error_id: string
   error_type: "pcb_component_outside_board_error"
@@ -848,11 +878,11 @@ Error emitted when a PCB component is placed outside the board boundaries
   pcb_board_id: string
   component_center: Point
   component_bounds: {
-    min_x: number
-    max_x: number
-    min_y: number
-    max_y: number
-  }
+  min_x: number
+  max_x: number
+  min_y: number
+  max_y: number
+}
   subcircuit_id?: string
   source_component_id?: string
 }
@@ -941,12 +971,11 @@ interface PcbFabricationNoteText {
   text: string
   layer: VisibleLayer
   anchor_position: Point
-  anchor_alignment:
-    | "center"
-    | "top_left"
-    | "top_right"
-    | "bottom_left"
-    | "bottom_right"
+  anchor_alignment: | "center"
+  | "top_left"
+  | "top_right"
+  | "bottom_left"
+  | "bottom_right"
   color?: string
 }
 ```
@@ -958,7 +987,8 @@ interface PcbFabricationNoteText {
 Error emitted when a pcb footprint overlaps with another element
 
 ```typescript
-/** Error emitted when a pcb footprint overlaps with another element */ interface PcbFootprintOverlapError {
+/** Error emitted when a pcb footprint overlaps with another element */
+interface PcbFootprintOverlapError {
   type: "pcb_footprint_overlap_error"
   pcb_error_id: string
   error_type: "pcb_footprint_overlap_error"
@@ -1029,8 +1059,8 @@ interface PcbGroup {
   description?: string
   layout_mode?: string
   autorouter_configuration?: {
-    trace_clearance: Length
-  }
+  trace_clearance: Length
+}
   autorouter_used_string?: string
 }
 ```
@@ -1446,11 +1476,11 @@ interface PcbSilkscreenText {
   text: string
   is_knockout?: boolean
   knockout_padding?: {
-    left: Length
-    top: Length
-    bottom: Length
-    right: Length
-  }
+  left: Length
+  top: Length
+  bottom: Length
+  right: Length
+}
   ccw_rotation?: number
   layer: LayerRef
   is_mirrored?: boolean
@@ -1642,7 +1672,8 @@ interface PcbVia {
 Draws a styled arc on the schematic
 
 ```typescript
-/** Draws a styled arc on the schematic */ interface SchematicArc {
+/** Draws a styled arc on the schematic */
+interface SchematicArc {
   type: "schematic_arc"
   schematic_arc_id: string
   schematic_component_id: string
@@ -1682,7 +1713,8 @@ interface SchematicBox {
 Draws a styled circle on the schematic
 
 ```typescript
-/** Draws a styled circle on the schematic */ interface SchematicCircle {
+/** Draws a styled circle on the schematic */
+interface SchematicCircle {
   type: "schematic_circle"
   schematic_circle_id: string
   schematic_component_id: string
@@ -1710,13 +1742,13 @@ interface SchematicComponent {
   schematic_component_id: string
   pin_spacing?: number
   pin_styles?: Record<
-    string,
-    {
-      left_margin?: number
-      right_margin?: number
-      top_margin?: number
-      bottom_margin?: number
-    }
+  string,
+  {
+  left_margin?: number
+  right_margin?: number
+  top_margin?: number
+  bottom_margin?: number
+}
   >
   box_width?: number
   symbol_name?: string
@@ -1742,9 +1774,9 @@ interface SchematicPortArrangementBySides {
   right_side?: { pins: number[]; direction?: "top-to-bottom" | "bottom-to-top" }
   top_side?: { pins: number[]; direction?: "left-to-right" | "right-to-left" }
   bottom_side?: {
-    pins: number[]
-    direction?: "left-to-right" | "right-to-left"
-  }
+  pins: number[]
+  direction?: "left-to-right" | "right-to-left"
+}
 }
 
 type SchematicPortArrangement =
@@ -1850,7 +1882,8 @@ interface SchematicLayoutError {
 Draws a styled line on the schematic
 
 ```typescript
-/** Draws a styled line on the schematic */ interface SchematicLine {
+/** Draws a styled line on the schematic */
+interface SchematicLine {
   type: "schematic_line"
   schematic_line_id: string
   schematic_component_id: string
@@ -1902,8 +1935,8 @@ interface SchematicNetLabel {
   text: string
   symbol_name?: string | undefined
   /** When true the net label can be repositioned. When false the label's
-   * position is fixed by the element it is attached to. */
-
+  * position is fixed by the element it is attached to. */
+  
   is_movable?: boolean
   subcircuit_id?: string
 }
@@ -1955,7 +1988,8 @@ interface SchematicPort {
 Draws a styled rectangle on the schematic
 
 ```typescript
-/** Draws a styled rectangle on the schematic */ interface SchematicRect {
+/** Draws a styled rectangle on the schematic */
+interface SchematicRect {
   type: "schematic_rect"
   schematic_rect_id: string
   schematic_component_id: string
@@ -2033,9 +2067,9 @@ interface SchematicText {
   text: string
   font_size: number
   position: {
-    x: number
-    y: number
-  }
+  x: number
+  y: number
+}
   rotation: number
   anchor: NinePointAnchor | FivePointAnchor
   color: string
@@ -2050,13 +2084,13 @@ interface SchematicText {
 ```typescript
 interface SchematicTraceEdge {
   from: {
-    x: number
-    y: number
-  }
+  x: number
+  y: number
+}
   to: {
-    x: number
-    y: number
-  }
+  x: number
+  y: number
+}
   is_crossing?: boolean
   from_schematic_port_id?: string
   to_schematic_port_id?: string
