@@ -1,12 +1,12 @@
-import { z } from "zod"
-import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
-import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
-import { distance, length, type Length } from "src/units"
-import { expectTypesMatch } from "src/utils/expect-types-match"
+import { type Point, getZodPrefixedIdWithDefault, point } from "src/common"
 import {
-  ninePointAnchor,
   type NinePointAnchor,
+  ninePointAnchor,
 } from "src/common/NinePointAnchor"
+import { type LayerRef, layer_ref } from "src/pcb/properties/layer_ref"
+import { type Length, distance, length } from "src/units"
+import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const pcb_silkscreen_text = z
   .object({
@@ -33,6 +33,9 @@ export const pcb_silkscreen_text = z
         right: "0.2mm",
       })
       .optional(),
+    knockout_corner_radius: length.optional(),
+    knockout_border_width: length.optional(),
+    knockout_color: z.string().optional(),
     ccw_rotation: z.number().optional(),
     layer: layer_ref,
     is_mirrored: z.boolean().default(false).optional(),
@@ -63,6 +66,9 @@ export interface PcbSilkscreenText {
     bottom: Length
     right: Length
   }
+  knockout_corner_radius?: Length
+  knockout_border_width?: Length
+  knockout_color?: string
   ccw_rotation?: number
   layer: LayerRef
   is_mirrored?: boolean

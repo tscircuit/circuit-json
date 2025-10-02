@@ -1,7 +1,7 @@
-import { z } from "zod"
-import { distance, type Distance } from "src/units"
 import { getZodPrefixedIdWithDefault } from "src/common"
+import { type Distance, distance } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const pcb_thermal_spoke = z
   .object({

@@ -1,4 +1,4 @@
-import { test, expect } from "bun:test"
+import { expect, test } from "bun:test"
 import { schematic_trace } from "../src/schematic/schematic_trace"
 
 test("schematic_trace.source_trace_id is optional", () => {

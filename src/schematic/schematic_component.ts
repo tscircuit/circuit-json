@@ -1,8 +1,8 @@
-import { z } from "zod"
-import { point, type Point } from "../common/point"
-import { size, type Size } from "../common/size"
-import { length } from "../units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
+import { type Point, point } from "../common/point"
+import { type Size, size } from "../common/size"
+import { length } from "../units"
 
 export const schematic_pin_styles = z.record(
   z.object({

@@ -1,9 +1,9 @@
-import { test, expect } from "bun:test"
+import { expect, test } from "bun:test"
 import {
-  simulation_voltage_source,
   type SimulationAcVoltageSource,
   type SimulationAcVoltageSourceInput,
   type SimulationDcVoltageSource,
+  simulation_voltage_source,
 } from "../src/simulation/simulation_voltage_source"
 
 test("simulation_voltage_source DC parse with string voltage", () => {

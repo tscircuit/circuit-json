@@ -1,7 +1,7 @@
-import { z } from "zod"
-import { point, type Point } from "../common/point"
-import { expectTypesMatch } from "src/utils/expect-types-match"
 import { getZodPrefixedIdWithDefault } from "src/common"
+import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
+import { type Point, point } from "../common/point"
 
 export interface SchematicNetLabel {
   type: "schematic_net_label"

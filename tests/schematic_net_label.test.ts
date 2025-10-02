@@ -1,4 +1,4 @@
-import { test, expect } from "bun:test"
+import { expect, test } from "bun:test"
 import { schematic_net_label } from "../src/schematic/schematic_net_label"
 
 test("schematic_net_label.is_movable defaults to undefined", () => {

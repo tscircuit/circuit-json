@@ -1,6 +1,6 @@
-import { test, expect } from "bun:test"
-import { source_simple_pinout } from "../src/source/source_simple_pinout"
+import { expect, test } from "bun:test"
 import { any_circuit_element } from "../src/any_circuit_element"
+import { source_simple_pinout } from "../src/source/source_simple_pinout"
 
 test("source_simple_pinout parses", () => {
   const pinout = source_simple_pinout.parse({

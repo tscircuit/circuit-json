@@ -1,6 +1,6 @@
-import { test, expect } from "bun:test"
-import { pcb_trace_missing_error } from "../src/pcb/pcb_trace_missing_error"
+import { expect, test } from "bun:test"
 import { any_circuit_element } from "../src/any_circuit_element"
+import { pcb_trace_missing_error } from "../src/pcb/pcb_trace_missing_error"
 
 test("pcb_trace_missing_error parses", () => {
   const error = pcb_trace_missing_error.parse({

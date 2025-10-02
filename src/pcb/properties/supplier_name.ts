@@ -1,5 +1,5 @@
-import { z } from "zod"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const supplier_name = z.enum([
   "jlcpcb",

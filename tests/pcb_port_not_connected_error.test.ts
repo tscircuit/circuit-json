@@ -1,6 +1,6 @@
-import { test, expect } from "bun:test"
-import { pcb_port_not_connected_error } from "../src/pcb/pcb_port_not_connected_error"
+import { expect, test } from "bun:test"
 import { any_circuit_element } from "../src/any_circuit_element"
+import { pcb_port_not_connected_error } from "../src/pcb/pcb_port_not_connected_error"
 
 test("pcb_port_not_connected_error parses", () => {
   const error = pcb_port_not_connected_error.parse({

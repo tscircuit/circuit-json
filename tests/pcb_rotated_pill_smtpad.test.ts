@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { pcb_smtpad, type PcbSmtPadRotatedPill } from "../src/pcb/pcb_smtpad"
+import { type PcbSmtPadRotatedPill, pcb_smtpad } from "../src/pcb/pcb_smtpad"
 
 test("parse rotated pill smt pad", () => {
   const pad = pcb_smtpad.parse({

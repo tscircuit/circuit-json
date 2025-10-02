@@ -1,8 +1,8 @@
-import { z } from "zod"
-import { point3, type Point3 } from "../common"
-import { rotation, length, type Rotation, type Length } from "../units"
-import { layer_ref, type LayerRef } from "src/pcb"
+import { type LayerRef, layer_ref } from "src/pcb"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
+import { type Point3, point3 } from "../common"
+import { type Length, type Rotation, length, rotation } from "../units"
 
 export const cad_component = z
   .object({

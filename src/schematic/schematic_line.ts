@@ -1,7 +1,7 @@
-import { z } from "zod"
-import { distance } from "../units"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
+import { distance } from "../units"
 
 /** Draws a styled line on the schematic */
 export interface SchematicLine {

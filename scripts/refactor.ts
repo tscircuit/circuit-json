@@ -1,7 +1,7 @@
+import fs from "node:fs"
 import Anthropic from "@anthropic-ai/sdk"
 // @ts-ignore
 import refactorTemplate from "./refactor-template.md" with { type: "text" }
-import fs from "node:fs"
 
 const anthropic = new Anthropic()
 
