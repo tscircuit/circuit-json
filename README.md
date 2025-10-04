@@ -39,7 +39,9 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
 ## Table of Contents
 
 <!-- toc:start -->
+
 - [Circuit JSON Specification `circuit-json`](#circuit-json-specification-circuit-json)
+
   - [Things You Can Do With Circuit JSON](#things-you-can-do-with-circuit-json)
   - [Typescript Usage](#typescript-usage)
 
@@ -138,11 +140,11 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicText](#schematictext)
     - [SchematicTrace](#schematictrace)
     - [SchematicVoltageProbe](#schematicvoltageprobe)
-- [Simulation Elements](#simulation-elements)
-  - [SimulationExperiment](#simulationexperiment)
-  - [SimulationTransientVoltageGraph](#simulationtransientvoltagegraph)
-  - [SimulationVoltageSource](#simulationvoltagesource)
-  - [SimulationSwitch](#simulationswitch)
+  - [Simulation Elements](#simulation-elements)
+    - [SimulationExperiment](#simulationexperiment)
+    - [SimulationSwitch](#simulationswitch)
+    - [SimulationTransientVoltageGraph](#simulationtransientvoltagegraph)
+    - [SimulationVoltageSource](#simulationvoltagesource)
 
 <!-- toc:end -->
 
@@ -215,6 +217,7 @@ There are 3 main element prefixes:
 - `schematic_` - e.g. `schematic_component`. Anything required to render the Schematic
 
 <!-- circuit-json-docs:start -->
+
 ## Source Components
 
 ### SourceComponentBase
@@ -253,13 +256,13 @@ interface SourceFailedToCreateComponentError {
   subcircuit_id?: string
   parent_source_component_id?: string
   pcb_center?: {
-  x?: number
-  y?: number
-}
+    x?: number
+    y?: number
+  }
   schematic_center?: {
-  x?: number
-  y?: number
-}
+    x?: number
+    y?: number
+  }
 }
 ```
 
@@ -879,11 +882,11 @@ interface PcbComponentOutsideBoardError {
   pcb_board_id: string
   component_center: Point
   component_bounds: {
-  min_x: number
-  max_x: number
-  min_y: number
-  max_y: number
-}
+    min_x: number
+    max_x: number
+    min_y: number
+    max_y: number
+  }
   subcircuit_id?: string
   source_component_id?: string
 }
@@ -972,11 +975,12 @@ interface PcbFabricationNoteText {
   text: string
   layer: VisibleLayer
   anchor_position: Point
-  anchor_alignment: | "center"
-  | "top_left"
-  | "top_right"
-  | "bottom_left"
-  | "bottom_right"
+  anchor_alignment:
+    | "center"
+    | "top_left"
+    | "top_right"
+    | "bottom_left"
+    | "bottom_right"
   color?: string
 }
 ```
@@ -1060,8 +1064,8 @@ interface PcbGroup {
   description?: string
   layout_mode?: string
   autorouter_configuration?: {
-  trace_clearance: Length
-}
+    trace_clearance: Length
+  }
   autorouter_used_string?: string
 }
 ```
@@ -1477,11 +1481,11 @@ interface PcbSilkscreenText {
   text: string
   is_knockout?: boolean
   knockout_padding?: {
-  left: Length
-  top: Length
-  bottom: Length
-  right: Length
-}
+    left: Length
+    top: Length
+    bottom: Length
+    right: Length
+  }
   ccw_rotation?: number
   layer: LayerRef
   is_mirrored?: boolean
@@ -1743,13 +1747,13 @@ interface SchematicComponent {
   schematic_component_id: string
   pin_spacing?: number
   pin_styles?: Record<
-  string,
-  {
-  left_margin?: number
-  right_margin?: number
-  top_margin?: number
-  bottom_margin?: number
-}
+    string,
+    {
+      left_margin?: number
+      right_margin?: number
+      top_margin?: number
+      bottom_margin?: number
+    }
   >
   box_width?: number
   symbol_name?: string
@@ -1775,9 +1779,9 @@ interface SchematicPortArrangementBySides {
   right_side?: { pins: number[]; direction?: "top-to-bottom" | "bottom-to-top" }
   top_side?: { pins: number[]; direction?: "left-to-right" | "right-to-left" }
   bottom_side?: {
-  pins: number[]
-  direction?: "left-to-right" | "right-to-left"
-}
+    pins: number[]
+    direction?: "left-to-right" | "right-to-left"
+  }
 }
 
 type SchematicPortArrangement =
@@ -1936,8 +1940,8 @@ interface SchematicNetLabel {
   text: string
   symbol_name?: string | undefined
   /** When true the net label can be repositioned. When false the label's
-  * position is fixed by the element it is attached to. */
-  
+   * position is fixed by the element it is attached to. */
+
   is_movable?: boolean
   subcircuit_id?: string
 }
@@ -2068,9 +2072,9 @@ interface SchematicText {
   text: string
   font_size: number
   position: {
-  x: number
-  y: number
-}
+    x: number
+    y: number
+  }
   rotation: number
   anchor: NinePointAnchor | FivePointAnchor
   color: string
@@ -2085,13 +2089,13 @@ interface SchematicText {
 ```typescript
 interface SchematicTraceEdge {
   from: {
-  x: number
-  y: number
-}
+    x: number
+    y: number
+  }
   to: {
-  x: number
-  y: number
-}
+    x: number
+    y: number
+  }
   is_crossing?: boolean
   from_schematic_port_id?: string
   to_schematic_port_id?: string
@@ -2125,6 +2129,21 @@ interface SimulationExperiment {
   simulation_experiment_id: string
   name: string
   experiment_type: ExperimentType
+}
+```
+
+### SimulationSwitch
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_switch.ts)
+
+```typescript
+interface SimulationSwitch {
+  type: "simulation_switch"
+  simulation_switch_id: string
+  closes_at?: number
+  opens_at?: number
+  starts_closed?: boolean
+  switching_frequency?: number
 }
 ```
 
@@ -2185,21 +2204,6 @@ interface SimulationAcVoltageSource {
   wave_shape?: WaveShape
   phase?: number
   duty_cycle?: number
-}
-```
-
-### SimulationSwitch
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_switch.ts)
-
-```typescript
-interface SimulationSwitch {
-  type: "simulation_switch"
-  simulation_switch_id: string
-  closes_at?: number
-  opens_at?: number
-  starts_closed?: boolean
-  switching_frequency?: number
 }
 ```
 
