@@ -138,10 +138,11 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicText](#schematictext)
     - [SchematicTrace](#schematictrace)
     - [SchematicVoltageProbe](#schematicvoltageprobe)
-  - [Simulation Elements](#simulation-elements)
-    - [SimulationExperiment](#simulationexperiment)
-    - [SimulationTransientVoltageGraph](#simulationtransientvoltagegraph)
-    - [SimulationVoltageSource](#simulationvoltagesource)
+- [Simulation Elements](#simulation-elements)
+  - [SimulationExperiment](#simulationexperiment)
+  - [SimulationTransientVoltageGraph](#simulationtransientvoltagegraph)
+  - [SimulationVoltageSource](#simulationvoltagesource)
+  - [SimulationSwitch](#simulationswitch)
 
 <!-- toc:end -->
 
@@ -2184,6 +2185,21 @@ interface SimulationAcVoltageSource {
   wave_shape?: WaveShape
   phase?: number
   duty_cycle?: number
+}
+```
+
+### SimulationSwitch
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_switch.ts)
+
+```typescript
+interface SimulationSwitch {
+  type: "simulation_switch"
+  simulation_switch_id: string
+  closes_at?: number
+  opens_at?: number
+  starts_closed?: boolean
+  switching_frequency?: number
 }
 ```
 
