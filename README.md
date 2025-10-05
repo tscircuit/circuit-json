@@ -120,6 +120,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbTraceHint](#pcbtracehint)
     - [PcbTraceMissingError](#pcbtracemissingerror)
     - [PcbVia](#pcbvia)
+    - [PcbViaClearanceError](#pcbviaclearanceerror)
   - [Schematic Elements](#schematic-elements)
     - [SchematicArc](#schematicarc)
     - [SchematicBox](#schematicbox)
@@ -1298,30 +1299,6 @@ interface PcbPortNotConnectedError {
 }
 ```
 
-### PcbViaClearanceError
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_via_clearance_error.ts)
-
-Defines an error when vias violate the configured clearance
-
-```typescript
-/** Error emitted when vias are closer than the allowed clearance */
-interface PcbViaClearanceError {
-  type: "pcb_via_clearance_error"
-  pcb_error_id: string
-  error_type: "pcb_via_clearance_error"
-  message: string
-  pcb_via_ids: string[]
-  minimum_clearance?: Distance
-  actual_clearance?: Distance
-  pcb_center?: {
-    x?: number
-    y?: number
-  }
-  subcircuit_id?: string
-}
-```
-
 ### PcbPortNotMatchedError
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_port_not_matched_error.ts)
@@ -1689,6 +1666,30 @@ interface PcbVia {
   to_layer?: LayerRef
   layers: LayerRef[]
   pcb_trace_id?: string
+}
+```
+
+### PcbViaClearanceError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_via_clearance_error.ts)
+
+Error emitted when vias are closer than the allowed clearance
+
+```typescript
+/** Error emitted when vias are closer than the allowed clearance */
+interface PcbViaClearanceError {
+  type: "pcb_via_clearance_error"
+  pcb_error_id: string
+  error_type: "pcb_via_clearance_error"
+  message: string
+  pcb_via_ids: string[]
+  minimum_clearance?: Distance
+  actual_clearance?: Distance
+  pcb_center?: {
+    x?: number
+    y?: number
+  }
+  subcircuit_id?: string
 }
 ```
 
