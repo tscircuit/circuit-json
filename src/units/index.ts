@@ -104,6 +104,8 @@ export const duration = z
   .or(z.number())
   .transform((v) => parseAndConvertSiUnit(v).value!)
 
+export const time = duration
+
 export const timestamp = z
   .string()
   .or(z.number())
