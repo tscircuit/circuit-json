@@ -70,6 +70,7 @@ export const any_circuit_element = z.union([
   pcb.pcb_placement_error,
   pcb.pcb_port_not_matched_error,
   pcb.pcb_port_not_connected_error,
+  pcb.pcb_via_clearance_error,
   pcb.pcb_fabrication_note_path,
   pcb.pcb_fabrication_note_text,
   pcb.pcb_autorouting_error,
@@ -156,6 +157,7 @@ expectStringUnionsMatch<
   | "pcb_port_not_matched_error DOES NOT HAVE AN pcb_port_not_matched_error_id PROPERTY"
   | "pcb_autorouting_error DOES NOT HAVE AN pcb_autorouting_error_id PROPERTY"
   | "pcb_footprint_overlap_error DOES NOT HAVE AN pcb_footprint_overlap_error_id PROPERTY"
+  | "pcb_via_clearance_error DOES NOT HAVE AN pcb_via_clearance_error_id PROPERTY"
   | "schematic_debug_object DOES NOT HAVE AN schematic_debug_object_id PROPERTY"
   | "schematic_box DOES NOT HAVE AN schematic_box_id PROPERTY"
   | "schematic_path DOES NOT HAVE AN schematic_path_id PROPERTY"

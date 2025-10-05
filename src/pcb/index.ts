@@ -44,6 +44,7 @@ export * from "./pcb_ground_plane_region"
 export * from "./pcb_thermal_spoke"
 export * from "./pcb_copper_pour"
 export * from "./pcb_component_outside_board_error"
+export * from "./pcb_via_clearance_error"
 
 import type { PcbComponent } from "./pcb_component"
 import type { PcbHole } from "./pcb_hole"
@@ -80,6 +81,7 @@ import type { PcbThermalSpoke } from "./pcb_thermal_spoke"
 import type { PcbCopperPour } from "./pcb_copper_pour"
 import type { PcbComponentOutsideBoardError } from "./pcb_component_outside_board_error"
 import type { CircuitJsonFootprintLoadError } from "./circuit_json_footprint_load_error"
+import type { PcbViaClearanceError } from "./pcb_via_clearance_error"
 
 export type PcbCircuitElement =
   | PcbComponent
@@ -117,3 +119,4 @@ export type PcbCircuitElement =
   | PcbThermalSpoke
   | PcbCopperPour
   | PcbComponentOutsideBoardError
+  | PcbViaClearanceError
