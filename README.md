@@ -185,7 +185,8 @@ The default units when reading a number are defined as follows:
 | Measurement Type | Base Unit | Description  |
 | ---------------- | --------- | ------------ |
 | Length           | mm        | Millimeters  |
-| Time             | ms        | Milliseconds |
+| Duration         | ms        | Milliseconds |
+| Timestamp        | ms        | Milliseconds |
 | Mass             | g         | Grams        |
 | Angle            | deg       | Degrees      |
 | Frequency        | Hz        | Hertz        |
@@ -2181,13 +2182,13 @@ interface SimulationTransientVoltageGraph {
   type: "simulation_transient_voltage_graph"
   simulation_transient_voltage_graph_id: string
   simulation_experiment_id: string
-  timestamps_ms?: number[]
+  timestamps?: number[]
   voltage_levels: number[]
   schematic_voltage_probe_id?: string
   subcircuit_connecivity_map_key?: string
   time_per_step: number
-  start_time_ms: number
-  end_time_ms: number
+  start_timestamp: number
+  end_timestamp: number
   name?: string
 }
 ```

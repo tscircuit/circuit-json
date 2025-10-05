@@ -1,18 +1,19 @@
 import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
+import { duration, timestamp } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export interface SimulationTransientVoltageGraph {
   type: "simulation_transient_voltage_graph"
   simulation_transient_voltage_graph_id: string
   simulation_experiment_id: string
-  timestamps_ms?: number[]
+  timestamps?: number[]
   voltage_levels: number[]
   schematic_voltage_probe_id?: string
   subcircuit_connecivity_map_key?: string
   time_per_step: number
-  start_time_ms: number
-  end_time_ms: number
+  start_timestamp: number
+  end_timestamp: number
   name?: string
 }
 
@@ -23,13 +24,13 @@ export const simulation_transient_voltage_graph = z
       "simulation_transient_voltage_graph",
     ),
     simulation_experiment_id: z.string(),
-    timestamps_ms: z.array(z.number()).optional(),
+    timestamps: z.array(timestamp).optional(),
     voltage_levels: z.array(z.number()),
     schematic_voltage_probe_id: z.string().optional(),
     subcircuit_connecivity_map_key: z.string().optional(),
-    time_per_step: z.number(),
-    start_time_ms: z.number(),
-    end_time_ms: z.number(),
+    time_per_step: duration,
+    start_timestamp: timestamp,
+    end_timestamp: timestamp,
     name: z.string().optional(),
   })
   .describe("Stores voltage measurements over time for a simulation")

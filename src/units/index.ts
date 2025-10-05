@@ -99,7 +99,12 @@ export const current = z
   .or(z.number())
   .transform((v) => parseAndConvertSiUnit(v).value!)
 
-export const time = z
+export const duration = z
+  .string()
+  .or(z.number())
+  .transform((v) => parseAndConvertSiUnit(v).value!)
+
+export const timestamp = z
   .string()
   .or(z.number())
   .transform((v) => parseAndConvertSiUnit(v).value!)
