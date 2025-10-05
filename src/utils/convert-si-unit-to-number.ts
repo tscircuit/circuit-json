@@ -87,6 +87,12 @@ const unitMappings: Record<
   ms: {
     baseUnit: "ms",
     variants: {
+      fs: 1e-12,
+      ps: 1e-9,
+      ns: 1e-6,
+      us: 1e-3,
+      µs: 1e-3,
+      ms: 1,
       s: 1000,
     },
   },
