@@ -14,6 +14,7 @@ export const source_net = z.object({
   trace_width: z.number().optional(),
   subcircuit_id: z.string().optional(),
   subcircuit_connectivity_map_key: z.string().optional(),
+  rats_nest_color: z.string().optional(),
 })
 
 export type SourceNetInput = z.input<typeof source_net>
@@ -32,6 +33,7 @@ export interface SourceNet {
   trace_width?: number
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
+  rats_nest_color?: string
 }
 
 expectTypesMatch<SourceNet, InferredSourceNet>(true)
