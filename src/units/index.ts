@@ -99,17 +99,16 @@ export const current = z
   .or(z.number())
   .transform((v) => parseAndConvertSiUnit(v).value!)
 
-export const duration = z
+export const duration_ms = z
   .string()
   .or(z.number())
   .transform((v) => parseAndConvertSiUnit(v).value!)
 
-export const time = duration
+export const time = duration_ms
 
-export const timestamp = z
-  .string()
-  .or(z.number())
-  .transform((v) => parseAndConvertSiUnit(v).value!)
+export const ms = duration_ms
+
+export const timestamp = z.string().datetime()
 
 /**
  * Rotation is always converted to degrees

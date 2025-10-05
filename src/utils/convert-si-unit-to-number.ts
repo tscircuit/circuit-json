@@ -177,40 +177,55 @@ type BaseTscircuitUnit =
   | "F"
   | "H"
 
-export const parseAndConvertSiUnit = <
-  T extends
+export function parseAndConvertSiUnit(v: {
+  x: string | number
+  y: string | number
+}): {
+  parsedUnit: string | null
+  unitOfValue: BaseTscircuitUnit | null
+  value: { x: number; y: number } | null
+}
+export function parseAndConvertSiUnit(v: string | number | undefined | null): {
+  parsedUnit: string | null
+  unitOfValue: BaseTscircuitUnit | null
+  value: number | null
+}
+export function parseAndConvertSiUnit(
+  v:
     | string
     | number
     | undefined
+    | null
     | { x: string | number; y: string | number },
->(
-  v: T,
 ): {
   parsedUnit: string | null
   unitOfValue: BaseTscircuitUnit | null
-  value: T extends { x: string | number; y: string | number }
-    ? null | { x: number; y: number }
-    : null | number
-} => {
-  if (typeof v === "undefined")
+  value: null | number | { x: number; y: number }
+} {
+  if (v === undefined || v === null)
     return { parsedUnit: null, unitOfValue: null, value: null }
   if (typeof v === "string" && v.match(/^-?[\d\.]+$/))
     return {
-      value: Number.parseFloat(v) as any,
+      value: Number.parseFloat(v),
       parsedUnit: null,
       unitOfValue: null,
     }
   if (typeof v === "number")
-    return { value: v as any, parsedUnit: null, unitOfValue: null }
+    return { value: v, parsedUnit: null, unitOfValue: null }
   if (typeof v === "object" && "x" in v && "y" in v) {
     const { parsedUnit, unitOfValue } = parseAndConvertSiUnit(v.x)
+    const xResult = parseAndConvertSiUnit(v.x)
+    const yResult = parseAndConvertSiUnit(v.y)
+    if (xResult.value === null || yResult.value === null) {
+      return { parsedUnit: null, unitOfValue: null, value: null }
+    }
     return {
       parsedUnit: parsedUnit,
       unitOfValue: unitOfValue,
       value: {
-        x: parseAndConvertSiUnit(v.x as any).value as number,
-        y: parseAndConvertSiUnit(v.y as any).value as number,
-      } as any,
+        x: xResult.value,
+        y: yResult.value,
+      },
     }
   }
   const reversed_input_string = v.toString().split("").reverse().join("")
@@ -230,7 +245,7 @@ export const parseAndConvertSiUnit = <
     return {
       parsedUnit: null,
       unitOfValue: null,
-      value: (Number.parseFloat(numberPart) * siMultiplier) as any,
+      value: Number.parseFloat(numberPart) * siMultiplier,
     }
   }
 
@@ -239,6 +254,6 @@ export const parseAndConvertSiUnit = <
   return {
     parsedUnit: unit,
     unitOfValue: baseUnit,
-    value: (conversionFactor * Number.parseFloat(numberPart)) as any,
+    value: conversionFactor * Number.parseFloat(numberPart),
   }
 }

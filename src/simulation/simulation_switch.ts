@@ -1,14 +1,14 @@
 import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
-import { frequency, timestamp } from "src/units"
+import { frequency, ms } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const simulation_switch = z
   .object({
     type: z.literal("simulation_switch"),
     simulation_switch_id: getZodPrefixedIdWithDefault("simulation_switch"),
-    closes_at: timestamp.optional(),
-    opens_at: timestamp.optional(),
+    closes_at: ms.optional(),
+    opens_at: ms.optional(),
     starts_closed: z.boolean().optional(),
     switching_frequency: frequency.optional(),
   })
