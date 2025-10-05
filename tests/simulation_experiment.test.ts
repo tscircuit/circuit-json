@@ -22,9 +22,9 @@ test("simulation_transient_voltage_graph parses required data", () => {
     type: "simulation_transient_voltage_graph",
     simulation_experiment_id: "simulation_experiment_123",
     voltage_levels: [0, 1, 0.5],
-    time_per_step: 0.1,
-    start_time_ms: 0,
-    end_time_ms: 2,
+    time_per_step: "0.1ms",
+    start_time_ms: "0ms",
+    end_time_ms: "2ms",
     name: "Output voltage",
   })
 
@@ -32,4 +32,7 @@ test("simulation_transient_voltage_graph parses required data", () => {
   expect(graph.simulation_experiment_id).toBe("simulation_experiment_123")
   expect(graph.voltage_levels).toEqual([0, 1, 0.5])
   expect(graph.timestamps_ms).toBeUndefined()
+  expect(graph.time_per_step).toBe(0.1)
+  expect(graph.start_time_ms).toBe(0)
+  expect(graph.end_time_ms).toBe(2)
 })

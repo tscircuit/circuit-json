@@ -1,5 +1,6 @@
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import { z } from "zod"
+import { timestamp } from "src/units"
 
 export interface SourceProjectMetadata {
   type: "source_project_metadata"
@@ -14,7 +15,7 @@ export const source_project_metadata = z.object({
   name: z.string().optional(),
   software_used_string: z.string().optional(),
   project_url: z.string().optional(),
-  created_at: z.string().datetime().optional(),
+  created_at: timestamp.optional(),
 })
 
 export type InferredProjectMetadata = z.infer<typeof source_project_metadata>
