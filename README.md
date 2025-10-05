@@ -182,20 +182,20 @@ table below. In this case `{ max_trace_length: 100 }` is equivalent.
 
 The default units when reading a number are defined as follows:
 
-| Measurement Type | Base Unit | Description  |
-| ---------------- | --------- | ------------ |
-| Length           | mm        | Millimeters  |
-| Duration         | ms        | Milliseconds |
+| Measurement Type | Base Unit | Description        |
+| ---------------- | --------- | ------------------ |
+| Length           | mm        | Millimeters        |
+| Duration         | ms        | Milliseconds       |
 | Timestamp        | string    | ISO 8601 Timestamp |
-| Mass             | g         | Grams        |
-| Angle            | deg       | Degrees      |
-| Frequency        | Hz        | Hertz        |
-| Volume           | ml        | Milliliters  |
-| Voltage          | V         | Volts        |
-| Current          | A         | Amperes      |
-| Resistance       | Ω         | Ohms         |
-| Capacitance      | F         | Farads       |
-| Inductance       | H         | Henries      |
+| Mass             | g         | Grams              |
+| Angle            | deg       | Degrees            |
+| Frequency        | Hz        | Hertz              |
+| Volume           | ml        | Milliliters        |
+| Voltage          | V         | Volts              |
+| Current          | A         | Amperes            |
+| Resistance       | Ω         | Ohms               |
+| Capacitance      | F         | Farads             |
+| Inductance       | H         | Henries            |
 
 ## Element Prefixes
 
