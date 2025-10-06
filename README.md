@@ -2155,6 +2155,9 @@ interface SimulationExperiment {
   simulation_experiment_id: string
   name: string
   experiment_type: ExperimentType
+  time_per_step?: number // ms
+  start_time_ms?: number // ms
+  end_time_ms?: number // ms
 }
 ```
 
