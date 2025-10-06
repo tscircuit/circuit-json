@@ -145,6 +145,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationExperiment](#simulationexperiment)
     - [SimulationSwitch](#simulationswitch)
     - [SimulationTransientVoltageGraph](#simulationtransientvoltagegraph)
+    - [SimulationVoltageProbe](#simulationvoltageprobe)
     - [SimulationVoltageSource](#simulationvoltagesource)
 
 <!-- toc:end -->
@@ -2193,6 +2194,24 @@ interface SimulationTransientVoltageGraph {
   start_time_ms: number
   end_time_ms: number
   name?: string
+}
+```
+
+### SimulationVoltageProbe
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_voltage_probe.ts)
+
+Defines a voltage probe for simulation, connected to a port or a net.
+
+```typescript
+/** Defines a voltage probe for simulation, connected to a port or a net. */
+interface SimulationVoltageProbe {
+  type: "simulation_voltage_probe"
+  simulation_voltage_probe_id: string
+  source_port_id?: string
+  source_net_id?: string
+  name?: string
+  subcircuit_id?: string
 }
 ```
 
