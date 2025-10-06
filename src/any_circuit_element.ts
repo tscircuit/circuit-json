@@ -105,6 +105,8 @@ export const any_circuit_element = z.union([
   sim.simulation_voltage_source,
   sim.simulation_experiment,
   sim.simulation_transient_voltage_graph,
+  sim.simulation_switch,
+  sim.simulation_voltage_probe,
 ])
 
 /**
