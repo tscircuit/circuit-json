@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
+import { duration_ms, ms } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const experiment_type = z.union([
@@ -16,6 +17,9 @@ export interface SimulationExperiment {
   simulation_experiment_id: string
   name: string
   experiment_type: ExperimentType
+  time_per_step?: number // ms
+  start_time_ms?: number // ms
+  end_time_ms?: number // ms
 }
 
 export const simulation_experiment = z
@@ -26,6 +30,9 @@ export const simulation_experiment = z
     ),
     name: z.string(),
     experiment_type,
+    time_per_step: duration_ms.optional(),
+    start_time_ms: ms.optional(),
+    end_time_ms: ms.optional(),
   })
   .describe("Defines a simulation experiment configuration")
 
