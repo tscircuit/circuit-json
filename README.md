@@ -283,6 +283,7 @@ interface SourceGroup {
   is_subcircuit?: boolean
   show_as_schematic_box?: boolean
   name?: string
+  was_automatically_named?: boolean
 }
 ```
 

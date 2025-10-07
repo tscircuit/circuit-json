@@ -10,6 +10,7 @@ export const source_group = z.object({
   is_subcircuit: z.boolean().optional(),
   show_as_schematic_box: z.boolean().optional(),
   name: z.string().optional(),
+  was_automatically_named: z.boolean().optional(),
 })
 
 export type SourceGroupInput = z.input<typeof source_group>
@@ -24,6 +25,7 @@ export interface SourceGroup {
   is_subcircuit?: boolean
   show_as_schematic_box?: boolean
   name?: string
+  was_automatically_named?: boolean
 }
 
 expectTypesMatch<SourceGroup, InferredSourceGroup>(true)
