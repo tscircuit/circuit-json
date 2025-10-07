@@ -109,6 +109,7 @@ interface SourceGroup {
   type: "source_group"
   source_group_id: string
   name?: string
+  was_automatically_named?: boolean
 }
 
 interface SourcePort {
