@@ -46,6 +46,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
   - [Typescript Usage](#typescript-usage)
 
   - [Source Components](#source-components)
+    - [SourceBoard](#sourceboard)
     - [SourceComponentBase](#sourcecomponentbase)
     - [SourceFailedToCreateComponentError](#sourcefailedtocreatecomponenterror)
     - [SourceGroup](#sourcegroup)
@@ -222,6 +223,22 @@ There are 3 main element prefixes:
 <!-- circuit-json-docs:start -->
 
 ## Source Components
+
+### SourceBoard
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_board.ts)
+
+Defines a board in the source domain
+
+```typescript
+/** Defines a board in the source domain */
+interface SourceBoard {
+  type: "source_board"
+  source_board_id: string
+  source_group_id: string
+  title?: string
+}
+```
 
 ### SourceComponentBase
 
