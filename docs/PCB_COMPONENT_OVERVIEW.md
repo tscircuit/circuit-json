@@ -249,6 +249,23 @@ export interface PcbFabricationNoteText {
   color?: string
 }
 
+export interface PcbFabricationNoteRect {
+  type: "pcb_fabrication_note_rect"
+  pcb_fabrication_note_rect_id: string
+  pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  center: Point
+  width: Length
+  height: Length
+  layer: VisibleLayer
+  stroke_width: Length
+  is_filled?: boolean
+  has_stroke?: boolean
+  is_stroke_dashed?: boolean
+  color?: string
+}
+
 export interface PcbSilkscreenCircle {
   type: "pcb_silkscreen_circle"
   pcb_silkscreen_circle_id: string
@@ -256,6 +273,37 @@ export interface PcbSilkscreenCircle {
   center: Point
   radius: Length
   layer: VisibleLayer
+}
+
+export interface PcbCourtyardRect {
+  type: "pcb_courtyard_rect"
+  pcb_courtyard_rect_id: string
+  pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  center: Point
+  width: Length
+  height: Length
+  layer: VisibleLayer
+  stroke_width: Length
+  is_filled?: boolean
+  has_stroke?: boolean
+  is_stroke_dashed?: boolean
+  color?: string
+}
+
+export interface PcbCourtyardOutline {
+  type: "pcb_courtyard_outline"
+  pcb_courtyard_outline_id: string
+  pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  layer: VisibleLayer
+  outline: Point[]
+  stroke_width: Length
+  is_closed?: boolean
+  is_stroke_dashed?: boolean
+  color?: string
 }
 
 export interface PcbSilkscreenPath {
