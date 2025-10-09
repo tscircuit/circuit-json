@@ -29,6 +29,7 @@ export * from "./pcb_silkscreen_circle"
 export * from "./pcb_silkscreen_oval"
 export * from "./pcb_fabrication_note_text"
 export * from "./pcb_fabrication_note_path"
+export * from "./pcb_fabrication_note_rect"
 export * from "./pcb_footprint_overlap_error"
 export * from "./pcb_keepout"
 export * from "./pcb_cutout"
@@ -45,6 +46,8 @@ export * from "./pcb_thermal_spoke"
 export * from "./pcb_copper_pour"
 export * from "./pcb_component_outside_board_error"
 export * from "./pcb_via_clearance_error"
+export * from "./pcb_courtyard_rect"
+export * from "./pcb_courtyard_outline"
 
 import type { PcbComponent } from "./pcb_component"
 import type { PcbHole } from "./pcb_hole"
@@ -71,6 +74,7 @@ import type { PcbSilkscreenPath } from "./pcb_silkscreen_path"
 import type { PcbSilkscreenText } from "./pcb_silkscreen_text"
 import type { PcbSilkscreenRect } from "./pcb_silkscreen_rect"
 import type { PcbSilkscreenCircle } from "./pcb_silkscreen_circle"
+import type { PcbFabricationNoteRect } from "./pcb_fabrication_note_rect"
 import type { PcbAutoroutingError } from "./pcb_autorouting_error"
 import type { PcbFootprintOverlapError } from "./pcb_footprint_overlap_error"
 import type { PcbCutout } from "./pcb_cutout"
@@ -82,6 +86,8 @@ import type { PcbCopperPour } from "./pcb_copper_pour"
 import type { PcbComponentOutsideBoardError } from "./pcb_component_outside_board_error"
 import type { CircuitJsonFootprintLoadError } from "./circuit_json_footprint_load_error"
 import type { PcbViaClearanceError } from "./pcb_via_clearance_error"
+import type { PcbCourtyardRect } from "./pcb_courtyard_rect"
+import type { PcbCourtyardOutline } from "./pcb_courtyard_outline"
 
 export type PcbCircuitElement =
   | PcbComponent
@@ -110,6 +116,7 @@ export type PcbCircuitElement =
   | PcbSilkscreenText
   | PcbSilkscreenRect
   | PcbSilkscreenCircle
+  | PcbFabricationNoteRect
   | PcbAutoroutingError
   | PcbFootprintOverlapError
   | PcbCutout
@@ -120,3 +127,5 @@ export type PcbCircuitElement =
   | PcbCopperPour
   | PcbComponentOutsideBoardError
   | PcbViaClearanceError
+  | PcbCourtyardRect
+  | PcbCourtyardOutline
