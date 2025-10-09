@@ -89,8 +89,11 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbComponent](#pcbcomponent)
     - [PcbComponentOutsideBoardError](#pcbcomponentoutsideboarderror)
     - [PcbCopperPour](#pcbcopperpour)
+    - [PcbCourtyardOutline](#pcbcourtyardoutline)
+    - [PcbCourtyardRect](#pcbcourtyardrect)
     - [PcbCutout](#pcbcutout)
     - [PcbFabricationNotePath](#pcbfabricationnotepath)
+    - [PcbFabricationNoteRect](#pcbfabricationnoterect)
     - [PcbFabricationNoteText](#pcbfabricationnotetext)
     - [PcbFootprintOverlapError](#pcbfootprintoverlaperror)
     - [PcbGroundPlane](#pcbgroundplane)
@@ -936,6 +939,55 @@ interface PcbCopperPourRect {
 }
 ```
 
+### PcbCourtyardOutline
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_courtyard_outline.ts)
+
+Defines a courtyard outline on the PCB
+
+```typescript
+/** Defines a courtyard outline on the PCB */
+interface PcbCourtyardOutline {
+  type: "pcb_courtyard_outline"
+  pcb_courtyard_outline_id: string
+  pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  layer: VisibleLayer
+  outline: Point[]
+  stroke_width: Length
+  is_closed?: boolean
+  is_stroke_dashed?: boolean
+  color?: string
+}
+```
+
+### PcbCourtyardRect
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_courtyard_rect.ts)
+
+Defines a courtyard rectangle on the PCB
+
+```typescript
+/** Defines a courtyard rectangle on the PCB */
+interface PcbCourtyardRect {
+  type: "pcb_courtyard_rect"
+  pcb_courtyard_rect_id: string
+  pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  center: Point
+  width: Length
+  height: Length
+  layer: VisibleLayer
+  stroke_width: Length
+  is_filled?: boolean
+  has_stroke?: boolean
+  is_stroke_dashed?: boolean
+  color?: string
+}
+```
+
 ### PcbCutout
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_cutout.ts)
@@ -973,6 +1025,32 @@ interface PcbFabricationNotePath {
   layer: LayerRef
   route: Point[]
   stroke_width: Length
+  color?: string
+}
+```
+
+### PcbFabricationNoteRect
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_fabrication_note_rect.ts)
+
+Defines a fabrication note rectangle on the PCB
+
+```typescript
+/** Defines a fabrication note rectangle on the PCB */
+interface PcbFabricationNoteRect {
+  type: "pcb_fabrication_note_rect"
+  pcb_fabrication_note_rect_id: string
+  pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  center: Point
+  width: Length
+  height: Length
+  layer: VisibleLayer
+  stroke_width: Length
+  is_filled?: boolean
+  has_stroke?: boolean
+  is_stroke_dashed?: boolean
   color?: string
 }
 ```
