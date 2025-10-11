@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { pcb_hole, type PcbHoleOval } from "../src/pcb/pcb_hole"
+import { pcb_hole, type PcbHolePill } from "../src/pcb/pcb_hole"
 
 test("parse pill-shaped non-plated hole", () => {
   const hole = pcb_hole.parse({
@@ -10,7 +10,7 @@ test("parse pill-shaped non-plated hole", () => {
     x: 5,
     y: 10,
     ccw_rotation: 45,
-  }) as PcbHoleOval
+  }) as PcbHolePill
 
   expect(hole.type).toBe("pcb_hole")
   expect(hole.hole_shape).toBe("pill")
