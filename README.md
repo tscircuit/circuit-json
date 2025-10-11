@@ -1103,11 +1103,9 @@ interface PcbNoteDimension {
   pcb_component_id: string
   pcb_group_id?: string
   subcircuit_id?: string
-  layer: VisibleLayer
   from: Point
   to: Point
   text?: string
-  offset: Length
   font: "tscircuit2024"
   font_size: Length
   color?: string
@@ -1129,7 +1127,6 @@ interface PcbNoteLine {
   pcb_component_id: string
   pcb_group_id?: string
   subcircuit_id?: string
-  layer: VisibleLayer
   x1: Distance
   y1: Distance
   x2: Distance
@@ -1154,7 +1151,6 @@ interface PcbNotePath {
   pcb_component_id: string
   pcb_group_id?: string
   subcircuit_id?: string
-  layer: VisibleLayer
   route: Point[]
   stroke_width: Length
   color?: string
@@ -1178,7 +1174,6 @@ interface PcbNoteRect {
   center: Point
   width: Length
   height: Length
-  layer: VisibleLayer
   stroke_width: Length
   is_filled?: boolean
   has_stroke?: boolean
@@ -1201,7 +1196,6 @@ interface PcbNoteText {
   pcb_component_id: string
   pcb_group_id?: string
   subcircuit_id?: string
-  layer: VisibleLayer
   font: "tscircuit2024"
   font_size: Length
   text: string

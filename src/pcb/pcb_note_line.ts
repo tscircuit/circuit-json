@@ -1,6 +1,5 @@
 import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
-import { visible_layer, type VisibleLayer } from "src/pcb/properties/layer_ref"
 import { distance, type Distance } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
@@ -11,7 +10,6 @@ export const pcb_note_line = z
     pcb_component_id: z.string(),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
-    layer: visible_layer,
     x1: distance,
     y1: distance,
     x2: distance,
@@ -34,7 +32,6 @@ export interface PcbNoteLine {
   pcb_component_id: string
   pcb_group_id?: string
   subcircuit_id?: string
-  layer: VisibleLayer
   x1: Distance
   y1: Distance
   x2: Distance

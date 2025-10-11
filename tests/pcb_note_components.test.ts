@@ -10,7 +10,6 @@ test("pcb note text defaults", () => {
     type: "pcb_note_text",
     pcb_component_id: "pcb_component_1",
     text: "Check orientation",
-    layer: "top",
   })
 
   expect(note.font).toBe("tscircuit2024")
@@ -25,7 +24,6 @@ test("pcb note rect defaults", () => {
     center: { x: "10mm", y: "5mm" },
     width: "4mm",
     height: "2mm",
-    layer: "bottom",
   })
 
   expect(rect.stroke_width).toBeCloseTo(0.1)
@@ -37,7 +35,6 @@ test("pcb note path defaults", () => {
   const path = pcb_note_path.parse({
     type: "pcb_note_path",
     pcb_component_id: "pcb_component_1",
-    layer: "top",
     route: [
       { x: 0, y: 0 },
       { x: "2mm", y: "1mm" },
@@ -52,7 +49,6 @@ test("pcb note line defaults", () => {
   const line = pcb_note_line.parse({
     type: "pcb_note_line",
     pcb_component_id: "pcb_component_1",
-    layer: "bottom",
     x1: 0,
     y1: 0,
     x2: "1mm",
@@ -68,12 +64,10 @@ test("pcb note dimension defaults", () => {
   const dimension = pcb_note_dimension.parse({
     type: "pcb_note_dimension",
     pcb_component_id: "pcb_component_1",
-    layer: "top",
     from: { x: 0, y: 0 },
     to: { x: "10mm", y: 0 },
   })
 
-  expect(dimension.offset).toBe(0)
   expect(dimension.font_size).toBeCloseTo(1)
   expect(dimension.arrow_size).toBeCloseTo(1)
   expect(dimension.to.x).toBeCloseTo(10)

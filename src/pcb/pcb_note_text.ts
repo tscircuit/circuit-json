@@ -1,6 +1,5 @@
 import { z } from "zod"
 import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
-import { visible_layer, type VisibleLayer } from "src/pcb/properties/layer_ref"
 import { distance, type Length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
@@ -11,7 +10,6 @@ export const pcb_note_text = z
     pcb_component_id: z.string(),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
-    layer: visible_layer,
     font: z.literal("tscircuit2024").default("tscircuit2024"),
     font_size: distance.default("1mm"),
     text: z.string(),
@@ -35,7 +33,6 @@ export interface PcbNoteText {
   pcb_component_id: string
   pcb_group_id?: string
   subcircuit_id?: string
-  layer: VisibleLayer
   font: "tscircuit2024"
   font_size: Length
   text: string

@@ -272,11 +272,9 @@ export interface PcbNoteDimension {
   pcb_component_id: string
   pcb_group_id?: string
   subcircuit_id?: string
-  layer: VisibleLayer
   from: Point
   to: Point
   text?: string
-  offset: Length
   font: "tscircuit2024"
   font_size: Length
   color?: string
@@ -289,7 +287,6 @@ export interface PcbNoteLine {
   pcb_component_id: string
   pcb_group_id?: string
   subcircuit_id?: string
-  layer: VisibleLayer
   x1: Distance
   y1: Distance
   x2: Distance
@@ -305,7 +302,6 @@ export interface PcbNotePath {
   pcb_component_id: string
   pcb_group_id?: string
   subcircuit_id?: string
-  layer: VisibleLayer
   route: Point[]
   stroke_width: Length
   color?: string
@@ -320,7 +316,6 @@ export interface PcbNoteRect {
   center: Point
   width: Length
   height: Length
-  layer: VisibleLayer
   stroke_width: Length
   is_filled?: boolean
   has_stroke?: boolean
@@ -334,7 +329,6 @@ export interface PcbNoteText {
   pcb_component_id: string
   pcb_group_id?: string
   subcircuit_id?: string
-  layer: VisibleLayer
   font: "tscircuit2024"
   font_size: Length
   text: string
