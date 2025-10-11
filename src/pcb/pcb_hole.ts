@@ -40,7 +40,7 @@ export interface PcbHoleCircleOrSquare {
 
 expectTypesMatch<PcbHoleCircleOrSquare, InferredPcbHoleCircleOrSquare>(true)
 
-const pcb_hole_oval = z.object({
+const pcb_hole_oval_or_pill = z.object({
   type: z.literal("pcb_hole"),
   pcb_hole_id: getZodPrefixedIdWithDefault("pcb_hole"),
   pcb_group_id: z.string().optional(),
@@ -53,12 +53,12 @@ const pcb_hole_oval = z.object({
   ccw_rotation: rotation.default(0),
 })
 
-export const pcb_hole_oval_shape = pcb_hole_oval.describe(
+export const pcb_hole_oval_shape = pcb_hole_oval_or_pill.describe(
   "Defines an oval or pill-shaped hole on the PCB",
 )
 
-export type PcbHoleOvalInput = z.input<typeof pcb_hole_oval>
-type InferredPcbHoleOval = z.infer<typeof pcb_hole_oval>
+export type PcbHoleOvalInput = z.input<typeof pcb_hole_oval_or_pill>
+type InferredPcbHoleOval = z.infer<typeof pcb_hole_oval_or_pill>
 
 /**
  * Defines an oval or pill-shaped hole on the PCB
@@ -78,7 +78,7 @@ export interface PcbHoleOval {
 
 expectTypesMatch<PcbHoleOval, InferredPcbHoleOval>(true)
 
-export const pcb_hole = pcb_hole_circle_or_square.or(pcb_hole_oval)
+export const pcb_hole = pcb_hole_circle_or_square.or(pcb_hole_oval_or_pill)
 
 /**
  * @deprecated Use PcbHoleCircleOrSquare or PcbHoleOval
