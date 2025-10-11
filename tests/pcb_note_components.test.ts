@@ -8,7 +8,6 @@ import { pcb_note_text } from "../src/pcb/pcb_note_text"
 test("pcb note text defaults", () => {
   const note = pcb_note_text.parse({
     type: "pcb_note_text",
-    pcb_component_id: "pcb_component_1",
     text: "Check orientation",
   })
 
@@ -20,7 +19,6 @@ test("pcb note text defaults", () => {
 test("pcb note rect defaults", () => {
   const rect = pcb_note_rect.parse({
     type: "pcb_note_rect",
-    pcb_component_id: "pcb_component_1",
     center: { x: "10mm", y: "5mm" },
     width: "4mm",
     height: "2mm",
@@ -34,7 +32,6 @@ test("pcb note rect defaults", () => {
 test("pcb note path defaults", () => {
   const path = pcb_note_path.parse({
     type: "pcb_note_path",
-    pcb_component_id: "pcb_component_1",
     route: [
       { x: 0, y: 0 },
       { x: "2mm", y: "1mm" },
@@ -48,7 +45,6 @@ test("pcb note path defaults", () => {
 test("pcb note line defaults", () => {
   const line = pcb_note_line.parse({
     type: "pcb_note_line",
-    pcb_component_id: "pcb_component_1",
     x1: 0,
     y1: 0,
     x2: "1mm",
@@ -63,7 +59,6 @@ test("pcb note line defaults", () => {
 test("pcb note dimension defaults", () => {
   const dimension = pcb_note_dimension.parse({
     type: "pcb_note_dimension",
-    pcb_component_id: "pcb_component_1",
     from: { x: 0, y: 0 },
     to: { x: "10mm", y: 0 },
   })

@@ -7,7 +7,7 @@ export const pcb_note_line = z
   .object({
     type: z.literal("pcb_note_line"),
     pcb_note_line_id: getZodPrefixedIdWithDefault("pcb_note_line"),
-    pcb_component_id: z.string(),
+    pcb_component_id: z.string().optional(),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     x1: distance,
@@ -29,7 +29,7 @@ type InferredPcbNoteLine = z.infer<typeof pcb_note_line>
 export interface PcbNoteLine {
   type: "pcb_note_line"
   pcb_note_line_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   x1: Distance

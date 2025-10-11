@@ -7,7 +7,7 @@ export const pcb_note_text = z
   .object({
     type: z.literal("pcb_note_text"),
     pcb_note_text_id: getZodPrefixedIdWithDefault("pcb_note_text"),
-    pcb_component_id: z.string(),
+    pcb_component_id: z.string().optional(),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     font: z.literal("tscircuit2024").default("tscircuit2024"),
@@ -30,7 +30,7 @@ type InferredPcbNoteText = z.infer<typeof pcb_note_text>
 export interface PcbNoteText {
   type: "pcb_note_text"
   pcb_note_text_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   font: "tscircuit2024"

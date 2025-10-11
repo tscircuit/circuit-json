@@ -269,7 +269,7 @@ export interface PcbFabricationNoteRect {
 export interface PcbNoteDimension {
   type: "pcb_note_dimension"
   pcb_note_dimension_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   from: Point
@@ -284,7 +284,7 @@ export interface PcbNoteDimension {
 export interface PcbNoteLine {
   type: "pcb_note_line"
   pcb_note_line_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   x1: Distance
@@ -299,7 +299,7 @@ export interface PcbNoteLine {
 export interface PcbNotePath {
   type: "pcb_note_path"
   pcb_note_path_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   route: Point[]
@@ -310,7 +310,7 @@ export interface PcbNotePath {
 export interface PcbNoteRect {
   type: "pcb_note_rect"
   pcb_note_rect_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   center: Point
@@ -326,7 +326,7 @@ export interface PcbNoteRect {
 export interface PcbNoteText {
   type: "pcb_note_text"
   pcb_note_text_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   font: "tscircuit2024"

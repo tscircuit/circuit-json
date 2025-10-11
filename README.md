@@ -1100,7 +1100,7 @@ Defines a measurement annotation within PCB documentation notes
 interface PcbNoteDimension {
   type: "pcb_note_dimension"
   pcb_note_dimension_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   from: Point
@@ -1124,7 +1124,7 @@ Defines a straight documentation note line on the PCB
 interface PcbNoteLine {
   type: "pcb_note_line"
   pcb_note_line_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   x1: Distance
@@ -1148,7 +1148,7 @@ Defines a polyline documentation note on the PCB
 interface PcbNotePath {
   type: "pcb_note_path"
   pcb_note_path_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   route: Point[]
@@ -1168,7 +1168,7 @@ Defines a rectangular documentation note on the PCB
 interface PcbNoteRect {
   type: "pcb_note_rect"
   pcb_note_rect_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   center: Point
@@ -1193,7 +1193,7 @@ Defines a documentation note in text on the PCB
 interface PcbNoteText {
   type: "pcb_note_text"
   pcb_note_text_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   font: "tscircuit2024"

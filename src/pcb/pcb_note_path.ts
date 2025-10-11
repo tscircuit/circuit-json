@@ -7,7 +7,7 @@ export const pcb_note_path = z
   .object({
     type: z.literal("pcb_note_path"),
     pcb_note_path_id: getZodPrefixedIdWithDefault("pcb_note_path"),
-    pcb_component_id: z.string(),
+    pcb_component_id: z.string().optional(),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     route: z.array(point),
@@ -25,7 +25,7 @@ type InferredPcbNotePath = z.infer<typeof pcb_note_path>
 export interface PcbNotePath {
   type: "pcb_note_path"
   pcb_note_path_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   route: Point[]
