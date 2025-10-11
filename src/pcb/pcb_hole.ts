@@ -86,7 +86,6 @@ const pcb_hole_pill = z.object({
   hole_height: z.number(),
   x: distance,
   y: distance,
-  ccw_rotation: rotation.default(0),
 })
 
 export const pcb_hole_pill_shape = pcb_hole_pill.describe(
@@ -109,22 +108,64 @@ export interface PcbHolePill {
   hole_height: number
   x: Distance
   y: Distance
-  ccw_rotation: Rotation
 }
 
 expectTypesMatch<PcbHolePill, InferredPcbHolePill>(true)
 
+const pcb_hole_rotated_pill = z.object({
+  type: z.literal("pcb_hole"),
+  pcb_hole_id: getZodPrefixedIdWithDefault("pcb_hole"),
+  pcb_group_id: z.string().optional(),
+  subcircuit_id: z.string().optional(),
+  hole_shape: z.literal("rotated_pill"),
+  hole_width: z.number(),
+  hole_height: z.number(),
+  x: distance,
+  y: distance,
+  ccw_rotation: rotation,
+})
+
+export const pcb_hole_rotated_pill_shape = pcb_hole_rotated_pill.describe(
+  "Defines a rotated pill-shaped hole on the PCB",
+)
+
+export type PcbHoleRotatedPillInput = z.input<typeof pcb_hole_rotated_pill>
+type InferredPcbHoleRotatedPill = z.infer<typeof pcb_hole_rotated_pill>
+
+/**
+ * Defines a rotated pill-shaped hole on the PCB
+ */
+export interface PcbHoleRotatedPill {
+  type: "pcb_hole"
+  pcb_hole_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  hole_shape: "rotated_pill"
+  hole_width: number
+  hole_height: number
+  x: Distance
+  y: Distance
+  ccw_rotation: Rotation
+}
+
+expectTypesMatch<PcbHoleRotatedPill, InferredPcbHoleRotatedPill>(true)
+
 export const pcb_hole = pcb_hole_circle_or_square
   .or(pcb_hole_oval)
   .or(pcb_hole_pill)
+  .or(pcb_hole_rotated_pill)
 
 /**
- * @deprecated Use PcbHoleCircleOrSquare, PcbHoleOval, or PcbHolePill
+ * @deprecated Use PcbHoleCircleOrSquare, PcbHoleOval, PcbHolePill, or PcbHoleRotatedPill
  */
 export type PCBHoleInput = z.input<typeof pcb_hole>
 /**
- * @deprecated Use PcbHoleCircleOrSquare, PcbHoleOval, or PcbHolePill
+ * @deprecated Use PcbHoleCircleOrSquare, PcbHoleOval, PcbHolePill, or PcbHoleRotatedPill
  */
 export type PCBHole = z.infer<typeof pcb_hole>
 
-export type PcbHole = PcbHoleCircleOrSquare | PcbHoleOval | PcbHolePill
+export type PcbHole =
+  | PcbHoleCircleOrSquare
+  | PcbHoleOval
+  | PcbHolePill
+  | PcbHoleRotatedPill
