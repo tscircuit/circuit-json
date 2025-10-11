@@ -30,6 +30,11 @@ export * from "./pcb_silkscreen_oval"
 export * from "./pcb_fabrication_note_text"
 export * from "./pcb_fabrication_note_path"
 export * from "./pcb_fabrication_note_rect"
+export * from "./pcb_note_text"
+export * from "./pcb_note_rect"
+export * from "./pcb_note_path"
+export * from "./pcb_note_line"
+export * from "./pcb_note_dimension"
 export * from "./pcb_footprint_overlap_error"
 export * from "./pcb_keepout"
 export * from "./pcb_cutout"
@@ -75,6 +80,11 @@ import type { PcbSilkscreenText } from "./pcb_silkscreen_text"
 import type { PcbSilkscreenRect } from "./pcb_silkscreen_rect"
 import type { PcbSilkscreenCircle } from "./pcb_silkscreen_circle"
 import type { PcbFabricationNoteRect } from "./pcb_fabrication_note_rect"
+import type { PcbNoteText } from "./pcb_note_text"
+import type { PcbNoteRect } from "./pcb_note_rect"
+import type { PcbNotePath } from "./pcb_note_path"
+import type { PcbNoteLine } from "./pcb_note_line"
+import type { PcbNoteDimension } from "./pcb_note_dimension"
 import type { PcbAutoroutingError } from "./pcb_autorouting_error"
 import type { PcbFootprintOverlapError } from "./pcb_footprint_overlap_error"
 import type { PcbCutout } from "./pcb_cutout"
@@ -117,6 +127,11 @@ export type PcbCircuitElement =
   | PcbSilkscreenRect
   | PcbSilkscreenCircle
   | PcbFabricationNoteRect
+  | PcbNoteText
+  | PcbNoteRect
+  | PcbNotePath
+  | PcbNoteLine
+  | PcbNoteDimension
   | PcbAutoroutingError
   | PcbFootprintOverlapError
   | PcbCutout

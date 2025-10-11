@@ -95,6 +95,11 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbFabricationNotePath](#pcbfabricationnotepath)
     - [PcbFabricationNoteRect](#pcbfabricationnoterect)
     - [PcbFabricationNoteText](#pcbfabricationnotetext)
+    - [PcbNoteDimension](#pcbnotedimension)
+    - [PcbNoteLine](#pcbnoteline)
+    - [PcbNotePath](#pcbnotepath)
+    - [PcbNoteRect](#pcbnoterect)
+    - [PcbNoteText](#pcbnotetext)
     - [PcbFootprintOverlapError](#pcbfootprintoverlaperror)
     - [PcbGroundPlane](#pcbgroundplane)
     - [PcbGroundPlaneRegion](#pcbgroundplaneregion)
@@ -1073,6 +1078,127 @@ interface PcbFabricationNoteText {
   pcb_component_id: string
   text: string
   layer: VisibleLayer
+  anchor_position: Point
+  anchor_alignment:
+    | "center"
+    | "top_left"
+    | "top_right"
+    | "bottom_left"
+    | "bottom_right"
+  color?: string
+}
+```
+
+### PcbNoteDimension
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_note_dimension.ts)
+
+Defines a measurement annotation within PCB documentation notes
+
+```typescript
+/** Defines a measurement annotation within PCB documentation notes */
+interface PcbNoteDimension {
+  type: "pcb_note_dimension"
+  pcb_note_dimension_id: string
+  pcb_component_id?: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  from: Point
+  to: Point
+  text?: string
+  font: "tscircuit2024"
+  font_size: Length
+  color?: string
+  arrow_size: Length
+}
+```
+
+### PcbNoteLine
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_note_line.ts)
+
+Defines a straight documentation note line on the PCB
+
+```typescript
+/** Defines a straight documentation note line on the PCB */
+interface PcbNoteLine {
+  type: "pcb_note_line"
+  pcb_note_line_id: string
+  pcb_component_id?: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  x1: Distance
+  y1: Distance
+  x2: Distance
+  y2: Distance
+  stroke_width: Distance
+  color?: string
+  is_dashed?: boolean
+}
+```
+
+### PcbNotePath
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_note_path.ts)
+
+Defines a polyline documentation note on the PCB
+
+```typescript
+/** Defines a polyline documentation note on the PCB */
+interface PcbNotePath {
+  type: "pcb_note_path"
+  pcb_note_path_id: string
+  pcb_component_id?: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  route: Point[]
+  stroke_width: Length
+  color?: string
+}
+```
+
+### PcbNoteRect
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_note_rect.ts)
+
+Defines a rectangular documentation note on the PCB
+
+```typescript
+/** Defines a rectangular documentation note on the PCB */
+interface PcbNoteRect {
+  type: "pcb_note_rect"
+  pcb_note_rect_id: string
+  pcb_component_id?: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  center: Point
+  width: Length
+  height: Length
+  stroke_width: Length
+  is_filled?: boolean
+  has_stroke?: boolean
+  is_stroke_dashed?: boolean
+  color?: string
+}
+```
+
+### PcbNoteText
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_note_text.ts)
+
+Defines a documentation note in text on the PCB
+
+```typescript
+/** Defines a documentation note in text on the PCB */
+interface PcbNoteText {
+  type: "pcb_note_text"
+  pcb_note_text_id: string
+  pcb_component_id?: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  font: "tscircuit2024"
+  font_size: Length
+  text: string
   anchor_position: Point
   anchor_alignment:
     | "center"
