@@ -3,6 +3,7 @@ import { point3, type Point3 } from "../common"
 import { rotation, length, type Rotation, type Length } from "../units"
 import { layer_ref, type LayerRef } from "src/pcb"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { color } from "bun"
 
 export const cad_component = z
   .object({
@@ -15,6 +16,7 @@ export const cad_component = z
     size: point3.optional(),
     layer: layer_ref.optional(),
     subcircuit_id: z.string().optional(),
+    color: z.string().optional(),
 
     // These are all ways to generate/load the 3d model
     footprinter_string: z.string().optional(),
@@ -43,6 +45,7 @@ export interface CadComponent {
   size?: Point3
   layer?: LayerRef
   subcircuit_id?: string
+  color?: string
   footprinter_string?: string
   model_obj_url?: string
   model_stl_url?: string
