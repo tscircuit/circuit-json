@@ -75,6 +75,7 @@ export const any_circuit_element = z.union([
   pcb.pcb_fabrication_note_path,
   pcb.pcb_fabrication_note_text,
   pcb.pcb_fabrication_note_rect,
+  pcb.pcb_fabrication_note_dimension,
   pcb.pcb_note_text,
   pcb.pcb_note_rect,
   pcb.pcb_note_path,
