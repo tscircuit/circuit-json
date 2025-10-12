@@ -92,6 +92,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbCourtyardOutline](#pcbcourtyardoutline)
     - [PcbCourtyardRect](#pcbcourtyardrect)
     - [PcbCutout](#pcbcutout)
+    - [PcbFabricationNoteDimension](#pcbfabricationnotedimension)
     - [PcbFabricationNotePath](#pcbfabricationnotepath)
     - [PcbFabricationNoteRect](#pcbfabricationnoterect)
     - [PcbFabricationNoteText](#pcbfabricationnotetext)
@@ -1011,6 +1012,32 @@ interface PcbCutoutRect {
   width: Length
   height: Length
   rotation?: Rotation
+}
+```
+
+### PcbFabricationNoteDimension
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_fabrication_note_dimension.ts)
+
+Defines a measurement annotation within PCB fabrication notes
+
+```typescript
+/** Defines a measurement annotation within PCB fabrication notes */
+interface PcbFabricationNoteDimension {
+  type: "pcb_fabrication_note_dimension"
+  pcb_fabrication_note_dimension_id: string
+  pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  layer: VisibleLayer
+  from: Point | string
+  to: Point | string
+  text?: string
+  offset?: Length
+  font: "tscircuit2024"
+  font_size: Length
+  color?: string
+  arrow_size: Length
 }
 ```
 
