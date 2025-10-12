@@ -30,6 +30,7 @@ export * from "./pcb_silkscreen_oval"
 export * from "./pcb_fabrication_note_text"
 export * from "./pcb_fabrication_note_path"
 export * from "./pcb_fabrication_note_rect"
+export * from "./pcb_fabrication_note_dimension"
 export * from "./pcb_note_text"
 export * from "./pcb_note_rect"
 export * from "./pcb_note_path"
@@ -80,6 +81,7 @@ import type { PcbSilkscreenText } from "./pcb_silkscreen_text"
 import type { PcbSilkscreenRect } from "./pcb_silkscreen_rect"
 import type { PcbSilkscreenCircle } from "./pcb_silkscreen_circle"
 import type { PcbFabricationNoteRect } from "./pcb_fabrication_note_rect"
+import type { PcbFabricationNoteDimension } from "./pcb_fabrication_note_dimension"
 import type { PcbNoteText } from "./pcb_note_text"
 import type { PcbNoteRect } from "./pcb_note_rect"
 import type { PcbNotePath } from "./pcb_note_path"
@@ -127,6 +129,7 @@ export type PcbCircuitElement =
   | PcbSilkscreenRect
   | PcbSilkscreenCircle
   | PcbFabricationNoteRect
+  | PcbFabricationNoteDimension
   | PcbNoteText
   | PcbNoteRect
   | PcbNotePath
