@@ -14,8 +14,8 @@ export const pcb_fabrication_note_dimension = z
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     layer: visible_layer,
-    from: point.or(z.string()),
-    to: point.or(z.string()),
+    from: point,
+    to: point,
     text: z.string().optional(),
     offset: length.optional(),
     font: z.literal("tscircuit2024").default("tscircuit2024"),
@@ -42,8 +42,8 @@ export interface PcbFabricationNoteDimension {
   pcb_group_id?: string
   subcircuit_id?: string
   layer: VisibleLayer
-  from: Point | string
-  to: Point | string
+  from: Point
+  to: Point
   text?: string
   offset?: Length
   font: "tscircuit2024"
