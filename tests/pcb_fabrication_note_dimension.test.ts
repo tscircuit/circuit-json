@@ -16,17 +16,14 @@ test("parse fabrication note dimension with defaults", () => {
   expect(dimension.to).toEqual({ x: 10, y: 0 })
 })
 
-test("fabrication note dimension accepts reference strings", () => {
-  const dimension = pcb_fabrication_note_dimension.parse({
-    type: "pcb_fabrication_note_dimension",
-    pcb_component_id: "pcb_component_1",
-    layer: "top",
-    from: "pcb_point_start",
-    to: "pcb_point_end",
-    offset: "2mm",
-  })
-
-  expect(dimension.from).toBe("pcb_point_start")
-  expect(dimension.to).toBe("pcb_point_end")
-  expect(dimension.offset).toBeCloseTo(2)
+test("fabrication note dimension requires explicit points", () => {
+  expect(() =>
+    pcb_fabrication_note_dimension.parse({
+      type: "pcb_fabrication_note_dimension",
+      pcb_component_id: "pcb_component_1",
+      layer: "top",
+      from: "pcb_point_start",
+      to: "pcb_point_end",
+    }),
+  ).toThrow()
 })

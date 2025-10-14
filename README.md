@@ -1030,8 +1030,8 @@ interface PcbFabricationNoteDimension {
   pcb_group_id?: string
   subcircuit_id?: string
   layer: VisibleLayer
-  from: Point | string
-  to: Point | string
+  from: Point
+  to: Point
   text?: string
   offset?: Length
   font: "tscircuit2024"
