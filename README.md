@@ -1190,6 +1190,13 @@ interface PcbGroup {
   width: Length
   height: Length
   center: Point
+  anchor_position?: Point
+  anchor_alignment?:
+    | "center"
+    | "top_left"
+    | "top_right"
+    | "bottom_left"
+    | "bottom_right"
   pcb_component_ids: string[]
   name?: string
   description?: string
