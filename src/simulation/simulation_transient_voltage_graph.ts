@@ -10,6 +10,7 @@ export interface SimulationTransientVoltageGraph {
   timestamps_ms?: number[]
   voltage_levels: number[]
   schematic_voltage_probe_id?: string
+  simulation_voltage_probe_id?: string
   subcircuit_connectivity_map_key?: string
   time_per_step: number
   start_time_ms: number
@@ -27,6 +28,7 @@ export const simulation_transient_voltage_graph = z
     timestamps_ms: z.array(z.number()).optional(),
     voltage_levels: z.array(z.number()),
     schematic_voltage_probe_id: z.string().optional(),
+    simulation_voltage_probe_id: z.string().optional(),
     subcircuit_connectivity_map_key: z.string().optional(),
     time_per_step: duration_ms,
     start_time_ms: ms,
