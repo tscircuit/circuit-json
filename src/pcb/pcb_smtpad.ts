@@ -31,6 +31,7 @@ const pcb_smtpad_rect = z.object({
   width: z.number(),
   height: z.number(),
   rect_border_radius: z.number().optional(),
+  corner_radius: length.optional(),
   layer: layer_ref,
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
@@ -49,6 +50,7 @@ const pcb_smtpad_rotated_rect = z.object({
   width: z.number(),
   height: z.number(),
   rect_border_radius: z.number().optional(),
+  corner_radius: length.optional(),
   ccw_rotation: rotation,
   layer: layer_ref,
   port_hints: z.array(z.string()).optional(),
@@ -159,6 +161,7 @@ export interface PcbSmtPadRect {
   width: number
   height: number
   rect_border_radius?: number
+  corner_radius?: Length
   layer: LayerRef
   port_hints?: string[]
   pcb_component_id?: string
@@ -180,6 +183,7 @@ export interface PcbSmtPadRotatedRect {
   width: number
   height: number
   rect_border_radius?: number
+  corner_radius?: Length
   ccw_rotation: Rotation
   layer: LayerRef
   port_hints?: string[]
