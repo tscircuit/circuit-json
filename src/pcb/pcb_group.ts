@@ -13,6 +13,7 @@ export const pcb_group = z
     width: length,
     height: length,
     center: point,
+    outline: z.array(point).optional(),
     anchor_position: point.optional(),
     anchor_alignment: z
       .enum(["center", "top_left", "top_right", "bottom_left", "bottom_right"])
@@ -45,6 +46,7 @@ export interface PcbGroup {
   width: Length
   height: Length
   center: Point
+  outline?: Point[]
   anchor_position?: Point
   anchor_alignment?:
     | "center"

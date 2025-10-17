@@ -8,6 +8,12 @@ test("pcb_group with anchor_position and anchor_alignment", () => {
     width: 10,
     height: 10,
     center: { x: 0, y: 0 },
+    outline: [
+      { x: -5, y: -5 },
+      { x: 5, y: -5 },
+      { x: 5, y: 5 },
+      { x: -5, y: 5 },
+    ],
     pcb_component_ids: [],
     anchor_position: { x: 5, y: 5 },
     anchor_alignment: "top_left",
@@ -15,4 +21,10 @@ test("pcb_group with anchor_position and anchor_alignment", () => {
 
   expect(group.anchor_position).toEqual({ x: 5, y: 5 })
   expect(group.anchor_alignment).toBe("top_left")
+  expect(group.outline).toEqual([
+    { x: -5, y: -5 },
+    { x: 5, y: -5 },
+    { x: 5, y: 5 },
+    { x: -5, y: 5 },
+  ])
 })
