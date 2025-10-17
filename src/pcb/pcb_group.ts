@@ -10,8 +10,8 @@ export const pcb_group = z
     source_group_id: z.string(),
     is_subcircuit: z.boolean().optional(),
     subcircuit_id: z.string().optional(),
-    width: length,
-    height: length,
+    width: length.optional(),
+    height: length.optional(),
     center: point,
     outline: z.array(point).optional(),
     anchor_position: point.optional(),
@@ -43,8 +43,8 @@ export interface PcbGroup {
   source_group_id: string
   is_subcircuit?: boolean
   subcircuit_id?: string
-  width: Length
-  height: Length
+  width?: Length
+  height?: Length
   center: Point
   outline?: Point[]
   anchor_position?: Point
