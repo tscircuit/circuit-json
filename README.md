@@ -1210,8 +1210,8 @@ interface PcbGroup {
   source_group_id: string
   is_subcircuit?: boolean
   subcircuit_id?: string
-  width: Length
-  height: Length
+  width?: Length
+  height?: Length
   center: Point
   outline?: Point[]
   anchor_position?: Point
