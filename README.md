@@ -110,6 +110,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbNotePath](#pcbnotepath)
     - [PcbNoteRect](#pcbnoterect)
     - [PcbNoteText](#pcbnotetext)
+    - [PcbPanel](#pcbpanel)
     - [PcbPlacementError](#pcbplacementerror)
     - [PcbPlatedHole](#pcbplatedhole)
     - [PcbPort](#pcbport)
@@ -839,6 +840,7 @@ Defines the board outline of the PCB
 interface PcbBoard {
   type: "pcb_board"
   pcb_board_id: string
+  pcb_panel_id?: string
   is_subcircuit?: boolean
   subcircuit_id?: string
   width: Length
@@ -1422,6 +1424,23 @@ interface PcbNoteText {
     | "bottom_left"
     | "bottom_right"
   color?: string
+}
+```
+
+### PcbPanel
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_panel.ts)
+
+Defines a PCB panel that can contain multiple boards
+
+```typescript
+/** Defines a PCB panel that can contain multiple boards */
+interface PcbPanel {
+  type: "pcb_panel"
+  pcb_panel_id: string
+  width: Length
+  height: Length
+  covered_with_solder_mask: boolean
 }
 ```
 
