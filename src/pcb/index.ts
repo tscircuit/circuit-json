@@ -19,6 +19,7 @@ export * from "./pcb_port_not_connected_error"
 export * from "./pcb_net"
 export * from "./pcb_via"
 export * from "./pcb_board"
+export * from "./pcb_panel"
 export * from "./pcb_placement_error"
 export * from "./pcb_trace_hint"
 export * from "./pcb_silkscreen_line"
@@ -71,6 +72,7 @@ import type { PcbPortNotConnectedError } from "./pcb_port_not_connected_error"
 import type { PcbVia } from "./pcb_via"
 import type { PcbNet } from "./pcb_net"
 import type { PcbBoard } from "./pcb_board"
+import type { PcbPanel } from "./pcb_panel"
 import type { PcbPlacementError } from "./pcb_placement_error"
 import type { PcbMissingFootprintError } from "./pcb_missing_footprint_error"
 import type { ExternalFootprintLoadError } from "./external_footprint_load_error"
@@ -123,6 +125,7 @@ export type PcbCircuitElement =
   | PcbVia
   | PcbNet
   | PcbBoard
+  | PcbPanel
   | PcbPlacementError
   | PcbTraceHint
   | PcbSilkscreenLine
