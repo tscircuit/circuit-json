@@ -87,6 +87,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbBoard](#pcbboard)
     - [PcbBreakoutPoint](#pcbbreakoutpoint)
     - [PcbComponent](#pcbcomponent)
+    - [PcbComponentInvalidLayerError](#pcbcomponentinvalidlayererror)
     - [PcbComponentOutsideBoardError](#pcbcomponentoutsideboarderror)
     - [PcbCopperPour](#pcbcopperpour)
     - [PcbCourtyardOutline](#pcbcourtyardoutline)
@@ -892,6 +893,26 @@ interface PcbComponent {
   do_not_place?: boolean
   pcb_group_id?: string
   obstructs_within_bounds: boolean
+}
+```
+
+### PcbComponentInvalidLayerError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_component_invalid_layer_error.ts)
+
+Error emitted when a component is placed on an invalid layer (components can only be on 'top' or 'bottom' layers)
+
+```typescript
+/** Error emitted when a component is placed on an invalid layer (components can only be on 'top' or 'bottom' layers) */
+interface PcbComponentInvalidLayerError {
+  type: "pcb_component_invalid_layer_error"
+  pcb_component_invalid_layer_error_id: string
+  error_type: "pcb_component_invalid_layer_error"
+  message: string
+  pcb_component_id?: string
+  source_component_id: string
+  layer: LayerRef
+  subcircuit_id?: string
 }
 ```
 
