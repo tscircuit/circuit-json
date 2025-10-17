@@ -1213,6 +1213,7 @@ interface PcbGroup {
   width: Length
   height: Length
   center: Point
+  outline?: Point[]
   anchor_position?: Point
   anchor_alignment?:
     | "center"
