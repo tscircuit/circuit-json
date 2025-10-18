@@ -2463,6 +2463,7 @@ interface SimulationExperiment {
 interface SimulationSwitch {
   type: "simulation_switch"
   simulation_switch_id: string
+  source_component_id?: string
   closes_at?: number
   opens_at?: number
   starts_closed?: boolean

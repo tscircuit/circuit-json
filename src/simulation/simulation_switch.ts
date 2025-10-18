@@ -7,6 +7,7 @@ export const simulation_switch = z
   .object({
     type: z.literal("simulation_switch"),
     simulation_switch_id: getZodPrefixedIdWithDefault("simulation_switch"),
+    source_component_id: z.string().optional(),
     closes_at: ms.optional(),
     opens_at: ms.optional(),
     starts_closed: z.boolean().optional(),
@@ -21,6 +22,7 @@ type InferredSimulationSwitch = z.infer<typeof simulation_switch>
 export interface SimulationSwitch {
   type: "simulation_switch"
   simulation_switch_id: string
+  source_component_id?: string
   closes_at?: number
   opens_at?: number
   starts_closed?: boolean
