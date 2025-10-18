@@ -36,4 +36,18 @@ test("simulation_switch allows minimal definition", () => {
   expect(simSwitch.opens_at).toBeUndefined()
   expect(simSwitch.starts_closed).toBeUndefined()
   expect(simSwitch.switching_frequency).toBeUndefined()
+  expect(simSwitch.source_component_id).toBeUndefined()
+})
+
+test("simulation_switch with source_component_id", () => {
+  const input: SimulationSwitchInput = {
+    type: "simulation_switch",
+    source_component_id: "component1",
+  }
+
+  const result = simulation_switch.parse(input)
+  const simSwitch = result as SimulationSwitch
+
+  expect(simSwitch.source_component_id).toBe("component1")
+  expect(simSwitch.simulation_switch_id).toBeString()
 })
