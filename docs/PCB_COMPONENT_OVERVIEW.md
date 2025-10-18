@@ -361,10 +361,6 @@ export interface PcbCourtyardRect {
   width: Length
   height: Length
   layer: VisibleLayer
-  stroke_width: Length
-  is_filled?: boolean
-  has_stroke?: boolean
-  is_stroke_dashed?: boolean
   color?: string
 }
 

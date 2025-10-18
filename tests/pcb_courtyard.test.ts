@@ -10,16 +10,13 @@ test("parse courtyard rect", () => {
     width: 3,
     height: 4,
     layer: "bottom",
-    is_filled: false,
-    has_stroke: true,
-    is_stroke_dashed: true,
   })
 
   expect(rect.layer).toBe("bottom")
-  expect(rect.stroke_width).toBeCloseTo(0.1)
-  expect(rect.is_filled).toBe(false)
-  expect(rect.has_stroke).toBe(true)
-  expect(rect.is_stroke_dashed).toBe(true)
+  expect(rect).not.toHaveProperty("stroke_width")
+  expect(rect).not.toHaveProperty("is_filled")
+  expect(rect).not.toHaveProperty("has_stroke")
+  expect(rect).not.toHaveProperty("is_stroke_dashed")
 })
 
 test("parse courtyard outline", () => {
