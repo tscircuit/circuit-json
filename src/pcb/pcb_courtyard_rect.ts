@@ -15,10 +15,6 @@ export const pcb_courtyard_rect = z
     width: length,
     height: length,
     layer: visible_layer,
-    stroke_width: length.default("0.1mm"),
-    is_filled: z.boolean().optional(),
-    has_stroke: z.boolean().optional(),
-    is_stroke_dashed: z.boolean().optional(),
     color: z.string().optional(),
   })
   .describe("Defines a courtyard rectangle on the PCB")
@@ -39,10 +35,6 @@ export interface PcbCourtyardRect {
   width: Length
   height: Length
   layer: VisibleLayer
-  stroke_width: Length
-  is_filled?: boolean
-  has_stroke?: boolean
-  is_stroke_dashed?: boolean
   color?: string
 }
 
