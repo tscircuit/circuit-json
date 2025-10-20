@@ -1008,10 +1008,6 @@ interface PcbCourtyardPolygon {
   subcircuit_id?: string
   layer: VisibleLayer
   points: Point[]
-  stroke_width: Length
-  is_filled?: boolean
-  has_stroke?: boolean
-  is_stroke_dashed?: boolean
   color?: string
 }
 ```

@@ -48,11 +48,12 @@ test("parse courtyard polygon", () => {
       { x: 2, y: 0 },
       { x: 1, y: 1 },
     ],
-    is_filled: true,
   })
 
   expect(polygon.layer).toBe("top")
   expect(polygon.points).toHaveLength(3)
-  expect(polygon.is_filled).toBe(true)
-  expect(polygon.stroke_width).toBeCloseTo(0.1)
+  expect(polygon).not.toHaveProperty("is_filled")
+  expect(polygon).not.toHaveProperty("stroke_width")
+  expect(polygon).not.toHaveProperty("has_stroke")
+  expect(polygon).not.toHaveProperty("is_stroke_dashed")
 })
