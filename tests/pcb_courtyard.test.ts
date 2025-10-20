@@ -1,6 +1,7 @@
 import { expect, test } from "bun:test"
 import { pcb_courtyard_rect } from "../src/pcb/pcb_courtyard_rect"
 import { pcb_courtyard_outline } from "../src/pcb/pcb_courtyard_outline"
+import { pcb_courtyard_polygon } from "../src/pcb/pcb_courtyard_polygon"
 
 test("parse courtyard rect", () => {
   const rect = pcb_courtyard_rect.parse({
@@ -35,4 +36,23 @@ test("parse courtyard outline", () => {
   expect(outline.layer).toBe("top")
   expect(outline.outline).toHaveLength(3)
   expect(outline.is_closed).toBe(false)
+})
+
+test("parse courtyard polygon", () => {
+  const polygon = pcb_courtyard_polygon.parse({
+    type: "pcb_courtyard_polygon",
+    pcb_component_id: "pcb_component_3",
+    layer: "top",
+    points: [
+      { x: 0, y: 0 },
+      { x: 2, y: 0 },
+      { x: 1, y: 1 },
+    ],
+    is_filled: true,
+  })
+
+  expect(polygon.layer).toBe("top")
+  expect(polygon.points).toHaveLength(3)
+  expect(polygon.is_filled).toBe(true)
+  expect(polygon.stroke_width).toBeCloseTo(0.1)
 })

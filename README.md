@@ -91,6 +91,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbComponentOutsideBoardError](#pcbcomponentoutsideboarderror)
     - [PcbCopperPour](#pcbcopperpour)
     - [PcbCourtyardOutline](#pcbcourtyardoutline)
+    - [PcbCourtyardPolygon](#pcbcourtyardpolygon)
     - [PcbCourtyardRect](#pcbcourtyardrect)
     - [PcbCutout](#pcbcutout)
     - [PcbFabricationNoteDimension](#pcbfabricationnotedimension)
@@ -986,6 +987,30 @@ interface PcbCourtyardOutline {
   outline: Point[]
   stroke_width: Length
   is_closed?: boolean
+  is_stroke_dashed?: boolean
+  color?: string
+}
+```
+
+### PcbCourtyardPolygon
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_courtyard_polygon.ts)
+
+Defines a courtyard polygon on the PCB
+
+```typescript
+/** Defines a courtyard polygon on the PCB */
+interface PcbCourtyardPolygon {
+  type: "pcb_courtyard_polygon"
+  pcb_courtyard_polygon_id: string
+  pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  layer: VisibleLayer
+  points: Point[]
+  stroke_width: Length
+  is_filled?: boolean
+  has_stroke?: boolean
   is_stroke_dashed?: boolean
   color?: string
 }

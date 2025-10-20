@@ -378,6 +378,21 @@ export interface PcbCourtyardOutline {
   color?: string
 }
 
+export interface PcbCourtyardPolygon {
+  type: "pcb_courtyard_polygon"
+  pcb_courtyard_polygon_id: string
+  pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  layer: VisibleLayer
+  points: Point[]
+  stroke_width: Length
+  is_filled?: boolean
+  has_stroke?: boolean
+  is_stroke_dashed?: boolean
+  color?: string
+}
+
 export interface PcbSilkscreenPath {
   type: "pcb_silkscreen_path"
   pcb_silkscreen_path_id: string
