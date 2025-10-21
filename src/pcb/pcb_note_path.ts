@@ -10,6 +10,8 @@ export const pcb_note_path = z
     pcb_component_id: z.string().optional(),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
+    name: z.string().optional(),
+    text: z.string().optional(),
     route: z.array(point),
     stroke_width: length.default("0.1mm"),
     color: z.string().optional(),
@@ -28,6 +30,8 @@ export interface PcbNotePath {
   pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
+  name?: string
+  text?: string
   route: Point[]
   stroke_width: Length
   color?: string

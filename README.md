@@ -1338,6 +1338,7 @@ interface PcbNoteDimension {
   pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
+  name?: string
   from: Point
   to: Point
   text?: string
@@ -1362,6 +1363,8 @@ interface PcbNoteLine {
   pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
+  name?: string
+  text?: string
   x1: Distance
   y1: Distance
   x2: Distance
@@ -1386,6 +1389,8 @@ interface PcbNotePath {
   pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
+  name?: string
+  text?: string
   route: Point[]
   stroke_width: Length
   color?: string
@@ -1406,6 +1411,8 @@ interface PcbNoteRect {
   pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
+  name?: string
+  text?: string
   center: Point
   width: Length
   height: Length
@@ -1431,9 +1438,10 @@ interface PcbNoteText {
   pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
+  name?: string
   font: "tscircuit2024"
   font_size: Length
-  text: string
+  text?: string
   anchor_position: Point
   anchor_alignment:
     | "center"

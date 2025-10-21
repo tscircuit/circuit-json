@@ -10,6 +10,7 @@ export const pcb_note_dimension = z
     pcb_component_id: z.string().optional(),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
+    name: z.string().optional(),
     from: point,
     to: point,
     text: z.string().optional(),
@@ -32,6 +33,7 @@ export interface PcbNoteDimension {
   pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
+  name?: string
   from: Point
   to: Point
   text?: string

@@ -10,6 +10,8 @@ export const pcb_note_line = z
     pcb_component_id: z.string().optional(),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
+    name: z.string().optional(),
+    text: z.string().optional(),
     x1: distance,
     y1: distance,
     x2: distance,
@@ -32,6 +34,8 @@ export interface PcbNoteLine {
   pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
+  name?: string
+  text?: string
   x1: Distance
   y1: Distance
   x2: Distance

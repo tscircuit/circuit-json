@@ -10,6 +10,8 @@ export const pcb_note_rect = z
     pcb_component_id: z.string().optional(),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
+    name: z.string().optional(),
+    text: z.string().optional(),
     center: point,
     width: length,
     height: length,
@@ -33,6 +35,8 @@ export interface PcbNoteRect {
   pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
+  name?: string
+  text?: string
   center: Point
   width: Length
   height: Length
