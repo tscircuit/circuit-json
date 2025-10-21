@@ -10,9 +10,10 @@ export const pcb_note_text = z
     pcb_component_id: z.string().optional(),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
+    name: z.string().optional(),
     font: z.literal("tscircuit2024").default("tscircuit2024"),
     font_size: distance.default("1mm"),
-    text: z.string(),
+    text: z.string().optional(),
     anchor_position: point.default({ x: 0, y: 0 }),
     anchor_alignment: z
       .enum(["center", "top_left", "top_right", "bottom_left", "bottom_right"])
@@ -33,9 +34,10 @@ export interface PcbNoteText {
   pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
+  name?: string
   font: "tscircuit2024"
   font_size: Length
-  text: string
+  text?: string
   anchor_position: Point
   anchor_alignment:
     | "center"

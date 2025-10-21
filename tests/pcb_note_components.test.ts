@@ -22,11 +22,15 @@ test("pcb note rect defaults", () => {
     center: { x: "10mm", y: "5mm" },
     width: "4mm",
     height: "2mm",
+    name: "Keepout",
+    text: "Do not place vias",
   })
 
   expect(rect.stroke_width).toBeCloseTo(0.1)
   expect(rect.center.x).toBeCloseTo(10)
   expect(rect.center.y).toBeCloseTo(5)
+  expect(rect.name).toBe("Keepout")
+  expect(rect.text).toBe("Do not place vias")
 })
 
 test("pcb note path defaults", () => {
@@ -36,10 +40,14 @@ test("pcb note path defaults", () => {
       { x: 0, y: 0 },
       { x: "2mm", y: "1mm" },
     ],
+    name: "Route outline",
+    text: "Follow this path",
   })
 
   expect(path.stroke_width).toBeCloseTo(0.1)
   expect(path.route[1]!.x).toBeCloseTo(2)
+  expect(path.name).toBe("Route outline")
+  expect(path.text).toBe("Follow this path")
 })
 
 test("pcb note line defaults", () => {
@@ -49,11 +57,15 @@ test("pcb note line defaults", () => {
     y1: 0,
     x2: "1mm",
     y2: "2mm",
+    name: "Edge guide",
+    text: "Align connector",
   })
 
   expect(line.stroke_width).toBeCloseTo(0.1)
   expect(line.x2).toBeCloseTo(1)
   expect(line.y2).toBeCloseTo(2)
+  expect(line.name).toBe("Edge guide")
+  expect(line.text).toBe("Align connector")
 })
 
 test("pcb note dimension defaults", () => {
@@ -61,9 +73,23 @@ test("pcb note dimension defaults", () => {
     type: "pcb_note_dimension",
     from: { x: 0, y: 0 },
     to: { x: "10mm", y: 0 },
+    name: "Width",
+    text: "10mm",
   })
 
   expect(dimension.font_size).toBeCloseTo(1)
   expect(dimension.arrow_size).toBeCloseTo(1)
   expect(dimension.to.x).toBeCloseTo(10)
+  expect(dimension.name).toBe("Width")
+  expect(dimension.text).toBe("10mm")
+})
+
+test("pcb note text allows optional name and text", () => {
+  const note = pcb_note_text.parse({
+    type: "pcb_note_text",
+    name: "Callout",
+  })
+
+  expect(note.name).toBe("Callout")
+  expect(note.text).toBeUndefined()
 })
