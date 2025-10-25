@@ -18,6 +18,13 @@ export const pcb_fabrication_note_dimension = z
     to: point,
     text: z.string().optional(),
     offset: length.optional(),
+    offset_distance: length.optional(),
+    offset_direction: z
+      .object({
+        x: z.number(),
+        y: z.number(),
+      })
+      .optional(),
     font: z.literal("tscircuit2024").default("tscircuit2024"),
     font_size: length.default("1mm"),
     color: z.string().optional(),
@@ -46,6 +53,11 @@ export interface PcbFabricationNoteDimension {
   to: Point
   text?: string
   offset?: Length
+  offset_distance?: Length
+  offset_direction?: {
+    x: number
+    y: number
+  }
   font: "tscircuit2024"
   font_size: Length
   color?: string
