@@ -8,6 +8,7 @@ import type {
   PcbComponentOutsideBoardError,
 } from "src/pcb"
 import type { SchematicError } from "src/schematic"
+import type { UnknownErrorFindingPart } from "src/source"
 
 export type CircuitJsonError =
   | PcbTraceError
@@ -18,3 +19,4 @@ export type CircuitJsonError =
   | PcbMissingFootprintError
   | PcbComponentOutsideBoardError
   | SchematicError
+  | UnknownErrorFindingPart
