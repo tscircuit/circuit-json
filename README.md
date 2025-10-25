@@ -1093,6 +1093,11 @@ interface PcbFabricationNoteDimension {
   to: Point
   text?: string
   offset?: Length
+  offset_distance?: Length
+  offset_direction?: {
+    x: number
+    y: number
+  }
   font: "tscircuit2024"
   font_size: Length
   color?: string
@@ -1361,6 +1366,11 @@ interface PcbNoteDimension {
   from: Point
   to: Point
   text?: string
+  offset_distance?: Length
+  offset_direction?: {
+    x: number
+    y: number
+  }
   font: "tscircuit2024"
   font_size: Length
   color?: string
