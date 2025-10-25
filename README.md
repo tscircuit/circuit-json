@@ -80,6 +80,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceSimpleTransistor](#sourcesimpletransistor)
     - [SourceTrace](#sourcetrace)
     - [SourceTraceNotConnectedError](#sourcetracenotconnectederror)
+    - [UnknownErrorFindingPart](#unknownerrorfindingpart)
   - [CAD Components](#cad-components)
     - [CadComponent](#cadcomponent)
   - [PCB Elements](#pcb-elements)
@@ -781,6 +782,24 @@ interface SourceTraceNotConnectedError {
   source_trace_id?: string
   connected_source_port_ids?: string[]
   selectors_not_found?: string[]
+}
+```
+
+### UnknownErrorFindingPart
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/unknown_error_finding_part.ts)
+
+```typescript
+/** Error emitted when an unexpected error occurs while finding a part.
+ * This includes cases where the API returns HTML instead of JSON,
+ * network failures, or other unexpected responses. */
+interface UnknownErrorFindingPart {
+  type: "unknown_error_finding_part"
+  unknown_error_finding_part_id: string
+  error_type: "unknown_error_finding_part"
+  message: string
+  source_component_id?: string
+  subcircuit_id?: string
 }
 ```
 
