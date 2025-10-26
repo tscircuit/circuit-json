@@ -91,6 +91,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbComponentInvalidLayerError](#pcbcomponentinvalidlayererror)
     - [PcbComponentOutsideBoardError](#pcbcomponentoutsideboarderror)
     - [PcbCopperPour](#pcbcopperpour)
+    - [PcbCopperText](#pcbcoppertext)
     - [PcbCourtyardOutline](#pcbcourtyardoutline)
     - [PcbCourtyardPolygon](#pcbcourtyardpolygon)
     - [PcbCourtyardRect](#pcbcourtyardrect)
@@ -126,7 +127,6 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbSilkscreenPill](#pcbsilkscreenpill)
     - [PcbSilkscreenRect](#pcbsilkscreenrect)
     - [PcbSilkscreenText](#pcbsilkscreentext)
-    - [PcbCopperText](#pcbcoppertext)
     - [PcbSolderPaste](#pcbsolderpaste)
     - [PcbText](#pcbtext)
     - [PcbThermalSpoke](#pcbthermalspoke)
@@ -989,6 +989,38 @@ interface PcbCopperPourRect {
 }
 ```
 
+### PcbCopperText
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_copper_text.ts)
+
+Defines copper text on the PCB
+
+```typescript
+/** Defines copper text on the PCB */
+interface PcbCopperText {
+  type: "pcb_copper_text"
+  pcb_copper_text_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  font: "tscircuit2024"
+  font_size: Length
+  pcb_component_id: string
+  text: string
+  is_knockout?: boolean
+  knockout_padding?: {
+    left: Length
+    top: Length
+    bottom: Length
+    right: Length
+  }
+  ccw_rotation?: number
+  layer: LayerRef
+  is_mirrored?: boolean
+  anchor_position: Point
+  anchor_alignment: NinePointAnchor
+}
+```
+
 ### PcbCourtyardOutline
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_courtyard_outline.ts)
@@ -1830,38 +1862,6 @@ Defines silkscreen text on the PCB
 interface PcbSilkscreenText {
   type: "pcb_silkscreen_text"
   pcb_silkscreen_text_id: string
-  pcb_group_id?: string
-  subcircuit_id?: string
-  font: "tscircuit2024"
-  font_size: Length
-  pcb_component_id: string
-  text: string
-  is_knockout?: boolean
-  knockout_padding?: {
-    left: Length
-    top: Length
-    bottom: Length
-    right: Length
-  }
-  ccw_rotation?: number
-  layer: LayerRef
-  is_mirrored?: boolean
-  anchor_position: Point
-  anchor_alignment: NinePointAnchor
-}
-```
-
-### PcbCopperText
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_copper_text.ts)
-
-Defines copper text on the PCB
-
-```typescript
-/** Defines copper text on the PCB */
-interface PcbCopperText {
-  type: "pcb_copper_text"
-  pcb_copper_text_id: string
   pcb_group_id?: string
   subcircuit_id?: string
   font: "tscircuit2024"
