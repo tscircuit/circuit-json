@@ -276,6 +276,7 @@ export interface PcbNoteDimension {
   from: Point
   to: Point
   text?: string
+  text_ccw_rotation?: number
   font: "tscircuit2024"
   font_size: Length
   color?: string

@@ -1092,6 +1092,7 @@ interface PcbFabricationNoteDimension {
   from: Point
   to: Point
   text?: string
+  text_ccw_rotation?: number
   offset?: Length
   offset_distance?: Length
   offset_direction?: {
@@ -1366,6 +1367,7 @@ interface PcbNoteDimension {
   from: Point
   to: Point
   text?: string
+  text_ccw_rotation?: number
   offset_distance?: Length
   offset_direction?: {
     x: number
