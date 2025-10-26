@@ -97,6 +97,24 @@ export interface PcbSilkscreenText {
     | "bottom_right"
 }
 
+export interface PcbCopperText {
+  type: "pcb_copper_text"
+  pcb_copper_text_id: string
+  font: "tscircuit2024"
+  font_size: Length
+  pcb_component_id: string
+  text: string
+  layer: LayerRef
+  is_mirrored?: boolean
+  anchor_position: Point
+  anchor_alignment:
+    | "center"
+    | "top_left"
+    | "top_right"
+    | "bottom_left"
+    | "bottom_right"
+}
+
 export interface PcbTraceError {
   type: "pcb_trace_error"
   pcb_trace_error_id: string
