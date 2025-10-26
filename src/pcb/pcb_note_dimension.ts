@@ -14,6 +14,7 @@ export const pcb_note_dimension = z
     from: point,
     to: point,
     text: z.string().optional(),
+    text_ccw_rotation: z.number().optional(),
     offset_distance: length.optional(),
     offset_direction: z
       .object({
@@ -44,6 +45,7 @@ export interface PcbNoteDimension {
   from: Point
   to: Point
   text?: string
+  text_ccw_rotation?: number
   offset_distance?: Length
   offset_direction?: {
     x: number
