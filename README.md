@@ -426,7 +426,8 @@ interface SourcePort {
   port_hints?: string[]
   name: string
   source_port_id: string
-  source_component_id: string
+  source_component_id?: string
+  source_group_id?: string
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
 }
@@ -1660,7 +1661,7 @@ interface PcbPort {
   pcb_group_id?: string
   subcircuit_id?: string
   source_port_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   x: Distance
   y: Distance
   layers: LayerRef[]

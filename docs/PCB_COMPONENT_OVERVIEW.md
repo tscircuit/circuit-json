@@ -481,7 +481,7 @@ export interface PcbPort {
   type: "pcb_port"
   pcb_port_id: string
   source_port_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   x: Distance
   y: Distance
   layers: LayerRef[]

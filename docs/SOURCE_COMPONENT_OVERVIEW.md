@@ -118,7 +118,8 @@ interface SourcePort {
   port_hints?: string[]
   name: string
   source_port_id: string
-  source_component_id: string
+  source_component_id?: string
+  source_group_id?: string
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
 }
