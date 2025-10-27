@@ -11,7 +11,7 @@ export const pcb_port = z
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     source_port_id: z.string(),
-    pcb_component_id: z.string(),
+    pcb_component_id: z.string().optional(),
     x: distance,
     y: distance,
     layers: z.array(layer_ref),
@@ -31,7 +31,7 @@ export interface PcbPort {
   pcb_group_id?: string
   subcircuit_id?: string
   source_port_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   x: Distance
   y: Distance
   layers: LayerRef[]

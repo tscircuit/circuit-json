@@ -7,7 +7,8 @@ export const source_port = z.object({
   port_hints: z.array(z.string()).optional(),
   name: z.string(),
   source_port_id: z.string(),
-  source_component_id: z.string(),
+  source_component_id: z.string().optional(),
+  source_group_id: z.string().optional(),
   subcircuit_id: z.string().optional(),
   subcircuit_connectivity_map_key: z.string().optional(),
 })
@@ -24,7 +25,8 @@ export interface SourcePort {
   port_hints?: string[]
   name: string
   source_port_id: string
-  source_component_id: string
+  source_component_id?: string
+  source_group_id?: string
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
 }
