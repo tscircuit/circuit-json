@@ -151,6 +151,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicPath](#schematicpath)
     - [SchematicPort](#schematicport)
     - [SchematicRect](#schematicrect)
+    - [SchematicSheet](#schematicsheet)
     - [SchematicTable](#schematictable)
     - [SchematicTableCell](#schematictablecell)
     - [SchematicText](#schematictext)
@@ -2421,6 +2422,22 @@ interface SchematicRect {
   is_filled: boolean
   fill_color?: string
   is_dashed: boolean
+  subcircuit_id?: string
+}
+```
+
+### SchematicSheet
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_sheet.ts)
+
+Defines a schematic sheet or page that components can be placed on.
+
+```typescript
+/** Defines a schematic sheet or page that components can be placed on. */
+interface SchematicSheet {
+  type: "schematic_sheet"
+  schematic_sheet_id: string
+  name?: string
   subcircuit_id?: string
 }
 ```
