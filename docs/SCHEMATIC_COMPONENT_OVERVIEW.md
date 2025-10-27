@@ -37,6 +37,13 @@ interface SchematicBox {
   y: number
 }
 
+interface SchematicSheet {
+  type: "schematic_sheet"
+  schematic_sheet_id: string
+  name?: string
+  subcircuit_id?: string
+}
+
 interface SchematicLine {
   type: "schematic_line"
   schematic_line_id: string
