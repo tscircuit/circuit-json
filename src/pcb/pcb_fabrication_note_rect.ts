@@ -16,6 +16,7 @@ export const pcb_fabrication_note_rect = z
     center: point,
     width: length,
     height: length,
+    corner_radius: length.optional(),
     layer: visible_layer,
     stroke_width: length.default("0.1mm"),
     is_filled: z.boolean().optional(),
@@ -42,6 +43,7 @@ export interface PcbFabricationNoteRect {
   center: Point
   width: Length
   height: Length
+  corner_radius?: Length
   layer: VisibleLayer
   stroke_width: Length
   is_filled?: boolean

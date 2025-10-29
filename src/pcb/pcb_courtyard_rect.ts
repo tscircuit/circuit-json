@@ -14,6 +14,7 @@ export const pcb_courtyard_rect = z
     center: point,
     width: length,
     height: length,
+    corner_radius: length.optional(),
     layer: visible_layer,
     color: z.string().optional(),
   })
@@ -34,6 +35,7 @@ export interface PcbCourtyardRect {
   center: Point
   width: Length
   height: Length
+  corner_radius?: Length
   layer: VisibleLayer
   color?: string
 }

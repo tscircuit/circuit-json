@@ -14,6 +14,7 @@ export const pcb_silkscreen_rect = z
     center: point,
     width: length,
     height: length,
+    corner_radius: length.optional(),
     layer: layer_ref,
     stroke_width: length.default("1mm"),
     is_filled: z.boolean().default(true).optional(),
@@ -37,6 +38,7 @@ export interface PcbSilkscreenRect {
   center: Point
   width: Length
   height: Length
+  corner_radius?: Length
   layer: LayerRef
   stroke_width: Length
   is_filled?: boolean

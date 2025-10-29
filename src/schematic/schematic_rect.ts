@@ -12,6 +12,7 @@ export interface SchematicRect {
   center: Point
   width: number
   height: number
+  corner_radius?: number
   rotation: number
   stroke_width?: number | null
   color: string
@@ -29,6 +30,7 @@ export const schematic_rect = z
     center: point,
     width: distance,
     height: distance,
+    corner_radius: distance.optional(),
     rotation: rotation.default(0),
     stroke_width: distance.nullable().optional(),
     color: z.string().default("#000000"),
