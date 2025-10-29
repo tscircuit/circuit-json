@@ -1180,6 +1180,7 @@ interface PcbFabricationNoteRect {
   height: Length
   layer: VisibleLayer
   stroke_width: Length
+  corner_radius?: Length
   is_filled?: boolean
   has_stroke?: boolean
   is_stroke_dashed?: boolean
@@ -1483,6 +1484,7 @@ interface PcbNoteRect {
   width: Length
   height: Length
   stroke_width: Length
+  corner_radius?: Length
   is_filled?: boolean
   has_stroke?: boolean
   is_stroke_dashed?: boolean
@@ -1847,6 +1849,7 @@ interface PcbSilkscreenRect {
   height: Length
   layer: LayerRef
   stroke_width: Length
+  corner_radius?: Length
   is_filled?: boolean
   has_stroke?: boolean
   is_stroke_dashed?: boolean
