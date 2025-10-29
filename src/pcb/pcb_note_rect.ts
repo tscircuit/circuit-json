@@ -16,6 +16,7 @@ export const pcb_note_rect = z
     width: length,
     height: length,
     stroke_width: length.default("0.1mm"),
+    corner_radius: length.optional(),
     is_filled: z.boolean().optional(),
     has_stroke: z.boolean().optional(),
     is_stroke_dashed: z.boolean().optional(),
@@ -41,6 +42,7 @@ export interface PcbNoteRect {
   width: Length
   height: Length
   stroke_width: Length
+  corner_radius?: Length
   is_filled?: boolean
   has_stroke?: boolean
   is_stroke_dashed?: boolean
