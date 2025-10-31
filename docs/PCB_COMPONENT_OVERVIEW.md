@@ -458,6 +458,8 @@ export interface PcbVia {
   hole_diameter: Distance
   layers: LayerRef[]
   pcb_trace_id?: string
+  net_is_assignable?: boolean
+  net_assigned?: boolean
 }
 
 export interface PcbSilkscreenOval {

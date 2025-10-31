@@ -20,6 +20,8 @@ export const pcb_via = z
     to_layer: layer_ref.optional(),
     layers: z.array(layer_ref),
     pcb_trace_id: z.string().optional(),
+    net_is_assignable: z.boolean().optional(),
+    net_assigned: z.boolean().optional(),
   })
   .describe("Defines a via on the PCB")
 
@@ -44,6 +46,8 @@ export interface PcbVia {
   to_layer?: LayerRef
   layers: LayerRef[]
   pcb_trace_id?: string
+  net_is_assignable?: boolean
+  net_assigned?: boolean
 }
 
 /**
