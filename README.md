@@ -980,6 +980,7 @@ Defines a rectangular copper pour on the PCB.
 interface PcbCopperPourRect {
   type: "pcb_copper_pour"
   pcb_copper_pour_id: string
+  covered_with_solder_mask: boolean
   pcb_group_id?: string
   subcircuit_id?: string
   layer: LayerRef
