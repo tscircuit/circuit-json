@@ -13,6 +13,7 @@ const pcb_copper_pour_base = z.object({
   subcircuit_id: z.string().optional(),
   layer: layer_ref,
   source_net_id: z.string().optional(),
+  covered_with_solder_mask: z.boolean().optional().default(true),
 })
 
 // Rectangular Pour
@@ -31,6 +32,7 @@ type InferredPcbCopperPourRect = z.infer<typeof pcb_copper_pour_rect>
 export interface PcbCopperPourRect {
   type: "pcb_copper_pour"
   pcb_copper_pour_id: string
+  covered_with_solder_mask: boolean
   pcb_group_id?: string
   subcircuit_id?: string
   layer: LayerRef
@@ -56,6 +58,7 @@ type InferredPcbCopperPourBRep = z.infer<typeof pcb_copper_pour_brep>
 export interface PcbCopperPourBRep {
   type: "pcb_copper_pour"
   pcb_copper_pour_id: string
+  covered_with_solder_mask: boolean
   pcb_group_id?: string
   subcircuit_id?: string
   layer: LayerRef
@@ -79,6 +82,7 @@ type InferredPcbCopperPourPolygon = z.infer<typeof pcb_copper_pour_polygon>
 export interface PcbCopperPourPolygon {
   type: "pcb_copper_pour"
   pcb_copper_pour_id: string
+  covered_with_solder_mask: boolean
   pcb_group_id?: string
   subcircuit_id?: string
   layer: LayerRef
