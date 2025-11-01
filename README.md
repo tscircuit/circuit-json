@@ -2060,6 +2060,8 @@ interface PcbVia {
   to_layer?: LayerRef
   layers: LayerRef[]
   pcb_trace_id?: string
+  net_is_assignable?: boolean
+  net_assigned?: boolean
 }
 ```
 
