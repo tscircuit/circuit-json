@@ -161,6 +161,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationExperiment](#simulationexperiment)
     - [SimulationSwitch](#simulationswitch)
     - [SimulationTransientVoltageGraph](#simulationtransientvoltagegraph)
+    - [SimulationUnknownExperimentError](#simulationunknownexperimenterror)
     - [SimulationVoltageProbe](#simulationvoltageprobe)
     - [SimulationVoltageSource](#simulationvoltagesource)
 
@@ -2603,6 +2604,24 @@ interface SimulationTransientVoltageGraph {
   start_time_ms: number
   end_time_ms: number
   name?: string
+}
+```
+
+### SimulationUnknownExperimentError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_unknown_experiment_error.ts)
+
+An unknown error occurred during the simulation experiment.
+
+```typescript
+/** An unknown error occurred during the simulation experiment. */
+interface SimulationUnknownExperimentError {
+  type: "simulation_unknown_experiment_error"
+  simulation_unknown_experiment_error_id: string
+  error_type: "simulation_unknown_experiment_error"
+  message: string
+  simulation_experiment_id?: string
+  subcircuit_id?: string
 }
 ```
 
