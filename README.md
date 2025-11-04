@@ -918,6 +918,8 @@ interface PcbComponent {
   height: Length
   do_not_place?: boolean
   pcb_group_id?: string
+  position_mode?: "packed" | "relative_to_group_anchor" | "none"
+  positioned_relative_to_pcb_group_id?: string
   obstructs_within_bounds: boolean
 }
 ```
@@ -1302,6 +1304,7 @@ interface PcbGroup {
     | "bottom_left"
     | "bottom_right"
   pcb_component_ids: string[]
+  child_layout_mode?: "packed" | "none"
   name?: string
   description?: string
   layout_mode?: string
