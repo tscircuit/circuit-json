@@ -17,6 +17,10 @@ export const pcb_component = z
     do_not_place: z.boolean().optional(),
     subcircuit_id: z.string().optional(),
     pcb_group_id: z.string().optional(),
+    position_mode: z
+      .enum(["packed", "relative_to_group_anchor", "none"])
+      .optional(),
+    positioned_relative_to_pcb_group_id: z.string().optional(),
     obstructs_within_bounds: z
       .boolean()
       .default(true)
@@ -44,6 +48,8 @@ export interface PcbComponent {
   height: Length
   do_not_place?: boolean
   pcb_group_id?: string
+  position_mode?: "packed" | "relative_to_group_anchor" | "none"
+  positioned_relative_to_pcb_group_id?: string
   obstructs_within_bounds: boolean
 }
 

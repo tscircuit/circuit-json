@@ -19,6 +19,7 @@ export const pcb_group = z
       .enum(["center", "top_left", "top_right", "bottom_left", "bottom_right"])
       .optional(),
     pcb_component_ids: z.array(z.string()),
+    child_layout_mode: z.enum(["packed", "none"]).optional(),
     name: z.string().optional(),
     description: z.string().optional(),
     layout_mode: z.string().optional(),
@@ -55,6 +56,7 @@ export interface PcbGroup {
     | "bottom_left"
     | "bottom_right"
   pcb_component_ids: string[]
+  child_layout_mode?: "packed" | "none"
   name?: string
   description?: string
   layout_mode?: string
