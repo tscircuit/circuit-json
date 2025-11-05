@@ -10,8 +10,8 @@ export const pcb_board = z
     pcb_panel_id: z.string().optional(),
     is_subcircuit: z.boolean().optional(),
     subcircuit_id: z.string().optional(),
-    width: length,
-    height: length,
+    width: length.optional(),
+    height: length.optional(),
     center: point,
     thickness: length.optional().default(1.4),
     num_layers: z.number().optional().default(4),
@@ -29,8 +29,8 @@ export interface PcbBoard {
   pcb_panel_id?: string
   is_subcircuit?: boolean
   subcircuit_id?: string
-  width: Length
-  height: Length
+  width?: Length
+  height?: Length
   thickness: Length
   num_layers: number
   center: Point
