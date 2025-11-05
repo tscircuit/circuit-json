@@ -867,8 +867,8 @@ interface PcbBoard {
   pcb_panel_id?: string
   is_subcircuit?: boolean
   subcircuit_id?: string
-  width: Length
-  height: Length
+  width?: Length
+  height?: Length
   thickness: Length
   num_layers: number
   center: Point
