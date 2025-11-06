@@ -36,7 +36,7 @@ export interface PcbBoard {
   num_layers: number
   center: Point
   outline?: Point[]
-  shape?: "rectangular" | "outlined"
+  shape?: "rect" | "polygon"
   material: "fr4" | "fr1"
 }
 

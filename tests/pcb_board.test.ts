@@ -50,24 +50,24 @@ test("pcb_board can have both width/height and outline", () => {
   expect(board.outline?.length).toBe(4)
 })
 
-test("pcb_board with shape rectangular", () => {
+test("pcb_board with shape rect", () => {
   const board = pcb_board.parse({
     type: "pcb_board",
-    shape: "rectangular",
+    shape: "rect",
     width: "10mm",
     height: "20mm",
     center: { x: 0, y: 0 },
   })
 
-  expect(board.shape).toBe("rectangular")
+  expect(board.shape).toBe("rect")
   expect(board.width).toBe(10)
   expect(board.height).toBe(20)
 })
 
-test("pcb_board with shape outlined", () => {
+test("pcb_board with shape polygon", () => {
   const board = pcb_board.parse({
     type: "pcb_board",
-    shape: "outlined",
+    shape: "polygon",
     center: { x: 0, y: 0 },
     outline: [
       { x: 0, y: 0 },
@@ -77,7 +77,7 @@ test("pcb_board with shape outlined", () => {
     ],
   })
 
-  expect(board.shape).toBe("outlined")
+  expect(board.shape).toBe("polygon")
   expect(board.outline?.length).toBe(4)
 })
 
