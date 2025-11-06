@@ -16,7 +16,7 @@ export const pcb_board = z
     thickness: length.optional().default(1.4),
     num_layers: z.number().optional().default(4),
     outline: z.array(point).optional(),
-    shape: z.enum(["rectangular", "outlined"]).optional(),
+    shape: z.enum(["rect", "polygon"]).optional(),
     material: z.enum(["fr4", "fr1"]).default("fr4"),
   })
   .describe("Defines the board outline of the PCB")
