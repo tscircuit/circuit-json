@@ -70,8 +70,44 @@ export interface PcbHoleRect {
   x: Distance
   y: Distance
 }
-
 expectTypesMatch<PcbHoleRect, InferredPcbHoleRect>(true)
+
+const pcb_hole_circle_or_square = z.object({
+  type: z.literal("pcb_hole"),
+  pcb_hole_id: getZodPrefixedIdWithDefault("pcb_hole"),
+  pcb_group_id: z.string().optional(),
+  subcircuit_id: z.string().optional(),
+  hole_shape: z.enum(["circle", "square"]),
+  hole_diameter: z.number(),
+  x: distance,
+  y: distance,
+})
+
+export const pcb_hole_circle_or_square_shape =
+  pcb_hole_circle_or_square.describe(
+    "Defines a circular or square hole on the PCB",
+  )
+
+export type PcbHoleCircleOrSquareInput = z.input<
+  typeof pcb_hole_circle_or_square
+>
+type InferredPcbHoleCircleOrSquare = z.infer<typeof pcb_hole_circle_or_square>
+
+/**
+ * Defines a circular or square hole on the PCB
+ */
+export interface PcbHoleCircleOrSquare {
+  type: "pcb_hole"
+  pcb_hole_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  hole_shape: "circle" | "square"
+  hole_diameter: number
+  x: Distance
+  y: Distance
+}
+
+expectTypesMatch<PcbHoleCircleOrSquare, InferredPcbHoleCircleOrSquare>(true)
 
 const pcb_hole_oval = z.object({
   type: z.literal("pcb_hole"),
@@ -183,26 +219,26 @@ export interface PcbHoleRotatedPill {
 
 expectTypesMatch<PcbHoleRotatedPill, InferredPcbHoleRotatedPill>(true)
 
-/* --------------------------------- Union --------------------------------- */
-
-export const pcb_hole = pcb_hole_circle
-  .or(pcb_hole_rect)
+export const pcb_hole = pcb_hole_circle_or_square
   .or(pcb_hole_oval)
   .or(pcb_hole_pill)
   .or(pcb_hole_rotated_pill)
+  .or(pcb_hole_circle)
+  .or(pcb_hole_rect)
 
 /**
- * @deprecated Use PcbHoleCircle, PcbHoleRect, PcbHoleOval, PcbHolePill, or PcbHoleRotatedPill
+ * @deprecated Use PcbHoleCircleOrSquare, PcbHoleCircle, PcbHoleSquare PcbHoleOval, PcbHolePill, or PcbHoleRotatedPill
  */
 export type PCBHoleInput = z.input<typeof pcb_hole>
 /**
- * @deprecated Use PcbHoleCircle, PcbHoleRect, PcbHoleOval, PcbHolePill, or PcbHoleRotatedPill
+ * @deprecated Use PcbHoleCircleOrSquare, PcbHoleCircle, PcbHoleSquare, PcbHoleOval, PcbHolePill, or PcbHoleRotatedPill
  */
 export type PCBHole = z.infer<typeof pcb_hole>
 
 export type PcbHole =
-  | PcbHoleCircle
-  | PcbHoleRect
+  | PcbHoleCircleOrSquare
   | PcbHoleOval
   | PcbHolePill
   | PcbHoleRotatedPill
+  | PcbHoleCircle
+  | PcbHoleRect
