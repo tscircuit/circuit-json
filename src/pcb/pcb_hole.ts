@@ -231,11 +231,11 @@ export const pcb_hole = pcb_hole_circle_or_square
   .or(pcb_hole_rect)
 
 /**
- * @deprecated Use PcbHoleCircleOrSquare, PcbHoleCircle, PcbHoleSquare PcbHoleOval, PcbHolePill, or PcbHoleRotatedPill
+ * @deprecated Use PcbHoleCircleOrSquare, PcbHoleCircle, PcbHoleRect, PcbHoleOval, PcbHolePill, or PcbHoleRotatedPill
  */
 export type PCBHoleInput = z.input<typeof pcb_hole>
 /**
- * @deprecated Use PcbHoleCircleOrSquare, PcbHoleCircle, PcbHoleSquare, PcbHoleOval, PcbHolePill, or PcbHoleRotatedPill
+ * @deprecated Use PcbHoleCircleOrSquare, PcbHoleCircle, PcbHoleRect, PcbHoleOval, PcbHolePill, or PcbHoleRotatedPill
  */
 export type PCBHole = z.infer<typeof pcb_hole>
 
