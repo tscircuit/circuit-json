@@ -1320,16 +1320,16 @@ interface PcbGroup {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_hole.ts)
 
-Defines a circular or square hole on the PCB
+Defines a circular hole on the PCB
 
 ```typescript
-/** Defines a circular or square hole on the PCB */
-interface PcbHoleCircleOrSquare {
+/** Defines a circular hole on the PCB */
+interface PcbHoleCircle {
   type: "pcb_hole"
   pcb_hole_id: string
   pcb_group_id?: string
   subcircuit_id?: string
-  hole_shape: "circle" | "square"
+  hole_shape: "circle"
   hole_diameter: number
   x: Distance
   y: Distance
