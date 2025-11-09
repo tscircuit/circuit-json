@@ -96,6 +96,10 @@ type InferredPcbHoleCircleOrSquare = z.infer<typeof pcb_hole_circle_or_square>
 /**
  * Defines a circular or square hole on the PCB
  */
+
+/**
+ * @deprecated Use `PcbHoleCircle` for circular holes or `PcbHoleRect` for square holes.
+ */
 export interface PcbHoleCircleOrSquare {
   type: "pcb_hole"
   pcb_hole_id: string
