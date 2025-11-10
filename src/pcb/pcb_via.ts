@@ -10,6 +10,7 @@ export const pcb_via = z
     pcb_via_id: getZodPrefixedIdWithDefault("pcb_via"),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
+    subcircuit_connectivity_key: z.string().optional(),
     x: distance,
     y: distance,
     outer_diameter: distance.default("0.6mm"),
@@ -36,6 +37,7 @@ export interface PcbVia {
   pcb_via_id: string
   pcb_group_id?: string
   subcircuit_id?: string
+  subcircuit_connectivity_key?: string
   x: Distance
   y: Distance
   outer_diameter: Distance
