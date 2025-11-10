@@ -2055,6 +2055,7 @@ interface PcbVia {
   pcb_via_id: string
   pcb_group_id?: string
   subcircuit_id?: string
+  subcircuit_connectivity_key?: string
   x: Distance
   y: Distance
   outer_diameter: Distance
