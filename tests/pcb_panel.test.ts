@@ -8,6 +8,7 @@ test("pcb_panel parses and defaults covered_with_solder_mask", () => {
     pcb_panel_id: "pcb_panel_1",
     width: "100mm",
     height: "200mm",
+    center: { x: 0, y: 0 },
   }
 
   const parsed = pcb_panel.parse(panelData)
@@ -21,6 +22,7 @@ test("any_circuit_element includes pcb_panel", () => {
     pcb_panel_id: "pcb_panel_1",
     width: "100mm",
     height: "200mm",
+    center: { x: 0, y: 0 },
     covered_with_solder_mask: false,
   }
 
