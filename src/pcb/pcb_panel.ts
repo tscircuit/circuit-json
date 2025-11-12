@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { getZodPrefixedIdWithDefault } from "src/common"
+import { getZodPrefixedIdWithDefault, point, type Point } from "src/common"
 import { length, type Length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
@@ -9,6 +9,7 @@ export const pcb_panel = z
     pcb_panel_id: getZodPrefixedIdWithDefault("pcb_panel"),
     width: length,
     height: length,
+    center: point,
     covered_with_solder_mask: z.boolean().optional().default(true),
   })
   .describe("Defines a PCB panel that can contain multiple boards")
@@ -21,6 +22,7 @@ export interface PcbPanel {
   pcb_panel_id: string
   width: Length
   height: Length
+  center: Point
   covered_with_solder_mask: boolean
 }
 
