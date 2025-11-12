@@ -1540,6 +1540,7 @@ interface PcbPanel {
   pcb_panel_id: string
   width: Length
   height: Length
+  center: Point
   covered_with_solder_mask: boolean
 }
 ```
