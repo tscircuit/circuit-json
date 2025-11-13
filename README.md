@@ -1655,6 +1655,28 @@ interface PcbHoleCircularWithRectPad {
   pcb_port_id?: string
   pcb_plated_hole_id: string
 }
+
+/** Defines a plated hole with a polygonal pad on the PCB */
+interface PcbHoleWithPolygonPad {
+  type: "pcb_plated_hole"
+  shape: "hole_with_polygon_pad"
+  pcb_group_id?: string
+  subcircuit_id?: string
+  hole_shape: "circle" | "oval" | "pill" | "rotated_pill"
+  hole_diameter?: number
+  hole_width?: number
+  hole_height?: number
+  pad_outline: { x: Distance; y: Distance }[]
+  hole_offset_x: Distance
+  hole_offset_y: Distance
+  x: Distance
+  y: Distance
+  layers: LayerRef[]
+  port_hints?: string[]
+  pcb_component_id?: string
+  pcb_port_id?: string
+  pcb_plated_hole_id: string
+}
 ```
 
 ### PcbPort
