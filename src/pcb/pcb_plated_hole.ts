@@ -216,6 +216,60 @@ export interface PcbHoleCircularWithRectPad {
   pcb_port_id?: string
   pcb_plated_hole_id: string
 }
+const pcb_hole_with_polygon_pad = z.object({
+  type: z.literal("pcb_plated_hole"),
+  shape: z.literal("hole_with_polygon_pad"),
+  pcb_group_id: z.string().optional(),
+  subcircuit_id: z.string().optional(),
+  hole_shape: z.enum(["circle", "oval", "pill", "rotated_pill"]),
+  hole_diameter: z.number().optional(),
+  hole_width: z.number().optional(),
+  hole_height: z.number().optional(),
+
+  pad_outline: z
+    .array(
+      z.object({
+        x: distance,
+        y: distance,
+      }),
+    )
+    .min(3),
+
+  hole_offset_x: distance.default(0),
+  hole_offset_y: distance.default(0),
+  x: distance,
+  y: distance,
+  layers: z.array(layer_ref),
+  port_hints: z.array(z.string()).optional(),
+  pcb_component_id: z.string().optional(),
+  pcb_port_id: z.string().optional(),
+  pcb_plated_hole_id: getZodPrefixedIdWithDefault("pcb_plated_hole"),
+})
+
+/**
+ * Defines a plated hole with a polygonal pad on the PCB
+ */
+
+export interface PcbHoleWithPolygonPad {
+  type: "pcb_plated_hole"
+  shape: "hole_with_polygon_pad"
+  pcb_group_id?: string
+  subcircuit_id?: string
+  hole_shape: "circle" | "oval" | "pill" | "rotated_pill"
+  hole_diameter?: number
+  hole_width?: number
+  hole_height?: number
+  pad_outline: { x: Distance; y: Distance }[]
+  hole_offset_x: Distance
+  hole_offset_y: Distance
+  x: Distance
+  y: Distance
+  layers: LayerRef[]
+  port_hints?: string[]
+  pcb_component_id?: string
+  pcb_port_id?: string
+  pcb_plated_hole_id: string
+}
 
 export const pcb_plated_hole = z.union([
   pcb_plated_hole_circle,
@@ -223,6 +277,7 @@ export const pcb_plated_hole = z.union([
   pcb_circular_hole_with_rect_pad,
   pcb_pill_hole_with_rect_pad,
   pcb_rotated_pill_hole_with_rect_pad,
+  pcb_hole_with_polygon_pad,
 ])
 export type PcbPlatedHole =
   | PcbPlatedHoleCircle
@@ -230,6 +285,7 @@ export type PcbPlatedHole =
   | PcbHoleCircularWithRectPad
   | PcbHolePillWithRectPad
   | PcbHoleRotatedPillWithRectPad
+  | PcbHoleWithPolygonPad
 
 expectTypesMatch<PcbPlatedHoleCircle, z.infer<typeof pcb_plated_hole_circle>>(
   true,
@@ -246,6 +302,10 @@ expectTypesMatch<
 expectTypesMatch<
   PcbHoleRotatedPillWithRectPad,
   z.infer<typeof pcb_rotated_pill_hole_with_rect_pad>
+>(true)
+expectTypesMatch<
+  PcbHoleWithPolygonPad,
+  z.infer<typeof pcb_hole_with_polygon_pad>
 >(true)
 /**
  * @deprecated use PcbPlatedHole
