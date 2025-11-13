@@ -221,7 +221,7 @@ const pcb_hole_with_polygon_pad = z.object({
   shape: z.literal("hole_with_polygon_pad"),
   pcb_group_id: z.string().optional(),
   subcircuit_id: z.string().optional(),
-  hole_shape: z.enum(["circle","oval","pill","rotated_pill"]),
+  hole_shape: z.enum(["circle", "oval", "pill", "rotated_pill"]),
   hole_diameter: z.number().optional(),
   hole_width: z.number().optional(),
   hole_height: z.number().optional(),
