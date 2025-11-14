@@ -2579,6 +2579,7 @@ interface SchematicVoltageProbe {
   position: Point
   schematic_trace_id: string
   voltage?: number
+  name?: string
   subcircuit_id?: string
 }
 ```
