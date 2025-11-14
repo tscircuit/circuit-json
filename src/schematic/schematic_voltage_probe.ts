@@ -9,6 +9,7 @@ export interface SchematicVoltageProbe {
   position: Point
   schematic_trace_id: string
   voltage?: number
+  name?: string
   subcircuit_id?: string
 }
 
@@ -19,6 +20,7 @@ export const schematic_voltage_probe = z
     position: point,
     schematic_trace_id: z.string(),
     voltage: voltage.optional(),
+    name: z.string().optional(),
     subcircuit_id: z.string().optional(),
   })
   .describe("Defines a voltage probe measurement point on a schematic trace")
