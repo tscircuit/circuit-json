@@ -2594,7 +2594,6 @@ interface SchematicVoltageProbe {
   position: Point
   schematic_trace_id: string
   voltage?: number
-  name?: string
   subcircuit_id?: string
 }
 ```
@@ -2644,8 +2643,7 @@ interface SimulationTransientVoltageGraph {
   simulation_experiment_id: string
   timestamps_ms?: number[]
   voltage_levels: number[]
-  schematic_voltage_probe_id?: string
-  simulation_voltage_probe_id?: string
+  source_component_id?: string
   subcircuit_connectivity_map_key?: string
   time_per_step: number
   start_time_ms: number
@@ -2686,7 +2684,6 @@ interface SimulationVoltageProbe {
   source_component_id?: string
   source_port_id?: string
   source_net_id?: string
-  name?: string
   subcircuit_id?: string
 }
 ```
