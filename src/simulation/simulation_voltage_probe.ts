@@ -8,6 +8,7 @@ export const simulation_voltage_probe = z
     simulation_voltage_probe_id: getZodPrefixedIdWithDefault(
       "simulation_voltage_probe",
     ),
+    source_component_id: z.string().optional(),
     source_port_id: z.string().optional(),
     source_net_id: z.string().optional(),
     name: z.string().optional(),
@@ -35,6 +36,7 @@ type InferredSimulationVoltageProbe = z.infer<typeof simulation_voltage_probe>
 export interface SimulationVoltageProbe {
   type: "simulation_voltage_probe"
   simulation_voltage_probe_id: string
+  source_component_id?: string
   source_port_id?: string
   source_net_id?: string
   name?: string
