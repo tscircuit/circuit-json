@@ -11,7 +11,6 @@ export const simulation_voltage_probe = z
     source_component_id: z.string().optional(),
     source_port_id: z.string().optional(),
     source_net_id: z.string().optional(),
-    name: z.string().optional(),
     subcircuit_id: z.string().optional(),
   })
   .describe(
@@ -39,7 +38,6 @@ export interface SimulationVoltageProbe {
   source_component_id?: string
   source_port_id?: string
   source_net_id?: string
-  name?: string
   subcircuit_id?: string
 }
 
