@@ -78,6 +78,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceSimpleSwitch](#sourcesimpleswitch)
     - [SourceSimpleTestPoint](#sourcesimpletestpoint)
     - [SourceSimpleTransistor](#sourcesimpletransistor)
+    - [SourceSimpleVoltageProbe](#sourcesimplevoltageprobe)
     - [SourceTrace](#sourcetrace)
     - [SourceTraceNotConnectedError](#sourcetracenotconnectederror)
     - [UnknownErrorFindingPart](#unknownerrorfindingpart)
@@ -747,6 +748,19 @@ interface SourceSimpleTestPoint extends SourceComponentBase {
 interface SourceSimpleTransistor extends SourceComponentBase {
   ftype: "simple_transistor"
   transistor_type: "npn" | "pnp"
+}
+```
+
+### SourceSimpleVoltageProbe
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_voltage_probe.ts)
+
+Defines a simple voltage probe component for simulation and measurement
+
+```typescript
+/** Defines a simple voltage probe component for simulation and measurement */
+interface SourceSimpleVoltageProbe extends SourceComponentBase {
+  ftype: "simple_voltage_probe"
 }
 ```
 
@@ -2576,6 +2590,7 @@ interface SchematicTraceEdge {
 interface SchematicVoltageProbe {
   type: "schematic_voltage_probe"
   schematic_voltage_probe_id: string
+  source_component_id?: string
   position: Point
   schematic_trace_id: string
   voltage?: number
@@ -2668,6 +2683,7 @@ Defines a voltage probe for simulation, connected to a port or a net.
 interface SimulationVoltageProbe {
   type: "simulation_voltage_probe"
   simulation_voltage_probe_id: string
+  source_component_id?: string
   source_port_id?: string
   source_net_id?: string
   name?: string
