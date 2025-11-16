@@ -12,6 +12,7 @@ export const simulation_voltage_probe = z
     source_port_id: z.string().optional(),
     source_net_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
+    color: z.string().optional(),
   })
   .describe(
     "Defines a voltage probe for simulation, connected to a port or a net",
@@ -39,6 +40,7 @@ export interface SimulationVoltageProbe {
   source_port_id?: string
   source_net_id?: string
   subcircuit_id?: string
+  color?: string
 }
 
 expectTypesMatch<SimulationVoltageProbe, InferredSimulationVoltageProbe>(true)

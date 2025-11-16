@@ -15,6 +15,7 @@ export interface SimulationTransientVoltageGraph {
   start_time_ms: number
   end_time_ms: number
   name?: string
+  color?: string
 }
 
 export const simulation_transient_voltage_graph = z
@@ -32,6 +33,7 @@ export const simulation_transient_voltage_graph = z
     start_time_ms: ms,
     end_time_ms: ms,
     name: z.string().optional(),
+    color: z.string().optional(),
   })
   .describe("Stores voltage measurements over time for a simulation")
 
