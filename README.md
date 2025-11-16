@@ -2597,6 +2597,7 @@ interface SchematicVoltageProbe {
   schematic_trace_id: string
   voltage?: number
   subcircuit_id?: string
+  color?: string
 }
 ```
 
@@ -2651,6 +2652,7 @@ interface SimulationTransientVoltageGraph {
   start_time_ms: number
   end_time_ms: number
   name?: string
+  color?: string
 }
 ```
 
@@ -2687,6 +2689,7 @@ interface SimulationVoltageProbe {
   source_port_id?: string
   source_net_id?: string
   subcircuit_id?: string
+  color?: string
 }
 ```
 
