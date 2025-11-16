@@ -9,6 +9,8 @@ const pcb_cutout_base = z.object({
   pcb_cutout_id: getZodPrefixedIdWithDefault("pcb_cutout"),
   pcb_group_id: z.string().optional(),
   subcircuit_id: z.string().optional(),
+  pcb_board_id: z.string().optional(),
+  pcb_panel_id: z.string().optional(),
 })
 
 // Rectangular Cutout
@@ -29,6 +31,8 @@ export interface PcbCutoutRect {
   pcb_cutout_id: string
   pcb_group_id?: string
   subcircuit_id?: string
+  pcb_board_id?: string
+  pcb_panel_id?: string
   shape: "rect"
   center: Point
   width: Length
@@ -53,6 +57,8 @@ export interface PcbCutoutCircle {
   pcb_cutout_id: string
   pcb_group_id?: string
   subcircuit_id?: string
+  pcb_board_id?: string
+  pcb_panel_id?: string
   shape: "circle"
   center: Point
   radius: Length
@@ -75,6 +81,8 @@ export interface PcbCutoutPolygon {
   pcb_cutout_id: string
   pcb_group_id?: string
   subcircuit_id?: string
+  pcb_board_id?: string
+  pcb_panel_id?: string
   shape: "polygon"
   points: Point[]
 }
