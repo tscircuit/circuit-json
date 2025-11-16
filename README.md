@@ -1120,6 +1120,8 @@ interface PcbCutoutRect {
   pcb_cutout_id: string
   pcb_group_id?: string
   subcircuit_id?: string
+  pcb_board_id?: string
+  pcb_panel_id?: string
   shape: "rect"
   center: Point
   width: Length
