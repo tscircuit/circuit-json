@@ -49,7 +49,9 @@ test("source_simple_voltage_probe links to schematic and simulation", () => {
   expect(schematicProbe.source_component_id).toBe(
     sourceVoltageProbe.source_component_id,
   )
+  expect(schematicProbe.name).toBe("VP1")
   expect(simulationProbe.source_component_id).toBe(
     sourceVoltageProbe.source_component_id,
   )
+  expect(simulationProbe.name).toBe("VP1")
 })

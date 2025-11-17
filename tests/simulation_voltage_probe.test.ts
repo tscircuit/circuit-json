@@ -45,6 +45,20 @@ test("simulation_voltage_probe with no connection ids should throw", () => {
   expect(() => simulation_voltage_probe.parse(input)).toThrow()
 })
 
+test("simulation_voltage_probe parses with name", () => {
+  const input: SimulationVoltageProbeInput = {
+    type: "simulation_voltage_probe",
+    source_net_id: "net1",
+    name: "My Probe",
+  }
+
+  const result = simulation_voltage_probe.parse(input)
+  const probe = result as SimulationVoltageProbe
+
+  expect(probe.source_net_id).toBe("net1")
+  expect(probe.name).toBe("My Probe")
+})
+
 test("simulation_voltage_probe with both connection ids should throw", () => {
   const input: SimulationVoltageProbeInput = {
     type: "simulation_voltage_probe",
