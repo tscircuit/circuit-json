@@ -88,17 +88,55 @@ export interface PcbCutoutPolygon {
 }
 expectTypesMatch<PcbCutoutPolygon, InferredPcbCutoutPolygon>(true)
 
+// Path Cutout (for slots along a path)
+export const pcb_cutout_path = pcb_cutout_base.extend({
+  shape: z.literal("path"),
+  route: z.array(point),
+  slot_width: length,
+  slot_length: length.optional(),
+  space_between_slots: length.optional(),
+  slot_corner_radius: length.optional(),
+})
+export type PcbCutoutPathInput = z.input<typeof pcb_cutout_path>
+type InferredPcbCutoutPath = z.infer<typeof pcb_cutout_path>
+/**
+ * Defines a path-based cutout on the PCB, creating slots along the specified path.
+ * When slot_length and space_between_slots are specified, creates a dashed pattern of slots.
+ * When they are omitted, creates a continuous slot along the entire path.
+ * The slot_corner_radius controls the rounding of slot corners (0 = square, slot_width/2 = circle).
+ */
+export interface PcbCutoutPath {
+  type: "pcb_cutout"
+  pcb_cutout_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  pcb_board_id?: string
+  pcb_panel_id?: string
+  shape: "path"
+  route: Point[]
+  slot_width: Length
+  slot_length?: Length
+  space_between_slots?: Length
+  slot_corner_radius?: Length
+}
+expectTypesMatch<PcbCutoutPath, InferredPcbCutoutPath>(true)
+
 // Union of all cutout shapes
 export const pcb_cutout = z
   .discriminatedUnion("shape", [
     pcb_cutout_rect,
     pcb_cutout_circle,
     pcb_cutout_polygon,
+    pcb_cutout_path,
   ])
   .describe("Defines a cutout on the PCB, removing board material.")
 
 export type PcbCutoutInput = z.input<typeof pcb_cutout>
-export type PcbCutout = PcbCutoutRect | PcbCutoutCircle | PcbCutoutPolygon
+export type PcbCutout =
+  | PcbCutoutRect
+  | PcbCutoutCircle
+  | PcbCutoutPolygon
+  | PcbCutoutPath
 
 type InferredPcbCutout = z.infer<typeof pcb_cutout>
 expectTypesMatch<PcbCutout, InferredPcbCutout>(true)
