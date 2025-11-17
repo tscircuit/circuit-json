@@ -2593,6 +2593,7 @@ interface SchematicVoltageProbe {
   type: "schematic_voltage_probe"
   schematic_voltage_probe_id: string
   source_component_id?: string
+  name?: string
   position: Point
   schematic_trace_id: string
   voltage?: number
@@ -2686,6 +2687,7 @@ interface SimulationVoltageProbe {
   type: "simulation_voltage_probe"
   simulation_voltage_probe_id: string
   source_component_id?: string
+  name?: string
   source_port_id?: string
   source_net_id?: string
   subcircuit_id?: string
