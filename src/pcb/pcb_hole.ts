@@ -12,6 +12,7 @@ const pcb_hole_circle = z.object({
   hole_diameter: z.number(),
   x: distance,
   y: distance,
+  soldermask_margin: z.number().optional(),
 })
 
 export const pcb_hole_circle_shape = pcb_hole_circle.describe(
@@ -33,6 +34,7 @@ export interface PcbHoleCircle {
   hole_diameter: number
   x: Distance
   y: Distance
+  soldermask_margin?: number
 }
 
 expectTypesMatch<PcbHoleCircle, InferredPcbHoleCircle>(true)
@@ -47,6 +49,7 @@ const pcb_hole_rect = z.object({
   hole_height: z.number(),
   x: distance,
   y: distance,
+  soldermask_margin: z.number().optional(),
 })
 
 export const pcb_hole_rect_shape = pcb_hole_rect.describe(
@@ -69,6 +72,7 @@ export interface PcbHoleRect {
   hole_height: number
   x: Distance
   y: Distance
+  soldermask_margin?: number
 }
 expectTypesMatch<PcbHoleRect, InferredPcbHoleRect>(true)
 
@@ -81,6 +85,7 @@ const pcb_hole_circle_or_square = z.object({
   hole_diameter: z.number(),
   x: distance,
   y: distance,
+  soldermask_margin: z.number().optional(),
 })
 
 export const pcb_hole_circle_or_square_shape =
@@ -109,6 +114,7 @@ export interface PcbHoleCircleOrSquare {
   hole_diameter: number
   x: Distance
   y: Distance
+  soldermask_margin?: number
 }
 
 expectTypesMatch<PcbHoleCircleOrSquare, InferredPcbHoleCircleOrSquare>(true)
@@ -123,6 +129,7 @@ const pcb_hole_oval = z.object({
   hole_height: z.number(),
   x: distance,
   y: distance,
+  soldermask_margin: z.number().optional(),
 })
 
 export const pcb_hole_oval_shape = pcb_hole_oval.describe(
@@ -145,6 +152,7 @@ export interface PcbHoleOval {
   hole_height: number
   x: Distance
   y: Distance
+  soldermask_margin?: number
 }
 
 expectTypesMatch<PcbHoleOval, InferredPcbHoleOval>(true)
@@ -159,6 +167,7 @@ const pcb_hole_pill = z.object({
   hole_height: z.number(),
   x: distance,
   y: distance,
+  soldermask_margin: z.number().optional(),
 })
 
 export const pcb_hole_pill_shape = pcb_hole_pill.describe(
@@ -181,6 +190,7 @@ export interface PcbHolePill {
   hole_height: number
   x: Distance
   y: Distance
+  soldermask_margin?: number
 }
 
 expectTypesMatch<PcbHolePill, InferredPcbHolePill>(true)
@@ -196,6 +206,7 @@ const pcb_hole_rotated_pill = z.object({
   x: distance,
   y: distance,
   ccw_rotation: rotation,
+  soldermask_margin: z.number().optional(),
 })
 
 export const pcb_hole_rotated_pill_shape = pcb_hole_rotated_pill.describe(
@@ -219,6 +230,7 @@ export interface PcbHoleRotatedPill {
   x: Distance
   y: Distance
   ccw_rotation: Rotation
+  soldermask_margin?: number
 }
 
 expectTypesMatch<PcbHoleRotatedPill, InferredPcbHoleRotatedPill>(true)

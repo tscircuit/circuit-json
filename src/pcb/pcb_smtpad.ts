@@ -18,6 +18,7 @@ const pcb_smtpad_circle = z.object({
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
   is_covered_with_solder_mask: z.boolean().optional(),
+  soldermask_margin: z.number().optional(),
 })
 
 const pcb_smtpad_rect = z.object({
@@ -37,6 +38,7 @@ const pcb_smtpad_rect = z.object({
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
   is_covered_with_solder_mask: z.boolean().optional(),
+  soldermask_margin: z.number().optional(),
 })
 
 const pcb_smtpad_rotated_rect = z.object({
@@ -57,6 +59,7 @@ const pcb_smtpad_rotated_rect = z.object({
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
   is_covered_with_solder_mask: z.boolean().optional(),
+  soldermask_margin: z.number().optional(),
 })
 
 export const pcb_smtpad_pill = z.object({
@@ -75,6 +78,7 @@ export const pcb_smtpad_pill = z.object({
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
   is_covered_with_solder_mask: z.boolean().optional(),
+  soldermask_margin: z.number().optional(),
 })
 const pcb_smtpad_rotated_pill = z.object({
   type: z.literal("pcb_smtpad"),
@@ -93,6 +97,7 @@ const pcb_smtpad_rotated_pill = z.object({
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
   is_covered_with_solder_mask: z.boolean().optional(),
+  soldermask_margin: z.number().optional(),
 })
 
 const pcb_smtpad_polygon = z.object({
@@ -107,6 +112,7 @@ const pcb_smtpad_polygon = z.object({
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
   is_covered_with_solder_mask: z.boolean().optional(),
+  soldermask_margin: z.number().optional(),
 })
 
 export const pcb_smtpad = z
@@ -145,6 +151,7 @@ export interface PcbSmtPadCircle {
   pcb_component_id?: string
   pcb_port_id?: string
   is_covered_with_solder_mask?: boolean
+  soldermask_margin?: number
 }
 
 /**
@@ -167,6 +174,7 @@ export interface PcbSmtPadRect {
   pcb_component_id?: string
   pcb_port_id?: string
   is_covered_with_solder_mask?: boolean
+  soldermask_margin?: number
 }
 
 /**
@@ -190,6 +198,7 @@ export interface PcbSmtPadRotatedRect {
   pcb_component_id?: string
   pcb_port_id?: string
   is_covered_with_solder_mask?: boolean
+  soldermask_margin?: number
 }
 /**
  * Defines a pill-shaped SMT pad on the PCB (rounded rectangle).
@@ -210,6 +219,7 @@ export interface PcbSmtPadPill {
   pcb_component_id?: string
   pcb_port_id?: string
   is_covered_with_solder_mask?: boolean
+  soldermask_margin?: number
 }
 
 /**
@@ -232,6 +242,7 @@ export interface PcbSmtPadRotatedPill {
   pcb_component_id?: string
   pcb_port_id?: string
   is_covered_with_solder_mask?: boolean
+  soldermask_margin?: number
 }
 
 /**
@@ -249,6 +260,7 @@ export interface PcbSmtPadPolygon {
   pcb_component_id?: string
   pcb_port_id?: string
   is_covered_with_solder_mask?: boolean
+  soldermask_margin?: number
 }
 
 export type PcbSmtPad =
