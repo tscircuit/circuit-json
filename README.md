@@ -1127,6 +1127,7 @@ interface PcbCutoutRect {
   width: Length
   height: Length
   rotation?: Rotation
+  corner_radius?: Length
 }
 ```
 
