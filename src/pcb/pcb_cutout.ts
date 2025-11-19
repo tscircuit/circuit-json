@@ -20,6 +20,7 @@ export const pcb_cutout_rect = pcb_cutout_base.extend({
   width: length,
   height: length,
   rotation: rotation.optional(),
+  corner_radius: length.optional(),
 })
 export type PcbCutoutRectInput = z.input<typeof pcb_cutout_rect>
 type InferredPcbCutoutRect = z.infer<typeof pcb_cutout_rect>
@@ -38,6 +39,7 @@ export interface PcbCutoutRect {
   width: Length
   height: Length
   rotation?: Rotation
+  corner_radius?: Length
 }
 expectTypesMatch<PcbCutoutRect, InferredPcbCutoutRect>(true)
 
