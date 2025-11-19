@@ -1349,6 +1349,7 @@ interface PcbHoleCircle {
   hole_diameter: number
   x: Distance
   y: Distance
+  soldermask_margin?: number
 }
 ```
 
@@ -1600,6 +1601,7 @@ interface PcbPlatedHoleCircle {
   pcb_component_id?: string
   pcb_port_id?: string
   pcb_plated_hole_id: string
+  soldermask_margin?: number
 }
 
 interface PcbHolePillWithRectPad {
@@ -1623,6 +1625,7 @@ interface PcbHolePillWithRectPad {
   pcb_component_id?: string
   pcb_port_id?: string
   pcb_plated_hole_id: string
+  soldermask_margin?: number
 }
 
 interface PcbHoleRotatedPillWithRectPad {
@@ -1648,6 +1651,7 @@ interface PcbHoleRotatedPillWithRectPad {
   pcb_component_id?: string
   pcb_port_id?: string
   pcb_plated_hole_id: string
+  soldermask_margin?: number
 }
 
 interface PcbHoleCircularWithRectPad {
@@ -1670,6 +1674,7 @@ interface PcbHoleCircularWithRectPad {
   pcb_component_id?: string
   pcb_port_id?: string
   pcb_plated_hole_id: string
+  soldermask_margin?: number
 }
 
 /** Defines a plated hole with a polygonal pad on the PCB */
@@ -1692,6 +1697,7 @@ interface PcbHoleWithPolygonPad {
   pcb_component_id?: string
   pcb_port_id?: string
   pcb_plated_hole_id: string
+  soldermask_margin?: number
 }
 ```
 
