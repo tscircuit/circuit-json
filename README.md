@@ -1350,6 +1350,7 @@ interface PcbHoleCircle {
   hole_diameter: number
   x: Distance
   y: Distance
+  is_covered_with_solder_mask?: boolean
   soldermask_margin?: number
 }
 ```
@@ -1619,6 +1620,7 @@ interface PcbHolePillWithRectPad {
   rect_border_radius?: number
   hole_offset_x: Distance
   hole_offset_y: Distance
+  is_covered_with_solder_mask?: boolean
   x: Distance
   y: Distance
   layers: LayerRef[]
@@ -1645,6 +1647,7 @@ interface PcbHoleRotatedPillWithRectPad {
   rect_ccw_rotation: Rotation
   hole_offset_x: Distance
   hole_offset_y: Distance
+  is_covered_with_solder_mask?: boolean
   x: Distance
   y: Distance
   layers: LayerRef[]
@@ -1668,6 +1671,7 @@ interface PcbHoleCircularWithRectPad {
   rect_border_radius?: number
   hole_offset_x: Distance
   hole_offset_y: Distance
+  is_covered_with_solder_mask?: boolean
   x: Distance
   y: Distance
   layers: LayerRef[]
@@ -1691,6 +1695,7 @@ interface PcbHoleWithPolygonPad {
   pad_outline: { x: Distance; y: Distance }[]
   hole_offset_x: Distance
   hole_offset_y: Distance
+  is_covered_with_solder_mask?: boolean
   x: Distance
   y: Distance
   layers: LayerRef[]
