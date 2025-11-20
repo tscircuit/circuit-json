@@ -12,6 +12,7 @@ const pcb_hole_circle = z.object({
   hole_diameter: z.number(),
   x: distance,
   y: distance,
+  is_covered_with_solder_mask: z.boolean().optional(),
   soldermask_margin: z.number().optional(),
 })
 
@@ -34,6 +35,7 @@ export interface PcbHoleCircle {
   hole_diameter: number
   x: Distance
   y: Distance
+  is_covered_with_solder_mask?: boolean
   soldermask_margin?: number
 }
 
@@ -49,6 +51,7 @@ const pcb_hole_rect = z.object({
   hole_height: z.number(),
   x: distance,
   y: distance,
+  is_covered_with_solder_mask: z.boolean().optional(),
   soldermask_margin: z.number().optional(),
 })
 
@@ -72,6 +75,7 @@ export interface PcbHoleRect {
   hole_height: number
   x: Distance
   y: Distance
+  is_covered_with_solder_mask?: boolean
   soldermask_margin?: number
 }
 expectTypesMatch<PcbHoleRect, InferredPcbHoleRect>(true)
@@ -85,6 +89,7 @@ const pcb_hole_circle_or_square = z.object({
   hole_diameter: z.number(),
   x: distance,
   y: distance,
+  is_covered_with_solder_mask: z.boolean().optional(),
   soldermask_margin: z.number().optional(),
 })
 
@@ -114,6 +119,7 @@ export interface PcbHoleCircleOrSquare {
   hole_diameter: number
   x: Distance
   y: Distance
+  is_covered_with_solder_mask?: boolean
   soldermask_margin?: number
 }
 
@@ -129,6 +135,7 @@ const pcb_hole_oval = z.object({
   hole_height: z.number(),
   x: distance,
   y: distance,
+  is_covered_with_solder_mask: z.boolean().optional(),
   soldermask_margin: z.number().optional(),
 })
 
@@ -152,6 +159,7 @@ export interface PcbHoleOval {
   hole_height: number
   x: Distance
   y: Distance
+  is_covered_with_solder_mask?: boolean
   soldermask_margin?: number
 }
 
@@ -167,6 +175,7 @@ const pcb_hole_pill = z.object({
   hole_height: z.number(),
   x: distance,
   y: distance,
+  is_covered_with_solder_mask: z.boolean().optional(),
   soldermask_margin: z.number().optional(),
 })
 
@@ -190,6 +199,7 @@ export interface PcbHolePill {
   hole_height: number
   x: Distance
   y: Distance
+  is_covered_with_solder_mask?: boolean
   soldermask_margin?: number
 }
 
@@ -206,6 +216,7 @@ const pcb_hole_rotated_pill = z.object({
   x: distance,
   y: distance,
   ccw_rotation: rotation,
+  is_covered_with_solder_mask: z.boolean().optional(),
   soldermask_margin: z.number().optional(),
 })
 
@@ -230,6 +241,7 @@ export interface PcbHoleRotatedPill {
   x: Distance
   y: Distance
   ccw_rotation: Rotation
+  is_covered_with_solder_mask?: boolean
   soldermask_margin?: number
 }
 
