@@ -1604,6 +1604,7 @@ interface PcbPlatedHoleCircle {
   pcb_port_id?: string
   pcb_plated_hole_id: string
   soldermask_margin?: number
+  is_covered_with_solder_mask?: boolean
 }
 
 interface PcbHolePillWithRectPad {
