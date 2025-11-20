@@ -50,6 +50,7 @@ const pcb_plated_hole_oval = z.object({
   outer_height: z.number(),
   hole_width: z.number(),
   hole_height: z.number(),
+  is_covered_with_solder_mask: z.boolean().optional(),
   x: distance,
   y: distance,
   ccw_rotation: rotation,
@@ -73,6 +74,7 @@ export interface PcbPlatedHoleOval {
   outer_height: number
   hole_width: number
   hole_height: number
+  is_covered_with_solder_mask?: boolean
   x: Distance
   y: Distance
   ccw_rotation: Rotation
@@ -97,6 +99,7 @@ const pcb_circular_hole_with_rect_pad = z.object({
   rect_border_radius: z.number().optional(),
   hole_offset_x: distance.default(0),
   hole_offset_y: distance.default(0),
+  is_covered_with_solder_mask: z.boolean().optional(),
   x: distance,
   y: distance,
   layers: z.array(layer_ref),
@@ -120,6 +123,7 @@ const pcb_pill_hole_with_rect_pad = z.object({
   rect_border_radius: z.number().optional(),
   hole_offset_x: distance.default(0),
   hole_offset_y: distance.default(0),
+  is_covered_with_solder_mask: z.boolean().optional(),
   x: distance,
   y: distance,
   layers: z.array(layer_ref),
@@ -145,6 +149,7 @@ const pcb_rotated_pill_hole_with_rect_pad = z.object({
   rect_ccw_rotation: rotation,
   hole_offset_x: distance.default(0),
   hole_offset_y: distance.default(0),
+  is_covered_with_solder_mask: z.boolean().optional(),
   x: distance,
   y: distance,
   layers: z.array(layer_ref),
@@ -168,6 +173,7 @@ export interface PcbHolePillWithRectPad {
   rect_border_radius?: number
   hole_offset_x: Distance
   hole_offset_y: Distance
+  is_covered_with_solder_mask?: boolean
   x: Distance
   y: Distance
   layers: LayerRef[]
@@ -194,6 +200,7 @@ export interface PcbHoleRotatedPillWithRectPad {
   rect_ccw_rotation: Rotation
   hole_offset_x: Distance
   hole_offset_y: Distance
+  is_covered_with_solder_mask?: boolean
   x: Distance
   y: Distance
   layers: LayerRef[]
@@ -217,6 +224,7 @@ export interface PcbHoleCircularWithRectPad {
   rect_border_radius?: number
   hole_offset_x: Distance
   hole_offset_y: Distance
+  is_covered_with_solder_mask?: boolean
   x: Distance
   y: Distance
   layers: LayerRef[]
@@ -247,6 +255,7 @@ const pcb_hole_with_polygon_pad = z.object({
 
   hole_offset_x: distance.default(0),
   hole_offset_y: distance.default(0),
+  is_covered_with_solder_mask: z.boolean().optional(),
   x: distance,
   y: distance,
   layers: z.array(layer_ref),
@@ -273,6 +282,7 @@ export interface PcbHoleWithPolygonPad {
   pad_outline: { x: Distance; y: Distance }[]
   hole_offset_x: Distance
   hole_offset_y: Distance
+  is_covered_with_solder_mask?: boolean
   x: Distance
   y: Distance
   layers: LayerRef[]
