@@ -55,6 +55,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceNet](#sourcenet)
     - [SourcePcbGroundPlane](#sourcepcbgroundplane)
     - [SourcePinMissingTraceWarning](#sourcepinmissingtracewarning)
+    - [SourcePinMustBeConnectedError](#sourcepinmustbeconnectederror)
     - [SourcePort](#sourceport)
     - [SourceProjectMetadata](#sourceprojectmetadata)
     - [SourcePropertyIgnoredWarning](#sourcepropertyignoredwarning)
@@ -408,6 +409,25 @@ interface SourcePinMissingTraceWarning {
   type: "source_pin_missing_trace_warning"
   source_pin_missing_trace_warning_id: string
   warning_type: "source_pin_missing_trace_warning"
+  message: string
+  source_component_id: string
+  source_port_id: string
+  subcircuit_id?: string
+}
+```
+
+### SourcePinMustBeConnectedError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_pin_must_be_connected_error.ts)
+
+Error emitted when a pin with mustBeConnected attribute is not connected to any trace
+
+```typescript
+/** Error emitted when a pin with mustBeConnected attribute is not connected to any trace */
+interface SourcePinMustBeConnectedError {
+  type: "source_pin_must_be_connected_error"
+  source_pin_must_be_connected_error_id: string
+  error_type: "source_pin_must_be_connected_error"
   message: string
   source_component_id: string
   source_port_id: string
