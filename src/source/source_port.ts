@@ -11,6 +11,18 @@ export const source_port = z.object({
   source_group_id: z.string().optional(),
   subcircuit_id: z.string().optional(),
   subcircuit_connectivity_map_key: z.string().optional(),
+
+  // DRC attributes
+  must_be_connected: z.boolean().optional(),
+  requires_power: z.boolean().optional(),
+  requires_ground: z.boolean().optional(),
+  requires_voltage: z.union([z.string(), z.number()]).optional(),
+  do_not_connect: z.boolean().optional(),
+  include_in_board_pinout: z.boolean().optional(),
+  highlight_color: z.string().optional(),
+  provides_power: z.boolean().optional(),
+  provides_ground: z.boolean().optional(),
+  provides_voltage: z.union([z.string(), z.number()]).optional(),
 })
 
 export type SourcePortInput = z.input<typeof source_port>
@@ -29,6 +41,18 @@ export interface SourcePort {
   source_group_id?: string
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
+
+  // DRC attributes
+  must_be_connected?: boolean
+  requires_power?: boolean
+  requires_ground?: boolean
+  requires_voltage?: string | number
+  do_not_connect?: boolean
+  include_in_board_pinout?: boolean
+  highlight_color?: string
+  provides_power?: boolean
+  provides_ground?: boolean
+  provides_voltage?: string | number
 }
 
 expectTypesMatch<SourcePort, InferredSourcePort>(true)
