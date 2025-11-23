@@ -453,6 +453,7 @@ interface SourcePort {
   source_group_id?: string
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
+  must_be_connected?: boolean
 }
 ```
 
