@@ -10,19 +10,19 @@ export const simulation_voltage_probe = z
     ),
     source_component_id: z.string().optional(),
     name: z.string().optional(),
-    source_port_id: z.string().optional(),
-    source_net_id: z.string().optional(),
+    source_port_ids: z.array(z.string()).optional(),
+    source_net_ids: z.array(z.string()).optional(),
     subcircuit_id: z.string().optional(),
     color: z.string().optional(),
   })
   .describe(
-    "Defines a voltage probe for simulation, connected to a port or a net",
+    "Defines a voltage probe for simulation, connected to one or more ports/nets. If one port/net is provided, it's measured against ground. If two are provided, it's a differential measurement.",
   )
   .refine(
-    (data) => Boolean(data.source_port_id) !== Boolean(data.source_net_id),
+    (data) => !!data.source_port_ids?.length !== !!data.source_net_ids?.length,
     {
       message:
-        "Exactly one of source_port_id or source_net_id must be provided to simulation_voltage_probe",
+        "Exactly one of source_port_ids or source_net_ids must be provided to simulation_voltage_probe",
     },
   )
 
@@ -32,15 +32,17 @@ export type SimulationVoltageProbeInput = z.input<
 type InferredSimulationVoltageProbe = z.infer<typeof simulation_voltage_probe>
 
 /**
- * Defines a voltage probe for simulation, connected to a port or a net.
+ * Defines a voltage probe for simulation, connected to one or more ports/nets.
+ * If one port/net is provided, it's measured against ground. If two are provided,
+ * it's a differential measurement.
  */
 export interface SimulationVoltageProbe {
   type: "simulation_voltage_probe"
   simulation_voltage_probe_id: string
   source_component_id?: string
   name?: string
-  source_port_id?: string
-  source_net_id?: string
+  source_port_ids?: string[]
+  source_net_ids?: string[]
   subcircuit_id?: string
   color?: string
 }
