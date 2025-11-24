@@ -41,7 +41,7 @@ test("source_simple_voltage_probe links to schematic and simulation", () => {
     type: "simulation_voltage_probe",
     simulation_voltage_probe_id: "simulation_vp_1",
     source_component_id: "source_vp_1",
-    source_port_id: "port_1",
+    signal_input_source_port_id: "port_1",
     name: "VP1",
   })
 
