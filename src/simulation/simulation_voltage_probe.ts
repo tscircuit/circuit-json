@@ -10,21 +10,83 @@ export const simulation_voltage_probe = z
     ),
     source_component_id: z.string().optional(),
     name: z.string().optional(),
-    source_port_ids: z.array(z.string()).optional(),
-    source_net_ids: z.array(z.string()).optional(),
+    probe_type: z.enum(["voltage", "differential_voltage"]).default("voltage"),
+    signal_input_source_port_id: z.string().optional(),
+    signal_input_source_net_id: z.string().optional(),
+    reference_input_source_port_id: z.string().optional(),
+    reference_input_source_net_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     color: z.string().optional(),
   })
   .describe(
-    "Defines a voltage probe for simulation, connected to one or more ports/nets. If one port/net is provided, it's measured against ground. If two are provided, it's a differential measurement.",
+    "Defines a voltage probe for simulation. A 'voltage' probe_type measures against ground. A 'differential_voltage' probe_type measures between two points.",
   )
-  .refine(
-    (data) => !!data.source_port_ids?.length !== !!data.source_net_ids?.length,
-    {
-      message:
-        "Exactly one of source_port_ids or source_net_ids must be provided to simulation_voltage_probe",
-    },
-  )
+  .superRefine((data, ctx) => {
+    if (data.probe_type === "voltage") {
+      if (
+        data.reference_input_source_port_id ||
+        data.reference_input_source_net_id
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message:
+            "A single-ended voltage probe cannot have a reference input.",
+        })
+      }
+      if (
+        !!data.signal_input_source_port_id === !!data.signal_input_source_net_id
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message:
+            "A single-ended voltage probe must have exactly one of signal_input_source_port_id or signal_input_source_net_id.",
+        })
+      }
+    } else if (data.probe_type === "differential_voltage") {
+      const has_ports =
+        !!data.signal_input_source_port_id ||
+        !!data.reference_input_source_port_id
+      const has_nets =
+        !!data.signal_input_source_net_id ||
+        !!data.reference_input_source_net_id
+
+      if (has_ports && has_nets) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message:
+            "Cannot mix port and net connections in a differential probe.",
+        })
+      } else if (has_ports) {
+        if (
+          !data.signal_input_source_port_id ||
+          !data.reference_input_source_port_id
+        ) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message:
+              "Differential port probe requires both signal_input_source_port_id and reference_input_source_port_id.",
+          })
+        }
+      } else if (has_nets) {
+        if (
+          !data.signal_input_source_net_id ||
+          !data.reference_input_source_net_id
+        ) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message:
+              "Differential net probe requires both signal_input_source_net_id and reference_input_source_net_id.",
+          })
+        }
+      } else {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message:
+            "Differential probe requires either two port ids or two net ids.",
+        })
+      }
+    }
+  })
 
 export type SimulationVoltageProbeInput = z.input<
   typeof simulation_voltage_probe
@@ -32,17 +94,20 @@ export type SimulationVoltageProbeInput = z.input<
 type InferredSimulationVoltageProbe = z.infer<typeof simulation_voltage_probe>
 
 /**
- * Defines a voltage probe for simulation, connected to one or more ports/nets.
- * If one port/net is provided, it's measured against ground. If two are provided,
- * it's a differential measurement.
+ * Defines a voltage probe for simulation.
+ * A 'voltage' probe_type measures against ground. A 'differential_voltage'
+ * probe_type measures between two points.
  */
 export interface SimulationVoltageProbe {
   type: "simulation_voltage_probe"
   simulation_voltage_probe_id: string
   source_component_id?: string
   name?: string
-  source_port_ids?: string[]
-  source_net_ids?: string[]
+  probe_type: "voltage" | "differential_voltage"
+  signal_input_source_port_id?: string
+  signal_input_source_net_id?: string
+  reference_input_source_port_id?: string
+  reference_input_source_net_id?: string
   subcircuit_id?: string
   color?: string
 }
