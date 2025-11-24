@@ -2713,17 +2713,19 @@ interface SimulationUnknownExperimentError {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_voltage_probe.ts)
 
-Defines a voltage probe for simulation, connected to a port or a net.
-
 ```typescript
-/** Defines a voltage probe for simulation, connected to a port or a net. */
+/** Defines a voltage probe for simulation. If a reference input is not provided,
+ * it measures against ground. If a reference input is provided, it measures
+ * the differential voltage between two points. */
 interface SimulationVoltageProbe {
   type: "simulation_voltage_probe"
   simulation_voltage_probe_id: string
   source_component_id?: string
   name?: string
-  source_port_id?: string
-  source_net_id?: string
+  signal_input_source_port_id?: string
+  signal_input_source_net_id?: string
+  reference_input_source_port_id?: string
+  reference_input_source_net_id?: string
   subcircuit_id?: string
   color?: string
 }
