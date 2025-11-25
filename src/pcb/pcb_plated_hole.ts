@@ -19,7 +19,6 @@ const pcb_plated_hole_circle = z.object({
   pcb_port_id: z.string().optional(),
   pcb_plated_hole_id: getZodPrefixedIdWithDefault("pcb_plated_hole"),
   soldermask_margin: z.number().optional(),
-  is_covered_with_solder_mask: z.boolean().optional(),
 })
 
 /**
@@ -40,7 +39,6 @@ export interface PcbPlatedHoleCircle {
   pcb_port_id?: string
   pcb_plated_hole_id: string
   soldermask_margin?: number
-  is_covered_with_solder_mask?: boolean
 }
 
 const pcb_plated_hole_oval = z.object({
