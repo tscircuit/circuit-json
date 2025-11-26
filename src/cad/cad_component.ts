@@ -27,6 +27,7 @@ export const cad_component = z
     model_wrl_url: z.string().optional(),
     model_unit_to_mm_scale_factor: z.number().optional(),
     model_jscad: z.any().optional(),
+    show_as_translucent_model: z.boolean().optional(),
   })
   .describe("Defines a component on the PCB")
 
@@ -53,6 +54,7 @@ export interface CadComponent {
   model_wrl_url?: string
   model_unit_to_mm_scale_factor?: number
   model_jscad?: any
+  show_as_translucent_model?: boolean
 }
 
 expectTypesMatch<CadComponent, InferredCadComponent>(true)
