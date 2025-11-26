@@ -13,8 +13,8 @@ export const pcb_via = z
     subcircuit_connectivity_map_key: z.string().optional(),
     x: distance,
     y: distance,
-    outer_diameter: distance.default("0.6mm"),
-    hole_diameter: distance.default("0.3mm"),
+    outer_diameter: distance.default("0.6mm").optional(),
+    hole_diameter: distance.default("0.3mm").optional(),
     /** @deprecated */
     from_layer: layer_ref.optional(),
     /** @deprecated */
@@ -40,8 +40,8 @@ export interface PcbVia {
   subcircuit_connectivity_map_key?: string
   x: Distance
   y: Distance
-  outer_diameter: Distance
-  hole_diameter: Distance
+  outer_diameter?: Distance
+  hole_diameter?: Distance
   /** @deprecated */
   from_layer?: LayerRef
   /** @deprecated */
