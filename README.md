@@ -869,6 +869,7 @@ interface CadComponent {
   model_wrl_url?: string
   model_unit_to_mm_scale_factor?: number
   model_jscad?: any
+  show_as_translucent_model?: boolean
 }
 ```
 
