@@ -2141,6 +2141,7 @@ interface PcbVia {
   pcb_trace_id?: string
   net_is_assignable?: boolean
   net_assigned?: boolean
+  is_tented?: boolean
 }
 ```
 
