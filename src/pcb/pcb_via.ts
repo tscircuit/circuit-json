@@ -23,6 +23,7 @@ export const pcb_via = z
     pcb_trace_id: z.string().optional(),
     net_is_assignable: z.boolean().optional(),
     net_assigned: z.boolean().optional(),
+    is_tented: z.boolean().optional(),
   })
   .describe("Defines a via on the PCB")
 
@@ -50,6 +51,7 @@ export interface PcbVia {
   pcb_trace_id?: string
   net_is_assignable?: boolean
   net_assigned?: boolean
+  is_tented?: boolean
 }
 
 /**
