@@ -50,6 +50,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceComponentBase](#sourcecomponentbase)
     - [SourceFailedToCreateComponentError](#sourcefailedtocreatecomponenterror)
     - [SourceGroup](#sourcegroup)
+    - [SourceInterconnect](#sourceinterconnect)
     - [SourceManuallyPlacedVia](#sourcemanuallyplacedvia)
     - [SourceMissingPropertyError](#sourcemissingpropertyerror)
     - [SourceNet](#sourcenet)
@@ -319,6 +320,19 @@ interface SourceGroup {
   show_as_schematic_box?: boolean
   name?: string
   was_automatically_named?: boolean
+}
+```
+
+### SourceInterconnect
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_interconnect.ts)
+
+Defines a generic interconnect component
+
+```typescript
+/** Defines a generic interconnect component */
+interface SourceInterconnect extends SourceComponentBase {
+  ftype: "interconnect"
 }
 ```
 
