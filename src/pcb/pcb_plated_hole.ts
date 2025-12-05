@@ -11,6 +11,7 @@ const pcb_plated_hole_circle = z.object({
   subcircuit_id: z.string().optional(),
   outer_diameter: z.number(),
   hole_diameter: z.number(),
+  is_covered_with_solder_mask: z.boolean().optional(),
   x: distance,
   y: distance,
   layers: z.array(layer_ref),
@@ -31,6 +32,7 @@ export interface PcbPlatedHoleCircle {
   subcircuit_id?: string
   outer_diameter: number
   hole_diameter: number
+  is_covered_with_solder_mask?: boolean
   x: Distance
   y: Distance
   layers: LayerRef[]
