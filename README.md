@@ -1632,6 +1632,7 @@ interface PcbPlatedHoleCircle {
   subcircuit_id?: string
   outer_diameter: number
   hole_diameter: number
+  is_covered_with_solder_mask?: boolean
   x: Distance
   y: Distance
   layers: LayerRef[]
