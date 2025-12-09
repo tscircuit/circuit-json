@@ -48,6 +48,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
   - [Source Components](#source-components)
     - [SourceBoard](#sourceboard)
     - [SourceComponentBase](#sourcecomponentbase)
+    - [SourceComponentInternalConnection](#sourcecomponentinternalconnection)
     - [SourceFailedToCreateComponentError](#sourcefailedtocreatecomponenterror)
     - [SourceGroup](#sourcegroup)
     - [SourceInterconnect](#sourceinterconnect)
@@ -276,6 +277,19 @@ interface SourceComponentBase {
   internally_connected_source_port_ids?: string[][]
   source_group_id?: string
   subcircuit_id?: string
+}
+```
+
+### SourceComponentInternalConnection
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_component_internal_connection.ts)
+
+```typescript
+interface SourceComponentInternalConnection {
+  type: "source_component_internal_connection"
+  source_component_internal_connection_id: string
+  source_component_id: string
+  source_port_ids: string[]
 }
 ```
 
