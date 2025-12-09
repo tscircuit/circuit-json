@@ -124,6 +124,12 @@ interface SourcePort {
   subcircuit_connectivity_map_key?: string
 }
 
+interface SourcePortInternalConnection {
+  type: "source_port_internal_connection"
+  source_port_internal_connection_id: string
+  source_port_ids: string[]
+}
+
 interface SourceSimplePowerSource {
   type: "source_component"
   ftype: "simple_power_source"
