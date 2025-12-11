@@ -986,6 +986,7 @@ interface PcbComponent {
   pcb_group_id?: string
   position_mode?: "packed" | "relative_to_group_anchor" | "none"
   positioned_relative_to_pcb_group_id?: string
+  positioned_relative_to_pcb_board_id?: string
   obstructs_within_bounds: boolean
 }
 ```

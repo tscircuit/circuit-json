@@ -34,6 +34,15 @@ test("pcb_component allows positioned_relative_to_pcb_group_id", () => {
   expect(parsed.positioned_relative_to_pcb_group_id).toBe("pcb_group_1")
 })
 
+test("pcb_component allows positioned_relative_to_pcb_board_id", () => {
+  const parsed = pcb_component.parse({
+    ...baseComponent,
+    positioned_relative_to_pcb_board_id: "pcb_board_1",
+  })
+
+  expect(parsed.positioned_relative_to_pcb_board_id).toBe("pcb_board_1")
+})
+
 test("pcb_component rejects invalid position_mode", () => {
   expect(() =>
     pcb_component.parse({
