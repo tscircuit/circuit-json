@@ -6,6 +6,7 @@ export interface SourceComponentInternalConnection {
   source_component_internal_connection_id: string
   source_component_id: string
   source_port_ids: string[]
+  subcircuit_id?: string
 }
 
 export const source_component_internal_connection = z.object({
@@ -13,6 +14,7 @@ export const source_component_internal_connection = z.object({
   source_component_internal_connection_id: z.string(),
   source_component_id: z.string(),
   source_port_ids: z.array(z.string()),
+  subcircuit_id: z.string().optional(),
 })
 
 type InferredSourceComponentInternalConnection = z.infer<
