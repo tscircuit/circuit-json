@@ -2672,6 +2672,7 @@ interface SchematicVoltageProbe {
   voltage?: number
   subcircuit_id?: string
   color?: string
+  label_alignment?: NinePointAnchor
 }
 ```
 
