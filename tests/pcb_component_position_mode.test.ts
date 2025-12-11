@@ -43,6 +43,17 @@ test("pcb_component allows positioned_relative_to_pcb_board_id", () => {
   expect(parsed.positioned_relative_to_pcb_board_id).toBe("pcb_board_1")
 })
 
+test("pcb_component allows display offsets", () => {
+  const parsed = pcb_component.parse({
+    ...baseComponent,
+    display_offset_x: "1mm",
+    display_offset_y: "-2mm",
+  })
+
+  expect(parsed.display_offset_x).toBe("1mm")
+  expect(parsed.display_offset_y).toBe("-2mm")
+})
+
 test("pcb_component rejects invalid position_mode", () => {
   expect(() =>
     pcb_component.parse({

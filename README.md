@@ -273,14 +273,6 @@ interface SourceComponentBase {
   manufacturer_part_number?: string
   supplier_part_numbers?: Partial<Record<SupplierName, string[]>>
   display_value?: string
-  /** How to display the x offset for this part, usually corresponding with how
-   * the user specified it */
-
-  display_x_offset?: string
-  /** How to display the y offset for this part, usually corresponding with how
-   * the user specified it */
-
-  display_y_offset?: string
   are_pins_interchangeable?: boolean
   internally_connected_source_port_ids?: string[][]
   source_group_id?: string
@@ -988,6 +980,8 @@ interface PcbComponent {
   center: Point
   layer: LayerRef
   rotation: Rotation
+  display_offset_x?: string
+  display_offset_y?: string
   width: Length
   height: Length
   do_not_place?: boolean
@@ -1373,6 +1367,8 @@ interface PcbGroup {
   width?: Length
   height?: Length
   center: Point
+  display_offset_x?: string
+  display_offset_y?: string
   outline?: Point[]
   anchor_position?: Point
   anchor_alignment?:
@@ -1381,6 +1377,9 @@ interface PcbGroup {
     | "top_right"
     | "bottom_left"
     | "bottom_right"
+  position_mode?: "packed" | "relative_to_group_anchor" | "none"
+  positioned_relative_to_pcb_group_id?: string
+  positioned_relative_to_pcb_board_id?: string
   pcb_component_ids: string[]
   child_layout_mode?: "packed" | "none"
   name?: string
