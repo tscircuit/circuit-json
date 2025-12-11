@@ -2,7 +2,10 @@ import { z } from "zod"
 import { point, type Point } from "../common/point"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import { voltage } from "src/units"
-import { ninePointAnchor, type NinePointAnchor } from "src/common/NinePointAnchor"
+import {
+  ninePointAnchor,
+  type NinePointAnchor,
+} from "src/common/NinePointAnchor"
 
 export interface SchematicVoltageProbe {
   type: "schematic_voltage_probe"
