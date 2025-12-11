@@ -7,7 +7,9 @@ test("source_component_internal_connection parses source port ids", () => {
     source_component_internal_connection_id: "conn-1",
     source_component_id: "comp-1",
     source_port_ids: ["p1", "p2"],
+    subcircuit_id: "sub-1",
   })
 
   expect(parsed.source_port_ids).toEqual(["p1", "p2"])
+  expect(parsed.subcircuit_id).toEqual("sub-1")
 })

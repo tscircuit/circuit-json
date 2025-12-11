@@ -129,6 +129,7 @@ interface SourceComponentInternalConnection {
   source_component_internal_connection_id: string
   source_component_id: string
   source_port_ids: string[]
+  subcircuit_id?: string
 }
 
 interface SourceSimplePowerSource {
