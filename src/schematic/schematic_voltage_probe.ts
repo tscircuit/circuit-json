@@ -2,6 +2,7 @@ import { z } from "zod"
 import { point, type Point } from "../common/point"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import { voltage } from "src/units"
+import { ninePointAnchor, type NinePointAnchor } from "src/common/NinePointAnchor"
 
 export interface SchematicVoltageProbe {
   type: "schematic_voltage_probe"
@@ -13,7 +14,7 @@ export interface SchematicVoltageProbe {
   voltage?: number
   subcircuit_id?: string
   color?: string
-  label_side?: "left" | "right"
+  label_alignment?: NinePointAnchor
 }
 
 export const schematic_voltage_probe = z
@@ -27,7 +28,7 @@ export const schematic_voltage_probe = z
     voltage: voltage.optional(),
     subcircuit_id: z.string().optional(),
     color: z.string().optional(),
-    label_side: z.enum(["left", "right"]).optional(),
+    label_alignment: ninePointAnchor.optional(),
   })
   .describe("Defines a voltage probe measurement point on a schematic trace")
 
