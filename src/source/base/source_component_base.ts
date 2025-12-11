@@ -13,16 +13,6 @@ export interface SourceComponentBase {
   manufacturer_part_number?: string
   supplier_part_numbers?: Partial<Record<SupplierName, string[]>>
   display_value?: string
-  /**
-   * How to display the x offset for this part, usually corresponding with how
-   * the user specified it
-   */
-  display_x_offset?: string
-  /**
-   * How to display the y offset for this part, usually corresponding with how
-   * the user specified it
-   */
-  display_y_offset?: string
   are_pins_interchangeable?: boolean
   internally_connected_source_port_ids?: string[][]
   source_group_id?: string
@@ -39,18 +29,6 @@ export const source_component_base = z.object({
     .record(supplier_name, z.array(z.string()))
     .optional(),
   display_value: z.string().optional(),
-  display_x_offset: z
-    .string()
-    .optional()
-    .describe(
-      "How to display the x offset for this part, usually corresponding with how the user specified it",
-    ),
-  display_y_offset: z
-    .string()
-    .optional()
-    .describe(
-      "How to display the y offset for this part, usually corresponding with how the user specified it",
-    ),
   are_pins_interchangeable: z.boolean().optional(),
   internally_connected_source_port_ids: z.array(z.array(z.string())).optional(),
   source_group_id: z.string().optional(),

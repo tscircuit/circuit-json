@@ -13,11 +13,28 @@ export const pcb_group = z
     width: length.optional(),
     height: length.optional(),
     center: point,
+    display_offset_x: z
+      .string()
+      .optional()
+      .describe(
+        "How to display the x offset for this group, usually corresponding with how the user specified it",
+      ),
+    display_offset_y: z
+      .string()
+      .optional()
+      .describe(
+        "How to display the y offset for this group, usually corresponding with how the user specified it",
+      ),
     outline: z.array(point).optional(),
     anchor_position: point.optional(),
     anchor_alignment: z
       .enum(["center", "top_left", "top_right", "bottom_left", "bottom_right"])
       .optional(),
+    position_mode: z
+      .enum(["packed", "relative_to_group_anchor", "none"])
+      .optional(),
+    positioned_relative_to_pcb_group_id: z.string().optional(),
+    positioned_relative_to_pcb_board_id: z.string().optional(),
     pcb_component_ids: z.array(z.string()),
     child_layout_mode: z.enum(["packed", "none"]).optional(),
     name: z.string().optional(),
@@ -47,6 +64,8 @@ export interface PcbGroup {
   width?: Length
   height?: Length
   center: Point
+  display_offset_x?: string
+  display_offset_y?: string
   outline?: Point[]
   anchor_position?: Point
   anchor_alignment?:
@@ -55,6 +74,9 @@ export interface PcbGroup {
     | "top_right"
     | "bottom_left"
     | "bottom_right"
+  position_mode?: "packed" | "relative_to_group_anchor" | "none"
+  positioned_relative_to_pcb_group_id?: string
+  positioned_relative_to_pcb_board_id?: string
   pcb_component_ids: string[]
   child_layout_mode?: "packed" | "none"
   name?: string

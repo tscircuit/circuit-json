@@ -12,6 +12,18 @@ export const pcb_component = z
     center: point,
     layer: layer_ref,
     rotation: rotation,
+    display_offset_x: z
+      .string()
+      .optional()
+      .describe(
+        "How to display the x offset for this part, usually corresponding with how the user specified it",
+      ),
+    display_offset_y: z
+      .string()
+      .optional()
+      .describe(
+        "How to display the y offset for this part, usually corresponding with how the user specified it",
+      ),
     width: length,
     height: length,
     do_not_place: z.boolean().optional(),
@@ -45,6 +57,8 @@ export interface PcbComponent {
   center: Point
   layer: LayerRef
   rotation: Rotation
+  display_offset_x?: string
+  display_offset_y?: string
   width: Length
   height: Length
   do_not_place?: boolean
