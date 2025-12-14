@@ -66,6 +66,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceSimpleChip](#sourcesimplechip)
     - [SourceSimpleCrystal](#sourcesimplecrystal)
     - [SourceSimpleDiode](#sourcesimplediode)
+    - [SourceSimpleFiducial](#sourcesimplefiducial)
     - [SourceSimpleFuse](#sourcesimplefuse)
     - [SourceSimpleGround](#sourcesimpleground)
     - [SourceSimpleInductor](#sourcesimpleinductor)
@@ -588,6 +589,19 @@ Defines a simple diode component
 /** Defines a simple diode component */
 interface SourceSimpleDiode extends SourceComponentBase {
   ftype: "simple_diode"
+}
+```
+
+### SourceSimpleFiducial
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_fiducial.ts)
+
+Defines a simple fiducial component
+
+```typescript
+/** Defines a simple fiducial component */
+interface SourceSimpleFiducial extends SourceComponentBase {
+  ftype: "simple_fiducial"
 }
 ```
 
