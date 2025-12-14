@@ -1,5 +1,11 @@
 import { z } from "zod"
-import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
+import {
+  point,
+  type Point,
+  getZodPrefixedIdWithDefault,
+  ninePointAnchor,
+  type NinePointAnchor,
+} from "src/common"
 import { length, type Length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
@@ -27,9 +33,7 @@ export const pcb_group = z
       ),
     outline: z.array(point).optional(),
     anchor_position: point.optional(),
-    anchor_alignment: z
-      .enum(["center", "top_left", "top_right", "bottom_left", "bottom_right"])
-      .optional(),
+    anchor_alignment: ninePointAnchor.default("center"),
     position_mode: z
       .enum(["packed", "relative_to_group_anchor", "none"])
       .optional(),
@@ -68,12 +72,7 @@ export interface PcbGroup {
   display_offset_y?: string
   outline?: Point[]
   anchor_position?: Point
-  anchor_alignment?:
-    | "center"
-    | "top_left"
-    | "top_right"
-    | "bottom_left"
-    | "bottom_right"
+  anchor_alignment: NinePointAnchor
   position_mode?: "packed" | "relative_to_group_anchor" | "none"
   positioned_relative_to_pcb_group_id?: string
   positioned_relative_to_pcb_board_id?: string
