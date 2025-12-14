@@ -1,6 +1,7 @@
 export * from "./source_simple_capacitor"
 export * from "./source_simple_resistor"
 export * from "./source_simple_diode"
+export * from "./source_simple_fiducial"
 export * from "./source_simple_led"
 export * from "./source_simple_ground"
 export * from "./source_simple_chip"
