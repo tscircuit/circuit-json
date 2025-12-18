@@ -1414,6 +1414,7 @@ interface PcbHoleCircle {
   pcb_hole_id: string
   pcb_group_id?: string
   subcircuit_id?: string
+  pcb_component_id?: string
   hole_shape: "circle"
   hole_diameter: number
   x: Distance
