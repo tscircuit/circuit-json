@@ -8,6 +8,7 @@ const pcb_hole_circle = z.object({
   pcb_hole_id: getZodPrefixedIdWithDefault("pcb_hole"),
   pcb_group_id: z.string().optional(),
   subcircuit_id: z.string().optional(),
+  pcb_component_id: z.string().optional(),
   hole_shape: z.literal("circle"),
   hole_diameter: z.number(),
   x: distance,
@@ -31,6 +32,7 @@ export interface PcbHoleCircle {
   pcb_hole_id: string
   pcb_group_id?: string
   subcircuit_id?: string
+  pcb_component_id?: string
   hole_shape: "circle"
   hole_diameter: number
   x: Distance
@@ -46,6 +48,7 @@ const pcb_hole_rect = z.object({
   pcb_hole_id: getZodPrefixedIdWithDefault("pcb_hole"),
   pcb_group_id: z.string().optional(),
   subcircuit_id: z.string().optional(),
+  pcb_component_id: z.string().optional(),
   hole_shape: z.literal("rect"),
   hole_width: z.number(),
   hole_height: z.number(),
@@ -70,6 +73,7 @@ export interface PcbHoleRect {
   pcb_hole_id: string
   pcb_group_id?: string
   subcircuit_id?: string
+  pcb_component_id?: string
   hole_shape: "rect"
   hole_width: number
   hole_height: number
@@ -85,6 +89,7 @@ const pcb_hole_circle_or_square = z.object({
   pcb_hole_id: getZodPrefixedIdWithDefault("pcb_hole"),
   pcb_group_id: z.string().optional(),
   subcircuit_id: z.string().optional(),
+  pcb_component_id: z.string().optional(),
   hole_shape: z.enum(["circle", "square"]),
   hole_diameter: z.number(),
   x: distance,
@@ -115,6 +120,7 @@ export interface PcbHoleCircleOrSquare {
   pcb_hole_id: string
   pcb_group_id?: string
   subcircuit_id?: string
+  pcb_component_id?: string
   hole_shape: "circle" | "square"
   hole_diameter: number
   x: Distance
@@ -130,6 +136,7 @@ const pcb_hole_oval = z.object({
   pcb_hole_id: getZodPrefixedIdWithDefault("pcb_hole"),
   pcb_group_id: z.string().optional(),
   subcircuit_id: z.string().optional(),
+  pcb_component_id: z.string().optional(),
   hole_shape: z.literal("oval"),
   hole_width: z.number(),
   hole_height: z.number(),
@@ -154,6 +161,7 @@ export interface PcbHoleOval {
   pcb_hole_id: string
   pcb_group_id?: string
   subcircuit_id?: string
+  pcb_component_id?: string
   hole_shape: "oval"
   hole_width: number
   hole_height: number
@@ -170,6 +178,7 @@ const pcb_hole_pill = z.object({
   pcb_hole_id: getZodPrefixedIdWithDefault("pcb_hole"),
   pcb_group_id: z.string().optional(),
   subcircuit_id: z.string().optional(),
+  pcb_component_id: z.string().optional(),
   hole_shape: z.literal("pill"),
   hole_width: z.number(),
   hole_height: z.number(),
@@ -194,6 +203,7 @@ export interface PcbHolePill {
   pcb_hole_id: string
   pcb_group_id?: string
   subcircuit_id?: string
+  pcb_component_id?: string
   hole_shape: "pill"
   hole_width: number
   hole_height: number
@@ -210,6 +220,7 @@ const pcb_hole_rotated_pill = z.object({
   pcb_hole_id: getZodPrefixedIdWithDefault("pcb_hole"),
   pcb_group_id: z.string().optional(),
   subcircuit_id: z.string().optional(),
+  pcb_component_id: z.string().optional(),
   hole_shape: z.literal("rotated_pill"),
   hole_width: z.number(),
   hole_height: z.number(),
@@ -235,6 +246,7 @@ export interface PcbHoleRotatedPill {
   pcb_hole_id: string
   pcb_group_id?: string
   subcircuit_id?: string
+  pcb_component_id?: string
   hole_shape: "rotated_pill"
   hole_width: number
   hole_height: number
