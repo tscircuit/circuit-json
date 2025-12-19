@@ -29,6 +29,7 @@ export * from "./pcb_copper_text"
 export * from "./pcb_silkscreen_rect"
 export * from "./pcb_silkscreen_circle"
 export * from "./pcb_silkscreen_oval"
+export * from "./pcb_silkscreen_pill"
 export * from "./pcb_fabrication_note_text"
 export * from "./pcb_fabrication_note_path"
 export * from "./pcb_fabrication_note_rect"
@@ -84,6 +85,7 @@ import type { PcbSilkscreenLine } from "./pcb_silkscreen_line"
 import type { PcbSilkscreenPath } from "./pcb_silkscreen_path"
 import type { PcbSilkscreenText } from "./pcb_silkscreen_text"
 import type { PcbSilkscreenRect } from "./pcb_silkscreen_rect"
+import type { PcbSilkscreenPill } from "./pcb_silkscreen_pill"
 import type { PcbSilkscreenCircle } from "./pcb_silkscreen_circle"
 import type { PcbCopperText } from "./pcb_copper_text"
 import type { PcbFabricationNoteRect } from "./pcb_fabrication_note_rect"
@@ -135,6 +137,7 @@ export type PcbCircuitElement =
   | PcbSilkscreenLine
   | PcbSilkscreenPath
   | PcbSilkscreenText
+  | PcbSilkscreenPill
   | PcbCopperText
   | PcbSilkscreenRect
   | PcbSilkscreenCircle

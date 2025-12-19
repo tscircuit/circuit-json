@@ -67,6 +67,7 @@ export const any_circuit_element = z.union([
   pcb.pcb_silkscreen_line,
   pcb.pcb_silkscreen_path,
   pcb.pcb_silkscreen_text,
+  pcb.pcb_silkscreen_pill,
   pcb.pcb_copper_text,
   pcb.pcb_silkscreen_rect,
   pcb.pcb_silkscreen_circle,
