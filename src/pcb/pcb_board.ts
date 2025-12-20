@@ -38,11 +38,7 @@ export const pcb_board = z
     material: z.enum(["fr4", "fr1"]).default("fr4"),
     anchor_position: point.optional(),
     anchor_alignment: ninePointAnchor.default("center"),
-    position_mode: z
-      .enum(["relative_to_panel_anchor", "grid_in_panel", "none"])
-      .optional(),
-    panel_grid_cell_width: length.optional(),
-    panel_grid_cell_height: length.optional(),
+    position_mode: z.enum(["relative_to_panel_anchor", "none"]).optional(),
   })
   .describe("Defines the board outline of the PCB")
 
@@ -67,9 +63,7 @@ export interface PcbBoard {
   material: "fr4" | "fr1"
   anchor_position?: Point
   anchor_alignment: NinePointAnchor
-  position_mode?: "relative_to_panel_anchor" | "grid_in_panel" | "none"
-  panel_grid_cell_width?: Length
-  panel_grid_cell_height?: Length
+  position_mode?: "relative_to_panel_anchor" | "none"
 }
 
 export type PcbBoardInput = z.input<typeof pcb_board>

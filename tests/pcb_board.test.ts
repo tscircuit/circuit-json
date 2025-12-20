@@ -112,20 +112,3 @@ test("pcb_board with anchor properties", () => {
   expect(board.display_offset_x).toBe("10mm")
   expect(board.display_offset_y).toBe("10mm")
 })
-
-test("pcb_board with grid position mode", () => {
-  const board = pcb_board.parse({
-    type: "pcb_board",
-    width: "100mm",
-    height: "100mm",
-    center: { x: 0, y: 0 },
-    pcb_panel_id: "panel_1",
-    position_mode: "grid_in_panel",
-    panel_grid_cell_width: "110mm",
-    panel_grid_cell_height: "120mm",
-  })
-
-  expect(board.position_mode).toBe("grid_in_panel")
-  expect(board.panel_grid_cell_width).toBe(110)
-  expect(board.panel_grid_cell_height).toBe(120)
-})
