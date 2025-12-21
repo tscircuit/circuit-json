@@ -1,0 +1,92 @@
+# Created using @tscircuit/plop (npm install -g @tscircuit/plop)
+name: Publish to npm
+on:
+  push:
+    branches:
+      - main
+      - '!version-bumps/**'
+  workflow_dispatch:
+
+env:
+  UPSTREAM_REPOS: "" # comma-separated list, e.g. "eval,tscircuit,docs"
+  UPSTREAM_PACKAGES_TO_UPDATE: "" # comma-separated list, e.g. "@tscircuit/core,@tscircuit/protos"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+      - run: npm install -g pver
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+      - run: pver release --no-push-main
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TSCIRCUIT_BOT_GITHUB_TOKEN }}
+
+      - name: Get package version
+        id: package-version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+
+      - name: Create Pull Request
+        id: create-pr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore: bump version"
+          title: "chore: bump version to v${{ steps.package-version.outputs.version }}"
+          body: "Automated package update"
+          branch: version-bumps/v${{ steps.package-version.outputs.version }}
+          base: main
+          token: ${{ secrets.TSCIRCUIT_BOT_GITHUB_TOKEN }}
+          committer: tscircuitbot <githubbot@tscircuit.com>
+          author: tscircuitbot <githubbot@tscircuit.com>
+
+      - name: Enable auto-merge
+        if: steps.create-pr.outputs.pull-request-number != ''
+        run: |
+          gh pr merge ${{ steps.create-pr.outputs.pull-request-number }} --auto --squash --delete-branch
+        env:
+          GH_TOKEN: ${{ secrets.TSCIRCUIT_BOT_GITHUB_TOKEN }}
+
+      - name: Trigger upstream repo updates
+        if: env.UPSTREAM_REPOS && env.UPSTREAM_PACKAGES_TO_UPDATE
+        run: |
+          IFS=',' read -ra REPOS <<< "${{ env.UPSTREAM_REPOS }}"
+          for repo in "${REPOS[@]}"; do
+            if [[ -n "$repo" ]]; then
+              echo "Triggering update for repo: $repo"
+              curl -X POST \
+                -H "Accept: application/vnd.github.v3+json" \
+                -H "Authorization: token ${{ secrets.TSCIRCUIT_BOT_GITHUB_TOKEN }}" \
+                -H "Content-Type: application/json" \
+                "https://api.github.com/repos/tscircuit/$repo/actions/workflows/update-package.yml/dispatches" \
+                -d "{\"ref\":\"main\",\"inputs\":{\"package_names\":\"${{ env.UPSTREAM_PACKAGES_TO_UPDATE }}\"}}"
+            fi
+          done
+      - name: Notify release-tracker of version update
+        # Continue-on-error just in case the tracker is down
+        continue-on-error: true
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          PACKAGE_JSON=$(cat package.json)
+          curl -X POST https://release-tracker.tscircuit.com/release_events/create \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"event\": {
+                \"event_type\": \"versions_updated\",
+                \"repo\": \"tscircuit/circuit-json-to-kicad\",
+                \"version\": \"$VERSION\",
+                \"package_json\": $PACKAGE_JSON
+              }
+            }"
