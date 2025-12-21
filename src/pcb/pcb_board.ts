@@ -37,7 +37,7 @@ export const pcb_board = z
     shape: z.enum(["rect", "polygon"]).optional(),
     material: z.enum(["fr4", "fr1"]).default("fr4"),
     anchor_position: point.optional(),
-    anchor_alignment: ninePointAnchor.default("center"),
+    anchor_alignment: ninePointAnchor.optional(),
     position_mode: z.enum(["relative_to_panel_anchor", "none"]).optional(),
   })
   .describe("Defines the board outline of the PCB")
@@ -62,7 +62,7 @@ export interface PcbBoard {
   shape?: "rect" | "polygon"
   material: "fr4" | "fr1"
   anchor_position?: Point
-  anchor_alignment: NinePointAnchor
+  anchor_alignment?: NinePointAnchor
   position_mode?: "relative_to_panel_anchor" | "none"
 }
 
