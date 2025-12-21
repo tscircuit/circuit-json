@@ -91,3 +91,24 @@ test("pcb_board shape property is optional", () => {
 
   expect(board.shape).toBeUndefined()
 })
+
+test("pcb_board with anchor properties", () => {
+  const board = pcb_board.parse({
+    type: "pcb_board",
+    width: "100mm",
+    height: "100mm",
+    center: { x: 0, y: 0 },
+    pcb_panel_id: "panel_1",
+    anchor_position: { x: 10, y: 10 },
+    anchor_alignment: "top_left",
+    position_mode: "relative_to_panel_anchor",
+    display_offset_x: "10mm",
+    display_offset_y: "10mm",
+  })
+
+  expect(board.anchor_position).toEqual({ x: 10, y: 10 })
+  expect(board.anchor_alignment).toBe("top_left")
+  expect(board.position_mode).toBe("relative_to_panel_anchor")
+  expect(board.display_offset_x).toBe("10mm")
+  expect(board.display_offset_y).toBe("10mm")
+})
