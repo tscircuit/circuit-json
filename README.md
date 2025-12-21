@@ -948,12 +948,17 @@ interface PcbBoard {
   subcircuit_id?: string
   width?: Length
   height?: Length
+  display_offset_x?: string
+  display_offset_y?: string
   thickness: Length
   num_layers: number
   center: Point
   outline?: Point[]
   shape?: "rect" | "polygon"
   material: "fr4" | "fr1"
+  anchor_position?: Point
+  anchor_alignment: NinePointAnchor
+  position_mode?: "relative_to_panel_anchor" | "none"
 }
 ```
 
