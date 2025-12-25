@@ -20,6 +20,7 @@ export const pcb_silkscreen_rect = z
     is_filled: z.boolean().default(true).optional(),
     has_stroke: z.boolean().optional(),
     is_stroke_dashed: z.boolean().optional(),
+    ccw_rotation: z.number().optional(),
   })
   .describe("Defines a silkscreen rect on the PCB")
 
@@ -44,6 +45,7 @@ export interface PcbSilkscreenRect {
   is_filled?: boolean
   has_stroke?: boolean
   is_stroke_dashed?: boolean
+  ccw_rotation?: number
 }
 
 /**
