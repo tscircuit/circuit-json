@@ -8,8 +8,14 @@ export type PcbRenderLayer =
   | "bottom_copper"
   | "top_soldermask"
   | "bottom_soldermask"
-  | "top_fabrication"
-  | "bottom_fabrication"
+  | "top_fabrication_note"
+  | "bottom_fabrication_note"
+  | "inner1_copper"
+  | "inner2_copper"
+  | "inner3_copper"
+  | "inner4_copper"
+  | "inner5_copper"
+  | "inner6_copper"
 
 export const pcbRenderLayer = z.enum([
   "top_silkscreen",
@@ -18,8 +24,14 @@ export const pcbRenderLayer = z.enum([
   "bottom_copper",
   "top_soldermask",
   "bottom_soldermask",
-  "top_fabrication",
-  "bottom_fabrication",
+  "top_fabrication_note",
+  "bottom_fabrication_note",
+  "inner1_copper",
+  "inner2_copper",
+  "inner3_copper",
+  "inner4_copper",
+  "inner5_copper",
+  "inner6_copper",
 ])
 
 type InferredPcbRenderLayer = z.infer<typeof pcbRenderLayer>
