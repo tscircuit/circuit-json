@@ -6,7 +6,7 @@ import {
   visible_layer,
   type VisibleLayer,
 } from "src/pcb/properties/layer_ref"
-import { distance, type Distance } from "src/units"
+import { distance, rotation, type Distance } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const pcb_silkscreen_oval = z
@@ -20,6 +20,7 @@ export const pcb_silkscreen_oval = z
     radius_x: distance,
     radius_y: distance,
     layer: visible_layer,
+    ccw_rotation: rotation.optional(),
   })
   .describe("Defines a silkscreen oval on the PCB")
 
@@ -39,6 +40,7 @@ export interface PcbSilkscreenOval {
   radius_x: Distance
   radius_y: Distance
   layer: VisibleLayer
+  ccw_rotation?: number
 }
 
 /**
