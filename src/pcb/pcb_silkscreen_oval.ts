@@ -20,7 +20,7 @@ export const pcb_silkscreen_oval = z
     radius_x: distance,
     radius_y: distance,
     layer: visible_layer,
-    ccw_rotation: rotation.default(0),
+    ccw_rotation: rotation.optional(),
   })
   .describe("Defines a silkscreen oval on the PCB")
 
@@ -40,7 +40,7 @@ export interface PcbSilkscreenOval {
   radius_x: Distance
   radius_y: Distance
   layer: VisibleLayer
-  ccw_rotation: number
+  ccw_rotation?: number
 }
 
 /**
