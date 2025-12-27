@@ -15,6 +15,7 @@ export const pcb_silkscreen_pill = z
     width: length,
     height: length,
     layer: layer_ref,
+    ccw_rotation: z.number().optional(),
   })
   .describe("Defines a silkscreen pill on the PCB")
 
@@ -34,6 +35,7 @@ export interface PcbSilkscreenPill {
   width: Length
   height: Length
   layer: LayerRef
+  ccw_rotation?: number
 }
 
 /**
