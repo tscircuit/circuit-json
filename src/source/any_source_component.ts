@@ -72,6 +72,10 @@ import {
   type SourceSimpleMosfet,
 } from "./source_simple_mosfet"
 import {
+  source_simple_op_amp,
+  type SourceSimpleOpAmp,
+} from "./source_simple_op_amp"
+import {
   source_simple_switch,
   type SourceSimpleSwitch,
 } from "./source_simple_switch"
@@ -129,6 +133,7 @@ export const any_source_component = z.union([
   source_simple_transistor,
   source_simple_test_point,
   source_simple_mosfet,
+  source_simple_op_amp,
   source_simple_fuse,
   source_simple_voltage_probe,
   source_interconnect,
@@ -167,6 +172,7 @@ export type AnySourceElement =
   | SourceSimpleTestPoint
   | SourceSimpleMosfet
   | SourceSimpleFuse
+  | SourceSimpleOpAmp
   | SourceSimpleVoltageProbe
   | SourceInterconnect
   | SourceProjectMetadata

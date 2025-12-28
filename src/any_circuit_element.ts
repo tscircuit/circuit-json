@@ -35,6 +35,7 @@ export const any_circuit_element = z.union([
   src.source_simple_transistor,
   src.source_simple_test_point,
   src.source_simple_mosfet,
+  src.source_simple_op_amp,
   src.source_simple_potentiometer,
   src.source_simple_push_button,
   src.source_pcb_ground_plane,
@@ -128,6 +129,7 @@ export const any_circuit_element = z.union([
   sim.simulation_switch,
   sim.simulation_voltage_probe,
   sim.simulation_unknown_experiment_error,
+  sim.simulation_op_amp,
 ])
 
 /**
