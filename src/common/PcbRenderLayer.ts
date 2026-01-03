@@ -19,6 +19,7 @@ export type PcbRenderLayer =
   | "inner5_copper"
   | "inner6_copper"
   | "edge_cuts"
+  | "drill"
 
 export const pcbRenderLayer = z.enum([
   "top_silkscreen",
@@ -38,6 +39,7 @@ export const pcbRenderLayer = z.enum([
   "inner5_copper",
   "inner6_copper",
   "edge_cuts",
+  "drill",
 ])
 
 type InferredPcbRenderLayer = z.infer<typeof pcbRenderLayer>
