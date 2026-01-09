@@ -5,3 +5,4 @@ package-lock.json
 .aider*
 .env
 opencode
+.DS_Store

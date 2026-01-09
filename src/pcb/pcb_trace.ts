@@ -24,9 +24,19 @@ export const pcb_trace_route_point_via = z.object({
   to_layer: z.string(),
 })
 
+export const pcb_trace_route_point_jumper_pad = z.object({
+  route_type: z.literal("wire_to_jumper_pad"),
+  x: distance,
+  y: distance,
+  width: distance,
+  layer: layer_ref,
+  jumper_pad_pcb_port_id: z.string().optional(),
+})
+
 export const pcb_trace_route_point = z.union([
   pcb_trace_route_point_wire,
   pcb_trace_route_point_via,
+  pcb_trace_route_point_jumper_pad,
 ])
 type InferredPcbTraceRoutePoint = z.infer<typeof pcb_trace_route_point>
 
@@ -73,7 +83,21 @@ export interface PcbTraceRoutePointVia {
   to_layer: string
 }
 
-export type PcbTraceRoutePoint = PcbTraceRoutePointWire | PcbTraceRoutePointVia
+export interface PcbTraceRoutePointJumperPad {
+  route_type: "wire_to_jumper_pad"
+  x: Distance
+  y: Distance
+  width: Distance
+  start_pcb_port_id?: string
+  end_pcb_port_id?: string
+  layer: LayerRef
+  jumper_pad_pcb_port_id?: string
+}
+
+export type PcbTraceRoutePoint =
+  | PcbTraceRoutePointWire
+  | PcbTraceRoutePointVia
+  | PcbTraceRoutePointJumperPad
 
 /**
  * Defines a trace on the PCB
