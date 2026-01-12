@@ -266,6 +266,7 @@ const pcb_hole_with_polygon_pad = z.object({
   pcb_port_id: z.string().optional(),
   pcb_plated_hole_id: getZodPrefixedIdWithDefault("pcb_plated_hole"),
   soldermask_margin: z.number().optional(),
+  ccw_rotation: rotation.optional(),
 })
 
 /**
@@ -293,6 +294,7 @@ export interface PcbHoleWithPolygonPad {
   pcb_port_id?: string
   pcb_plated_hole_id: string
   soldermask_margin?: number
+  ccw_rotation?: Rotation
 }
 
 export const pcb_plated_hole = z.union([
