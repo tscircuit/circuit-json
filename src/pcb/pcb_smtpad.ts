@@ -39,11 +39,10 @@ const pcb_smtpad_rect = z.object({
   pcb_port_id: z.string().optional(),
   is_covered_with_solder_mask: z.boolean().optional(),
   soldermask_margin: z.number().optional(),
-  soldermask_center_offset: z
-    .object({ x: z.number(), y: z.number() })
-    .optional(),
-  soldermask_width: z.number().optional(),
-  soldermask_height: z.number().optional(),
+  soldermask_margin_left: z.number().optional(),
+  soldermask_margin_top: z.number().optional(),
+  soldermask_margin_right: z.number().optional(),
+  soldermask_margin_bottom: z.number().optional(),
 })
 
 const pcb_smtpad_rotated_rect = z.object({
@@ -65,11 +64,10 @@ const pcb_smtpad_rotated_rect = z.object({
   pcb_port_id: z.string().optional(),
   is_covered_with_solder_mask: z.boolean().optional(),
   soldermask_margin: z.number().optional(),
-  soldermask_center_offset: z
-    .object({ x: z.number(), y: z.number() })
-    .optional(),
-  soldermask_width: z.number().optional(),
-  soldermask_height: z.number().optional(),
+  soldermask_margin_left: z.number().optional(),
+  soldermask_margin_top: z.number().optional(),
+  soldermask_margin_right: z.number().optional(),
+  soldermask_margin_bottom: z.number().optional(),
 })
 
 export const pcb_smtpad_pill = z.object({
@@ -185,9 +183,10 @@ export interface PcbSmtPadRect {
   pcb_port_id?: string
   is_covered_with_solder_mask?: boolean
   soldermask_margin?: number
-  soldermask_center_offset?: { x: number; y: number }
-  soldermask_width?: number
-  soldermask_height?: number
+  soldermask_margin_left?: number
+  soldermask_margin_top?: number
+  soldermask_margin_right?: number
+  soldermask_margin_bottom?: number
 }
 
 /**
@@ -212,9 +211,10 @@ export interface PcbSmtPadRotatedRect {
   pcb_port_id?: string
   is_covered_with_solder_mask?: boolean
   soldermask_margin?: number
-  soldermask_center_offset?: { x: number; y: number }
-  soldermask_width?: number
-  soldermask_height?: number
+  soldermask_margin_left?: number
+  soldermask_margin_top?: number
+  soldermask_margin_right?: number
+  soldermask_margin_bottom?: number
 }
 /**
  * Defines a pill-shaped SMT pad on the PCB (rounded rectangle).
