@@ -9,11 +9,13 @@ test("pcb_panel parses and defaults covered_with_solder_mask", () => {
     width: "100mm",
     height: "200mm",
     center: { x: 0, y: 0 },
+    layout_mode: "none",
   }
 
   const parsed = pcb_panel.parse(panelData)
 
   expect(parsed.covered_with_solder_mask).toBe(true)
+  expect(parsed.layout_mode).toBe("none")
 })
 
 test("any_circuit_element includes pcb_panel", () => {
@@ -27,4 +29,19 @@ test("any_circuit_element includes pcb_panel", () => {
   }
 
   expect(() => any_circuit_element.parse(panelData)).not.toThrow()
+})
+
+test("pcb_panel parses with layoutMode grid", () => {
+  const panelData = {
+    type: "pcb_panel" as const,
+    pcb_panel_id: "pcb_panel_1",
+    width: "100mm",
+    height: "200mm",
+    center: { x: 0, y: 0 },
+    layout_mode: "grid" as const,
+  }
+
+  const parsed = pcb_panel.parse(panelData)
+
+  expect(parsed.layout_mode).toBe("grid")
 })
