@@ -111,6 +111,10 @@ import {
   source_interconnect,
   type SourceInterconnect,
 } from "./source_interconnect"
+import {
+  source_simple_connector,
+  type SourceSimpleConnector,
+} from "./source_simple_connector"
 
 export const any_source_component = z.union([
   source_simple_resistor,
@@ -137,6 +141,7 @@ export const any_source_component = z.union([
   source_simple_fuse,
   source_simple_voltage_probe,
   source_interconnect,
+  source_simple_connector,
   source_project_metadata,
   source_missing_property_error,
   source_failed_to_create_component_error,
@@ -175,6 +180,7 @@ export type AnySourceElement =
   | SourceSimpleOpAmp
   | SourceSimpleVoltageProbe
   | SourceInterconnect
+  | SourceSimpleConnector
   | SourceProjectMetadata
   | SourceMissingPropertyError
   | SourceFailedToCreateComponentError
