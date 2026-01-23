@@ -18,6 +18,7 @@ export interface SchematicPort {
   is_connected?: boolean
   has_input_arrow?: boolean
   has_output_arrow?: boolean
+  is_drawn_with_inversion_circle?: boolean
 }
 
 export const schematic_port = z
@@ -37,6 +38,7 @@ export const schematic_port = z
     is_connected: z.boolean().optional(),
     has_input_arrow: z.boolean().optional(),
     has_output_arrow: z.boolean().optional(),
+    is_drawn_with_inversion_circle: z.boolean().optional(),
   })
   .describe("Defines a port on a schematic component")
 
