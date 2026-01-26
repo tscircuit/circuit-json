@@ -9,6 +9,7 @@ export const source_simple_crystal = source_component_base.extend({
   ftype: z.literal("simple_crystal"),
   frequency: z.number().describe("Frequency in Hz"),
   load_capacitance: z.number().optional().describe("Load capacitance in pF"),
+  pin_variant: z.enum(["two_pin", "four_pin"]).optional(),
 })
 
 export type SourceSimpleCrystalInput = z.input<typeof source_simple_crystal>
@@ -21,6 +22,7 @@ export interface SourceSimpleCrystal extends SourceComponentBase {
   ftype: "simple_crystal"
   frequency: number
   load_capacitance?: number
+  pin_variant?: "two_pin" | "four_pin"
 }
 
 expectTypesMatch<SourceSimpleCrystal, InferredSourceSimpleCrystal>(true)
