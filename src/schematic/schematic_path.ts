@@ -23,7 +23,6 @@ export const schematic_path = z.object({
   stroke_width: distance.nullable().optional(),
   stroke_color: z.string().optional(),
   points: z.array(point),
-  svg_path: z.string().optional(),
   subcircuit_id: z.string().optional(),
 })
 
