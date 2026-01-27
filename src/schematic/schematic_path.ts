@@ -11,7 +11,6 @@ export interface SchematicPath {
   stroke_width?: number | null
   stroke_color?: string
   points: Point[]
-  svg_path?: string
   subcircuit_id?: string
 }
 
@@ -23,7 +22,6 @@ export const schematic_path = z.object({
   stroke_width: distance.nullable().optional(),
   stroke_color: z.string().optional(),
   points: z.array(point),
-  svg_path: z.string().optional(),
   subcircuit_id: z.string().optional(),
 })
 
