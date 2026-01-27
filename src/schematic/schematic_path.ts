@@ -11,7 +11,6 @@ export interface SchematicPath {
   stroke_width?: number | null
   stroke_color?: string
   points: Point[]
-  svg_path?: string
   subcircuit_id?: string
 }
 
