@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { point, type Point } from "../common/point"
+import { distance } from "../units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export interface SchematicPath {
@@ -7,6 +8,7 @@ export interface SchematicPath {
   schematic_component_id: string
   fill_color?: "red" | "blue"
   is_filled?: boolean
+  stroke_width?: number | null
   points: Point[]
   subcircuit_id?: string
 }
@@ -16,6 +18,7 @@ export const schematic_path = z.object({
   schematic_component_id: z.string(),
   fill_color: z.enum(["red", "blue"]).optional(),
   is_filled: z.boolean().optional(),
+  stroke_width: distance.nullable().optional(),
   points: z.array(point),
   subcircuit_id: z.string().optional(),
 })
