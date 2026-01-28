@@ -22,6 +22,7 @@ export * from "./pcb_board"
 export * from "./pcb_panel"
 export * from "./pcb_placement_error"
 export * from "./pcb_panelization_placement_error"
+export * from "./pcb_panelization_placement_warning"
 export * from "./pcb_trace_hint"
 export * from "./pcb_silkscreen_line"
 export * from "./pcb_silkscreen_path"
@@ -79,6 +80,7 @@ import type { PcbBoard } from "./pcb_board"
 import type { PcbPanel } from "./pcb_panel"
 import type { PcbPlacementError } from "./pcb_placement_error"
 import type { PcbPanelizationPlacementError } from "./pcb_panelization_placement_error"
+import type { PcbPanelizationPlacementWarning } from "./pcb_panelization_placement_warning"
 import type { PcbMissingFootprintError } from "./pcb_missing_footprint_error"
 import type { ExternalFootprintLoadError } from "./external_footprint_load_error"
 import type { PcbManualEditConflictWarning } from "./pcb_manual_edit_conflict_warning"
@@ -136,6 +138,7 @@ export type PcbCircuitElement =
   | PcbPanel
   | PcbPlacementError
   | PcbPanelizationPlacementError
+  | PcbPanelizationPlacementWarning
   | PcbTraceHint
   | PcbSilkscreenLine
   | PcbSilkscreenPath
