@@ -28,11 +28,19 @@ export const cad_component = z
     model_unit_to_mm_scale_factor: z.number().optional(),
     model_jscad: z.any().optional(),
     show_as_translucent_model: z.boolean().optional(),
+    anchor_alignment: z
+      .enum(["center", "xy_center_z_board"] as const)
+      .optional()
+      .default("center"),
   })
   .describe("Defines a component on the PCB")
 
 export type CadComponentInput = z.input<typeof cad_component>
 type InferredCadComponent = z.infer<typeof cad_component>
+
+export type CadComponentAnchorAlignment = NonNullable<
+  InferredCadComponent["anchor_alignment"]
+>
 
 export interface CadComponent {
   type: "cad_component"
@@ -55,6 +63,7 @@ export interface CadComponent {
   model_unit_to_mm_scale_factor?: number
   model_jscad?: any
   show_as_translucent_model?: boolean
+  anchor_alignment: CadComponentAnchorAlignment
 }
 
 expectTypesMatch<CadComponent, InferredCadComponent>(true)
