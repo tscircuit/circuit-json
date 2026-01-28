@@ -1,9 +1,13 @@
 import { z } from "zod"
+import {
+  base_circuit_json_error,
+  type BaseCircuitJsonError,
+} from "src/base_circuit_json_error"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-export const pcb_missing_footprint_error = z
-  .object({
+export const pcb_missing_footprint_error = base_circuit_json_error
+  .extend({
     type: z.literal("pcb_missing_footprint_error"),
     pcb_missing_footprint_error_id: getZodPrefixedIdWithDefault(
       "pcb_missing_footprint_error",
@@ -14,7 +18,6 @@ export const pcb_missing_footprint_error = z
       .literal("pcb_missing_footprint_error")
       .default("pcb_missing_footprint_error"),
     source_component_id: z.string(),
-    message: z.string(),
   })
   .describe("Defines a missing footprint error on the PCB")
 
@@ -28,14 +31,13 @@ type InferredPcbMissingFootprintError = z.infer<
 /**
  * Defines a placement error on the PCB
  */
-export interface PcbMissingFootprintError {
+export interface PcbMissingFootprintError extends BaseCircuitJsonError {
   type: "pcb_missing_footprint_error"
   pcb_missing_footprint_error_id: string
   pcb_group_id?: string
   subcircuit_id?: string
   error_type: "pcb_missing_footprint_error"
   source_component_id: string
-  message: string
 }
 
 /**

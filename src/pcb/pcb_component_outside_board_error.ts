@@ -1,10 +1,14 @@
 import { z } from "zod"
+import {
+  base_circuit_json_error,
+  type BaseCircuitJsonError,
+} from "src/base_circuit_json_error"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { point, type Point } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-export const pcb_component_outside_board_error = z
-  .object({
+export const pcb_component_outside_board_error = base_circuit_json_error
+  .extend({
     type: z.literal("pcb_component_outside_board_error"),
     pcb_component_outside_board_error_id: getZodPrefixedIdWithDefault(
       "pcb_component_outside_board_error",
@@ -12,7 +16,6 @@ export const pcb_component_outside_board_error = z
     error_type: z
       .literal("pcb_component_outside_board_error")
       .default("pcb_component_outside_board_error"),
-    message: z.string(),
     pcb_component_id: z.string(),
     pcb_board_id: z.string(),
     component_center: point,
@@ -37,11 +40,10 @@ type InferredPcbComponentOutsideBoardError = z.infer<
 >
 
 /** Error emitted when a PCB component is placed outside the board boundaries */
-export interface PcbComponentOutsideBoardError {
+export interface PcbComponentOutsideBoardError extends BaseCircuitJsonError {
   type: "pcb_component_outside_board_error"
   pcb_component_outside_board_error_id: string
   error_type: "pcb_component_outside_board_error"
-  message: string
   pcb_component_id: string
   pcb_board_id: string
   component_center: Point

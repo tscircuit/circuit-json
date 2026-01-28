@@ -1,5 +1,6 @@
 export * from "./units"
 export * from "./common"
+export * from "./base_circuit_json_error"
 export * from "./source"
 export * from "./schematic"
 export * from "./pcb"

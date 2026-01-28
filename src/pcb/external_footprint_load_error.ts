@@ -1,9 +1,13 @@
 import { z } from "zod"
+import {
+  base_circuit_json_error,
+  type BaseCircuitJsonError,
+} from "src/base_circuit_json_error"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-export const external_footprint_load_error = z
-  .object({
+export const external_footprint_load_error = base_circuit_json_error
+  .extend({
     type: z.literal("external_footprint_load_error"),
     external_footprint_load_error_id: getZodPrefixedIdWithDefault(
       "external_footprint_load_error",
@@ -16,7 +20,6 @@ export const external_footprint_load_error = z
     error_type: z
       .literal("external_footprint_load_error")
       .default("external_footprint_load_error"),
-    message: z.string(),
   })
   .describe("Defines an error when an external footprint fails to load")
 
@@ -27,7 +30,7 @@ type InferredExternalFootprintLoadError = z.infer<
   typeof external_footprint_load_error
 >
 
-export interface ExternalFootprintLoadError {
+export interface ExternalFootprintLoadError extends BaseCircuitJsonError {
   type: "external_footprint_load_error"
   external_footprint_load_error_id: string
   pcb_component_id: string
@@ -36,7 +39,6 @@ export interface ExternalFootprintLoadError {
   subcircuit_id?: string
   footprinter_string?: string
   error_type: "external_footprint_load_error"
-  message: string
 }
 
 expectTypesMatch<
