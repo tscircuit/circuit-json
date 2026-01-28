@@ -487,6 +487,16 @@ export interface PcbPlacementError {
   message: string
 }
 
+export interface PcbPanelizationPlacementError {
+  type: "pcb_panelization_placement_error"
+  pcb_panelization_placement_error_id: string
+  error_type: "pcb_panelization_placement_error"
+  message: string
+  pcb_panel_id?: string
+  pcb_board_id?: string
+  subcircuit_id?: string
+}
+
 export interface PcbPort {
   type: "pcb_port"
   pcb_port_id: string
