@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { ninePointAnchor, point3, type Point3 } from "../common"
+import { point3, type Point3 } from "../common"
 import { rotation, length, type Rotation, type Length } from "../units"
 import { layer_ref, type LayerRef } from "src/pcb"
 import { expectTypesMatch } from "src/utils/expect-types-match"
@@ -29,7 +29,7 @@ export const cad_component = z
     model_jscad: z.any().optional(),
     show_as_translucent_model: z.boolean().optional(),
     anchor_alignment: z
-      .enum([...ninePointAnchor.options, "xy_center_z_board"] as const)
+      .enum(["center", "xy_center_z_board"] as const)
       .optional()
       .default("center"),
   })
