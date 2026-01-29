@@ -109,6 +109,7 @@ export const any_circuit_element = z.union([
   sch.schematic_circle,
   sch.schematic_arc,
   sch.schematic_component,
+  sch.schematic_symbol,
   sch.schematic_port,
   sch.schematic_trace,
   sch.schematic_path,

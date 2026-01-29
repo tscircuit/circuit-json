@@ -40,6 +40,7 @@ export interface SchematicComponent {
   center: Point
   source_component_id?: string
   schematic_component_id: string
+  schematic_symbol_id?: string
   pin_spacing?: number
   pin_styles?: Record<
     string,
@@ -121,6 +122,7 @@ export const schematic_component = z.object({
   center: point,
   source_component_id: z.string().optional(),
   schematic_component_id: z.string(),
+  schematic_symbol_id: z.string().optional(),
   pin_spacing: length.optional(),
   pin_styles: schematic_pin_styles.optional(),
   box_width: length.optional(),

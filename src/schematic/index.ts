@@ -1,6 +1,7 @@
 export * from "./schematic_box"
 export * from "./schematic_path"
 export * from "./schematic_component"
+export * from "./schematic_symbol"
 export * from "./schematic_line"
 export * from "./schematic_rect"
 export * from "./schematic_circle"
