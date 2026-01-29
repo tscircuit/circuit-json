@@ -11,6 +11,7 @@ export const pcb_panel = z
     height: length,
     center: point,
     covered_with_solder_mask: z.boolean().optional().default(true),
+    layout_mode: z.enum(["none", "grid"]).optional(),
   })
   .describe("Defines a PCB panel that can contain multiple boards")
 
@@ -24,6 +25,7 @@ export interface PcbPanel {
   height: Length
   center: Point
   covered_with_solder_mask: boolean
+  layout_mode?: "none" | "grid"
 }
 
 export type PcbPanelInput = z.input<typeof pcb_panel>
