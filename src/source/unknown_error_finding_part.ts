@@ -1,9 +1,13 @@
 import { z } from "zod"
+import {
+  base_circuit_json_error,
+  type BaseCircuitJsonError,
+} from "src/base_circuit_json_error"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-export const unknown_error_finding_part = z
-  .object({
+export const unknown_error_finding_part = base_circuit_json_error
+  .extend({
     type: z.literal("unknown_error_finding_part"),
     unknown_error_finding_part_id: getZodPrefixedIdWithDefault(
       "unknown_error_finding_part",
@@ -11,7 +15,6 @@ export const unknown_error_finding_part = z
     error_type: z
       .literal("unknown_error_finding_part")
       .default("unknown_error_finding_part"),
-    message: z.string(),
     source_component_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
   })
@@ -31,11 +34,10 @@ type InferredUnknownErrorFindingPart = z.infer<
  * This includes cases where the API returns HTML instead of JSON,
  * network failures, or other unexpected responses.
  */
-export interface UnknownErrorFindingPart {
+export interface UnknownErrorFindingPart extends BaseCircuitJsonError {
   type: "unknown_error_finding_part"
   unknown_error_finding_part_id: string
   error_type: "unknown_error_finding_part"
-  message: string
   source_component_id?: string
   subcircuit_id?: string
 }

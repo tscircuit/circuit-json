@@ -1,9 +1,13 @@
 import { z } from "zod"
+import {
+  base_circuit_json_error,
+  type BaseCircuitJsonError,
+} from "src/base_circuit_json_error"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-export const circuit_json_footprint_load_error = z
-  .object({
+export const circuit_json_footprint_load_error = base_circuit_json_error
+  .extend({
     type: z.literal("circuit_json_footprint_load_error"),
     circuit_json_footprint_load_error_id: getZodPrefixedIdWithDefault(
       "circuit_json_footprint_load_error",
@@ -15,7 +19,6 @@ export const circuit_json_footprint_load_error = z
     error_type: z
       .literal("circuit_json_footprint_load_error")
       .default("circuit_json_footprint_load_error"),
-    message: z.string(),
     circuit_json: z.array(z.any()).optional(),
   })
   .describe("Defines an error when a circuit JSON footprint fails to load")
@@ -27,7 +30,7 @@ type InferredCircuitJsonFootprintLoadError = z.infer<
   typeof circuit_json_footprint_load_error
 >
 
-export interface CircuitJsonFootprintLoadError {
+export interface CircuitJsonFootprintLoadError extends BaseCircuitJsonError {
   type: "circuit_json_footprint_load_error"
   circuit_json_footprint_load_error_id: string
   pcb_component_id: string
@@ -35,7 +38,6 @@ export interface CircuitJsonFootprintLoadError {
   pcb_group_id?: string
   subcircuit_id?: string
   error_type: "circuit_json_footprint_load_error"
-  message: string
   circuit_json?: any[]
 }
 

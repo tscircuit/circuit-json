@@ -1,9 +1,13 @@
 import { z } from "zod"
+import {
+  base_circuit_json_error,
+  type BaseCircuitJsonError,
+} from "src/base_circuit_json_error"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-export const source_failed_to_create_component_error = z
-  .object({
+export const source_failed_to_create_component_error = base_circuit_json_error
+  .extend({
     type: z.literal("source_failed_to_create_component_error"),
     source_failed_to_create_component_error_id: getZodPrefixedIdWithDefault(
       "source_failed_to_create_component_error",
@@ -14,7 +18,6 @@ export const source_failed_to_create_component_error = z
     component_name: z.string().optional(),
     subcircuit_id: z.string().optional(),
     parent_source_component_id: z.string().optional(),
-    message: z.string(),
     pcb_center: z
       .object({
         x: z.number().optional(),
@@ -41,11 +44,11 @@ type InferredSourceFailedToCreateComponentError = z.infer<
  * Error emitted when a component fails to be constructed.
  * Contains details about the failure and prevents the component from being rendered.
  */
-export interface SourceFailedToCreateComponentError {
+export interface SourceFailedToCreateComponentError
+  extends BaseCircuitJsonError {
   type: "source_failed_to_create_component_error"
   source_failed_to_create_component_error_id: string
   error_type: "source_failed_to_create_component_error"
-  message: string
   component_name?: string
   subcircuit_id?: string
   parent_source_component_id?: string

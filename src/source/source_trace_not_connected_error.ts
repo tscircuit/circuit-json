@@ -1,9 +1,13 @@
 import { z } from "zod"
+import {
+  base_circuit_json_error,
+  type BaseCircuitJsonError,
+} from "src/base_circuit_json_error"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-export const source_trace_not_connected_error = z
-  .object({
+export const source_trace_not_connected_error = base_circuit_json_error
+  .extend({
     type: z.literal("source_trace_not_connected_error"),
     source_trace_not_connected_error_id: getZodPrefixedIdWithDefault(
       "source_trace_not_connected_error",
@@ -11,7 +15,6 @@ export const source_trace_not_connected_error = z
     error_type: z
       .literal("source_trace_not_connected_error")
       .default("source_trace_not_connected_error"),
-    message: z.string(),
     subcircuit_id: z.string().optional(),
     source_group_id: z.string().optional(),
     source_trace_id: z.string().optional(),
@@ -30,11 +33,10 @@ type InferredSourceTraceNotConnectedError = z.infer<
 /**
  * Occurs when a source trace selector does not match any ports
  */
-export interface SourceTraceNotConnectedError {
+export interface SourceTraceNotConnectedError extends BaseCircuitJsonError {
   type: "source_trace_not_connected_error"
   source_trace_not_connected_error_id: string
   error_type: "source_trace_not_connected_error"
-  message: string
   subcircuit_id?: string
   source_group_id?: string
   source_trace_id?: string

@@ -1,9 +1,13 @@
 import { z } from "zod"
+import {
+  base_circuit_json_error,
+  type BaseCircuitJsonError,
+} from "src/base_circuit_json_error"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-export const source_missing_property_error = z
-  .object({
+export const source_missing_property_error = base_circuit_json_error
+  .extend({
     type: z.literal("source_missing_property_error"),
     source_missing_property_error_id: getZodPrefixedIdWithDefault(
       "source_missing_property_error",
@@ -14,7 +18,6 @@ export const source_missing_property_error = z
     error_type: z
       .literal("source_missing_property_error")
       .default("source_missing_property_error"),
-    message: z.string(),
   })
   .describe("The source code is missing a property")
 
@@ -28,14 +31,13 @@ type InferredSourceMissingPropertyError = z.infer<
 /**
  * The source code is missing a property
  */
-export interface SourceMissingPropertyError {
+export interface SourceMissingPropertyError extends BaseCircuitJsonError {
   type: "source_missing_property_error"
   source_missing_property_error_id: string
   source_component_id: string
   property_name: string
   subcircuit_id?: string
   error_type: "source_missing_property_error"
-  message: string
 }
 
 expectTypesMatch<
