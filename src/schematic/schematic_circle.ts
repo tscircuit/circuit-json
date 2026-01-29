@@ -8,7 +8,8 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 export interface SchematicCircle {
   type: "schematic_circle"
   schematic_circle_id: string
-  schematic_component_id: string
+  schematic_component_id?: string
+  schematic_symbol_id?: string
   center: Point
   radius: number
   stroke_width?: number | null
@@ -23,7 +24,8 @@ export const schematic_circle = z
   .object({
     type: z.literal("schematic_circle"),
     schematic_circle_id: getZodPrefixedIdWithDefault("schematic_circle"),
-    schematic_component_id: z.string(),
+    schematic_component_id: z.string().optional(),
+    schematic_symbol_id: z.string().optional(),
     center: point,
     radius: distance,
     stroke_width: distance.nullable().optional(),
