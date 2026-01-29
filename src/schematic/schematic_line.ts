@@ -7,7 +7,8 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 export interface SchematicLine {
   type: "schematic_line"
   schematic_line_id: string
-  schematic_component_id: string
+  schematic_component_id?: string
+  schematic_symbol_id?: string
   x1: number
   y1: number
   x2: number
@@ -22,7 +23,8 @@ export const schematic_line = z
   .object({
     type: z.literal("schematic_line"),
     schematic_line_id: getZodPrefixedIdWithDefault("schematic_line"),
-    schematic_component_id: z.string(),
+    schematic_component_id: z.string().optional(),
+    schematic_symbol_id: z.string().optional(),
     x1: distance,
     y1: distance,
     x2: distance,

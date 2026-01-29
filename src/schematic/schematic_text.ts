@@ -9,6 +9,7 @@ import { fivePointAnchor } from "src/common/FivePointAnchor"
 export interface SchematicText {
   type: "schematic_text"
   schematic_component_id?: string
+  schematic_symbol_id?: string
   schematic_text_id: string
   text: string
   font_size: number
@@ -25,6 +26,7 @@ export interface SchematicText {
 export const schematic_text = z.object({
   type: z.literal("schematic_text"),
   schematic_component_id: z.string().optional(),
+  schematic_symbol_id: z.string().optional(),
   schematic_text_id: z.string(),
   text: z.string(),
   font_size: z.number().default(0.18),
