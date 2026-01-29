@@ -22,3 +22,12 @@ test("schematic_component allows disabling box with pins", () => {
 
   expect(component.is_box_with_pins).toBe(false)
 })
+
+test("schematic_component allows schematic_symbol_id", () => {
+  const component = schematic_component.parse({
+    ...baseComponent,
+    schematic_symbol_id: "schematic_symbol_1",
+  })
+
+  expect(component.schematic_symbol_id).toBe("schematic_symbol_1")
+})
