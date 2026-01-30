@@ -187,5 +187,4 @@ expectStringUnionsMatch<
   | "pcb_via_clearance_error DOES NOT HAVE AN pcb_via_clearance_error_id PROPERTY"
   | "schematic_debug_object DOES NOT HAVE AN schematic_debug_object_id PROPERTY"
   | "schematic_box DOES NOT HAVE AN schematic_box_id PROPERTY"
-  | "schematic_path DOES NOT HAVE AN schematic_path_id PROPERTY"
 >(true)
