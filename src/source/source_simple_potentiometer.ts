@@ -9,6 +9,7 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 export const source_simple_potentiometer = source_component_base.extend({
   ftype: z.literal("simple_potentiometer"),
   max_resistance: resistance,
+  display_max_resistance: z.string().optional(),
 })
 
 export type SourceSimplePotentiometerInput = z.input<
@@ -21,6 +22,7 @@ type InferredSourceSimplePotentiometer = z.infer<
 export interface SourceSimplePotentiometer extends SourceComponentBase {
   ftype: "simple_potentiometer"
   max_resistance: number
+  display_max_resistance?: string
 }
 
 expectTypesMatch<SourceSimplePotentiometer, InferredSourceSimplePotentiometer>(
