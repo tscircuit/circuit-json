@@ -1,10 +1,12 @@
 import { z } from "zod"
 import { point, type Point } from "../common/point"
 import { distance } from "../units"
+import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export interface SchematicPath {
   type: "schematic_path"
+  schematic_path_id: string
   schematic_component_id?: string
   schematic_symbol_id?: string
   fill_color?: "red" | "blue"
@@ -17,6 +19,7 @@ export interface SchematicPath {
 
 export const schematic_path = z.object({
   type: z.literal("schematic_path"),
+  schematic_path_id: getZodPrefixedIdWithDefault("schematic_path"),
   schematic_component_id: z.string().optional(),
   schematic_symbol_id: z.string().optional(),
   fill_color: z.enum(["red", "blue"]).optional(),
