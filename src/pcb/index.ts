@@ -60,6 +60,7 @@ export * from "./pcb_via_clearance_error"
 export * from "./pcb_courtyard_rect"
 export * from "./pcb_courtyard_outline"
 export * from "./pcb_courtyard_polygon"
+export * from "./pcb_courtyard_circle"
 
 import type { PcbComponent } from "./pcb_component"
 import type { PcbHole } from "./pcb_hole"
@@ -113,6 +114,7 @@ import type { PcbViaClearanceError } from "./pcb_via_clearance_error"
 import type { PcbCourtyardRect } from "./pcb_courtyard_rect"
 import type { PcbCourtyardOutline } from "./pcb_courtyard_outline"
 import type { PcbCourtyardPolygon } from "./pcb_courtyard_polygon"
+import type { PcbCourtyardCircle } from "./pcb_courtyard_circle"
 
 export type PcbCircuitElement =
   | PcbComponent
@@ -167,3 +169,4 @@ export type PcbCircuitElement =
   | PcbCourtyardRect
   | PcbCourtyardOutline
   | PcbCourtyardPolygon
+  | PcbCourtyardCircle
