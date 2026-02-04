@@ -12,6 +12,8 @@ export type PcbRenderLayer =
   | "bottom_fabrication_note"
   | "top_user_note"
   | "bottom_user_note"
+  | "top_courtyard"
+  | "bottom_courtyard"
   | "inner1_copper"
   | "inner2_copper"
   | "inner3_copper"
@@ -32,6 +34,8 @@ export const pcbRenderLayer = z.enum([
   "bottom_fabrication_note",
   "top_user_note",
   "bottom_user_note",
+  "top_courtyard",
+  "bottom_courtyard",
   "inner1_copper",
   "inner2_copper",
   "inner3_copper",
