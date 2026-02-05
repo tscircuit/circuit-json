@@ -9,7 +9,7 @@ export interface SchematicPath {
   schematic_path_id: string
   schematic_component_id?: string
   schematic_symbol_id?: string
-  fill_color?: "red" | "blue"
+  fill_color?: string
   is_filled?: boolean
   stroke_width?: number | null
   stroke_color?: string
@@ -22,7 +22,7 @@ export const schematic_path = z.object({
   schematic_path_id: getZodPrefixedIdWithDefault("schematic_path"),
   schematic_component_id: z.string().optional(),
   schematic_symbol_id: z.string().optional(),
-  fill_color: z.enum(["red", "blue"]).optional(),
+  fill_color: z.string().optional(),
   is_filled: z.boolean().optional(),
   stroke_width: distance.nullable().optional(),
   stroke_color: z.string().optional(),
