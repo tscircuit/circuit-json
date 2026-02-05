@@ -30,12 +30,10 @@ test("parse courtyard outline", () => {
       { x: 1, y: 0 },
       { x: 1, y: 1 },
     ],
-    is_closed: false,
   })
 
   expect(outline.layer).toBe("top")
   expect(outline.outline).toHaveLength(3)
-  expect(outline.is_closed).toBe(false)
 })
 
 test("parse courtyard polygon", () => {
