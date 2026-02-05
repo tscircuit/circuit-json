@@ -15,10 +15,6 @@ export const pcb_courtyard_outline = z
     subcircuit_id: z.string().optional(),
     layer: visible_layer,
     outline: z.array(point).min(2),
-    stroke_width: length.default("0.1mm"),
-    is_closed: z.boolean().optional(),
-    is_stroke_dashed: z.boolean().optional(),
-    color: z.string().optional(),
   })
   .describe("Defines a courtyard outline on the PCB")
 
@@ -36,10 +32,6 @@ export interface PcbCourtyardOutline {
   subcircuit_id?: string
   layer: VisibleLayer
   outline: Point[]
-  stroke_width: Length
-  is_closed?: boolean
-  is_stroke_dashed?: boolean
-  color?: string
 }
 
 /**
