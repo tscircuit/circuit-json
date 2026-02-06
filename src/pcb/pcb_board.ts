@@ -14,8 +14,10 @@ export const pcb_board = z
     type: z.literal("pcb_board"),
     pcb_board_id: getZodPrefixedIdWithDefault("pcb_board"),
     pcb_panel_id: z.string().optional(),
+    carrier_pcb_board_id: z.string().optional(),
     is_subcircuit: z.boolean().optional(),
     subcircuit_id: z.string().optional(),
+    is_mounted_to_carrier_board: z.boolean().optional(),
     width: length.optional(),
     height: length.optional(),
     center: point,
@@ -49,8 +51,10 @@ export interface PcbBoard {
   type: "pcb_board"
   pcb_board_id: string
   pcb_panel_id?: string
+  carrier_pcb_board_id?: string
   is_subcircuit?: boolean
   subcircuit_id?: string
+  is_mounted_to_carrier_board?: boolean
   width?: Length
   height?: Length
   display_offset_x?: string
