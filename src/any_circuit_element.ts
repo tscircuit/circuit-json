@@ -103,6 +103,7 @@ export const any_circuit_element = z.union([
   pcb.pcb_courtyard_outline,
   pcb.pcb_courtyard_polygon,
   pcb.pcb_courtyard_circle,
+  pcb.pcb_thtpad,
   sch.schematic_box,
   sch.schematic_text,
   sch.schematic_line,
