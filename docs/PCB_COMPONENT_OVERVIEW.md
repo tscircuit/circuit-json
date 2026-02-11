@@ -32,6 +32,7 @@ export interface PcbComponent {
   width: Length
   height: Length
   do_not_place?: boolean
+  is_allowed_to_be_off_board?: boolean
   pcb_group_id?: string
   position_mode?: "packed" | "relative_to_group_anchor" | "none"
   positioned_relative_to_pcb_group_id?: string

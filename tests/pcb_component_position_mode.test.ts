@@ -54,6 +54,15 @@ test("pcb_component allows display offsets", () => {
   expect(parsed.display_offset_y).toBe("-2mm")
 })
 
+test("pcb_component allows is_allowed_to_be_off_board", () => {
+  const parsed = pcb_component.parse({
+    ...baseComponent,
+    is_allowed_to_be_off_board: true,
+  })
+
+  expect(parsed.is_allowed_to_be_off_board).toBe(true)
+})
+
 test("pcb_component rejects invalid position_mode", () => {
   expect(() =>
     pcb_component.parse({
