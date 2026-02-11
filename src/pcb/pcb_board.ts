@@ -6,7 +6,7 @@ import {
   ninePointAnchor,
   type NinePointAnchor,
 } from "src/common"
-import { length, type Length } from "src/units"
+import { distance, length, type Distance, type Length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const pcb_board = z
@@ -18,6 +18,17 @@ export const pcb_board = z
     is_subcircuit: z.boolean().optional(),
     subcircuit_id: z.string().optional(),
     is_mounted_to_carrier_board: z.boolean().optional(),
+    board_to_board_distance: distance
+      .optional()
+      .describe(
+        "Distance between the carrier board and this mounted board (e.g., pin header height). Only applicable when is_mounted_to_carrier_board is true.",
+      ),
+    mount_orientation: z
+      .enum(["face_down", "face_up"])
+      .optional()
+      .describe(
+        "Orientation of the mounted board relative to the carrier. 'face_up' means the top of the mounted board faces away from the carrier. Only applicable when is_mounted_to_carrier_board is true.",
+      ),
     width: length.optional(),
     height: length.optional(),
     center: point,
@@ -55,6 +66,8 @@ export interface PcbBoard {
   is_subcircuit?: boolean
   subcircuit_id?: string
   is_mounted_to_carrier_board?: boolean
+  board_to_board_distance?: Distance
+  mount_orientation?: "face_down" | "face_up"
   width?: Length
   height?: Length
   display_offset_x?: string
