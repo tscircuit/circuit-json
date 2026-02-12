@@ -27,6 +27,7 @@ export const pcb_component = z
     width: length,
     height: length,
     do_not_place: z.boolean().optional(),
+    is_allowed_to_be_off_board: z.boolean().optional(),
     subcircuit_id: z.string().optional(),
     pcb_group_id: z.string().optional(),
     position_mode: z
@@ -62,6 +63,7 @@ export interface PcbComponent {
   width: Length
   height: Length
   do_not_place?: boolean
+  is_allowed_to_be_off_board?: boolean
   pcb_group_id?: string
   position_mode?: "packed" | "relative_to_group_anchor" | "none"
   positioned_relative_to_pcb_group_id?: string
