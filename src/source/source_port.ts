@@ -9,6 +9,7 @@ export const source_port = z.object({
   source_port_id: z.string(),
   source_component_id: z.string().optional(),
   source_group_id: z.string().optional(),
+  most_frequently_referenced_by_name: z.string().optional(),
   subcircuit_id: z.string().optional(),
   subcircuit_connectivity_map_key: z.string().optional(),
   must_be_connected: z.boolean().optional(),
@@ -28,6 +29,7 @@ export interface SourcePort {
   source_port_id: string
   source_component_id?: string
   source_group_id?: string
+  most_frequently_referenced_by_name?: string
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
   must_be_connected?: boolean

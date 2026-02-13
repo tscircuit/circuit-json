@@ -120,6 +120,7 @@ interface SourcePort {
   source_port_id: string
   source_component_id?: string
   source_group_id?: string
+  most_frequently_referenced_by_name?: string
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
 }
