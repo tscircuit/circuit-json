@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { point3, type Point3 } from "../common"
+import { point3, asset, type Point3, type Asset } from "../common"
 import { rotation, length, type Rotation, type Length } from "../units"
 import { layer_ref, type LayerRef } from "src/pcb"
 import { expectTypesMatch } from "src/utils/expect-types-match"
@@ -25,6 +25,7 @@ export const cad_component = z
     model_glb_url: z.string().optional(),
     model_step_url: z.string().optional(),
     model_wrl_url: z.string().optional(),
+    model_asset: asset.optional(),
     model_unit_to_mm_scale_factor: z.number().optional(),
     model_jscad: z.any().optional(),
     show_as_translucent_model: z.boolean().optional(),
@@ -60,6 +61,7 @@ export interface CadComponent {
   model_glb_url?: string
   model_step_url?: string
   model_wrl_url?: string
+  model_asset?: Asset
   model_unit_to_mm_scale_factor?: number
   model_jscad?: any
   show_as_translucent_model?: boolean
