@@ -1,15 +1,20 @@
-import { z } from "zod"
+import { kicadSymbolMetadata } from "src/common/kicadSymbolMetadata"
 import { expectTypesMatch } from "src/utils/expect-types-match"
-import {
-  kicadSymbolMetadata,
-  type KicadSymbolMetadata,
-} from "src/common/kicadSymbolMetadata"
+import { z } from "zod"
+
+const schematicSymbolMetadata = z
+  .object({
+    kicad_symbol: kicadSymbolMetadata.optional(),
+  })
+  .catchall(z.unknown())
+
+export type SchematicSymbolMetadata = z.infer<typeof schematicSymbolMetadata>
 
 export interface SchematicSymbol {
   type: "schematic_symbol"
   schematic_symbol_id: string
   name?: string
-  kicad_symbol_metadata?: KicadSymbolMetadata
+  metadata?: SchematicSymbolMetadata
 }
 
 export const schematic_symbol = z
@@ -17,7 +22,7 @@ export const schematic_symbol = z
     type: z.literal("schematic_symbol"),
     schematic_symbol_id: z.string(),
     name: z.string().optional(),
-    kicad_symbol_metadata: kicadSymbolMetadata.optional(),
+    metadata: schematicSymbolMetadata.optional(),
   })
   .describe(
     "Defines a named schematic symbol that can be referenced by components.",

@@ -1,12 +1,13 @@
+import type { z } from "zod"
 import { any_circuit_element } from "../src/any_circuit_element"
-import { z } from "zod"
 
 const seen = new Set<z.ZodTypeAny>()
 const errors: string[] = []
 
 const SNAKE_CASE_IGNORED_PATH_FRAGMENTS = [
-  ".kicad_symbol_metadata",
+  ".metadata.kicad_symbol",
   ".kicad_footprint_metadata",
+  ".metadata.kicad_footprint",
 ]
 
 function shouldIgnorePath(path: string): boolean {
@@ -51,9 +52,9 @@ function traverse(schema: z.ZodTypeAny, path: string) {
   ) {
     traverse(def.innerType, path)
   } else if (typeName === "ZodEnum") {
-    def.values.forEach((v: string) => {
+    for (const v of def.values as string[]) {
       checkSnakeCase(v, `${path} (enum value)`)
-    })
+    }
   } else if (typeName === "ZodRecord") {
     traverse(def.keyType, `${path}[key]`)
     traverse(def.valueType, `${path}[value]`)
@@ -77,7 +78,9 @@ traverse(any_circuit_element, "any_circuit_element")
 
 if (errors.length > 0) {
   console.error("Snake case errors found:")
-  errors.forEach((err) => console.error(`  - ${err}`))
+  for (const err of errors) {
+    console.error(`  - ${err}`)
+  }
   process.exit(1)
 } else {
   console.log("No snake case errors found!")

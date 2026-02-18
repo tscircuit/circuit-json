@@ -63,6 +63,23 @@ test("pcb_component allows is_allowed_to_be_off_board", () => {
   expect(parsed.is_allowed_to_be_off_board).toBe(true)
 })
 
+test("pcb_component allows optional metadata.kicad_footprint", () => {
+  const parsed = pcb_component.parse({
+    ...baseComponent,
+    metadata: {
+      kicad_footprint: {
+        footprintName: "Resistor_SMD:R_0603_1608Metric",
+        attributes: { smd: true },
+      },
+    },
+  })
+
+  expect(parsed.metadata?.kicad_footprint?.footprintName).toBe(
+    "Resistor_SMD:R_0603_1608Metric",
+  )
+  expect(parsed.metadata?.kicad_footprint?.attributes?.smd).toBe(true)
+})
+
 test("pcb_component rejects invalid position_mode", () => {
   expect(() =>
     pcb_component.parse({

@@ -1,8 +1,16 @@
-import { z } from "zod"
-import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
-import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
-import { rotation, length, type Rotation, type Length } from "src/units"
+import { type Point, getZodPrefixedIdWithDefault, point } from "src/common"
+import {
+  type KicadFootprintMetadata,
+  kicadFootprintMetadata,
+} from "src/common/kicadFootprintMetadata"
+import { type LayerRef, layer_ref } from "src/pcb/properties/layer_ref"
+import { type Length, type Rotation, length, rotation } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
+
+export interface PcbComponentMetadata {
+  kicad_footprint?: KicadFootprintMetadata
+}
 
 export const pcb_component = z
   .object({
@@ -35,6 +43,11 @@ export const pcb_component = z
       .optional(),
     positioned_relative_to_pcb_group_id: z.string().optional(),
     positioned_relative_to_pcb_board_id: z.string().optional(),
+    metadata: z
+      .object({
+        kicad_footprint: kicadFootprintMetadata.optional(),
+      })
+      .optional(),
     obstructs_within_bounds: z
       .boolean()
       .default(true)
@@ -68,6 +81,7 @@ export interface PcbComponent {
   position_mode?: "packed" | "relative_to_group_anchor" | "none"
   positioned_relative_to_pcb_group_id?: string
   positioned_relative_to_pcb_board_id?: string
+  metadata?: PcbComponentMetadata
   obstructs_within_bounds: boolean
 }
 
