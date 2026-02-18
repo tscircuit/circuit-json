@@ -5,21 +5,21 @@ import { distance, rotation } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export interface KicadAt {
-  x: number | string
-  y: number | string
-  rotation?: number | string
+  x: number
+  y: number
+  rotation?: number
 }
 
 export const kicadAt = point.extend({
   rotation: rotation.optional(),
 })
 
-type InferredKicadAt = z.input<typeof kicadAt>
+type InferredKicadAt = z.infer<typeof kicadAt>
 expectTypesMatch<KicadAt, InferredKicadAt>(true)
 
 export interface KicadFont {
-  size?: { x: number | string; y: number | string }
-  thickness?: number | string
+  size?: { x: number; y: number }
+  thickness?: number
 }
 
 export const kicadFont = z.object({
@@ -27,7 +27,7 @@ export const kicadFont = z.object({
   thickness: distance.optional(),
 })
 
-type InferredKicadFont = z.input<typeof kicadFont>
+type InferredKicadFont = z.infer<typeof kicadFont>
 expectTypesMatch<KicadFont, InferredKicadFont>(true)
 
 export interface KicadEffects {
@@ -38,7 +38,7 @@ export const kicadEffects = z.object({
   font: kicadFont.optional(),
 })
 
-type InferredKicadEffects = z.input<typeof kicadEffects>
+type InferredKicadEffects = z.infer<typeof kicadEffects>
 expectTypesMatch<KicadEffects, InferredKicadEffects>(true)
 
 export interface KicadProperty {
@@ -59,7 +59,7 @@ export const kicadProperty = z.object({
   effects: kicadEffects.optional(),
 })
 
-type InferredKicadProperty = z.input<typeof kicadProperty>
+type InferredKicadProperty = z.infer<typeof kicadProperty>
 expectTypesMatch<KicadProperty, InferredKicadProperty>(true)
 
 export interface KicadFootprintProperties {
@@ -76,7 +76,7 @@ export const kicadFootprintProperties = z.object({
   Description: kicadProperty.optional(),
 })
 
-type InferredKicadFootprintProperties = z.input<typeof kicadFootprintProperties>
+type InferredKicadFootprintProperties = z.infer<typeof kicadFootprintProperties>
 expectTypesMatch<KicadFootprintProperties, InferredKicadFootprintProperties>(
   true,
 )
@@ -95,7 +95,7 @@ export const kicadFootprintAttributes = z.object({
   exclude_from_bom: z.boolean().optional(),
 })
 
-type InferredKicadFootprintAttributes = z.input<typeof kicadFootprintAttributes>
+type InferredKicadFootprintAttributes = z.infer<typeof kicadFootprintAttributes>
 expectTypesMatch<KicadFootprintAttributes, InferredKicadFootprintAttributes>(
   true,
 )
@@ -105,8 +105,8 @@ export interface KicadFootprintPad {
   type: string
   shape?: string
   at?: KicadAt
-  size?: { x: number | string; y: number | string }
-  drill?: number | string
+  size?: { x: number; y: number }
+  drill?: number
   layers?: string[]
   removeUnusedLayers?: boolean
   uuid?: string
@@ -124,14 +124,14 @@ export const kicadFootprintPad = z.object({
   uuid: z.string().optional(),
 })
 
-type InferredKicadFootprintPad = z.input<typeof kicadFootprintPad>
+type InferredKicadFootprintPad = z.infer<typeof kicadFootprintPad>
 expectTypesMatch<KicadFootprintPad, InferredKicadFootprintPad>(true)
 
 export interface KicadFootprintModel {
   path: string
-  offset?: { x: number | string; y: number | string; z: number | string }
-  scale?: { x: number | string; y: number | string; z: number | string }
-  rotate?: { x: number | string; y: number | string; z: number | string }
+  offset?: { x: number; y: number; z: number }
+  scale?: { x: number; y: number; z: number }
+  rotate?: { x: number; y: number; z: number }
 }
 
 export const kicadFootprintModel = z.object({
@@ -141,7 +141,7 @@ export const kicadFootprintModel = z.object({
   rotate: point3.optional(),
 })
 
-type InferredKicadFootprintModel = z.input<typeof kicadFootprintModel>
+type InferredKicadFootprintModel = z.infer<typeof kicadFootprintModel>
 expectTypesMatch<KicadFootprintModel, InferredKicadFootprintModel>(true)
 
 export interface KicadFootprintMetadata {
@@ -170,5 +170,5 @@ export const kicadFootprintMetadata = z.object({
   model: kicadFootprintModel.optional(),
 })
 
-type InferredKicadFootprintMetadata = z.input<typeof kicadFootprintMetadata>
+type InferredKicadFootprintMetadata = z.infer<typeof kicadFootprintMetadata>
 expectTypesMatch<KicadFootprintMetadata, InferredKicadFootprintMetadata>(true)

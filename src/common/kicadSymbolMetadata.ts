@@ -16,11 +16,11 @@ export const kicadSymbolPinNumbers = z.object({
   hide: z.boolean().optional(),
 })
 
-type InferredKicadSymbolPinNumbers = z.input<typeof kicadSymbolPinNumbers>
+type InferredKicadSymbolPinNumbers = z.infer<typeof kicadSymbolPinNumbers>
 expectTypesMatch<KicadSymbolPinNumbers, InferredKicadSymbolPinNumbers>(true)
 
 export interface KicadSymbolPinNames {
-  offset?: number | string
+  offset?: number
   hide?: boolean
 }
 
@@ -29,7 +29,7 @@ export const kicadSymbolPinNames = z.object({
   hide: z.boolean().optional(),
 })
 
-type InferredKicadSymbolPinNames = z.input<typeof kicadSymbolPinNames>
+type InferredKicadSymbolPinNames = z.infer<typeof kicadSymbolPinNames>
 expectTypesMatch<KicadSymbolPinNames, InferredKicadSymbolPinNames>(true)
 
 export interface KicadSymbolEffects {
@@ -44,7 +44,7 @@ export const kicadSymbolEffects = z.object({
   hide: z.boolean().optional(),
 })
 
-type InferredKicadSymbolEffects = z.input<typeof kicadSymbolEffects>
+type InferredKicadSymbolEffects = z.infer<typeof kicadSymbolEffects>
 expectTypesMatch<KicadSymbolEffects, InferredKicadSymbolEffects>(true)
 
 export interface KicadSymbolProperty {
@@ -61,7 +61,7 @@ export const kicadSymbolProperty = z.object({
   effects: kicadSymbolEffects.optional(),
 })
 
-type InferredKicadSymbolProperty = z.input<typeof kicadSymbolProperty>
+type InferredKicadSymbolProperty = z.infer<typeof kicadSymbolProperty>
 expectTypesMatch<KicadSymbolProperty, InferredKicadSymbolProperty>(true)
 
 export interface KicadSymbolProperties {
@@ -84,7 +84,7 @@ export const kicadSymbolProperties = z.object({
   ki_fp_filters: kicadSymbolProperty.optional(),
 })
 
-type InferredKicadSymbolProperties = z.input<typeof kicadSymbolProperties>
+type InferredKicadSymbolProperties = z.infer<typeof kicadSymbolProperties>
 expectTypesMatch<KicadSymbolProperties, InferredKicadSymbolProperties>(true)
 
 export interface KicadSymbolMetadata {
@@ -111,5 +111,5 @@ export const kicadSymbolMetadata = z.object({
   embeddedFonts: z.boolean().optional(),
 })
 
-type InferredKicadSymbolMetadata = z.input<typeof kicadSymbolMetadata>
+type InferredKicadSymbolMetadata = z.infer<typeof kicadSymbolMetadata>
 expectTypesMatch<KicadSymbolMetadata, InferredKicadSymbolMetadata>(true)

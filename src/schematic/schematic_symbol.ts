@@ -24,6 +24,6 @@ export const schematic_symbol = z
   )
 
 export type SchematicSymbolInput = z.input<typeof schematic_symbol>
-type InferredSchematicSymbol = z.input<typeof schematic_symbol>
+type InferredSchematicSymbol = z.infer<typeof schematic_symbol>
 
 expectTypesMatch<SchematicSymbol, InferredSchematicSymbol>(true)
