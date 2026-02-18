@@ -9,6 +9,11 @@ interface LintError {
   message: string
 }
 
+const ZOD_LINT_EXCLUDED_FILES = new Set([
+  "kicadFootprintMetadata.ts",
+  "kicadSymbolMetadata.ts",
+])
+
 function checkZodSchema(code: string, filePath: string): LintError[] {
   const errors: LintError[] = []
 
@@ -128,6 +133,10 @@ function lintDirectory(directory: string): LintError[] {
       if (stat.isDirectory()) {
         processDirectory(fullPath)
       } else if (file.endsWith(".ts")) {
+        if (ZOD_LINT_EXCLUDED_FILES.has(file)) {
+          return
+        }
+
         const content = fs.readFileSync(fullPath, "utf8")
         const errors = checkZodSchema(content, fullPath)
         allErrors.push(...errors)

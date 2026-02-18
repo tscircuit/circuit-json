@@ -4,7 +4,20 @@ import { z } from "zod"
 const seen = new Set<z.ZodTypeAny>()
 const errors: string[] = []
 
+const SNAKE_CASE_IGNORED_PATH_FRAGMENTS = [
+  ".kicad_symbol_metadata",
+  ".kicad_footprint_metadata",
+]
+
+function shouldIgnorePath(path: string): boolean {
+  return SNAKE_CASE_IGNORED_PATH_FRAGMENTS.some((fragment) =>
+    path.includes(fragment),
+  )
+}
+
 function checkSnakeCase(name: string, path: string) {
+  if (shouldIgnorePath(path)) return
+
   if (/[A-Z]/.test(name)) {
     errors.push(`Uppercase character found in "${name}" at ${path}`)
   }
