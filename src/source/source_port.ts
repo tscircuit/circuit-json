@@ -13,6 +13,22 @@ export const source_port = z.object({
   subcircuit_id: z.string().optional(),
   subcircuit_connectivity_map_key: z.string().optional(),
   must_be_connected: z.boolean().optional(),
+  is_configured_for_i2c_sda: z.boolean().optional(),
+  is_configured_for_i2c_scl: z.boolean().optional(),
+  is_configured_for_spi_mosi: z.boolean().optional(),
+  is_configured_for_spi_miso: z.boolean().optional(),
+  is_configured_for_spi_sck: z.boolean().optional(),
+  is_configured_for_spi_cs: z.boolean().optional(),
+  is_configured_for_uart_tx: z.boolean().optional(),
+  is_configured_for_uart_rx: z.boolean().optional(),
+  supports_i2c_sda: z.boolean().optional(),
+  supports_i2c_scl: z.boolean().optional(),
+  supports_spi_mosi: z.boolean().optional(),
+  supports_spi_miso: z.boolean().optional(),
+  supports_spi_sck: z.boolean().optional(),
+  supports_spi_cs: z.boolean().optional(),
+  supports_uart_tx: z.boolean().optional(),
+  supports_uart_rx: z.boolean().optional(),
 })
 
 export type SourcePortInput = z.input<typeof source_port>
@@ -33,6 +49,22 @@ export interface SourcePort {
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
   must_be_connected?: boolean
+  is_configured_for_i2c_sda?: boolean
+  is_configured_for_i2c_scl?: boolean
+  is_configured_for_spi_mosi?: boolean
+  is_configured_for_spi_miso?: boolean
+  is_configured_for_spi_sck?: boolean
+  is_configured_for_spi_cs?: boolean
+  is_configured_for_uart_tx?: boolean
+  is_configured_for_uart_rx?: boolean
+  supports_i2c_sda?: boolean
+  supports_i2c_scl?: boolean
+  supports_spi_mosi?: boolean
+  supports_spi_miso?: boolean
+  supports_spi_sck?: boolean
+  supports_spi_cs?: boolean
+  supports_uart_tx?: boolean
+  supports_uart_rx?: boolean
 }
 
 expectTypesMatch<SourcePort, InferredSourcePort>(true)
