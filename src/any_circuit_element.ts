@@ -98,6 +98,7 @@ export const any_circuit_element = z.union([
   pcb.pcb_thermal_spoke,
   pcb.pcb_copper_pour,
   pcb.pcb_component_outside_board_error,
+  pcb.pcb_component_not_on_board_edge_error,
   pcb.pcb_component_invalid_layer_error,
   pcb.pcb_courtyard_rect,
   pcb.pcb_courtyard_outline,
