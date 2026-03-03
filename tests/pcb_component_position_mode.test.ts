@@ -12,7 +12,12 @@ const baseComponent = {
   height: 1,
 }
 
-const positionModes = ["packed", "relative_to_group_anchor", "none"] as const
+const positionModes = [
+  "packed",
+  "relative_to_group_anchor",
+  "relative_to_another_component",
+  "none",
+] as const
 
 for (const position_mode of positionModes) {
   test(`pcb_component allows position_mode ${position_mode}`, () => {
@@ -24,6 +29,17 @@ for (const position_mode of positionModes) {
     expect(parsed.position_mode).toBe(position_mode)
   })
 }
+
+test("pcb_component allows optional anchor positioning fields", () => {
+  const parsed = pcb_component.parse({
+    ...baseComponent,
+    anchor_position: { x: 10, y: 20 },
+    anchor_alignment: "bottom_right",
+  })
+
+  expect(parsed.anchor_position).toEqual({ x: 10, y: 20 })
+  expect(parsed.anchor_alignment).toBe("bottom_right")
+})
 
 test("pcb_component allows positioned_relative_to_pcb_group_id", () => {
   const parsed = pcb_component.parse({

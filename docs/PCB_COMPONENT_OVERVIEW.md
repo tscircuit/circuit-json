@@ -34,7 +34,13 @@ export interface PcbComponent {
   do_not_place?: boolean
   is_allowed_to_be_off_board?: boolean
   pcb_group_id?: string
-  position_mode?: "packed" | "relative_to_group_anchor" | "none"
+  position_mode?:
+    | "packed"
+    | "relative_to_group_anchor"
+    | "relative_to_another_component"
+    | "none"
+  anchor_position?: Point
+  anchor_alignment?: NinePointAnchor
   positioned_relative_to_pcb_group_id?: string
   positioned_relative_to_pcb_board_id?: string
   obstructs_within_bounds: boolean
