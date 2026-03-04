@@ -3,6 +3,10 @@ import {
   type KicadFootprintMetadata,
   kicadFootprintMetadata,
 } from "src/common/kicadFootprintMetadata"
+import {
+  type NinePointAnchor,
+  ninePointAnchor,
+} from "src/common/NinePointAnchor"
 import { type LayerRef, layer_ref } from "src/pcb/properties/layer_ref"
 import { type Length, type Rotation, length, rotation } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
@@ -39,8 +43,15 @@ export const pcb_component = z
     subcircuit_id: z.string().optional(),
     pcb_group_id: z.string().optional(),
     position_mode: z
-      .enum(["packed", "relative_to_group_anchor", "none"])
+      .enum([
+        "packed",
+        "relative_to_group_anchor",
+        "relative_to_another_component",
+        "none",
+      ])
       .optional(),
+    anchor_position: point.optional(),
+    anchor_alignment: ninePointAnchor.optional(),
     positioned_relative_to_pcb_group_id: z.string().optional(),
     positioned_relative_to_pcb_board_id: z.string().optional(),
     metadata: z
@@ -78,7 +89,13 @@ export interface PcbComponent {
   do_not_place?: boolean
   is_allowed_to_be_off_board?: boolean
   pcb_group_id?: string
-  position_mode?: "packed" | "relative_to_group_anchor" | "none"
+  position_mode?:
+    | "packed"
+    | "relative_to_group_anchor"
+    | "relative_to_another_component"
+    | "none"
+  anchor_position?: Point
+  anchor_alignment?: NinePointAnchor
   positioned_relative_to_pcb_group_id?: string
   positioned_relative_to_pcb_board_id?: string
   metadata?: PcbComponentMetadata
