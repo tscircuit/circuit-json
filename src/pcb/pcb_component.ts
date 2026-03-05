@@ -54,6 +54,7 @@ export const pcb_component = z
     anchor_alignment: ninePointAnchor.optional(),
     positioned_relative_to_pcb_group_id: z.string().optional(),
     positioned_relative_to_pcb_board_id: z.string().optional(),
+    cable_insertion_center: point.optional(),
     metadata: z
       .object({
         kicad_footprint: kicadFootprintMetadata.optional(),
@@ -98,6 +99,7 @@ export interface PcbComponent {
   anchor_alignment?: NinePointAnchor
   positioned_relative_to_pcb_group_id?: string
   positioned_relative_to_pcb_board_id?: string
+  cable_insertion_center?: Point
   metadata?: PcbComponentMetadata
   obstructs_within_bounds: boolean
 }

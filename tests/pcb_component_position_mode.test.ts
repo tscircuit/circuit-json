@@ -59,6 +59,15 @@ test("pcb_component allows positioned_relative_to_pcb_board_id", () => {
   expect(parsed.positioned_relative_to_pcb_board_id).toBe("pcb_board_1")
 })
 
+test("pcb_component allows cable_insertion_center", () => {
+  const parsed = pcb_component.parse({
+    ...baseComponent,
+    cable_insertion_center: { x: 5, y: -3 },
+  })
+
+  expect(parsed.cable_insertion_center).toEqual({ x: 5, y: -3 })
+})
+
 test("pcb_component allows display offsets", () => {
   const parsed = pcb_component.parse({
     ...baseComponent,
