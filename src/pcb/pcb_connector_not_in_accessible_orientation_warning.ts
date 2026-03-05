@@ -2,7 +2,12 @@ import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-const connectorOrientationDirection = z.enum(["x-", "x+", "y+", "y-"])
+const connectorOrientationDirection = z.union([
+  z.literal("x-"),
+  z.literal("x+"),
+  z.literal("y+"),
+  z.literal("y-"),
+])
 
 type ConnectorOrientationDirection = z.infer<
   typeof connectorOrientationDirection
