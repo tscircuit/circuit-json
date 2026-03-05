@@ -99,7 +99,12 @@ function checkZodSchema(code: string, filePath: string): LintError[] {
       if (enumNode.type === "ArrayExpression") {
         enumNode.elements.forEach((element: any) => {
           if (element.type === "Literal" && typeof element.value === "string") {
-            if (!/^[a-z][a-z0-9_]*(?:_[a-z0-9]+)*$/.test(element.value)) {
+            const isSnakeCase = /^[a-z][a-z0-9_]*(?:_[a-z0-9]+)*$/.test(
+              element.value,
+            )
+            const isAxisDirection = /^[xy][+-]$/.test(element.value)
+
+            if (!isSnakeCase && !isAxisDirection) {
               errors.push({
                 file: filePath,
                 line: element.loc.start.line,
