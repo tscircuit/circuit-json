@@ -2,6 +2,12 @@ import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
+const connectorOrientationDirection = z.enum(["x-", "x+", "y+", "y-"])
+
+type ConnectorOrientationDirection = z.infer<
+  typeof connectorOrientationDirection
+>
+
 export const pcb_connector_not_in_accessible_orientation_warning = z
   .object({
     type: z.literal("pcb_connector_not_in_accessible_orientation_warning"),
@@ -16,12 +22,12 @@ export const pcb_connector_not_in_accessible_orientation_warning = z
     pcb_component_id: z.string(),
     source_component_id: z.string().optional(),
     pcb_board_id: z.string().optional(),
-    facing_direction: z.literal("inward").default("inward"),
-    recommended_facing_direction: z.literal("outward").default("outward"),
+    facing_direction: connectorOrientationDirection,
+    recommended_facing_direction: connectorOrientationDirection,
     subcircuit_id: z.string().optional(),
   })
   .describe(
-    "Warning emitted when a connector PCB component is facing inward toward the board instead of outward for accessibility",
+    "Warning emitted when a connector PCB component is facing inward toward the board and should be reoriented to an outward-facing direction",
   )
 
 export type PcbConnectorNotInAccessibleOrientationWarningInput = z.input<
@@ -40,8 +46,8 @@ export interface PcbConnectorNotInAccessibleOrientationWarning {
   pcb_component_id: string
   source_component_id?: string
   pcb_board_id?: string
-  facing_direction: "inward"
-  recommended_facing_direction: "outward"
+  facing_direction: ConnectorOrientationDirection
+  recommended_facing_direction: ConnectorOrientationDirection
   subcircuit_id?: string
 }
 

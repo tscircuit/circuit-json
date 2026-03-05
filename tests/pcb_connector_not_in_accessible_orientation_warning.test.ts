@@ -10,6 +10,8 @@ test("pcb_connector_not_in_accessible_orientation_warning parses", () => {
     pcb_component_id: "pcb_component_1",
     source_component_id: "source_component_1",
     pcb_board_id: "pcb_board_1",
+    facing_direction: "x-",
+    recommended_facing_direction: "x+",
   })
 
   expect(
@@ -20,8 +22,8 @@ test("pcb_connector_not_in_accessible_orientation_warning parses", () => {
       "pcb_connector_not_in_accessible_orientation_warning",
     ),
   ).toBe(true)
-  expect(warning.facing_direction).toBe("inward")
-  expect(warning.recommended_facing_direction).toBe("outward")
+  expect(warning.facing_direction).toBe("x-")
+  expect(warning.recommended_facing_direction).toBe("x+")
 })
 
 test("any_circuit_element includes pcb_connector_not_in_accessible_orientation_warning", () => {
@@ -29,6 +31,8 @@ test("any_circuit_element includes pcb_connector_not_in_accessible_orientation_w
     type: "pcb_connector_not_in_accessible_orientation_warning",
     message: "Connector orientation is not accessible",
     pcb_component_id: "pcb_component_1",
+    facing_direction: "y+",
+    recommended_facing_direction: "y-",
   })
 
   expect(parsed.type).toBe(
