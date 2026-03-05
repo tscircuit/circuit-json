@@ -49,6 +49,7 @@ export * from "./circuit_json_footprint_load_error"
 export * from "./pcb_group"
 export * from "./pcb_autorouting_error"
 export * from "./pcb_manual_edit_conflict_warning"
+export * from "./pcb_connector_not_in_accessible_orientation_warning"
 export * from "./pcb_breakout_point"
 export * from "./pcb_ground_plane"
 export * from "./pcb_ground_plane_region"
@@ -84,6 +85,7 @@ import type { PcbPanelizationPlacementError } from "./pcb_panelization_placement
 import type { PcbMissingFootprintError } from "./pcb_missing_footprint_error"
 import type { ExternalFootprintLoadError } from "./external_footprint_load_error"
 import type { PcbManualEditConflictWarning } from "./pcb_manual_edit_conflict_warning"
+import type { PcbConnectorNotInAccessibleOrientationWarning } from "./pcb_connector_not_in_accessible_orientation_warning"
 import type { PcbTraceHint } from "./pcb_trace_hint"
 import type { PcbSilkscreenLine } from "./pcb_silkscreen_line"
 import type { PcbSilkscreenPath } from "./pcb_silkscreen_path"
@@ -133,6 +135,7 @@ export type PcbCircuitElement =
   | ExternalFootprintLoadError
   | CircuitJsonFootprintLoadError
   | PcbManualEditConflictWarning
+  | PcbConnectorNotInAccessibleOrientationWarning
   | PcbPortNotMatchedError
   | PcbPortNotConnectedError
   | PcbVia
