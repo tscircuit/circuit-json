@@ -53,6 +53,7 @@ export const any_circuit_element = z.union([
   pcb.external_footprint_load_error,
   pcb.circuit_json_footprint_load_error,
   pcb.pcb_manual_edit_conflict_warning,
+  pcb.pcb_connector_not_in_accessible_orientation_warning,
   pcb.pcb_plated_hole,
   pcb.pcb_keepout,
   pcb.pcb_port,
