@@ -76,7 +76,6 @@ test("source_port parses pin attributes", () => {
     requires_voltage: 3.3,
     do_not_connect: false,
     include_in_board_pinout: true,
-    highlight_color: "#22aa66",
     must_be_connected: true,
     can_use_internal_pullup: true,
     is_using_internal_pullup: false,
@@ -100,7 +99,6 @@ test("source_port parses pin attributes", () => {
   expect(parsed.requires_voltage).toBe(3.3)
   expect(parsed.do_not_connect).toBe(false)
   expect(parsed.include_in_board_pinout).toBe(true)
-  expect(parsed.highlight_color).toBe("#22aa66")
   expect(parsed.must_be_connected).toBe(true)
   expect(parsed.can_use_internal_pullup).toBe(true)
   expect(parsed.is_using_internal_pullup).toBe(false)

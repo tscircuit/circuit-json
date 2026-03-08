@@ -132,7 +132,6 @@ interface SourcePort {
   requires_voltage?: string | number
   do_not_connect?: boolean
   include_in_board_pinout?: boolean
-  highlight_color?: string
   can_use_internal_pullup?: boolean
   is_using_internal_pullup?: boolean
   needs_external_pullup?: boolean
