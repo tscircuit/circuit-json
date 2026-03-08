@@ -123,6 +123,43 @@ interface SourcePort {
   most_frequently_referenced_by_name?: string
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
+  must_be_connected?: boolean
+  provides_power?: boolean
+  requires_power?: boolean
+  provides_ground?: boolean
+  requires_ground?: boolean
+  provides_voltage?: string | number
+  requires_voltage?: string | number
+  do_not_connect?: boolean
+  include_in_board_pinout?: boolean
+  can_use_internal_pullup?: boolean
+  is_using_internal_pullup?: boolean
+  needs_external_pullup?: boolean
+  can_use_internal_pulldown?: boolean
+  is_using_internal_pulldown?: boolean
+  needs_external_pulldown?: boolean
+  can_use_open_drain?: boolean
+  is_using_open_drain?: boolean
+  can_use_push_pull?: boolean
+  is_using_push_pull?: boolean
+  should_have_decoupling_capacitor?: boolean
+  recommended_decoupling_capacitor_capacitance?: string | number
+  is_configured_for_i2c_sda?: boolean
+  is_configured_for_i2c_scl?: boolean
+  is_configured_for_spi_mosi?: boolean
+  is_configured_for_spi_miso?: boolean
+  is_configured_for_spi_sck?: boolean
+  is_configured_for_spi_cs?: boolean
+  is_configured_for_uart_tx?: boolean
+  is_configured_for_uart_rx?: boolean
+  supports_i2c_sda?: boolean
+  supports_i2c_scl?: boolean
+  supports_spi_mosi?: boolean
+  supports_spi_miso?: boolean
+  supports_spi_sck?: boolean
+  supports_spi_cs?: boolean
+  supports_uart_tx?: boolean
+  supports_uart_rx?: boolean
 }
 
 interface SourceComponentInternalConnection {

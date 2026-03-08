@@ -62,3 +62,54 @@ test("source_port parses configuration and support protocol flags", () => {
   expect(parsed.supports_uart_tx).toBe(true)
   expect(parsed.supports_uart_rx).toBe(true)
 })
+
+test("source_port parses pin attributes", () => {
+  const parsed = source_port.parse({
+    type: "source_port",
+    name: "IO2",
+    source_port_id: "source_port_4",
+    provides_power: false,
+    requires_power: true,
+    provides_ground: false,
+    requires_ground: true,
+    provides_voltage: "3.3V",
+    requires_voltage: 3.3,
+    do_not_connect: false,
+    include_in_board_pinout: true,
+    must_be_connected: true,
+    can_use_internal_pullup: true,
+    is_using_internal_pullup: false,
+    needs_external_pullup: false,
+    can_use_internal_pulldown: true,
+    is_using_internal_pulldown: false,
+    needs_external_pulldown: false,
+    can_use_open_drain: true,
+    is_using_open_drain: false,
+    can_use_push_pull: true,
+    is_using_push_pull: true,
+    should_have_decoupling_capacitor: true,
+    recommended_decoupling_capacitor_capacitance: "100nF",
+  })
+
+  expect(parsed.provides_power).toBe(false)
+  expect(parsed.requires_power).toBe(true)
+  expect(parsed.provides_ground).toBe(false)
+  expect(parsed.requires_ground).toBe(true)
+  expect(parsed.provides_voltage).toBe("3.3V")
+  expect(parsed.requires_voltage).toBe(3.3)
+  expect(parsed.do_not_connect).toBe(false)
+  expect(parsed.include_in_board_pinout).toBe(true)
+  expect(parsed.must_be_connected).toBe(true)
+  expect(parsed.can_use_internal_pullup).toBe(true)
+  expect(parsed.is_using_internal_pullup).toBe(false)
+  expect(parsed.needs_external_pullup).toBe(false)
+  expect(parsed.can_use_internal_pulldown).toBe(true)
+  expect(parsed.is_using_internal_pulldown).toBe(false)
+  expect(parsed.needs_external_pulldown).toBe(false)
+  expect(parsed.can_use_open_drain).toBe(true)
+  expect(parsed.is_using_open_drain).toBe(false)
+  expect(parsed.can_use_push_pull).toBe(true)
+  expect(parsed.is_using_push_pull).toBe(true)
+  expect(parsed.should_have_decoupling_capacitor).toBe(true)
+  expect(parsed.recommended_decoupling_capacitor_capacitance).toBe("100nF")
+})
