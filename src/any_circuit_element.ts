@@ -47,6 +47,7 @@ export const any_circuit_element = z.union([
   src.source_pin_must_be_connected_error,
   src.unknown_error_finding_part,
   src.source_i2c_misconfigured_error,
+  src.source_ambiguous_port_reference,
   pcb.pcb_component,
   pcb.pcb_hole,
   pcb.pcb_missing_footprint_error,
@@ -78,7 +79,7 @@ export const any_circuit_element = z.union([
   pcb.pcb_trace_error,
   pcb.pcb_trace_missing_error,
   pcb.pcb_placement_error,
-  pcb.pcb_port_hint_ambiguous_error,
+
   pcb.pcb_panelization_placement_error,
   pcb.pcb_port_not_matched_error,
   pcb.pcb_port_not_connected_error,
