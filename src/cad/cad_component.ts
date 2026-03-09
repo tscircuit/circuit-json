@@ -33,14 +33,18 @@ export const cad_component = z
       .describe(
         'The direction in the model\'s coordinate space that is considered "up" or "coming out of the board surface"',
       ),
-    model_origin: point3.optional(),
-    model_origin_alignment: z
-      .enum(["unknown", "center", "center_xy_board_z"] as const)
+    model_anchor_position: point3.optional(),
+    model_anchor_alignment: z
+      .enum([
+        "unknown",
+        "center",
+        "center_of_component_on_board_surface",
+      ] as const)
       .optional(),
     model_object_fit: z
-      .enum(["scale_to_bounds"] as const)
+      .enum(["contain_within_bounds", "fill_bounds"] as const)
       .optional()
-      .default("scale_to_bounds"),
+      .default("contain_within_bounds"),
     model_jscad: z.any().optional(),
     show_as_translucent_model: z.boolean().optional(),
     anchor_alignment: z
@@ -78,9 +82,12 @@ export interface CadComponent {
   model_asset?: Asset
   model_unit_to_mm_scale_factor?: number
   model_board_normal_direction?: "y+" | "z+"
-  model_origin?: Point3
-  model_origin_alignment?: "unknown" | "center" | "center_xy_board_z"
-  model_object_fit: "scale_to_bounds"
+  model_anchor_position?: Point3
+  model_anchor_alignment?:
+    | "unknown"
+    | "center"
+    | "center_of_component_on_board_surface"
+  model_object_fit: "contain_within_bounds" | "fill_bounds"
   model_jscad?: any
   show_as_translucent_model?: boolean
   anchor_alignment: CadComponentAnchorAlignment
