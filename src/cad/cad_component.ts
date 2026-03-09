@@ -33,8 +33,8 @@ export const cad_component = z
       .describe(
         'The direction in the model\'s coordinate space that is considered "up" or "coming out of the board surface"',
       ),
-    model_anchor_position: point3.optional(),
-    model_anchor_alignment: z
+    model_origin_position: point3.optional(),
+    model_origin_alignment: z
       .enum([
         "unknown",
         "center",
@@ -82,8 +82,8 @@ export interface CadComponent {
   model_asset?: Asset
   model_unit_to_mm_scale_factor?: number
   model_board_normal_direction?: "y+" | "z+"
-  model_anchor_position?: Point3
-  model_anchor_alignment?:
+  model_origin_position?: Point3
+  model_origin_alignment?:
     | "unknown"
     | "center"
     | "center_of_component_on_board_surface"
