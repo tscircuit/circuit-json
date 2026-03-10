@@ -42,6 +42,7 @@ export const any_circuit_element = z.union([
   src.source_manually_placed_via,
   src.source_board,
   src.source_project_metadata,
+  src.source_invalid_component_property_error,
   src.source_trace_not_connected_error,
   src.source_pin_missing_trace_warning,
   src.source_no_power_pin_defined_warning,
