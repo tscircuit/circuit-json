@@ -100,6 +100,10 @@ import {
   type SourceFailedToCreateComponentError,
 } from "./source_failed_to_create_component_error"
 import {
+  source_invalid_component_property_error,
+  type SourceInvalidComponentPropertyError,
+} from "./source_invalid_component_property_error"
+import {
   source_trace_not_connected_error,
   type SourceTraceNotConnectedError,
 } from "./source_trace_not_connected_error"
@@ -158,6 +162,7 @@ export const any_source_component = z.union([
   source_simple_voltage_source,
   source_project_metadata,
   source_missing_property_error,
+  source_invalid_component_property_error,
   source_failed_to_create_component_error,
   source_trace_not_connected_error,
   source_property_ignored_warning,
@@ -200,6 +205,7 @@ export type AnySourceElement =
   | SourceInterconnect
   | SourceProjectMetadata
   | SourceMissingPropertyError
+  | SourceInvalidComponentPropertyError
   | SourceFailedToCreateComponentError
   | SourceTraceNotConnectedError
   | SourcePropertyIgnoredWarning
