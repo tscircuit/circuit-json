@@ -1,4 +1,4 @@
-export const MODEL_3D_FORMATS = [
+export const cad_model_formats = [
   "obj",
   "stl",
   "3mf",
@@ -8,32 +8,20 @@ export const MODEL_3D_FORMATS = [
   "wrl",
 ] as const
 
-export type CadModel3dFormat = (typeof MODEL_3D_FORMATS)[number]
-export type AxisDirection3d = "x+" | "x-" | "y+" | "y-" | "z+" | "z-"
+export type CadModelFormat = (typeof cad_model_formats)[number]
+export type CadModelDirection = "x+" | "x-" | "y+" | "y-" | "z+" | "z-"
 
-export const DEFAULT_BOARD_NORMAL_DIRECTION: AxisDirection3d = "z+"
+export const cadModelDefaultDirection = "z+" as const
 
-export const CAD_MODEL_CONVENTIONS: Record<
-  CadModel3dFormat,
-  {
-    boardNormalDirection: AxisDirection3d
-    isFormatDefined: boolean
-  }
+export const cadModelDefaultDirectionMap: Record<
+  CadModelFormat,
+  CadModelDirection
 > = {
-  obj: {
-    boardNormalDirection: DEFAULT_BOARD_NORMAL_DIRECTION,
-    isFormatDefined: false,
-  },
-  stl: {
-    boardNormalDirection: DEFAULT_BOARD_NORMAL_DIRECTION,
-    isFormatDefined: false,
-  },
-  "3mf": { boardNormalDirection: "z+", isFormatDefined: true },
-  gltf: { boardNormalDirection: "y+", isFormatDefined: true },
-  glb: { boardNormalDirection: "y+", isFormatDefined: true },
-  step: {
-    boardNormalDirection: DEFAULT_BOARD_NORMAL_DIRECTION,
-    isFormatDefined: false,
-  },
-  wrl: { boardNormalDirection: "y+", isFormatDefined: true },
+  obj: cadModelDefaultDirection,
+  stl: cadModelDefaultDirection,
+  "3mf": "z+",
+  gltf: "y+",
+  glb: "y+",
+  step: cadModelDefaultDirection,
+  wrl: "y+",
 } as const
