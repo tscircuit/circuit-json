@@ -27,6 +27,24 @@ export const cad_component = z
     model_wrl_url: z.string().optional(),
     model_asset: asset.optional(),
     model_unit_to_mm_scale_factor: z.number().optional(),
+    model_board_normal_direction: z
+      .enum(["y+", "z+"] as const)
+      .optional()
+      .describe(
+        'The direction in the model\'s coordinate space that is considered "up" or "coming out of the board surface"',
+      ),
+    model_origin_position: point3.optional(),
+    model_origin_alignment: z
+      .enum([
+        "unknown",
+        "center",
+        "center_of_component_on_board_surface",
+      ] as const)
+      .optional(),
+    model_object_fit: z
+      .enum(["contain_within_bounds", "fill_bounds"] as const)
+      .optional()
+      .default("contain_within_bounds"),
     model_jscad: z.any().optional(),
     show_as_translucent_model: z.boolean().optional(),
     anchor_alignment: z
@@ -63,6 +81,13 @@ export interface CadComponent {
   model_wrl_url?: string
   model_asset?: Asset
   model_unit_to_mm_scale_factor?: number
+  model_board_normal_direction?: "y+" | "z+"
+  model_origin_position?: Point3
+  model_origin_alignment?:
+    | "unknown"
+    | "center"
+    | "center_of_component_on_board_surface"
+  model_object_fit: "contain_within_bounds" | "fill_bounds"
   model_jscad?: any
   show_as_translucent_model?: boolean
   anchor_alignment: CadComponentAnchorAlignment
