@@ -11,17 +11,12 @@ export const cad_model_formats = [
 export type CadModelFormat = (typeof cad_model_formats)[number]
 export type CadModelDirection = "x+" | "x-" | "y+" | "y-" | "z+" | "z-"
 
-export const cadModelDefaultDirection = "z+" as const
-
-export const cadModelDefaultDirectionMap: Record<
-  CadModelFormat,
-  CadModelDirection
-> = {
-  obj: cadModelDefaultDirection,
-  stl: cadModelDefaultDirection,
+export const cadModelDefaultDirectionMap = {
+  obj: "z+",
+  stl: "z+",
   "3mf": "z+",
   gltf: "y+",
   glb: "y+",
-  step: cadModelDefaultDirection,
+  step: "z+",
   wrl: "y+",
 } as const
