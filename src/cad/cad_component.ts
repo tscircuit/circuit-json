@@ -4,8 +4,8 @@ import { rotation, length, type Rotation, type Length } from "../units"
 import { layer_ref, type LayerRef } from "src/pcb"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import {
-  cad_model_directions,
-  type CadModelDirection,
+  cad_model_axis_directions,
+  type CadModelAxisDirection,
 } from "./cad_model_conventions"
 
 export const cad_component = z
@@ -32,7 +32,7 @@ export const cad_component = z
     model_asset: asset.optional(),
     model_unit_to_mm_scale_factor: z.number().optional(),
     model_board_normal_direction: z
-      .enum(cad_model_directions)
+      .enum(cad_model_axis_directions)
       .optional()
       .describe(
         'The direction in the model\'s coordinate space that is considered "up" or "coming out of the board surface"',
@@ -85,7 +85,7 @@ export interface CadComponent {
   model_wrl_url?: string
   model_asset?: Asset
   model_unit_to_mm_scale_factor?: number
-  model_board_normal_direction?: CadModelDirection
+  model_board_normal_direction?: CadModelAxisDirection
   model_origin_position?: Point3
   model_origin_alignment?:
     | "unknown"

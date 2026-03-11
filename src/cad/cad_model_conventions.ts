@@ -8,7 +8,7 @@ export const cad_model_formats = [
   "wrl",
 ] as const
 
-export const cad_model_directions = [
+export const cad_model_axis_directions = [
   "x+",
   "x-",
   "y+",
@@ -18,7 +18,7 @@ export const cad_model_directions = [
 ] as const
 
 export type CadModelFormat = (typeof cad_model_formats)[number]
-export type CadModelDirection = (typeof cad_model_directions)[number]
+export type CadModelAxisDirection = (typeof cad_model_axis_directions)[number]
 
 export const cadModelDefaultDirectionMap = {
   obj: "z+",
