@@ -9,6 +9,8 @@ export const pcb_trace_route_point_wire = z.object({
   x: distance,
   y: distance,
   width: distance,
+  copper_pour_id: z.string().optional(),
+  is_inside_copper_pour: z.boolean().optional(),
   start_pcb_port_id: z.string().optional(),
   end_pcb_port_id: z.string().optional(),
   layer: layer_ref,
@@ -18,6 +20,8 @@ export const pcb_trace_route_point_via = z.object({
   route_type: z.literal("via"),
   x: distance,
   y: distance,
+  copper_pour_id: z.string().optional(),
+  is_inside_copper_pour: z.boolean().optional(),
   hole_diameter: distance.optional(),
   outer_diameter: distance.optional(),
   from_layer: z.string(),
@@ -58,6 +62,8 @@ export interface PcbTraceRoutePointWire {
   x: Distance
   y: Distance
   width: Distance
+  copper_pour_id?: string
+  is_inside_copper_pour?: boolean
   start_pcb_port_id?: string
   end_pcb_port_id?: string
   layer: LayerRef
@@ -67,6 +73,8 @@ export interface PcbTraceRoutePointVia {
   route_type: "via"
   x: Distance
   y: Distance
+  copper_pour_id?: string
+  is_inside_copper_pour?: boolean
   hole_diameter?: Distance
   outer_diameter?: Distance
   from_layer: string
