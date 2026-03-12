@@ -43,6 +43,7 @@ export const cad_component = z
         "unknown",
         "center",
         "center_of_component_on_board_surface",
+        "bottom_center_of_component",
       ] as const)
       .optional(),
     model_object_fit: z
@@ -91,6 +92,7 @@ export interface CadComponent {
     | "unknown"
     | "center"
     | "center_of_component_on_board_surface"
+    | "bottom_center_of_component"
   model_object_fit: "contain_within_bounds" | "fill_bounds"
   model_jscad?: any
   show_as_translucent_model?: boolean
