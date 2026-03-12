@@ -22,14 +22,12 @@ test("cad_component accepts model board/anchor fields", () => {
     position: { x: 1, y: 2, z: 3 },
     model_board_normal_direction: "z+",
     model_origin_position: { x: 10, y: 20, z: 30 },
-    model_origin_alignment: "center_of_component_on_board_surface",
+    model_origin_alignment: "bottom_center_of_component",
     model_object_fit: "fill_bounds",
   })
 
   expect(component.model_board_normal_direction).toBe("z+")
   expect(component.model_origin_position).toEqual({ x: 10, y: 20, z: 30 })
-  expect(component.model_origin_alignment).toBe(
-    "center_of_component_on_board_surface",
-  )
+  expect(component.model_origin_alignment).toBe("bottom_center_of_component")
   expect(component.model_object_fit).toBe("fill_bounds")
 })
