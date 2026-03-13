@@ -1,7 +1,7 @@
 import { z } from "zod"
 import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
 import { visible_layer, type VisibleLayer } from "src/pcb/properties/layer_ref"
-import { length, type Length } from "src/units"
+import { length, type Length, rotation, type Rotation } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const pcb_courtyard_rect = z
@@ -15,6 +15,7 @@ export const pcb_courtyard_rect = z
     width: length,
     height: length,
     layer: visible_layer,
+    ccw_rotation: rotation.optional(),
     color: z.string().optional(),
   })
   .describe("Defines a courtyard rectangle on the PCB")
@@ -35,6 +36,7 @@ export interface PcbCourtyardRect {
   width: Length
   height: Length
   layer: VisibleLayer
+  ccw_rotation?: Rotation
   color?: string
 }
 
