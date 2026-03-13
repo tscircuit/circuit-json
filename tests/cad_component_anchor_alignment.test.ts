@@ -13,15 +13,17 @@ test("cad_component.anchor_alignment defaults to center", () => {
   expect(component.anchor_alignment).toBe("center")
 })
 
-test("cad_component.anchor_alignment accepts xy_center_z_board", () => {
+test("cad_component.anchor_alignment accepts center_of_component_on_board_surface", () => {
   const component = cad_component.parse({
     type: "cad_component",
     cad_component_id: "cad-xy-center",
     pcb_component_id: "pcb-xy-center",
     source_component_id: "src-xy-center",
     position: { x: 1, y: 2, z: 3 },
-    anchor_alignment: "xy_center_z_board",
+    anchor_alignment: "center_of_component_on_board_surface",
   })
 
-  expect(component.anchor_alignment).toBe("xy_center_z_board")
+  expect(component.anchor_alignment).toBe(
+    "center_of_component_on_board_surface",
+  )
 })
