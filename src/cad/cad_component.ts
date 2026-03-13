@@ -53,7 +53,7 @@ export const cad_component = z
     model_jscad: z.any().optional(),
     show_as_translucent_model: z.boolean().optional(),
     anchor_alignment: z
-      .enum(["center", "xy_center_z_board"] as const)
+      .enum(["center", "center_of_component_on_board_surface"] as const)
       .optional()
       .default("center"),
   })
