@@ -24,8 +24,8 @@ export const pcb_trace_route_point_via = z.object({
   is_inside_copper_pour: z.boolean().optional(),
   hole_diameter: distance.optional(),
   outer_diameter: distance.optional(),
-  from_layer: z.string(),
-  to_layer: z.string(),
+  from_layer: layer_ref,
+  to_layer: layer_ref,
 })
 
 export const pcb_trace_route_point = z.union([
@@ -77,8 +77,8 @@ export interface PcbTraceRoutePointVia {
   is_inside_copper_pour?: boolean
   hole_diameter?: Distance
   outer_diameter?: Distance
-  from_layer: string
-  to_layer: string
+  from_layer: LayerRef
+  to_layer: LayerRef
 }
 
 export type PcbTraceRoutePoint = PcbTraceRoutePointWire | PcbTraceRoutePointVia
