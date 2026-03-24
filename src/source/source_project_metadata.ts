@@ -8,6 +8,7 @@ export interface SourceProjectMetadata {
   software_used_string?: string
   project_url?: string
   created_at?: string // ISO8601 timestamp
+  schematic_disabled?: boolean
 }
 
 export const source_project_metadata = z.object({
@@ -16,6 +17,7 @@ export const source_project_metadata = z.object({
   software_used_string: z.string().optional(),
   project_url: z.string().optional(),
   created_at: timestamp.optional(),
+  schematic_disabled: z.boolean().optional(),
 })
 
 export type InferredProjectMetadata = z.infer<typeof source_project_metadata>
