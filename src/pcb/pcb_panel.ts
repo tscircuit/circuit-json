@@ -10,6 +10,7 @@ export const pcb_panel = z
     width: length,
     height: length,
     center: point,
+    thickness: length.optional().default(1.4),
     covered_with_solder_mask: z.boolean().optional().default(true),
   })
   .describe("Defines a PCB panel that can contain multiple boards")
@@ -23,6 +24,7 @@ export interface PcbPanel {
   width: Length
   height: Length
   center: Point
+  thickness: Length
   covered_with_solder_mask: boolean
 }
 

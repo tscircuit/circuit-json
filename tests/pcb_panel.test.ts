@@ -2,7 +2,7 @@ import { expect, test } from "bun:test"
 import { pcb_panel } from "src/pcb/pcb_panel"
 import { any_circuit_element } from "src/any_circuit_element"
 
-test("pcb_panel parses and defaults covered_with_solder_mask", () => {
+test("pcb_panel parses and defaults thickness and covered_with_solder_mask", () => {
   const panelData = {
     type: "pcb_panel" as const,
     pcb_panel_id: "pcb_panel_1",
@@ -13,6 +13,7 @@ test("pcb_panel parses and defaults covered_with_solder_mask", () => {
 
   const parsed = pcb_panel.parse(panelData)
 
+  expect(parsed.thickness).toBe(1.4)
   expect(parsed.covered_with_solder_mask).toBe(true)
 })
 

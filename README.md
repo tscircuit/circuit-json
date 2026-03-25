@@ -1677,6 +1677,7 @@ interface PcbPanel {
   width: Length
   height: Length
   center: Point
+  thickness: Length
   covered_with_solder_mask: boolean
 }
 ```
