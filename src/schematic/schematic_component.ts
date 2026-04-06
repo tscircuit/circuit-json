@@ -3,6 +3,10 @@ import { point, type Point } from "../common/point"
 import { size, type Size } from "../common/size"
 import { length } from "../units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import {
+  ninePointAnchor,
+  type NinePointAnchor,
+} from "../common/NinePointAnchor"
 
 export const schematic_pin_styles = z.record(
   z.object({
@@ -34,6 +38,11 @@ export type SchematicPortArrangement =
   | SchematicPortArrangementBySize
   | SchematicPortArrangementBySides
 
+export interface SchematicInnerSymbolSize {
+  width?: number
+  height?: number
+}
+
 export interface SchematicComponent {
   type: "schematic_component"
   size: Size
@@ -53,6 +62,9 @@ export interface SchematicComponent {
   >
   box_width?: number
   symbol_name?: string
+  inner_symbol_name?: string
+  inner_symbol_alignment?: NinePointAnchor
+  inner_symbol_size?: SchematicInnerSymbolSize
   port_arrangement?: SchematicPortArrangement
   port_labels?: Record<string, string>
   symbol_display_value?: string
@@ -116,6 +128,16 @@ export const port_arrangement = z.union([
   schematic_component_port_arrangement_by_sides,
 ])
 
+export const schematic_inner_symbol_size = z.object({
+  width: length.optional(),
+  height: length.optional(),
+})
+
+expectTypesMatch<
+  SchematicInnerSymbolSize,
+  z.infer<typeof schematic_inner_symbol_size>
+>(true)
+
 export const schematic_component = z.object({
   type: z.literal("schematic_component"),
   size,
@@ -127,6 +149,9 @@ export const schematic_component = z.object({
   pin_styles: schematic_pin_styles.optional(),
   box_width: length.optional(),
   symbol_name: z.string().optional(),
+  inner_symbol_name: z.string().optional(),
+  inner_symbol_alignment: ninePointAnchor.optional(),
+  inner_symbol_size: schematic_inner_symbol_size.optional(),
   port_arrangement: port_arrangement.optional(),
   port_labels: z.record(z.string()).optional(),
   symbol_display_value: z.string().optional(),
