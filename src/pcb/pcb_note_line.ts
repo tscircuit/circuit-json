@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
+import { visible_layer, type VisibleLayer } from "src/pcb/properties/layer_ref"
 import { distance, type Distance } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
@@ -16,6 +17,7 @@ export const pcb_note_line = z
     y1: distance,
     x2: distance,
     y2: distance,
+    layer: visible_layer.default("top"),
     stroke_width: distance.default("0.1mm"),
     color: z.string().optional(),
     is_dashed: z.boolean().optional(),
@@ -40,6 +42,7 @@ export interface PcbNoteLine {
   y1: Distance
   x2: Distance
   y2: Distance
+  layer: VisibleLayer
   stroke_width: Distance
   color?: string
   is_dashed?: boolean

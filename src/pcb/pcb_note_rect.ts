@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
+import { visible_layer, type VisibleLayer } from "src/pcb/properties/layer_ref"
 import { length, type Length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
@@ -15,6 +16,7 @@ export const pcb_note_rect = z
     center: point,
     width: length,
     height: length,
+    layer: visible_layer.default("top"),
     stroke_width: length.default("0.1mm"),
     corner_radius: length.optional(),
     is_filled: z.boolean().optional(),
@@ -41,6 +43,7 @@ export interface PcbNoteRect {
   center: Point
   width: Length
   height: Length
+  layer: VisibleLayer
   stroke_width: Length
   corner_radius?: Length
   is_filled?: boolean

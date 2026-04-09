@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
+import { visible_layer, type VisibleLayer } from "src/pcb/properties/layer_ref"
 import { length, type Length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
@@ -24,6 +25,7 @@ export const pcb_note_dimension = z
       .optional(),
     font: z.literal("tscircuit2024").default("tscircuit2024"),
     font_size: length.default("1mm"),
+    layer: visible_layer.default("top"),
     color: z.string().optional(),
     arrow_size: length.default("1mm"),
   })
@@ -53,6 +55,7 @@ export interface PcbNoteDimension {
   }
   font: "tscircuit2024"
   font_size: Length
+  layer: VisibleLayer
   color?: string
   arrow_size: Length
 }
