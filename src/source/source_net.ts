@@ -6,6 +6,7 @@ export const source_net = z.object({
   source_net_id: z.string(),
   name: z.string(),
   member_source_group_ids: z.array(z.string()),
+  routing_phase_index: z.number().nullable().optional(),
   is_power: z.boolean().optional(),
   is_ground: z.boolean().optional(),
   is_digital_signal: z.boolean().optional(),
@@ -24,6 +25,7 @@ export interface SourceNet {
   source_net_id: string
   name: string
   member_source_group_ids: string[]
+  routing_phase_index?: number | null
   is_power?: boolean
   is_ground?: boolean
   is_digital_signal?: boolean

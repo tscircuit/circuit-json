@@ -21,3 +21,27 @@ test("source_net.is_positive_voltage_source can be true", () => {
   })
   expect(net.is_positive_voltage_source).toBe(true)
 })
+
+test("source_net.routing_phase_index accepts a number", () => {
+  const net = source_net.parse({
+    type: "source_net",
+    source_net_id: "net1",
+    name: "VCC",
+    member_source_group_ids: [],
+    routing_phase_index: 2,
+  })
+
+  expect(net.routing_phase_index).toBe(2)
+})
+
+test("source_net.routing_phase_index accepts null", () => {
+  const net = source_net.parse({
+    type: "source_net",
+    source_net_id: "net1",
+    name: "VCC",
+    member_source_group_ids: [],
+    routing_phase_index: null,
+  })
+
+  expect(net.routing_phase_index).toBeNull()
+})

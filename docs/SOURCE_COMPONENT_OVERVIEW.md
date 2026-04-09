@@ -45,6 +45,7 @@ interface SourceTrace {
   source_trace_id: string
   connected_source_port_ids: string[]
   connected_source_net_ids: string[]
+  routing_phase_index?: number | null
   subcircuit_connectivity_map_key?: string
 }
 
@@ -85,6 +86,7 @@ interface SourceNet {
   source_net_id: string
   name: string
   member_source_group_ids: string[]
+  routing_phase_index?: number | null
   is_power?: boolean
   is_ground?: boolean
   is_digital_signal?: boolean

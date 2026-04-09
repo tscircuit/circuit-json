@@ -46,16 +46,23 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
   - [Typescript Usage](#typescript-usage)
 
   - [Source Components](#source-components)
+    - [SourceAmbiguousPortReference](#sourceambiguousportreference)
     - [SourceBoard](#sourceboard)
     - [SourceComponentBase](#sourcecomponentbase)
     - [SourceComponentInternalConnection](#sourcecomponentinternalconnection)
+    - [SourceComponentPinsUnderspecifiedWarning](#sourcecomponentpinsunderspecifiedwarning)
     - [SourceFailedToCreateComponentError](#sourcefailedtocreatecomponenterror)
     - [SourceGroup](#sourcegroup)
+    - [SourceI2cMisconfiguredError](#sourcei2cmisconfigurederror)
     - [SourceInterconnect](#sourceinterconnect)
+    - [SourceInvalidComponentPropertyError](#sourceinvalidcomponentpropertyerror)
     - [SourceManuallyPlacedVia](#sourcemanuallyplacedvia)
     - [SourceMissingPropertyError](#sourcemissingpropertyerror)
     - [SourceNet](#sourcenet)
+    - [SourceNoGroundPinDefinedWarning](#sourcenogroundpindefinedwarning)
+    - [SourceNoPowerPinDefinedWarning](#sourcenopowerpindefinedwarning)
     - [SourcePcbGroundPlane](#sourcepcbgroundplane)
+    - [SourcePinAttributes](#sourcepinattributes)
     - [SourcePinMissingTraceWarning](#sourcepinmissingtracewarning)
     - [SourcePinMustBeConnectedError](#sourcepinmustbeconnectederror)
     - [SourcePort](#sourceport)
@@ -64,7 +71,9 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceSimpleBattery](#sourcesimplebattery)
     - [SourceSimpleCapacitor](#sourcesimplecapacitor)
     - [SourceSimpleChip](#sourcesimplechip)
+    - [SourceSimpleConnector](#sourcesimpleconnector)
     - [SourceSimpleCrystal](#sourcesimplecrystal)
+    - [SourceSimpleCurrentSource](#sourcesimplecurrentsource)
     - [SourceSimpleDiode](#sourcesimplediode)
     - [SourceSimpleFiducial](#sourcesimplefiducial)
     - [SourceSimpleFuse](#sourcesimplefuse)
@@ -72,6 +81,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceSimpleInductor](#sourcesimpleinductor)
     - [SourceSimpleLed](#sourcesimpleled)
     - [SourceSimpleMosfet](#sourcesimplemosfet)
+    - [SourceSimpleOpAmp](#sourcesimpleopamp)
     - [SourceSimplePinHeader](#sourcesimplepinheader)
     - [SourceSimplePinout](#sourcesimplepinout)
     - [SourceSimplePotentiometer](#sourcesimplepotentiometer)
@@ -83,6 +93,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceSimpleTestPoint](#sourcesimpletestpoint)
     - [SourceSimpleTransistor](#sourcesimpletransistor)
     - [SourceSimpleVoltageProbe](#sourcesimplevoltageprobe)
+    - [SourceSimpleVoltageSource](#sourcesimplevoltagesource)
     - [SourceTrace](#sourcetrace)
     - [SourceTraceNotConnectedError](#sourcetracenotconnectederror)
     - [UnknownErrorFindingPart](#unknownerrorfindingpart)
@@ -94,10 +105,14 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbBreakoutPoint](#pcbbreakoutpoint)
     - [PcbComponent](#pcbcomponent)
     - [PcbComponentInvalidLayerError](#pcbcomponentinvalidlayererror)
+    - [PcbComponentNotOnBoardEdgeError](#pcbcomponentnotonboardedgeerror)
     - [PcbComponentOutsideBoardError](#pcbcomponentoutsideboarderror)
+    - [PcbConnectorNotInAccessibleOrientationWarning](#pcbconnectornotinaccessibleorientationwarning)
     - [PcbCopperPour](#pcbcopperpour)
     - [PcbCopperText](#pcbcoppertext)
+    - [PcbCourtyardCircle](#pcbcourtyardcircle)
     - [PcbCourtyardOutline](#pcbcourtyardoutline)
+    - [PcbCourtyardOverlapError](#pcbcourtyardoverlaperror)
     - [PcbCourtyardPolygon](#pcbcourtyardpolygon)
     - [PcbCourtyardRect](#pcbcourtyardrect)
     - [PcbCutout](#pcbcutout)
@@ -119,6 +134,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbNoteRect](#pcbnoterect)
     - [PcbNoteText](#pcbnotetext)
     - [PcbPanel](#pcbpanel)
+    - [PcbPanelizationPlacementError](#pcbpanelizationplacementerror)
     - [PcbPlacementError](#pcbplacementerror)
     - [PcbPlatedHole](#pcbplatedhole)
     - [PcbPort](#pcbport)
@@ -157,13 +173,16 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicPort](#schematicport)
     - [SchematicRect](#schematicrect)
     - [SchematicSheet](#schematicsheet)
+    - [SchematicSymbol](#schematicsymbol)
     - [SchematicTable](#schematictable)
     - [SchematicTableCell](#schematictablecell)
     - [SchematicText](#schematictext)
     - [SchematicTrace](#schematictrace)
     - [SchematicVoltageProbe](#schematicvoltageprobe)
   - [Simulation Elements](#simulation-elements)
+    - [SimulationCurrentSource](#simulationcurrentsource)
     - [SimulationExperiment](#simulationexperiment)
+    - [SimulationOpAmp](#simulationopamp)
     - [SimulationSwitch](#simulationswitch)
     - [SimulationTransientVoltageGraph](#simulationtransientvoltagegraph)
     - [SimulationUnknownExperimentError](#simulationunknownexperimenterror)
@@ -245,6 +264,22 @@ There are 3 main element prefixes:
 
 ## Source Components
 
+### SourceAmbiguousPortReference
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_ambiguous_port_reference.ts)
+
+```typescript
+/** Error emitted when a port hint matches multiple non-overlapping pads,
+ * making the port reference ambiguous (e.g. multiple pads all named "SH" */
+interface SourceAmbiguousPortReference extends BaseCircuitJsonError {
+  type: "source_ambiguous_port_reference"
+  source_ambiguous_port_reference_id: string
+  error_type: "source_ambiguous_port_reference"
+  source_port_id?: string
+  source_component_id?: string
+}
+```
+
 ### SourceBoard
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_board.ts)
@@ -274,6 +309,7 @@ interface SourceComponentBase {
   manufacturer_part_number?: string
   supplier_part_numbers?: Partial<Record<SupplierName, string[]>>
   display_value?: string
+  display_name?: string
   are_pins_interchangeable?: boolean
   internally_connected_source_port_ids?: string[][]
   source_group_id?: string
@@ -295,6 +331,25 @@ interface SourceComponentInternalConnection {
 }
 ```
 
+### SourceComponentPinsUnderspecifiedWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_component_pins_underspecified_warning.ts)
+
+Warning emitted when all ports on a source component are underspecified
+
+```typescript
+/** Warning emitted when all ports on a source component are underspecified */
+interface SourceComponentPinsUnderspecifiedWarning {
+  type: "source_component_pins_underspecified_warning"
+  source_component_pins_underspecified_warning_id: string
+  warning_type: "source_component_pins_underspecified_warning"
+  message: string
+  source_component_id: string
+  source_port_ids: string[]
+  subcircuit_id?: string
+}
+```
+
 ### SourceFailedToCreateComponentError
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_failed_to_create_component_error.ts)
@@ -302,11 +357,10 @@ interface SourceComponentInternalConnection {
 ```typescript
 /** Error emitted when a component fails to be constructed.
  * Contains details about the failure and prevents the component from being rendered. */
-interface SourceFailedToCreateComponentError {
+interface SourceFailedToCreateComponentError extends BaseCircuitJsonError {
   type: "source_failed_to_create_component_error"
   source_failed_to_create_component_error_id: string
   error_type: "source_failed_to_create_component_error"
-  message: string
   component_name?: string
   subcircuit_id?: string
   parent_source_component_id?: string
@@ -339,6 +393,22 @@ interface SourceGroup {
 }
 ```
 
+### SourceI2cMisconfiguredError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_i2c_misconfigured_error.ts)
+
+Error emitted when incompatible I2C pins (e.g. SDA and SCL) are connected to the same net
+
+```typescript
+/** Error emitted when incompatible I2C pins (e.g. SDA and SCL) are connected to the same net */
+interface SourceI2cMisconfiguredError extends BaseCircuitJsonError {
+  type: "source_i2c_misconfigured_error"
+  source_i2c_misconfigured_error_id: string
+  error_type: "source_i2c_misconfigured_error"
+  source_port_ids: string[]
+}
+```
+
 ### SourceInterconnect
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_interconnect.ts)
@@ -349,6 +419,26 @@ Defines a generic interconnect component
 /** Defines a generic interconnect component */
 interface SourceInterconnect extends SourceComponentBase {
   ftype: "interconnect"
+}
+```
+
+### SourceInvalidComponentPropertyError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_invalid_component_property_error.ts)
+
+The source component property is invalid
+
+```typescript
+/** The source component property is invalid */
+interface SourceInvalidComponentPropertyError extends BaseCircuitJsonError {
+  type: "source_invalid_component_property_error"
+  source_invalid_component_property_error_id: string
+  source_component_id: string
+  property_name: string
+  property_value?: unknown
+  expected_format?: string
+  subcircuit_id?: string
+  error_type: "source_invalid_component_property_error"
 }
 ```
 
@@ -378,14 +468,13 @@ The source code is missing a property
 
 ```typescript
 /** The source code is missing a property */
-interface SourceMissingPropertyError {
+interface SourceMissingPropertyError extends BaseCircuitJsonError {
   type: "source_missing_property_error"
   source_missing_property_error_id: string
   source_component_id: string
   property_name: string
   subcircuit_id?: string
   error_type: "source_missing_property_error"
-  message: string
 }
 ```
 
@@ -399,6 +488,7 @@ interface SourceNet {
   source_net_id: string
   name: string
   member_source_group_ids: string[]
+  routing_phase_index?: number | null
   is_power?: boolean
   is_ground?: boolean
   is_digital_signal?: boolean
@@ -407,6 +497,44 @@ interface SourceNet {
   trace_width?: number
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
+}
+```
+
+### SourceNoGroundPinDefinedWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_no_ground_pin_defined_warning.ts)
+
+Warning emitted when a chip has no source ports marked as ground pins
+
+```typescript
+/** Warning emitted when a chip has no source ports marked as ground pins */
+interface SourceNoGroundPinDefinedWarning {
+  type: "source_no_ground_pin_defined_warning"
+  source_no_ground_pin_defined_warning_id: string
+  warning_type: "source_no_ground_pin_defined_warning"
+  message: string
+  source_component_id: string
+  source_port_ids: string[]
+  subcircuit_id?: string
+}
+```
+
+### SourceNoPowerPinDefinedWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_no_power_pin_defined_warning.ts)
+
+Warning emitted when a chip has no source ports with requires_power=true
+
+```typescript
+/** Warning emitted when a chip has no source ports with requires_power=true */
+interface SourceNoPowerPinDefinedWarning {
+  type: "source_no_power_pin_defined_warning"
+  source_no_power_pin_defined_warning_id: string
+  warning_type: "source_no_power_pin_defined_warning"
+  message: string
+  source_component_id: string
+  source_port_ids: string[]
+  subcircuit_id?: string
 }
 ```
 
@@ -427,63 +555,12 @@ interface SourcePcbGroundPlane {
 }
 ```
 
-### SourcePinMissingTraceWarning
+### SourcePinAttributes
 
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_pin_missing_trace_warning.ts)
-
-Warning emitted when a source component pin is missing a trace connection
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/properties/source_pin_attributes.ts)
 
 ```typescript
-/** Warning emitted when a source component pin is missing a trace connection */
-interface SourcePinMissingTraceWarning {
-  type: "source_pin_missing_trace_warning"
-  source_pin_missing_trace_warning_id: string
-  warning_type: "source_pin_missing_trace_warning"
-  message: string
-  source_component_id: string
-  source_port_id: string
-  subcircuit_id?: string
-}
-```
-
-### SourcePinMustBeConnectedError
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_pin_must_be_connected_error.ts)
-
-Error emitted when a pin with mustBeConnected attribute is not connected to any trace
-
-```typescript
-/** Error emitted when a pin with mustBeConnected attribute is not connected to any trace */
-interface SourcePinMustBeConnectedError {
-  type: "source_pin_must_be_connected_error"
-  source_pin_must_be_connected_error_id: string
-  error_type: "source_pin_must_be_connected_error"
-  message: string
-  source_component_id: string
-  source_port_id: string
-  subcircuit_id?: string
-}
-```
-
-### SourcePort
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_port.ts)
-
-Defines a source port that can be connected to other components
-
-```typescript
-/** Defines a source port that can be connected to other components */
-interface SourcePort {
-  type: "source_port"
-  pin_number?: number
-  port_hints?: string[]
-  name: string
-  source_port_id: string
-  source_component_id?: string
-  source_group_id?: string
-  most_frequently_referenced_by_name?: string
-  subcircuit_id?: string
-  subcircuit_connectivity_map_key?: string
+interface SourcePinAttributes {
   must_be_connected?: boolean
   provides_power?: boolean
   requires_power?: boolean
@@ -521,6 +598,65 @@ interface SourcePort {
   supports_spi_cs?: boolean
   supports_uart_tx?: boolean
   supports_uart_rx?: boolean
+}
+```
+
+### SourcePinMissingTraceWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_pin_missing_trace_warning.ts)
+
+Warning emitted when a source component pin is missing a trace connection
+
+```typescript
+/** Warning emitted when a source component pin is missing a trace connection */
+interface SourcePinMissingTraceWarning {
+  type: "source_pin_missing_trace_warning"
+  source_pin_missing_trace_warning_id: string
+  warning_type: "source_pin_missing_trace_warning"
+  message: string
+  source_component_id: string
+  source_port_id: string
+  subcircuit_id?: string
+}
+```
+
+### SourcePinMustBeConnectedError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_pin_must_be_connected_error.ts)
+
+Error emitted when a pin with mustBeConnected attribute is not connected to any trace
+
+```typescript
+/** Error emitted when a pin with mustBeConnected attribute is not connected to any trace */
+interface SourcePinMustBeConnectedError extends BaseCircuitJsonError {
+  type: "source_pin_must_be_connected_error"
+  source_pin_must_be_connected_error_id: string
+  error_type: "source_pin_must_be_connected_error"
+  source_component_id: string
+  source_port_id: string
+  subcircuit_id?: string
+}
+```
+
+### SourcePort
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_port.ts)
+
+Defines a source port that can be connected to other components
+
+```typescript
+/** Defines a source port that can be connected to other components */
+interface SourcePort extends SourcePinAttributes {
+  type: "source_port"
+  pin_number?: number
+  port_hints?: string[]
+  name: string
+  source_port_id: string
+  source_component_id?: string
+  source_group_id?: string
+  most_frequently_referenced_by_name?: string
+  subcircuit_id?: string
+  subcircuit_connectivity_map_key?: string
 }
 ```
 
@@ -601,6 +737,20 @@ interface SourceSimpleChip extends SourceComponentBase {
 }
 ```
 
+### SourceSimpleConnector
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_connector.ts)
+
+Defines a simple connector component
+
+```typescript
+/** Defines a simple connector component */
+interface SourceSimpleConnector extends SourceComponentBase {
+  ftype: "simple_connector"
+  standard?: "usb_c" | "m2"
+}
+```
+
 ### SourceSimpleCrystal
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_crystal.ts)
@@ -613,6 +763,26 @@ interface SourceSimpleCrystal extends SourceComponentBase {
   ftype: "simple_crystal"
   frequency: number
   load_capacitance?: number
+  pin_variant?: "two_pin" | "four_pin"
+}
+```
+
+### SourceSimpleCurrentSource
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_current_source.ts)
+
+Defines a simple current source component
+
+```typescript
+/** Defines a simple current source component */
+interface SourceSimpleCurrentSource extends SourceComponentBase {
+  ftype: "simple_current_source"
+  current: number
+  frequency?: number
+  peak_to_peak_current?: number
+  wave_shape: "sine" | "square" | "triangle" | "sawtooth" | "dc"
+  phase?: number
+  duty_cycle?: number
 }
 ```
 
@@ -712,6 +882,19 @@ interface SourceSimpleMosfet extends SourceComponentBase {
 }
 ```
 
+### SourceSimpleOpAmp
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_op_amp.ts)
+
+Defines a simple op-amp component
+
+```typescript
+/** Defines a simple op-amp component */
+interface SourceSimpleOpAmp extends SourceComponentBase {
+  ftype: "simple_op_amp"
+}
+```
+
 ### SourceSimplePinHeader
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_pin_header.ts)
@@ -745,6 +928,7 @@ interface SourceSimplePinout extends SourceComponentBase {
 interface SourceSimplePotentiometer extends SourceComponentBase {
   ftype: "simple_potentiometer"
   max_resistance: number
+  display_max_resistance?: string
 }
 ```
 
@@ -865,6 +1049,25 @@ interface SourceSimpleVoltageProbe extends SourceComponentBase {
 }
 ```
 
+### SourceSimpleVoltageSource
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_voltage_source.ts)
+
+Defines a simple voltage source component
+
+```typescript
+/** Defines a simple voltage source component */
+interface SourceSimpleVoltageSource extends SourceComponentBase {
+  ftype: "simple_voltage_source"
+  voltage: number
+  frequency?: number
+  peak_to_peak_voltage?: number
+  wave_shape?: "sinewave" | "square" | "triangle" | "sawtooth"
+  phase?: number
+  duty_cycle?: number
+}
+```
+
 ### SourceTrace
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_trace.ts)
@@ -875,6 +1078,7 @@ interface SourceTrace {
   source_trace_id: string
   connected_source_port_ids: string[]
   connected_source_net_ids: string[]
+  routing_phase_index?: number | null
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
   max_length?: number
@@ -891,11 +1095,10 @@ Occurs when a source trace selector does not match any ports
 
 ```typescript
 /** Occurs when a source trace selector does not match any ports */
-interface SourceTraceNotConnectedError {
+interface SourceTraceNotConnectedError extends BaseCircuitJsonError {
   type: "source_trace_not_connected_error"
   source_trace_not_connected_error_id: string
   error_type: "source_trace_not_connected_error"
-  message: string
   subcircuit_id?: string
   source_group_id?: string
   source_trace_id?: string
@@ -912,11 +1115,10 @@ interface SourceTraceNotConnectedError {
 /** Error emitted when an unexpected error occurs while finding a part.
  * This includes cases where the API returns HTML instead of JSON,
  * network failures, or other unexpected responses. */
-interface UnknownErrorFindingPart {
+interface UnknownErrorFindingPart extends BaseCircuitJsonError {
   type: "unknown_error_finding_part"
   unknown_error_finding_part_id: string
   error_type: "unknown_error_finding_part"
-  message: string
   source_component_id?: string
   subcircuit_id?: string
 }
@@ -947,9 +1149,19 @@ interface CadComponent {
   model_glb_url?: string
   model_step_url?: string
   model_wrl_url?: string
+  model_asset?: Asset
   model_unit_to_mm_scale_factor?: number
+  model_board_normal_direction?: CadModelAxisDirection
+  model_origin_position?: Point3
+  model_origin_alignment?:
+    | "unknown"
+    | "center"
+    | "center_of_component_on_board_surface"
+    | "bottom_center_of_component"
+  model_object_fit: "contain_within_bounds" | "fill_bounds"
   model_jscad?: any
   show_as_translucent_model?: boolean
+  anchor_alignment: CadComponentAnchorAlignment
 }
 ```
 
@@ -960,11 +1172,10 @@ interface CadComponent {
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_autorouting_error.ts)
 
 ```typescript
-interface PcbAutoroutingErrorInterface {
+interface PcbAutoroutingErrorInterface extends BaseCircuitJsonError {
   type: "pcb_autorouting_error"
   pcb_error_id: string
   error_type: "pcb_autorouting_error"
-  message: string
   subcircuit_id?: string
 }
 ```
@@ -981,8 +1192,10 @@ interface PcbBoard {
   type: "pcb_board"
   pcb_board_id: string
   pcb_panel_id?: string
+  carrier_pcb_board_id?: string
   is_subcircuit?: boolean
   subcircuit_id?: string
+  is_mounted_to_carrier_board?: boolean
   width?: Length
   height?: Length
   display_offset_x?: string
@@ -994,7 +1207,7 @@ interface PcbBoard {
   shape?: "rect" | "polygon"
   material: "fr4" | "fr1"
   anchor_position?: Point
-  anchor_alignment: NinePointAnchor
+  anchor_alignment?: NinePointAnchor
   position_mode?: "relative_to_panel_anchor" | "none"
 }
 ```
@@ -1024,34 +1237,9 @@ interface PcbBreakoutPoint {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_component.ts)
 
-Defines a component on the PCB
-
 ```typescript
-/** Defines a component on the PCB */
-interface PcbComponent {
-  type: "pcb_component"
-  pcb_component_id: string
-  source_component_id: string
-  subcircuit_id?: string
-  center: Point
-  layer: LayerRef
-  rotation: Rotation
-  display_offset_x?: string
-  display_offset_y?: string
-  width: Length
-  height: Length
-  do_not_place?: boolean
-  pcb_group_id?: string
-  position_mode?:
-    | "packed"
-    | "relative_to_group_anchor"
-    | "relative_to_another_component"
-    | "none"
-  anchor_position?: Point
-  anchor_alignment?: NinePointAnchor
-  positioned_relative_to_pcb_group_id?: string
-  positioned_relative_to_pcb_board_id?: string
-  obstructs_within_bounds: boolean
+interface PcbComponentMetadata {
+  kicad_footprint?: KicadFootprintMetadata
 }
 ```
 
@@ -1063,14 +1251,34 @@ Error emitted when a component is placed on an invalid layer (components can onl
 
 ```typescript
 /** Error emitted when a component is placed on an invalid layer (components can only be on 'top' or 'bottom' layers) */
-interface PcbComponentInvalidLayerError {
+interface PcbComponentInvalidLayerError extends BaseCircuitJsonError {
   type: "pcb_component_invalid_layer_error"
   pcb_component_invalid_layer_error_id: string
   error_type: "pcb_component_invalid_layer_error"
-  message: string
   pcb_component_id?: string
   source_component_id: string
   layer: LayerRef
+  subcircuit_id?: string
+}
+```
+
+### PcbComponentNotOnBoardEdgeError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_component_not_on_board_edge_error.ts)
+
+Error emitted when a component that must be placed on the board edge is centered away from the edge
+
+```typescript
+/** Error emitted when a component that must be placed on the board edge is centered away from the edge */
+interface PcbComponentNotOnBoardEdgeError extends BaseCircuitJsonError {
+  type: "pcb_component_not_on_board_edge_error"
+  pcb_component_not_on_board_edge_error_id: string
+  error_type: "pcb_component_not_on_board_edge_error"
+  pcb_component_id: string
+  pcb_board_id: string
+  component_center: Point
+  pad_to_nearest_board_edge_distance: number
+  source_component_id?: string
   subcircuit_id?: string
 }
 ```
@@ -1083,11 +1291,10 @@ Error emitted when a PCB component is placed outside the board boundaries
 
 ```typescript
 /** Error emitted when a PCB component is placed outside the board boundaries */
-interface PcbComponentOutsideBoardError {
+interface PcbComponentOutsideBoardError extends BaseCircuitJsonError {
   type: "pcb_component_outside_board_error"
   pcb_component_outside_board_error_id: string
   error_type: "pcb_component_outside_board_error"
-  message: string
   pcb_component_id: string
   pcb_board_id: string
   component_center: Point
@@ -1099,6 +1306,28 @@ interface PcbComponentOutsideBoardError {
   }
   subcircuit_id?: string
   source_component_id?: string
+}
+```
+
+### PcbConnectorNotInAccessibleOrientationWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_connector_not_in_accessible_orientation_warning.ts)
+
+Warning emitted when a connector PCB component is facing inward toward the board and should be reoriented
+
+```typescript
+/** Warning emitted when a connector PCB component is facing inward toward the board and should be reoriented */
+interface PcbConnectorNotInAccessibleOrientationWarning {
+  type: "pcb_connector_not_in_accessible_orientation_warning"
+  pcb_connector_not_in_accessible_orientation_warning_id: string
+  warning_type: "pcb_connector_not_in_accessible_orientation_warning"
+  message: string
+  pcb_component_id: string
+  source_component_id?: string
+  pcb_board_id?: string
+  facing_direction: ConnectorOrientationDirection
+  recommended_facing_direction: ConnectorOrientationDirection
+  subcircuit_id?: string
 }
 ```
 
@@ -1158,6 +1387,27 @@ interface PcbCopperText {
 }
 ```
 
+### PcbCourtyardCircle
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_courtyard_circle.ts)
+
+Defines a courtyard circle on the PCB
+
+```typescript
+/** Defines a courtyard circle on the PCB */
+interface PcbCourtyardCircle {
+  type: "pcb_courtyard_circle"
+  pcb_courtyard_circle_id: string
+  pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  center: Point
+  radius: Length
+  layer: VisibleLayer
+  color?: string
+}
+```
+
 ### PcbCourtyardOutline
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_courtyard_outline.ts)
@@ -1174,10 +1424,22 @@ interface PcbCourtyardOutline {
   subcircuit_id?: string
   layer: VisibleLayer
   outline: Point[]
-  stroke_width: Length
-  is_closed?: boolean
-  is_stroke_dashed?: boolean
-  color?: string
+}
+```
+
+### PcbCourtyardOverlapError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_courtyard_overlap_error.ts)
+
+Error emitted when the courtyard (CrtYd) of one PCB component overlaps with the courtyard of another
+
+```typescript
+/** Error emitted when the courtyard (CrtYd) of one PCB component overlaps with the courtyard of another */
+interface PcbCourtyardOverlapError extends BaseCircuitJsonError {
+  type: "pcb_courtyard_overlap_error"
+  pcb_error_id: string
+  error_type: "pcb_courtyard_overlap_error"
+  pcb_component_ids: [string, string]
 }
 ```
 
@@ -1219,6 +1481,7 @@ interface PcbCourtyardRect {
   width: Length
   height: Length
   layer: VisibleLayer
+  ccw_rotation?: Rotation
   color?: string
 }
 ```
@@ -1363,11 +1626,10 @@ Error emitted when a pcb footprint overlaps with another element
 
 ```typescript
 /** Error emitted when a pcb footprint overlaps with another element */
-interface PcbFootprintOverlapError {
+interface PcbFootprintOverlapError extends BaseCircuitJsonError {
   type: "pcb_footprint_overlap_error"
   pcb_error_id: string
   error_type: "pcb_footprint_overlap_error"
-  message: string
   pcb_smtpad_ids?: string[]
   pcb_plated_hole_ids?: string[]
   pcb_hole_ids?: string[]
@@ -1500,14 +1762,13 @@ Defines a placement error on the PCB
 
 ```typescript
 /** Defines a placement error on the PCB */
-interface PcbMissingFootprintError {
+interface PcbMissingFootprintError extends BaseCircuitJsonError {
   type: "pcb_missing_footprint_error"
   pcb_missing_footprint_error_id: string
   pcb_group_id?: string
   subcircuit_id?: string
   error_type: "pcb_missing_footprint_error"
   source_component_id: string
-  message: string
 }
 ```
 
@@ -1682,6 +1943,24 @@ interface PcbPanel {
 }
 ```
 
+### PcbPanelizationPlacementError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_panelization_placement_error.ts)
+
+Defines a panelization placement error on the PCB
+
+```typescript
+/** Defines a panelization placement error on the PCB */
+interface PcbPanelizationPlacementError extends BaseCircuitJsonError {
+  type: "pcb_panelization_placement_error"
+  pcb_panelization_placement_error_id: string
+  error_type: "pcb_panelization_placement_error"
+  pcb_panel_id?: string
+  pcb_board_id?: string
+  subcircuit_id?: string
+}
+```
+
 ### PcbPlacementError
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_placement_error.ts)
@@ -1690,11 +1969,10 @@ Defines a placement error on the PCB
 
 ```typescript
 /** Defines a placement error on the PCB */
-interface PcbPlacementError {
+interface PcbPlacementError extends BaseCircuitJsonError {
   type: "pcb_placement_error"
   pcb_placement_error_id: string
   error_type: "pcb_placement_error"
-  message: string
   subcircuit_id?: string
 }
 ```
@@ -1799,6 +2077,7 @@ interface PcbHoleCircularWithRectPad {
   pcb_port_id?: string
   pcb_plated_hole_id: string
   soldermask_margin?: number
+  rect_ccw_rotation?: Rotation
 }
 
 /** Defines a plated hole with a polygonal pad on the PCB */
@@ -1823,6 +2102,7 @@ interface PcbHoleWithPolygonPad {
   pcb_port_id?: string
   pcb_plated_hole_id: string
   soldermask_margin?: number
+  ccw_rotation?: Rotation
 }
 ```
 
@@ -1856,11 +2136,10 @@ Defines an error when a pcb port is not connected to any trace
 
 ```typescript
 /** Defines an error when a pcb port is not connected to any trace */
-interface PcbPortNotConnectedError {
+interface PcbPortNotConnectedError extends BaseCircuitJsonError {
   type: "pcb_port_not_connected_error"
   pcb_port_not_connected_error_id: string
   error_type: "pcb_port_not_connected_error"
-  message: string
   pcb_port_ids: string[]
   pcb_component_ids: string[]
   subcircuit_id?: string
@@ -1875,11 +2154,10 @@ Defines a trace error on the PCB where a port is not matched
 
 ```typescript
 /** Defines a trace error on the PCB where a port is not matched */
-interface PcbPortNotMatchedError {
+interface PcbPortNotMatchedError extends BaseCircuitJsonError {
   type: "pcb_port_not_matched_error"
   pcb_error_id: string
   error_type: "pcb_port_not_matched_error"
-  message: string
   pcb_component_ids: string[]
   subcircuit_id?: string
 }
@@ -1918,6 +2196,7 @@ interface PcbSilkscreenCircle {
   radius: Length
   layer: VisibleLayer
   stroke_width: Length
+  is_filled?: boolean
 }
 ```
 
@@ -1962,6 +2241,7 @@ interface PcbSilkscreenOval {
   radius_x: Distance
   radius_y: Distance
   layer: VisibleLayer
+  ccw_rotation?: number
 }
 ```
 
@@ -2003,6 +2283,7 @@ interface PcbSilkscreenPill {
   width: Length
   height: Length
   layer: LayerRef
+  ccw_rotation?: number
 }
 ```
 
@@ -2029,6 +2310,7 @@ interface PcbSilkscreenRect {
   is_filled?: boolean
   has_stroke?: boolean
   is_stroke_dashed?: boolean
+  ccw_rotation?: number
 }
 ```
 
@@ -2143,6 +2425,8 @@ interface PcbTraceRoutePointWire {
   x: Distance
   y: Distance
   width: Distance
+  copper_pour_id?: string
+  is_inside_copper_pour?: boolean
   start_pcb_port_id?: string
   end_pcb_port_id?: string
   layer: LayerRef
@@ -2159,11 +2443,10 @@ Defines a trace error on the PCB
 
 ```typescript
 /** Defines a trace error on the PCB */
-interface PcbTraceError {
+interface PcbTraceError extends BaseCircuitJsonError {
   type: "pcb_trace_error"
   pcb_trace_error_id: string
   error_type: "pcb_trace_error"
-  message: string
   center?: Point
   pcb_trace_id: string
   source_trace_id: string
@@ -2199,11 +2482,10 @@ Defines an error when a source trace has no corresponding PCB trace
 
 ```typescript
 /** Defines an error when a source trace has no corresponding PCB trace */
-interface PcbTraceMissingError {
+interface PcbTraceMissingError extends BaseCircuitJsonError {
   type: "pcb_trace_missing_error"
   pcb_trace_missing_error_id: string
   error_type: "pcb_trace_missing_error"
-  message: string
   center?: Point
   source_trace_id: string
   pcb_component_ids: string[]
@@ -2250,11 +2532,10 @@ Error emitted when vias are closer than the allowed clearance
 
 ```typescript
 /** Error emitted when vias are closer than the allowed clearance */
-interface PcbViaClearanceError {
+interface PcbViaClearanceError extends BaseCircuitJsonError {
   type: "pcb_via_clearance_error"
   pcb_error_id: string
   error_type: "pcb_via_clearance_error"
-  message: string
   pcb_via_ids: string[]
   minimum_clearance?: Distance
   actual_clearance?: Distance
@@ -2279,7 +2560,8 @@ Draws a styled arc on the schematic
 interface SchematicArc {
   type: "schematic_arc"
   schematic_arc_id: string
-  schematic_component_id: string
+  schematic_component_id?: string
+  schematic_symbol_id?: string
   center: Point
   radius: number
   start_angle_degrees: number
@@ -2300,6 +2582,7 @@ interface SchematicArc {
 interface SchematicBox {
   type: "schematic_box"
   schematic_component_id?: string
+  schematic_symbol_id?: string
   width: number
   height: number
   is_dashed: boolean
@@ -2320,7 +2603,8 @@ Draws a styled circle on the schematic
 interface SchematicCircle {
   type: "schematic_circle"
   schematic_circle_id: string
-  schematic_component_id: string
+  schematic_component_id?: string
+  schematic_symbol_id?: string
   center: Point
   radius: number
   stroke_width?: number | null
@@ -2343,6 +2627,7 @@ interface SchematicComponent {
   center: Point
   source_component_id?: string
   schematic_component_id: string
+  schematic_symbol_id?: string
   pin_spacing?: number
   pin_styles?: Record<
     string,
@@ -2429,11 +2714,10 @@ interface SchematicDebugPoint {
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_error.ts)
 
 ```typescript
-interface SchematicError {
+interface SchematicError extends BaseCircuitJsonError {
   type: "schematic_error"
   schematic_error_id: string
   error_type: "schematic_port_not_found"
-  message: string
   subcircuit_id?: string
 }
 ```
@@ -2467,11 +2751,10 @@ interface SchematicGroup {
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_layout_error.ts)
 
 ```typescript
-interface SchematicLayoutError {
+interface SchematicLayoutError extends BaseCircuitJsonError {
   type: "schematic_layout_error"
   schematic_layout_error_id: string
   error_type: "schematic_layout_error"
-  message: string
   source_group_id: string
   schematic_group_id: string
   subcircuit_id?: string
@@ -2489,7 +2772,8 @@ Draws a styled line on the schematic
 interface SchematicLine {
   type: "schematic_line"
   schematic_line_id: string
-  schematic_component_id: string
+  schematic_component_id?: string
+  schematic_symbol_id?: string
   x1: number
   y1: number
   x2: number
@@ -2552,9 +2836,13 @@ interface SchematicNetLabel {
 ```typescript
 interface SchematicPath {
   type: "schematic_path"
-  schematic_component_id: string
-  fill_color?: "red" | "blue"
+  schematic_path_id: string
+  schematic_component_id?: string
+  schematic_symbol_id?: string
+  fill_color?: string
   is_filled?: boolean
+  stroke_width?: number | null
+  stroke_color?: string
   points: Point[]
   subcircuit_id?: string
 }
@@ -2581,6 +2869,7 @@ interface SchematicPort {
   is_connected?: boolean
   has_input_arrow?: boolean
   has_output_arrow?: boolean
+  is_drawn_with_inversion_circle?: boolean
 }
 ```
 
@@ -2595,7 +2884,8 @@ Draws a styled rectangle on the schematic
 interface SchematicRect {
   type: "schematic_rect"
   schematic_rect_id: string
-  schematic_component_id: string
+  schematic_component_id?: string
+  schematic_symbol_id?: string
   center: Point
   width: number
   height: number
@@ -2622,6 +2912,19 @@ interface SchematicSheet {
   schematic_sheet_id: string
   name?: string
   subcircuit_id?: string
+}
+```
+
+### SchematicSymbol
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_symbol.ts)
+
+```typescript
+interface SchematicSymbol {
+  type: "schematic_symbol"
+  schematic_symbol_id: string
+  name?: string
+  metadata?: SchematicSymbolMetadata
 }
 ```
 
@@ -2682,6 +2985,7 @@ interface SchematicTableCell {
 interface SchematicText {
   type: "schematic_text"
   schematic_component_id?: string
+  schematic_symbol_id?: string
   schematic_text_id: string
   text: string
   font_size: number
@@ -2737,6 +3041,46 @@ interface SchematicVoltageProbe {
 
 ## Simulation Elements
 
+### SimulationCurrentSource
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_current_source.ts)
+
+```typescript
+type SimulationCurrentSource =
+  | SimulationDcCurrentSource
+  | SimulationAcCurrentSource
+
+/** Defines a DC current source for simulation purposes. It forces a current
+ * between two source ports. */
+interface SimulationDcCurrentSource {
+  type: "simulation_current_source"
+  simulation_current_source_id: string
+  is_dc_source: true
+  positive_source_port_id?: string
+  positive_source_net_id?: string
+  negative_source_port_id?: string
+  negative_source_net_id?: string
+  current: number
+}
+
+/** Defines an AC current source for simulation purposes. */
+interface SimulationAcCurrentSource {
+  type: "simulation_current_source"
+  simulation_current_source_id: string
+  is_dc_source: false
+  terminal1_source_port_id?: string
+  terminal2_source_port_id?: string
+  terminal1_source_net_id?: string
+  terminal2_source_net_id?: string
+  current?: number
+  frequency?: number
+  peak_to_peak_current?: number
+  wave_shape?: WaveShape
+  phase?: number
+  duty_cycle?: number
+}
+```
+
 ### SimulationExperiment
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_experiment.ts)
@@ -2750,6 +3094,26 @@ interface SimulationExperiment {
   time_per_step?: number // ms
   start_time_ms?: number // ms
   end_time_ms?: number // ms
+}
+```
+
+### SimulationOpAmp
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_op_amp.ts)
+
+Defines a simple ideal operational amplifier for simulation.
+
+```typescript
+/** Defines a simple ideal operational amplifier for simulation. */
+interface SimulationOpAmp {
+  type: "simulation_op_amp"
+  simulation_op_amp_id: string
+  source_component_id?: string
+  inverting_input_source_port_id: string
+  non_inverting_input_source_port_id: string
+  output_source_port_id: string
+  positive_supply_source_port_id: string
+  negative_supply_source_port_id: string
 }
 ```
 
@@ -2798,11 +3162,10 @@ An unknown error occurred during the simulation experiment.
 
 ```typescript
 /** An unknown error occurred during the simulation experiment. */
-interface SimulationUnknownExperimentError {
+interface SimulationUnknownExperimentError extends BaseCircuitJsonError {
   type: "simulation_unknown_experiment_error"
   simulation_unknown_experiment_error_id: string
   error_type: "simulation_unknown_experiment_error"
-  message: string
   simulation_experiment_id?: string
   subcircuit_id?: string
 }
