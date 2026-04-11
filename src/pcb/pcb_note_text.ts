@@ -15,6 +15,7 @@ export const pcb_note_text = z
     font: z.literal("tscircuit2024").default("tscircuit2024"),
     font_size: distance.default("1mm"),
     text: z.string().optional(),
+    ccw_rotation: z.number().optional(),
     anchor_position: point.default({ x: 0, y: 0 }),
     anchor_alignment: z
       .enum(["center", "top_left", "top_right", "bottom_left", "bottom_right"])
@@ -40,6 +41,7 @@ export interface PcbNoteText {
   font: "tscircuit2024"
   font_size: Length
   text?: string
+  ccw_rotation?: number
   anchor_position: Point
   anchor_alignment:
     | "center"
