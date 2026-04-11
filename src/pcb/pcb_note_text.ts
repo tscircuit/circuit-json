@@ -1,7 +1,7 @@
 import { z } from "zod"
 import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
 import { visible_layer, type VisibleLayer } from "src/pcb/properties/layer_ref"
-import { distance, type Length } from "src/units"
+import { distance, rotation, type Length, type Rotation } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const pcb_note_text = z
@@ -15,7 +15,7 @@ export const pcb_note_text = z
     font: z.literal("tscircuit2024").default("tscircuit2024"),
     font_size: distance.default("1mm"),
     text: z.string().optional(),
-    ccw_rotation: z.number().optional(),
+    ccw_rotation: rotation.optional(),
     anchor_position: point.default({ x: 0, y: 0 }),
     anchor_alignment: z
       .enum(["center", "top_left", "top_right", "bottom_left", "bottom_right"])
@@ -41,7 +41,7 @@ export interface PcbNoteText {
   font: "tscircuit2024"
   font_size: Length
   text?: string
-  ccw_rotation?: number
+  ccw_rotation?: Rotation
   anchor_position: Point
   anchor_alignment:
     | "center"
