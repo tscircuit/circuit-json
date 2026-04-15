@@ -36,6 +36,21 @@ test("source_simple_connector parses with m2 standard", () => {
   expect(connector.standard).toBe("m2")
 })
 
+test("source_simple_connector parses insertion_direction options", () => {
+  const insertionDirections = ["from_above", "from_side"] as const
+
+  for (const insertion_direction of insertionDirections) {
+    const connector = source_simple_connector.parse({
+      type: "source_component",
+      ftype: "simple_connector",
+      source_component_id: `connector-${insertion_direction}`,
+      name: "J4",
+      insertion_direction,
+    })
+    expect(connector.insertion_direction).toBe(insertion_direction)
+  }
+})
+
 test("source_simple_connector rejects invalid standard", () => {
   expect(() =>
     source_simple_connector.parse({
@@ -48,6 +63,18 @@ test("source_simple_connector rejects invalid standard", () => {
   ).toThrow()
 })
 
+test("source_simple_connector rejects invalid insertion_direction", () => {
+  expect(() =>
+    source_simple_connector.parse({
+      type: "source_component",
+      ftype: "simple_connector",
+      source_component_id: "connector6",
+      name: "J6",
+      insertion_direction: "sideways",
+    }),
+  ).toThrow()
+})
+
 test("any_circuit_element includes source_simple_connector", () => {
   const parsed = any_circuit_element.parse({
     type: "source_component",
@@ -55,9 +82,11 @@ test("any_circuit_element includes source_simple_connector", () => {
     source_component_id: "connector5",
     name: "J5",
     standard: "usb_c",
+    insertion_direction: "from_above",
   })
   if ("ftype" in parsed && parsed.ftype === "simple_connector") {
     expect(parsed.ftype).toBe("simple_connector")
+    expect(parsed.insertion_direction).toBe("from_above")
   } else {
     throw new Error("Parsed element not a source_simple_connector")
   }
