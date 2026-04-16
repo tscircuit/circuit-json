@@ -28,6 +28,8 @@ interface SourceSimpleInductor {
   supplier_part_numbers?: Partial<Record<string, string[]>>
   display_value?: string
   inductance: number
+  display_inductance?: string
+  max_current_rating?: number
 }
 
 interface SourceLed {
