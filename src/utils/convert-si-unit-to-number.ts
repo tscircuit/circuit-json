@@ -10,6 +10,8 @@ const unitMappings: Record<
   Hz: {
     baseUnit: "Hz",
     variants: {
+      THz: 1e12,
+      GHz: 1e9,
       MHz: 1e6,
       kHz: 1e3,
       Hz: 1,
