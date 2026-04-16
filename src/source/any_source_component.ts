@@ -116,6 +116,10 @@ import {
   type SourcePinMissingTraceWarning,
 } from "./source_pin_missing_trace_warning"
 import {
+  source_missing_manufacturer_part_number_warning,
+  type SourceMissingManufacturerPartNumberWarning,
+} from "./source_missing_manufacturer_part_number_warning"
+import {
   source_simple_voltage_probe,
   type SourceSimpleVoltageProbe,
 } from "./source_simple_voltage_probe"
@@ -167,6 +171,7 @@ export const any_source_component = z.union([
   source_trace_not_connected_error,
   source_property_ignored_warning,
   source_pin_missing_trace_warning,
+  source_missing_manufacturer_part_number_warning,
   source_i2c_misconfigured_error,
 ])
 
@@ -210,6 +215,7 @@ export type AnySourceElement =
   | SourceTraceNotConnectedError
   | SourcePropertyIgnoredWarning
   | SourcePinMissingTraceWarning
+  | SourceMissingManufacturerPartNumberWarning
   | SourceI2cMisconfiguredError
 
 expectTypesMatch<AnySourceElement, AnySourceComponent>(true)
