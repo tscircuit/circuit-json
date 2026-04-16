@@ -68,6 +68,37 @@ test("pcb_component allows cable_insertion_center", () => {
   expect(parsed.cable_insertion_center).toEqual({ x: 5, y: -3 })
 })
 
+test("pcb_component allows insertion_direction options", () => {
+  const insertionDirections = [
+    "from_above",
+    "from_left",
+    "from_right",
+    "from_front",
+    "from_back",
+  ] as const
+
+  for (const insertion_direction of insertionDirections) {
+    const parsed = pcb_component.parse({
+      ...baseComponent,
+      pcb_component_id: `pcb_component_${insertion_direction}`,
+      insertion_direction,
+    })
+
+    expect(parsed.insertion_direction).toBe(insertion_direction)
+  }
+})
+
+test("pcb_component rejects invalid insertion_direction", () => {
+  for (const insertion_direction of ["from_side", "from_top", "from_bottom"]) {
+    expect(() =>
+      pcb_component.parse({
+        ...baseComponent,
+        insertion_direction,
+      }),
+    ).toThrowError()
+  }
+})
+
 test("pcb_component allows display offsets", () => {
   const parsed = pcb_component.parse({
     ...baseComponent,
