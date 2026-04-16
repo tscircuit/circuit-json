@@ -6,12 +6,14 @@ test("source_missing_manufacturer_part_number_warning parses", () => {
   const warning = source_missing_manufacturer_part_number_warning.parse({
     type: "source_missing_manufacturer_part_number_warning",
     message:
-      "Connector U1 has standard=\"usb_c\" but no manufacturer part number",
+      'Connector U1 has standard="usb_c" but no manufacturer part number',
     source_component_id: "source_component_0",
     standard: "usb_c",
   })
 
-  expect(warning.source_missing_manufacturer_part_number_warning_id).toBeDefined()
+  expect(
+    warning.source_missing_manufacturer_part_number_warning_id,
+  ).toBeDefined()
   expect(
     warning.source_missing_manufacturer_part_number_warning_id.startsWith(
       "source_missing_manufacturer_part_number_warning",
@@ -23,7 +25,7 @@ test("any_circuit_element includes source_missing_manufacturer_part_number_warni
   const parsed = any_circuit_element.parse({
     type: "source_missing_manufacturer_part_number_warning",
     message:
-      "Connector U1 has standard=\"usb_c\" but no manufacturer part number",
+      'Connector U1 has standard="usb_c" but no manufacturer part number',
     source_component_id: "source_component_0",
     standard: "usb_c",
   })
