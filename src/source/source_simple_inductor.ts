@@ -9,6 +9,7 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 export const source_simple_inductor = source_component_base.extend({
   ftype: z.literal("simple_inductor"),
   inductance,
+  display_inductance: z.string().optional(),
   max_current_rating: z.number().optional(),
 })
 
@@ -21,6 +22,7 @@ type InferredSourceSimpleInductor = z.infer<typeof source_simple_inductor>
 export interface SourceSimpleInductor extends SourceComponentBase {
   ftype: "simple_inductor"
   inductance: number
+  display_inductance?: string
   max_current_rating?: number
 }
 
