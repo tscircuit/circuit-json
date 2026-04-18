@@ -9,17 +9,21 @@ test("pcb_pad_pad_clearance_error parses", () => {
     pcb_pad_ids: ["pcb_smtpad_1", "pcb_smtpad_2"],
     minimum_clearance: "0.2mm",
     actual_clearance: "0.1mm",
-    pcb_center: {
+    center: {
       x: 8.1,
       y: -2.3,
     },
   })
 
-  expect(error.pcb_error_id).toBeDefined()
-  expect(error.pcb_error_id.startsWith("pcb_error")).toBe(true)
+  expect(error.pcb_pad_pad_clearance_error_id).toBeDefined()
+  expect(
+    error.pcb_pad_pad_clearance_error_id.startsWith(
+      "pcb_pad_pad_clearance_error",
+    ),
+  ).toBe(true)
   expect(error.minimum_clearance).toBeCloseTo(0.2)
   expect(error.actual_clearance).toBeCloseTo(0.1)
-  expect(error.pcb_center).toEqual({ x: 8.1, y: -2.3 })
+  expect(error.center).toEqual({ x: 8.1, y: -2.3 })
 })
 
 test("any_circuit_element includes pcb_pad_pad_clearance_error", () => {

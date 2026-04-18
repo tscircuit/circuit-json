@@ -10,17 +10,21 @@ test("pcb_pad_trace_clearance_error parses", () => {
     pcb_trace_id: "pcb_trace_1",
     minimum_clearance: "0.2mm",
     actual_clearance: "0.1mm",
-    pcb_center: {
+    center: {
       x: 4.2,
       y: 1.5,
     },
   })
 
-  expect(error.pcb_error_id).toBeDefined()
-  expect(error.pcb_error_id.startsWith("pcb_error")).toBe(true)
+  expect(error.pcb_pad_trace_clearance_error_id).toBeDefined()
+  expect(
+    error.pcb_pad_trace_clearance_error_id.startsWith(
+      "pcb_pad_trace_clearance_error",
+    ),
+  ).toBe(true)
   expect(error.minimum_clearance).toBeCloseTo(0.2)
   expect(error.actual_clearance).toBeCloseTo(0.1)
-  expect(error.pcb_center).toEqual({ x: 4.2, y: 1.5 })
+  expect(error.center).toEqual({ x: 4.2, y: 1.5 })
 })
 
 test("any_circuit_element includes pcb_pad_trace_clearance_error", () => {

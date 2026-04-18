@@ -10,7 +10,9 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 export const pcb_pad_trace_clearance_error = base_circuit_json_error
   .extend({
     type: z.literal("pcb_pad_trace_clearance_error"),
-    pcb_error_id: getZodPrefixedIdWithDefault("pcb_error"),
+    pcb_pad_trace_clearance_error_id: getZodPrefixedIdWithDefault(
+      "pcb_pad_trace_clearance_error",
+    ),
     error_type: z
       .literal("pcb_pad_trace_clearance_error")
       .default("pcb_pad_trace_clearance_error"),
@@ -18,7 +20,7 @@ export const pcb_pad_trace_clearance_error = base_circuit_json_error
     pcb_trace_id: z.string(),
     minimum_clearance: distance.optional(),
     actual_clearance: distance.optional(),
-    pcb_center: z
+    center: z
       .object({
         x: z.number().optional(),
         y: z.number().optional(),
@@ -38,13 +40,13 @@ type InferredPcbPadTraceClearanceError = z.infer<
 /** Error emitted when a pad and trace are closer than allowed clearance */
 export interface PcbPadTraceClearanceError extends BaseCircuitJsonError {
   type: "pcb_pad_trace_clearance_error"
-  pcb_error_id: string
+  pcb_pad_trace_clearance_error_id: string
   error_type: "pcb_pad_trace_clearance_error"
   pcb_pad_id: string
   pcb_trace_id: string
   minimum_clearance?: Distance
   actual_clearance?: Distance
-  pcb_center?: {
+  center?: {
     x?: number
     y?: number
   }
