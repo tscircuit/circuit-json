@@ -1,9 +1,9 @@
 import { z } from "zod"
+import * as cad from "./cad"
 import * as pcb from "./pcb"
 import * as sch from "./schematic"
-import * as src from "./source"
-import * as cad from "./cad"
 import * as sim from "./simulation"
+import * as src from "./source"
 import {
   expectStringUnionsMatch,
   expectTypesMatch,
@@ -200,8 +200,6 @@ expectStringUnionsMatch<
   | "pcb_footprint_overlap_error DOES NOT HAVE AN pcb_footprint_overlap_error_id PROPERTY"
   | "pcb_courtyard_overlap_error DOES NOT HAVE AN pcb_courtyard_overlap_error_id PROPERTY"
   | "pcb_via_clearance_error DOES NOT HAVE AN pcb_via_clearance_error_id PROPERTY"
-  | "pcb_pad_pad_clearance_error DOES NOT HAVE AN pcb_pad_pad_clearance_error_id PROPERTY"
-  | "pcb_pad_trace_clearance_error DOES NOT HAVE AN pcb_pad_trace_clearance_error_id PROPERTY"
   | "schematic_debug_object DOES NOT HAVE AN schematic_debug_object_id PROPERTY"
   | "schematic_box DOES NOT HAVE AN schematic_box_id PROPERTY"
 >(true)
