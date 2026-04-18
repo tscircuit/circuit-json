@@ -20,7 +20,7 @@ export const pcb_note_text = z
       .enum(["center", "top_left", "top_right", "bottom_left", "bottom_right"])
       .default("center"),
     layer: visible_layer.default("top"),
-    is_mirrored: z.boolean().optional(),
+    is_mirrored_from_top_view: z.boolean().optional(),
     color: z.string().optional(),
   })
   .describe("Defines a documentation note in text on the PCB")
@@ -49,7 +49,7 @@ export interface PcbNoteText {
     | "bottom_left"
     | "bottom_right"
   layer: VisibleLayer
-  is_mirrored?: boolean
+  is_mirrored_from_top_view?: boolean
   color?: string
 }
 

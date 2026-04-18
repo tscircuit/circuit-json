@@ -379,7 +379,7 @@ export interface PcbNoteText {
     | "bottom_left"
     | "bottom_right"
   layer: VisibleLayer
-  is_mirrored?: boolean
+  is_mirrored_from_top_view?: boolean
   color?: string
 }
 
