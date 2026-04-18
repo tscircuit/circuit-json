@@ -1,9 +1,9 @@
 import { z } from "zod"
+import * as cad from "./cad"
 import * as pcb from "./pcb"
 import * as sch from "./schematic"
-import * as src from "./source"
-import * as cad from "./cad"
 import * as sim from "./simulation"
+import * as src from "./source"
 import {
   expectStringUnionsMatch,
   expectTypesMatch,
@@ -89,6 +89,8 @@ export const any_circuit_element = z.union([
   pcb.pcb_port_not_matched_error,
   pcb.pcb_port_not_connected_error,
   pcb.pcb_via_clearance_error,
+  pcb.pcb_pad_pad_clearance_error,
+  pcb.pcb_pad_trace_clearance_error,
   pcb.pcb_fabrication_note_path,
   pcb.pcb_fabrication_note_text,
   pcb.pcb_fabrication_note_rect,

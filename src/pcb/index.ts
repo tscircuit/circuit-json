@@ -61,6 +61,8 @@ export * from "./pcb_component_outside_board_error"
 export * from "./pcb_component_not_on_board_edge_error"
 export * from "./pcb_component_invalid_layer_error"
 export * from "./pcb_via_clearance_error"
+export * from "./pcb_pad_pad_clearance_error"
+export * from "./pcb_pad_trace_clearance_error"
 export * from "./pcb_courtyard_rect"
 export * from "./pcb_courtyard_outline"
 export * from "./pcb_courtyard_polygon"
@@ -118,6 +120,8 @@ import type { PcbComponentNotOnBoardEdgeError } from "./pcb_component_not_on_boa
 import type { PcbComponentInvalidLayerError } from "./pcb_component_invalid_layer_error"
 import type { CircuitJsonFootprintLoadError } from "./circuit_json_footprint_load_error"
 import type { PcbViaClearanceError } from "./pcb_via_clearance_error"
+import type { PcbPadPadClearanceError } from "./pcb_pad_pad_clearance_error"
+import type { PcbPadTraceClearanceError } from "./pcb_pad_trace_clearance_error"
 import type { PcbCourtyardRect } from "./pcb_courtyard_rect"
 import type { PcbCourtyardOutline } from "./pcb_courtyard_outline"
 import type { PcbCourtyardPolygon } from "./pcb_courtyard_polygon"
@@ -176,6 +180,8 @@ export type PcbCircuitElement =
   | PcbComponentNotOnBoardEdgeError
   | PcbComponentInvalidLayerError
   | PcbViaClearanceError
+  | PcbPadPadClearanceError
+  | PcbPadTraceClearanceError
   | PcbCourtyardRect
   | PcbCourtyardOutline
   | PcbCourtyardPolygon
