@@ -35,6 +35,8 @@ export const pcb_board = z
       ),
     thickness: length.optional().default(1.4),
     num_layers: z.number().optional().default(4),
+    min_via_diameter: length.optional(),
+    min_via_hole: length.optional(),
     outline: z.array(point).optional(),
     shape: z.enum(["rect", "polygon"]).optional(),
     material: z.enum(["fr4", "fr1"]).default("fr4"),
@@ -61,6 +63,8 @@ export interface PcbBoard {
   display_offset_y?: string
   thickness: Length
   num_layers: number
+  min_via_diameter?: Length
+  min_via_hole?: Length
   center: Point
   outline?: Point[]
   shape?: "rect" | "polygon"
