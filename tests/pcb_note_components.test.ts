@@ -14,6 +14,7 @@ test("pcb note text defaults", () => {
   expect(note.font).toBe("tscircuit2024")
   expect(note.font_size).toBeCloseTo(1)
   expect(note.anchor_position).toEqual({ x: 0, y: 0 })
+  expect(note.is_mirrored).toBeUndefined()
 })
 
 test("pcb note rect defaults", () => {
@@ -88,8 +89,10 @@ test("pcb note text allows optional name and text", () => {
   const note = pcb_note_text.parse({
     type: "pcb_note_text",
     name: "Callout",
+    is_mirrored: true,
   })
 
   expect(note.name).toBe("Callout")
   expect(note.text).toBeUndefined()
+  expect(note.is_mirrored).toBe(true)
 })

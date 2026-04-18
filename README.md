@@ -1660,6 +1660,8 @@ interface PcbNoteText {
     | "top_right"
     | "bottom_left"
     | "bottom_right"
+  layer: VisibleLayer
+  is_mirrored?: boolean
   color?: string
 }
 ```
