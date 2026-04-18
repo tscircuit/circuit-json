@@ -8,6 +8,10 @@ import {
 } from "src/common"
 import { length, type Length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import {
+  manufacturing_drc_properties,
+  type ManufacturingDrcProperties,
+} from "src/pcb/properties/manufacturing_drc_properties"
 
 export const pcb_board = z
   .object({
@@ -42,12 +46,13 @@ export const pcb_board = z
     anchor_alignment: ninePointAnchor.optional(),
     position_mode: z.enum(["relative_to_panel_anchor", "none"]).optional(),
   })
+  .merge(manufacturing_drc_properties)
   .describe("Defines the board outline of the PCB")
 
 /**
  * Defines the board outline of the PCB
  */
-export interface PcbBoard {
+export interface PcbBoard extends ManufacturingDrcProperties {
   type: "pcb_board"
   pcb_board_id: string
   pcb_panel_id?: string
