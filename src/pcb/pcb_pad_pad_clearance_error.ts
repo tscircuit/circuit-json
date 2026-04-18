@@ -32,7 +32,9 @@ export const pcb_pad_pad_clearance_error = base_circuit_json_error
 export type PcbPadPadClearanceErrorInput = z.input<
   typeof pcb_pad_pad_clearance_error
 >
-type InferredPcbPadPadClearanceError = z.infer<typeof pcb_pad_pad_clearance_error>
+type InferredPcbPadPadClearanceError = z.infer<
+  typeof pcb_pad_pad_clearance_error
+>
 
 /** Error emitted when pads are closer than the allowed clearance */
 export interface PcbPadPadClearanceError extends BaseCircuitJsonError {

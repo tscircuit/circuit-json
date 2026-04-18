@@ -28,7 +28,9 @@ export const pcb_pad_trace_clearance_error = base_circuit_json_error
       .optional(),
     subcircuit_id: z.string().optional(),
   })
-  .describe("Error emitted when a pad and trace are closer than allowed clearance")
+  .describe(
+    "Error emitted when a pad and trace are closer than allowed clearance",
+  )
 
 export type PcbPadTraceClearanceErrorInput = z.input<
   typeof pcb_pad_trace_clearance_error
