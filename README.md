@@ -1660,6 +1660,8 @@ interface PcbNoteText {
     | "top_right"
     | "bottom_left"
     | "bottom_right"
+  layer: VisibleLayer
+  is_mirrored?: boolean
   color?: string
 }
 ```
@@ -2059,7 +2061,7 @@ interface PcbSilkscreenText {
   }
   ccw_rotation?: number
   layer: LayerRef
-  is_mirrored?: boolean
+  is_mirrored_from_top_view?: boolean
   anchor_position: Point
   anchor_alignment: NinePointAnchor
 }
