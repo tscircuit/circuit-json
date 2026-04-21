@@ -118,19 +118,19 @@ test("pcb_board with manufacturing drc properties", () => {
     type: "pcb_board",
     center: { x: 0, y: 0 },
     min_trace_width: "0.12mm",
-    min_board_edge_spacing: "0.3mm",
-    min_via_to_via_spacing: "0.2mm",
-    min_trace_to_pad_spacing: "0.15mm",
-    min_pad_to_pad_spacing: "0.18mm",
+    min_board_edge_clearance: "0.3mm",
+    min_via_to_via_clearance: "0.2mm",
+    min_trace_to_pad_clearance: "0.15mm",
+    min_pad_to_pad_clearance: "0.18mm",
     min_via_hole_diameter: "0.25mm",
     min_via_pad_diameter: "0.45mm",
   })
 
   expect(board.min_trace_width).toBe(0.12)
-  expect(board.min_board_edge_spacing).toBe(0.3)
-  expect(board.min_via_to_via_spacing).toBe(0.2)
-  expect(board.min_trace_to_pad_spacing).toBe(0.15)
-  expect(board.min_pad_to_pad_spacing).toBe(0.18)
+  expect(board.min_board_edge_clearance).toBe(0.3)
+  expect(board.min_via_to_via_clearance).toBe(0.2)
+  expect(board.min_trace_to_pad_clearance).toBe(0.15)
+  expect(board.min_pad_to_pad_clearance).toBe(0.18)
   expect(board.min_via_hole_diameter).toBe(0.25)
   expect(board.min_via_pad_diameter).toBe(0.45)
 })
