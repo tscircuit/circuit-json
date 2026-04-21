@@ -62,6 +62,10 @@ export const pcb_component = z
         "from_right",
         "from_front",
         "from_back",
+        "x+",
+        "x-",
+        "y+",
+        "y-",
       ])
       .optional(),
     metadata: z
@@ -115,6 +119,10 @@ export interface PcbComponent {
     | "from_right"
     | "from_front"
     | "from_back"
+    | "x+"
+    | "x-"
+    | "y+"
+    | "y-"
   metadata?: PcbComponentMetadata
   obstructs_within_bounds: boolean
 }

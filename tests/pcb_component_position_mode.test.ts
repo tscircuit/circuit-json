@@ -75,6 +75,10 @@ test("pcb_component allows insertion_direction options", () => {
     "from_right",
     "from_front",
     "from_back",
+    "x+",
+    "x-",
+    "y+",
+    "y-",
   ] as const
 
   for (const insertion_direction of insertionDirections) {
