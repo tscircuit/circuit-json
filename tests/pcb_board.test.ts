@@ -130,7 +130,9 @@ test("pcb_board with manufacturing drc properties", () => {
   expect(board.min_trace_width).toBe(0.12)
   expect(board.min_board_edge_clearance).toBe(0.3)
   expect(board.min_via_hole_edge_to_via_hole_edge_clearance).toBe(0.2)
-  expect(board.min_plated_hole_edge_to_plated_hole_edge_clearance).toBe(0.15)
+  expect(
+    board.min_plated_hole_hole_edge_to_plated_hole_hole_edge_clearance,
+  ).toBe(0.15)
   expect(board.min_trace_to_pad_edge_clearance).toBe(0.18)
   expect(board.min_pad_edge_to_pad_edge_clearance).toBe(0.18)
   expect(board.min_via_hole_diameter).toBe(0.25)
