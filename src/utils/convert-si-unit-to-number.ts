@@ -69,6 +69,18 @@ const unitMappings: Record<
       F: 1,
     },
   },
+  H: {
+    baseUnit: "H",
+    variants: {
+      pH: 1e-12,
+      nH: 1e-9,
+      µH: 1e-6,
+      uH: 1e-6,
+      mH: 1e-3,
+      H: 1,
+      kH: 1e3,
+    },
+  },
   ml: {
     baseUnit: "ml",
     variants: {
