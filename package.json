@@ -1,7 +1,7 @@
 {
   "name": "circuit-json",
   "version": "0.0.409",
-  "author": "",
+  "author": "tscircuit",
   "main": "dist/index.mjs",
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.30.1",
