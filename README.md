@@ -136,6 +136,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbText](#pcbtext)
     - [PcbThermalSpoke](#pcbthermalspoke)
     - [PcbTrace](#pcbtrace)
+    - [PcbTraceWarning](#pcbtracewarning)
     - [PcbTraceError](#pcbtraceerror)
     - [PcbTraceHint](#pcbtracehint)
     - [PcbTraceMissingError](#pcbtracemissingerror)
@@ -2152,6 +2153,28 @@ interface PcbTraceRoutePointWire {
 }
 
 type PcbTraceRoutePoint = PcbTraceRoutePointWire | PcbTraceRoutePointVia
+```
+
+### PcbTraceWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_trace_warning.ts)
+
+Warning emitted when a PCB trace has a warning condition
+
+```typescript
+/** Warning emitted when a PCB trace has a warning condition */
+interface PcbTraceWarning {
+  type: "pcb_trace_warning"
+  pcb_trace_warning_id: string
+  warning_type: "pcb_trace_warning"
+  message: string
+  center?: Point
+  pcb_trace_id: string
+  source_trace_id: string
+  pcb_component_ids: string[]
+  pcb_port_ids: string[]
+  subcircuit_id?: string
+}
 ```
 
 ### PcbTraceError
