@@ -22,8 +22,8 @@ export const supplier_footprint_mismatch_warning = z
     subcircuit_id: z.string().optional(),
     supplier_name: supplier_name.optional(),
     supplier_part_number: z.string().optional(),
-    expected_footprint: z.string().optional(),
-    actual_footprint: z.string().optional(),
+    supplier_footprint_url: z.string().optional(),
+    footprint_copper_intersection_over_union: z.number(),
   })
   .describe(
     "Warning emitted when a supplier part footprint does not match the expected footprint",
@@ -50,8 +50,8 @@ export interface SupplierFootprintMismatchWarning {
   subcircuit_id?: string
   supplier_name?: SupplierName
   supplier_part_number?: string
-  expected_footprint?: string
-  actual_footprint?: string
+  supplier_footprint_url?: string
+  footprint_copper_intersection_over_union: number
 }
 
 expectTypesMatch<

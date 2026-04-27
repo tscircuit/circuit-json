@@ -9,8 +9,8 @@ test("supplier_footprint_mismatch_warning parses", () => {
     source_component_id: "src1",
     supplier_name: "jlcpcb",
     supplier_part_number: "C123",
-    expected_footprint: "0603",
-    actual_footprint: "0402",
+    supplier_footprint_url: "https://example.com/footprints/C123.json",
+    footprint_copper_intersection_over_union: 0.42,
   })
 
   expect(warning.supplier_footprint_mismatch_warning_id).toBeDefined()
@@ -27,6 +27,7 @@ test("any_circuit_element includes supplier_footprint_mismatch_warning", () => {
     type: "supplier_footprint_mismatch_warning",
     message: "supplier footprint does not match expected footprint",
     source_component_id: "src1",
+    footprint_copper_intersection_over_union: 0.42,
   })
 
   expect(parsed.type).toBe("supplier_footprint_mismatch_warning")

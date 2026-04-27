@@ -2111,8 +2111,8 @@ interface SupplierFootprintMismatchWarning {
   subcircuit_id?: string
   supplier_name?: SupplierName
   supplier_part_number?: string
-  expected_footprint?: string
-  actual_footprint?: string
+  supplier_footprint_url?: string
+  footprint_copper_intersection_over_union: number
 }
 ```
 
