@@ -133,6 +133,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbSilkscreenRect](#pcbsilkscreenrect)
     - [PcbSilkscreenText](#pcbsilkscreentext)
     - [PcbSolderPaste](#pcbsolderpaste)
+    - [SupplierFootprintMismatchWarning](#supplierfootprintmismatchwarning)
     - [PcbText](#pcbtext)
     - [PcbThermalSpoke](#pcbthermalspoke)
     - [PcbTrace](#pcbtrace)
@@ -2088,6 +2089,30 @@ interface PcbSolderPasteCircle {
   layer: LayerRef
   pcb_component_id?: string
   pcb_smtpad_id?: string
+}
+```
+
+### SupplierFootprintMismatchWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/supplier_footprint_mismatch_warning.ts)
+
+Warning emitted when a supplier part footprint does not match the expected footprint
+
+```typescript
+/** Warning emitted when a supplier part footprint does not match the expected footprint */
+interface SupplierFootprintMismatchWarning {
+  type: "supplier_footprint_mismatch_warning"
+  supplier_footprint_mismatch_warning_id: string
+  warning_type: "supplier_footprint_mismatch_warning"
+  message: string
+  source_component_id: string
+  pcb_component_id?: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  supplier_name?: SupplierName
+  supplier_part_number?: string
+  supplier_footprint_url?: string
+  footprint_copper_intersection_over_union: number
 }
 ```
 
