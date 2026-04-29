@@ -18,6 +18,15 @@ export interface SourceComponentBase {
   internally_connected_source_port_ids?: string[][]
   source_group_id?: string
   subcircuit_id?: string
+
+  /** Selector for the pin/pad this component should be placed near */
+  place_near_selector?: string
+  /** Resolved source_port_id of the target pin */
+  place_near_port_id?: string
+  /** source_port_id of this component's pad that should face the target */
+  facing_pad_port_id?: string
+  /** Max center-to-center distance to the target pin (mm). Default: 5mm */
+  place_near_max_distance?: number
 }
 
 export const source_component_base = z.object({
@@ -35,6 +44,10 @@ export const source_component_base = z.object({
   internally_connected_source_port_ids: z.array(z.array(z.string())).optional(),
   source_group_id: z.string().optional(),
   subcircuit_id: z.string().optional(),
+  place_near_selector: z.string().optional(),
+  place_near_port_id: z.string().optional(),
+  facing_pad_port_id: z.string().optional(),
+  place_near_max_distance: z.number().optional(),
 })
 
 type InferredSourceComponentBase = z.infer<typeof source_component_base>
