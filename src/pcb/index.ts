@@ -70,6 +70,7 @@ export * from "./pcb_courtyard_rect"
 export * from "./pcb_courtyard_outline"
 export * from "./pcb_courtyard_polygon"
 export * from "./pcb_courtyard_circle"
+export * from "./pcb_thtpad"
 
 import type { PcbComponent } from "./pcb_component"
 import type { PcbHole } from "./pcb_hole"
