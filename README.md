@@ -2177,7 +2177,21 @@ interface PcbTraceRoutePointWire {
   layer: LayerRef
 }
 
-type PcbTraceRoutePoint = PcbTraceRoutePointWire | PcbTraceRoutePointVia
+interface PcbTraceRoutePointThroughPad {
+  route_type: "through_pad"
+  start: Point
+  end: Point
+  width: Distance
+  start_layer: LayerRef
+  end_layer: LayerRef
+  pcb_smtpad_id?: string
+  pcb_plated_hole_id?: string
+}
+
+type PcbTraceRoutePoint =
+  | PcbTraceRoutePointWire
+  | PcbTraceRoutePointVia
+  | PcbTraceRoutePointThroughPad
 ```
 
 ### PcbTraceWarning

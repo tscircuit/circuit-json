@@ -66,3 +66,28 @@ test("pcb_trace.route points support copper pour metadata", () => {
   expect(trace.route[1]?.copper_pour_id).toBe("pcb_copper_pour_2")
   expect(trace.route[1]?.is_inside_copper_pour).toBe(false)
 })
+
+test("pcb_trace.route points support through_pad segments", () => {
+  const trace = pcb_trace.parse({
+    type: "pcb_trace",
+    route: [
+      {
+        route_type: "through_pad",
+        start: { x: "1mm", y: "2mm" },
+        end: { x: "3mm", y: "4mm" },
+        width: "0.2mm",
+        start_layer: "top",
+        end_layer: "bottom",
+        pcb_smtpad_id: "pcb_smtpad_1",
+      },
+    ],
+  })
+
+  expect(trace.route[0]?.route_type).toBe("through_pad")
+  expect(trace.route[0]?.start).toEqual({ x: 1, y: 2 })
+  expect(trace.route[0]?.end).toEqual({ x: 3, y: 4 })
+  expect(trace.route[0]?.width).toBe(0.2)
+  expect(trace.route[0]?.start_layer).toBe("top")
+  expect(trace.route[0]?.end_layer).toBe("bottom")
+  expect(trace.route[0]?.pcb_smtpad_id).toBe("pcb_smtpad_1")
+})

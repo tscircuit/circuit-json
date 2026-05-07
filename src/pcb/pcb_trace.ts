@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { getZodPrefixedIdWithDefault } from "src/common"
+import { getZodPrefixedIdWithDefault, point, type Point } from "src/common"
 import { distance, type Distance } from "src/units"
 import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
 import { expectTypesMatch } from "src/utils/expect-types-match"
@@ -28,9 +28,21 @@ export const pcb_trace_route_point_via = z.object({
   to_layer: layer_ref,
 })
 
+export const pcb_trace_route_point_through_pad = z.object({
+  route_type: z.literal("through_pad"),
+  start: point,
+  end: point,
+  width: distance,
+  start_layer: layer_ref,
+  end_layer: layer_ref,
+  pcb_smtpad_id: z.string().optional(),
+  pcb_plated_hole_id: z.string().optional(),
+})
+
 export const pcb_trace_route_point = z.union([
   pcb_trace_route_point_wire,
   pcb_trace_route_point_via,
+  pcb_trace_route_point_through_pad,
 ])
 type InferredPcbTraceRoutePoint = z.infer<typeof pcb_trace_route_point>
 
@@ -81,7 +93,21 @@ export interface PcbTraceRoutePointVia {
   to_layer: LayerRef
 }
 
-export type PcbTraceRoutePoint = PcbTraceRoutePointWire | PcbTraceRoutePointVia
+export interface PcbTraceRoutePointThroughPad {
+  route_type: "through_pad"
+  start: Point
+  end: Point
+  width: Distance
+  start_layer: LayerRef
+  end_layer: LayerRef
+  pcb_smtpad_id?: string
+  pcb_plated_hole_id?: string
+}
+
+export type PcbTraceRoutePoint =
+  | PcbTraceRoutePointWire
+  | PcbTraceRoutePointVia
+  | PcbTraceRoutePointThroughPad
 
 /**
  * Defines a trace on the PCB
