@@ -61,10 +61,26 @@ test("pcb_trace.route points support copper pour metadata", () => {
     ],
   })
 
-  expect(trace.route[0]?.copper_pour_id).toBe("pcb_copper_pour_1")
-  expect(trace.route[0]?.is_inside_copper_pour).toBe(true)
-  expect(trace.route[1]?.copper_pour_id).toBe("pcb_copper_pour_2")
-  expect(trace.route[1]?.is_inside_copper_pour).toBe(false)
+  expect(trace.route).toEqual([
+    {
+      route_type: "wire",
+      x: 0,
+      y: 0,
+      width: 0.2,
+      layer: "top",
+      copper_pour_id: "pcb_copper_pour_1",
+      is_inside_copper_pour: true,
+    },
+    {
+      route_type: "via",
+      x: 1,
+      y: 1,
+      from_layer: "top",
+      to_layer: "bottom",
+      copper_pour_id: "pcb_copper_pour_2",
+      is_inside_copper_pour: false,
+    },
+  ])
 })
 
 test("pcb_trace.route points support through_pad segments", () => {
@@ -83,11 +99,15 @@ test("pcb_trace.route points support through_pad segments", () => {
     ],
   })
 
-  expect(trace.route[0]?.route_type).toBe("through_pad")
-  expect(trace.route[0]?.start).toEqual({ x: 1, y: 2 })
-  expect(trace.route[0]?.end).toEqual({ x: 3, y: 4 })
-  expect(trace.route[0]?.width).toBe(0.2)
-  expect(trace.route[0]?.start_layer).toBe("top")
-  expect(trace.route[0]?.end_layer).toBe("bottom")
-  expect(trace.route[0]?.pcb_smtpad_id).toBe("pcb_smtpad_1")
+  expect(trace.route).toEqual([
+    {
+      route_type: "through_pad",
+      start: { x: 1, y: 2 },
+      end: { x: 3, y: 4 },
+      width: 0.2,
+      start_layer: "top",
+      end_layer: "bottom",
+      pcb_smtpad_id: "pcb_smtpad_1",
+    },
+  ])
 })
