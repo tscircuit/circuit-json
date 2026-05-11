@@ -52,6 +52,7 @@ export const cad_component = z
       .default("contain_within_bounds"),
     model_jscad: z.any().optional(),
     show_as_translucent_model: z.boolean().optional(),
+    show_as_bounding_box: z.boolean().optional(),
     anchor_alignment: z
       .enum(["center", "center_of_component_on_board_surface"] as const)
       .optional()
@@ -96,6 +97,7 @@ export interface CadComponent {
   model_object_fit: "contain_within_bounds" | "fill_bounds"
   model_jscad?: any
   show_as_translucent_model?: boolean
+  show_as_bounding_box?: boolean
   anchor_alignment: CadComponentAnchorAlignment
 }
 
