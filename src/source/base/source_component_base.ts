@@ -18,6 +18,7 @@ export interface SourceComponentBase {
   internally_connected_source_port_ids?: string[][]
   source_group_id?: string
   subcircuit_id?: string
+  show_as_bounding_box?: boolean
 }
 
 export const source_component_base = z.object({
@@ -35,6 +36,7 @@ export const source_component_base = z.object({
   internally_connected_source_port_ids: z.array(z.array(z.string())).optional(),
   source_group_id: z.string().optional(),
   subcircuit_id: z.string().optional(),
+  show_as_bounding_box: z.boolean().optional(),
 })
 
 type InferredSourceComponentBase = z.infer<typeof source_component_base>

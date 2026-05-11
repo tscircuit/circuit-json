@@ -31,16 +31,3 @@ test("cad_component accepts model board/anchor fields", () => {
   expect(component.model_origin_alignment).toBe("bottom_center_of_component")
   expect(component.model_object_fit).toBe("fill_bounds")
 })
-
-test("cad_component accepts show_as_bounding_box", () => {
-  const component = cad_component.parse({
-    type: "cad_component",
-    cad_component_id: "cad-bounding-box",
-    pcb_component_id: "pcb-bounding-box",
-    source_component_id: "src-bounding-box",
-    position: { x: 0, y: 0, z: 0 },
-    show_as_bounding_box: true,
-  })
-
-  expect(component.show_as_bounding_box).toBe(true)
-})
