@@ -1,11 +1,7 @@
 import { z } from "zod"
 import { point, type Point } from "src/common"
 import { distance, type Length } from "src/units"
-import {
-  visible_layer,
-  type LayerRef,
-  type VisibleLayer,
-} from "src/pcb/properties/layer_ref"
+import { visible_layer, type VisibleLayer } from "src/pcb/properties/layer_ref"
 import { getZodPrefixedIdWithDefault } from "src/common/getZodPrefixedIdWithDefault"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
@@ -21,6 +17,7 @@ export const pcb_fabrication_note_text = z
     font_size: distance.default("1mm"),
     pcb_component_id: z.string(),
     text: z.string(),
+    ccw_rotation: z.number().optional(),
     layer: visible_layer,
     anchor_position: point.default({ x: 0, y: 0 }),
     anchor_alignment: z
@@ -49,6 +46,7 @@ export interface PcbFabricationNoteText {
   font_size: Length
   pcb_component_id: string
   text: string
+  ccw_rotation?: number
   layer: VisibleLayer
   anchor_position: Point
   anchor_alignment:
