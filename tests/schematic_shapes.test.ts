@@ -1,8 +1,9 @@
 import { expect, test } from "bun:test"
-import { schematic_line } from "../src/schematic/schematic_line"
-import { schematic_rect } from "../src/schematic/schematic_rect"
-import { schematic_circle } from "../src/schematic/schematic_circle"
 import { schematic_arc } from "../src/schematic/schematic_arc"
+import { schematic_circle } from "../src/schematic/schematic_circle"
+import { schematic_line } from "../src/schematic/schematic_line"
+import { schematic_path } from "../src/schematic/schematic_path"
+import { schematic_rect } from "../src/schematic/schematic_rect"
 
 test("schematic_line defaults stroke width and color", () => {
   const line = schematic_line.parse({
@@ -17,6 +18,39 @@ test("schematic_line defaults stroke width and color", () => {
   expect(line.schematic_line_id).toMatch(/^schematic_line_/)
   expect(line.color).toBe("#000000")
   expect(line.is_dashed).toBe(false)
+  expect(line).not.toHaveProperty("dash_length")
+  expect(line).not.toHaveProperty("dash_gap")
+})
+
+test("schematic_line accepts dash distance parameters", () => {
+  const line = schematic_line.parse({
+    type: "schematic_line",
+    x1: 0,
+    y1: 0,
+    x2: 1,
+    y2: 1,
+    is_dashed: true,
+    dash_length: "2mm",
+    dash_gap: "1mm",
+  })
+
+  expect(line.dash_length).toBe(2)
+  expect(line.dash_gap).toBe(1)
+})
+
+test("schematic_path accepts dash distance parameters", () => {
+  const path = schematic_path.parse({
+    type: "schematic_path",
+    points: [
+      { x: 0, y: 0 },
+      { x: 1, y: 1 },
+    ],
+    dash_length: "2mm",
+    dash_gap: "1mm",
+  })
+
+  expect(path.dash_length).toBe(2)
+  expect(path.dash_gap).toBe(1)
 })
 
 test("schematic_rect assigns defaults", () => {
