@@ -1,7 +1,7 @@
-import { z } from "zod"
-import { distance } from "../units"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
+import { distance } from "../units"
 
 /** Draws a styled line on the schematic */
 export interface SchematicLine {
@@ -16,6 +16,8 @@ export interface SchematicLine {
   stroke_width?: number | null
   color: string
   is_dashed: boolean
+  dash_length?: number
+  dash_gap?: number
   subcircuit_id?: string
 }
 
@@ -32,6 +34,8 @@ export const schematic_line = z
     stroke_width: distance.nullable().optional(),
     color: z.string().default("#000000"),
     is_dashed: z.boolean().default(false),
+    dash_length: distance.optional(),
+    dash_gap: distance.optional(),
     subcircuit_id: z.string().optional(),
   })
   .describe("Draws a styled line on the schematic")

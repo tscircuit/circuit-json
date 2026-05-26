@@ -2562,6 +2562,8 @@ interface SchematicLine {
   stroke_width?: number | null
   color: string
   is_dashed: boolean
+  dash_length?: number
+  dash_gap?: number
   subcircuit_id?: string
 }
 ```
@@ -2620,6 +2622,8 @@ interface SchematicPath {
   schematic_component_id: string
   fill_color?: "red" | "blue"
   is_filled?: boolean
+  dash_length?: number
+  dash_gap?: number
   points: Point[]
   subcircuit_id?: string
 }
