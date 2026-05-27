@@ -996,6 +996,8 @@ interface PcbBoard {
   outline?: Point[]
   shape?: "rect" | "polygon"
   material: "fr4" | "fr1"
+  solder_mask_color?: string
+  silkscreen_color?: string
   anchor_position?: Point
   anchor_alignment: NinePointAnchor
   position_mode?: "relative_to_panel_anchor" | "none"
