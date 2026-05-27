@@ -92,6 +92,20 @@ test("pcb_board shape property is optional", () => {
   expect(board.shape).toBeUndefined()
 })
 
+test("pcb_board with solder mask and silkscreen colors", () => {
+  const board = pcb_board.parse({
+    type: "pcb_board",
+    width: "10mm",
+    height: "20mm",
+    center: { x: 0, y: 0 },
+    solder_mask_color: "black",
+    silkscreen_color: "white",
+  })
+
+  expect(board.solder_mask_color).toBe("black")
+  expect(board.silkscreen_color).toBe("white")
+})
+
 test("pcb_board with anchor properties", () => {
   const board = pcb_board.parse({
     type: "pcb_board",

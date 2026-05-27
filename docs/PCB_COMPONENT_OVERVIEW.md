@@ -678,6 +678,8 @@ export interface PcbBoard {
   num_layers: number
   center: Point
   outline?: Point[]
+  solder_mask_color?: string
+  silkscreen_color?: string
 }
 
 ```
