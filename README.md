@@ -50,8 +50,8 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceBoard](#sourceboard)
     - [SourceComponentBase](#sourcecomponentbase)
     - [SourceComponentInternalConnection](#sourcecomponentinternalconnection)
+    - [SourceComponentMisconfiguredError](#sourcecomponentmisconfigurederror)
     - [SourceComponentPinsUnderspecifiedWarning](#sourcecomponentpinsunderspecifiedwarning)
-    - [SourceConflictingI2cAddrError](#sourceconflictingi2caddrerror)
     - [SourceFailedToCreateComponentError](#sourcefailedtocreatecomponenterror)
     - [SourceGroup](#sourcegroup)
     - [SourceI2cMisconfiguredError](#sourcei2cmisconfigurederror)
@@ -337,6 +337,23 @@ interface SourceComponentInternalConnection {
 }
 ```
 
+### SourceComponentMisconfiguredError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_component_misconfigured_error.ts)
+
+Error emitted when one or more source components have an invalid or conflicting configuration
+
+```typescript
+/** Error emitted when one or more source components have an invalid or conflicting configuration */
+interface SourceComponentMisconfiguredError extends BaseCircuitJsonError {
+  type: "source_component_misconfigured_error"
+  source_component_misconfigured_error_id: string
+  error_type: "source_component_misconfigured_error"
+  source_component_ids: string[]
+  source_port_ids?: string[]
+}
+```
+
 ### SourceComponentPinsUnderspecifiedWarning
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_component_pins_underspecified_warning.ts)
@@ -353,23 +370,6 @@ interface SourceComponentPinsUnderspecifiedWarning {
   source_component_id: string
   source_port_ids: string[]
   subcircuit_id?: string
-}
-```
-
-### SourceConflictingI2cAddrError
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_conflicting_i2c_addr_error.ts)
-
-Error emitted when two I2C components on the same bus resolve to the same address
-
-```typescript
-/** Error emitted when two I2C components on the same bus resolve to the same address */
-interface SourceConflictingI2cAddrError extends BaseCircuitJsonError {
-  type: "source_conflicting_i2c_addr_error"
-  source_conflicting_i2c_addr_error_id: string
-  error_type: "source_conflicting_i2c_addr_error"
-  source_component_ids: string[]
-  source_port_ids?: string[]
 }
 ```
 
