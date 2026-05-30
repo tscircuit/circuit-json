@@ -189,6 +189,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationCurrentSource](#simulationcurrentsource)
     - [SimulationExperiment](#simulationexperiment)
     - [SimulationOpAmp](#simulationopamp)
+    - [SimulationSpiceSubcircuit](#simulationspicesubcircuit)
     - [SimulationSwitch](#simulationswitch)
     - [SimulationTransientVoltageGraph](#simulationtransientvoltagegraph)
     - [SimulationUnknownExperimentError](#simulationunknownexperimenterror)
@@ -3265,6 +3266,32 @@ interface SimulationOpAmp {
   output_source_port_id: string
   positive_supply_source_port_id: string
   negative_supply_source_port_id: string
+}
+```
+
+### SimulationSpiceSubcircuit
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_spice_subcircuit.ts)
+
+Defines a custom SPICE subcircuit model for simulation.
+
+```typescript
+/** Defines a custom SPICE subcircuit model for simulation. */
+interface SimulationSpiceSubcircuit {
+  type: "simulation_spice_subcircuit"
+  simulation_spice_subcircuit_id: string
+  /** Source component this SPICE subcircuit models. */
+
+  source_component_id: string
+  /** Name parsed from the SPICE .subckt declaration. */
+
+  model_name: string
+  /** Maps SPICE subcircuit pin names to source port ids. */
+
+  spice_pin_to_source_port_map: Record<string, string>
+  /** Full SPICE subcircuit source text. */
+
+  subcircuit_source: string
 }
 ```
 
