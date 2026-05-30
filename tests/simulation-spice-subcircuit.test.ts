@@ -10,7 +10,6 @@ test("simulation_spice_subcircuit parses", () => {
   const input: SimulationSpiceSubcircuitInput = {
     type: "simulation_spice_subcircuit",
     source_component_id: "source_component_1",
-    model_name: "RECTIFIER_DIODE",
     spice_pin_to_source_port_map: {
       ANODE: "source_port_1",
       CATHODE: "source_port_2",
@@ -29,7 +28,6 @@ test("simulation_spice_subcircuit parses", () => {
   expect(spiceSubcircuit.type).toBe("simulation_spice_subcircuit")
   expect(spiceSubcircuit.simulation_spice_subcircuit_id).toBeString()
   expect(spiceSubcircuit.source_component_id).toBe("source_component_1")
-  expect(spiceSubcircuit.model_name).toBe("RECTIFIER_DIODE")
   expect(spiceSubcircuit.spice_pin_to_source_port_map).toEqual({
     ANODE: "source_port_1",
     CATHODE: "source_port_2",
@@ -43,7 +41,6 @@ test("any_circuit_element includes simulation_spice_subcircuit", () => {
   const input: SimulationSpiceSubcircuitInput = {
     type: "simulation_spice_subcircuit",
     source_component_id: "source_component_1",
-    model_name: "RECTIFIER_DIODE",
     spice_pin_to_source_port_map: {
       ANODE: "source_port_1",
       CATHODE: "source_port_2",

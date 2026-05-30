@@ -3283,9 +3283,6 @@ interface SimulationSpiceSubcircuit {
   /** Source component this SPICE subcircuit models. */
 
   source_component_id: string
-  /** Name parsed from the SPICE .subckt declaration. */
-
-  model_name: string
   /** Maps SPICE subcircuit pin names to source port ids. */
 
   spice_pin_to_source_port_map: Record<string, string>

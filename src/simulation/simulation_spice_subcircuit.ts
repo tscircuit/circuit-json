@@ -9,7 +9,6 @@ export const simulation_spice_subcircuit = z
       "simulation_spice_subcircuit",
     ),
     source_component_id: z.string(),
-    model_name: z.string(),
     spice_pin_to_source_port_map: z.record(z.string(), z.string()),
     subcircuit_source: z.string(),
   })
@@ -32,10 +31,6 @@ export interface SimulationSpiceSubcircuit {
    * Source component this SPICE subcircuit models.
    */
   source_component_id: string
-  /**
-   * Name parsed from the SPICE .subckt declaration.
-   */
-  model_name: string
   /**
    * Maps SPICE subcircuit pin names to source port ids.
    */
