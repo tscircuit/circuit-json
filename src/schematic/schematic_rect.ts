@@ -15,6 +15,7 @@ export interface SchematicRect {
   height: number
   rotation: number
   stroke_width?: number | null
+  corner_radius?: number
   color: string
   is_filled: boolean
   fill_color?: string
@@ -33,6 +34,7 @@ export const schematic_rect = z
     height: distance,
     rotation: rotation.default(0),
     stroke_width: distance.nullable().optional(),
+    corner_radius: distance.optional(),
     color: z.string().default("#000000"),
     is_filled: z.boolean().default(false),
     fill_color: z.string().optional(),

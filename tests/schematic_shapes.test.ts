@@ -68,6 +68,19 @@ test("schematic_rect assigns defaults", () => {
   expect(rect.is_dashed).toBe(false)
 })
 
+test("schematic_rect accepts corner radius", () => {
+  const rect = schematic_rect.parse({
+    type: "schematic_rect",
+    schematic_component_id: "comp_1",
+    center: { x: 0, y: 0 },
+    width: 1,
+    height: 2,
+    corner_radius: "0.25mm",
+  })
+
+  expect(rect.corner_radius).toBe(0.25)
+})
+
 test("schematic_circle assigns defaults", () => {
   const circle = schematic_circle.parse({
     type: "schematic_circle",

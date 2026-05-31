@@ -3067,6 +3067,7 @@ interface SchematicRect {
   height: number
   rotation: number
   stroke_width?: number | null
+  corner_radius?: number
   color: string
   is_filled: boolean
   fill_color?: string
