@@ -2991,6 +2991,7 @@ interface SchematicPath {
   schematic_symbol_id?: string
   fill_color?: string
   is_filled?: boolean
+  is_dashed: boolean
   stroke_width?: number | null
   stroke_color?: string
   dash_length?: number

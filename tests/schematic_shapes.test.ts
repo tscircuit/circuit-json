@@ -45,12 +45,28 @@ test("schematic_path accepts dash distance parameters", () => {
       { x: 0, y: 0 },
       { x: 1, y: 1 },
     ],
+    is_dashed: true,
     dash_length: "2mm",
     dash_gap: "1mm",
   })
 
+  expect(path.is_dashed).toBe(true)
   expect(path.dash_length).toBe(2)
   expect(path.dash_gap).toBe(1)
+})
+
+test("schematic_path defaults dashed to false", () => {
+  const path = schematic_path.parse({
+    type: "schematic_path",
+    points: [
+      { x: 0, y: 0 },
+      { x: 1, y: 1 },
+    ],
+  })
+
+  expect(path.is_dashed).toBe(false)
+  expect(path).not.toHaveProperty("dash_length")
+  expect(path).not.toHaveProperty("dash_gap")
 })
 
 test("schematic_rect assigns defaults", () => {
