@@ -115,6 +115,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbCourtyardCircle](#pcbcourtyardcircle)
     - [PcbCourtyardOutline](#pcbcourtyardoutline)
     - [PcbCourtyardOverlapError](#pcbcourtyardoverlaperror)
+    - [PcbCourtyardPill](#pcbcourtyardpill)
     - [PcbCourtyardPolygon](#pcbcourtyardpolygon)
     - [PcbCourtyardRect](#pcbcourtyardrect)
     - [PcbCutout](#pcbcutout)
@@ -1485,6 +1486,29 @@ interface PcbCourtyardOverlapError extends BaseCircuitJsonError {
   pcb_error_id: string
   error_type: "pcb_courtyard_overlap_error"
   pcb_component_ids: [string, string]
+}
+```
+
+### PcbCourtyardPill
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_courtyard_pill.ts)
+
+Defines a courtyard pill on the PCB
+
+```typescript
+/** Defines a courtyard pill on the PCB */
+interface PcbCourtyardPill {
+  type: "pcb_courtyard_pill"
+  pcb_courtyard_pill_id: string
+  pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  center: Point
+  width: Length
+  height: Length
+  radius: Length
+  layer: VisibleLayer
+  color?: string
 }
 ```
 
