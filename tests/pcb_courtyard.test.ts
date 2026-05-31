@@ -2,6 +2,7 @@ import { expect, test } from "bun:test"
 import { pcb_courtyard_rect } from "../src/pcb/pcb_courtyard_rect"
 import { pcb_courtyard_outline } from "../src/pcb/pcb_courtyard_outline"
 import { pcb_courtyard_polygon } from "../src/pcb/pcb_courtyard_polygon"
+import { pcb_courtyard_pill } from "../src/pcb/pcb_courtyard_pill"
 
 test("parse courtyard rect", () => {
   const rect = pcb_courtyard_rect.parse({
@@ -54,4 +55,22 @@ test("parse courtyard polygon", () => {
   expect(polygon).not.toHaveProperty("stroke_width")
   expect(polygon).not.toHaveProperty("has_stroke")
   expect(polygon).not.toHaveProperty("is_stroke_dashed")
+})
+
+test("parse courtyard pill", () => {
+  const pill = pcb_courtyard_pill.parse({
+    type: "pcb_courtyard_pill",
+    pcb_component_id: "pcb_component_4",
+    center: { x: 2, y: 3 },
+    width: 4,
+    height: 1.5,
+    radius: 0.75,
+    layer: "bottom",
+  })
+
+  expect(pill.layer).toBe("bottom")
+  expect(pill.center).toEqual({ x: 2, y: 3 })
+  expect(pill.width).toBe(4)
+  expect(pill.height).toBe(1.5)
+  expect(pill.radius).toBe(0.75)
 })
