@@ -11,6 +11,7 @@ export interface SchematicPath {
   schematic_symbol_id?: string
   fill_color?: string
   is_filled?: boolean
+  is_dashed: boolean
   stroke_width?: number | null
   stroke_color?: string
   dash_length?: number
@@ -26,6 +27,7 @@ export const schematic_path = z.object({
   schematic_symbol_id: z.string().optional(),
   fill_color: z.string().optional(),
   is_filled: z.boolean().optional(),
+  is_dashed: z.boolean().default(false),
   stroke_width: distance.nullable().optional(),
   stroke_color: z.string().optional(),
   dash_length: distance.optional(),

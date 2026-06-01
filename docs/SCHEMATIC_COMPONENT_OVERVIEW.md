@@ -156,6 +156,7 @@ interface SchematicPath {
   schematic_component_id: string
   fill_color?: "red" | "blue"
   is_filled?: boolean
+  is_dashed: boolean
   dash_length?: number
   dash_gap?: number
   points: Array<{ x: number; y: number }>
