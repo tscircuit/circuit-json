@@ -1575,7 +1575,6 @@ interface PcbCutoutRect {
   width: Length
   height: Length
   rotation?: Rotation
-  corner_radius?: Length
 }
 ```
 
@@ -1650,7 +1649,6 @@ interface PcbFabricationNoteRect {
   height: Length
   layer: VisibleLayer
   stroke_width: Length
-  corner_radius?: Length
   is_filled?: boolean
   has_stroke?: boolean
   is_stroke_dashed?: boolean
@@ -1961,7 +1959,6 @@ interface PcbNoteRect {
   height: Length
   layer: VisibleLayer
   stroke_width: Length
-  corner_radius?: Length
   is_filled?: boolean
   has_stroke?: boolean
   is_stroke_dashed?: boolean
