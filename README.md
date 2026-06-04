@@ -147,6 +147,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbPortNotMatchedError](#pcbportnotmatchederror)
     - [PcbRouteHints](#pcbroutehints)
     - [PcbSilkscreenCircle](#pcbsilkscreencircle)
+    - [PcbSilkscreenGraphic](#pcbsilkscreengraphic)
     - [PcbSilkscreenLine](#pcbsilkscreenline)
     - [PcbSilkscreenOval](#pcbsilkscreenoval)
     - [PcbSilkscreenPath](#pcbsilkscreenpath)
@@ -2320,6 +2321,27 @@ interface PcbSilkscreenCircle {
   layer: VisibleLayer
   stroke_width: Length
   is_filled?: boolean
+}
+```
+
+### PcbSilkscreenGraphic
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_silkscreen_graphic.ts)
+
+Defines a BRep silkscreen graphic on the PCB
+
+```typescript
+/** Defines a BRep silkscreen graphic on the PCB */
+interface PcbSilkscreenGraphicBRep {
+  type: "pcb_silkscreen_graphic"
+  pcb_silkscreen_graphic_id: string
+  pcb_component_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  layer: VisibleLayer
+  image_asset?: Asset
+  shape: "brep"
+  brep_shape: BRepShape
 }
 ```
 
