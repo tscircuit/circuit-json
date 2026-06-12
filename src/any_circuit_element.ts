@@ -4,6 +4,7 @@ import * as pcb from "./pcb"
 import * as sch from "./schematic"
 import * as sim from "./simulation"
 import * as src from "./source"
+import * as sys from "./system"
 import {
   expectStringUnionsMatch,
   expectTypesMatch,
@@ -142,6 +143,10 @@ export const any_circuit_element = z.union([
   sch.schematic_sheet,
   sch.schematic_table,
   sch.schematic_table_cell,
+  sys.system_diagram,
+  sys.system_component,
+  sys.system_port,
+  sys.system_connection,
   cad.cad_component,
   sim.simulation_voltage_source,
   sim.simulation_current_source,

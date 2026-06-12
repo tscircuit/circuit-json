@@ -39,7 +39,7 @@ interface ElementDoc {
 
 async function generateDocs() {
   const sourceFiles = await glob(
-    "src/{source,pcb,schematic,simulation,cad}/**/*.ts",
+    "src/{source,pcb,schematic,system,simulation,cad}/**/*.ts",
   )
 
   const sections = {
@@ -47,6 +47,7 @@ async function generateDocs() {
     pcb: [] as ElementDoc[],
     cad: [] as ElementDoc[],
     schematic: [] as ElementDoc[],
+    system: [] as ElementDoc[],
     simulation: [] as ElementDoc[],
     misc: [] as ElementDoc[],
   }
@@ -60,11 +61,13 @@ async function generateDocs() {
           ? "simulation"
           : file.includes("\\cad\\") || file.includes("/cad/")
             ? "cad"
-            : file.includes("pcb_")
-              ? "pcb"
-              : file.includes("schematic_")
-                ? "schematic"
-                : "misc"
+            : file.includes("/system/") || file.includes("\\system\\")
+              ? "system"
+              : file.includes("pcb_")
+                ? "pcb"
+                : file.includes("schematic_")
+                  ? "schematic"
+                  : "misc"
 
     const basename = path.basename(file, ".ts")
     const primaryName = basename
@@ -201,6 +204,13 @@ async function generateDocs() {
     toc += `    - [${elem.name}](#${elem.name.toLowerCase()})\n`
   }
 
+  toc += "  - [System Elements](#system-elements)\n"
+  for (const elem of sections.system.sort((a, b) =>
+    a.name.localeCompare(b.name),
+  )) {
+    toc += `    - [${elem.name}](#${elem.name.toLowerCase()})\n`
+  }
+
   toc += "  - [Simulation Elements](#simulation-elements)\n"
   for (const elem of sections.simulation.sort((a, b) =>
     a.name.localeCompare(b.name),
@@ -306,6 +316,37 @@ async function generateDocs() {
 
   docs += "## Schematic Elements\n\n"
   for (const elem of sections.schematic.sort((a, b) =>
+    a.name.localeCompare(b.name),
+  )) {
+    const sourceFilePath = sourceFiles.find((file) => {
+      const basename = path.basename(file, ".ts")
+      const primaryName = basename
+        .split("_")
+        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+        .join("")
+      return primaryName === elem.name
+    })
+    const githubSourceLink = sourceFilePath
+      ? `https://github.com/tscircuit/circuit-json/blob/main/${sourceFilePath}`
+      : null
+
+    docs += `### ${elem.name}\n\n`
+    if (githubSourceLink) {
+      docs += `[Source](${githubSourceLink})\n\n`
+    }
+    if (elem.description) {
+      docs += `${elem.description}\n\n`
+    }
+    docs += "```typescript\n"
+    docs += elem.interface
+    if (elem.otherInterfaces.length > 0) {
+      docs += `\n\n${elem.otherInterfaces.join("\n\n")}`
+    }
+    docs += "\n```\n\n"
+  }
+
+  docs += "## System Elements\n\n"
+  for (const elem of sections.system.sort((a, b) =>
     a.name.localeCompare(b.name),
   )) {
     const sourceFilePath = sourceFiles.find((file) => {

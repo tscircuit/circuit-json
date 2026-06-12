@@ -187,6 +187,11 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicText](#schematictext)
     - [SchematicTrace](#schematictrace)
     - [SchematicVoltageProbe](#schematicvoltageprobe)
+  - [System Elements](#system-elements)
+    - [SystemComponent](#systemcomponent)
+    - [SystemConnection](#systemconnection)
+    - [SystemDiagram](#systemdiagram)
+    - [SystemPort](#systemport)
   - [Simulation Elements](#simulation-elements)
     - [SimulationCurrentSource](#simulationcurrentsource)
     - [SimulationExperiment](#simulationexperiment)
@@ -3235,6 +3240,95 @@ interface SchematicVoltageProbe {
   subcircuit_id?: string
   color?: string
   label_alignment?: NinePointAnchor
+}
+```
+
+## System Elements
+
+### SystemComponent
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/system/system_component.ts)
+
+Defines a component block in a system diagram
+
+```typescript
+/** Defines a component block in a system diagram */
+interface SystemComponent {
+  type: "system_component"
+  system_component_id: string
+  system_diagram_id?: string
+  schematic_component_ids?: string[]
+  center: Point
+  size: Size
+  label?: string
+  description?: string
+  subcircuit_id?: string
+}
+```
+
+### SystemConnection
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/system/system_connection.ts)
+
+Defines a connection between ports in a system diagram
+
+```typescript
+/** Defines a connection between ports in a system diagram */
+interface SystemConnection {
+  type: "system_connection"
+  system_connection_id: string
+  system_diagram_id?: string
+  source_system_port_id?: string
+  target_system_port_id?: string
+  system_port_ids?: string[]
+  path: SystemPathPoint[]
+  label?: string
+  subcircuit_id?: string
+}
+
+interface SystemPathPoint {
+  x: number
+  y: number
+}
+```
+
+### SystemDiagram
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/system/system_diagram.ts)
+
+Defines a system block diagram
+
+```typescript
+/** Defines a system block diagram */
+interface SystemDiagram {
+  type: "system_diagram"
+  system_diagram_id: string
+  name?: string
+  description?: string
+  width?: Length
+  height?: Length
+  subcircuit_id?: string
+}
+```
+
+### SystemPort
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/system/system_port.ts)
+
+Defines a port on a system diagram component
+
+```typescript
+/** Defines a port on a system diagram component */
+interface SystemPort {
+  type: "system_port"
+  system_port_id: string
+  system_component_id: string
+  system_diagram_id?: string
+  center: Point
+  label?: string
+  side_of_component?: "top" | "bottom" | "left" | "right"
+  facing_direction?: "up" | "down" | "left" | "right"
+  subcircuit_id?: string
 }
 ```
 
