@@ -17,6 +17,33 @@ test("simulation_experiment requires valid experiment_type", () => {
   expect(() => experiment_type.parse("spice_ac_analysis")).not.toThrow()
 })
 
+test("simulation_experiment parses start time and spice options", () => {
+  const parsed = simulation_experiment.parse({
+    type: "simulation_experiment",
+    name: "TPS63802 Figure 10-17 transient",
+    experiment_type: "spice_transient_analysis",
+    time_per_step: "5ns",
+    start_time_ms: "697.58us",
+    end_time_ms: "715.56us",
+    spice_options: {
+      method: "gear",
+      reltol: 0.01,
+      abstol: "1n",
+      vntol: "1u",
+    },
+  })
+
+  expect(parsed.time_per_step).toBeCloseTo(0.000005)
+  expect(parsed.start_time_ms).toBeCloseTo(0.69758)
+  expect(parsed.end_time_ms).toBeCloseTo(0.71556)
+  expect(parsed.spice_options).toEqual({
+    method: "gear",
+    reltol: 0.01,
+    abstol: "1n",
+    vntol: "1u",
+  })
+})
+
 test("simulation_transient_voltage_graph parses required data", () => {
   const graph = simulation_transient_voltage_graph.parse({
     type: "simulation_transient_voltage_graph",

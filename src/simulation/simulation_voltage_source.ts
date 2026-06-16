@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
-import { frequency, rotation, voltage } from "src/units"
+import { frequency, ms, rotation, voltage } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const wave_shape = z.enum(["sinewave", "square", "triangle", "sawtooth"])
@@ -56,6 +56,11 @@ export const simulation_ac_voltage_source = z
     wave_shape: wave_shape.optional(),
     phase: rotation.optional(),
     duty_cycle: percentage.optional(),
+    pulse_delay: ms.optional(),
+    rise_time: ms.optional(),
+    fall_time: ms.optional(),
+    pulse_width: ms.optional(),
+    period: ms.optional(),
   })
   .describe("Defines an AC voltage source for simulation")
 
@@ -104,6 +109,11 @@ export interface SimulationAcVoltageSource {
   wave_shape?: WaveShape
   phase?: number
   duty_cycle?: number
+  pulse_delay?: number // ms
+  rise_time?: number // ms
+  fall_time?: number // ms
+  pulse_width?: number // ms
+  period?: number // ms
 }
 
 export type SimulationVoltageSource =

@@ -3,7 +3,7 @@ import {
   source_component_base,
   type SourceComponentBase,
 } from "src/source/base/source_component_base"
-import { voltage, frequency, rotation } from "../units"
+import { voltage, frequency, ms, rotation } from "../units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const source_simple_voltage_source = source_component_base.extend({
@@ -17,6 +17,11 @@ export const source_simple_voltage_source = source_component_base.extend({
     .number()
     .optional()
     .describe("Duty cycle as a fraction (0 to 1)"),
+  pulse_delay: ms.optional(),
+  rise_time: ms.optional(),
+  fall_time: ms.optional(),
+  pulse_width: ms.optional(),
+  period: ms.optional(),
 })
 
 export type SourceSimpleVoltageSourceInput = z.input<
@@ -37,6 +42,11 @@ export interface SourceSimpleVoltageSource extends SourceComponentBase {
   wave_shape?: "sinewave" | "square" | "triangle" | "sawtooth"
   phase?: number
   duty_cycle?: number
+  pulse_delay?: number // ms
+  rise_time?: number // ms
+  fall_time?: number // ms
+  pulse_width?: number // ms
+  period?: number // ms
 }
 
 expectTypesMatch<SourceSimpleVoltageSource, InferredSourceSimpleVoltageSource>(
