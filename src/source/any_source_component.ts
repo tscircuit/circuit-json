@@ -124,6 +124,10 @@ import {
   type SourceSimpleVoltageProbe,
 } from "./source_simple_voltage_probe"
 import {
+  source_simple_current_probe,
+  type SourceSimpleCurrentProbe,
+} from "./source_simple_current_probe"
+import {
   source_interconnect,
   type SourceInterconnect,
 } from "./source_interconnect"
@@ -166,6 +170,7 @@ export const any_source_component = z.union([
   source_simple_op_amp,
   source_simple_fuse,
   source_simple_voltage_probe,
+  source_simple_current_probe,
   source_interconnect,
   source_simple_voltage_source,
   source_project_metadata,
@@ -211,6 +216,7 @@ export type AnySourceElement =
   | SourceSimpleFuse
   | SourceSimpleOpAmp
   | SourceSimpleVoltageProbe
+  | SourceSimpleCurrentProbe
   | SourceSimpleVoltageSource
   | SourceInterconnect
   | SourceProjectMetadata
