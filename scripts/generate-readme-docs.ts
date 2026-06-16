@@ -30,6 +30,14 @@ function parseExportBlocks(content: string): string[] {
   return blocks
 }
 
+function getDeclarationName(block: string): string | null {
+  return (
+    block.match(/\binterface\s+([A-Za-z0-9_]+)/)?.[1] ??
+    block.match(/\btype\s+([A-Za-z0-9_]+)\s*=/)?.[1] ??
+    null
+  )
+}
+
 interface ElementDoc {
   name: string
   description: string
@@ -151,11 +159,17 @@ async function generateDocs() {
     const descMatch = primaryBlock.match(/\/\*\*\s*(.*?)\s*\*\//)
     const description = descMatch ? descMatch[1]! : ""
 
-    const otherInterfaces = cleanBlocks.filter(
-      (block) =>
+    const otherInterfaces = cleanBlocks.filter((block) => {
+      const declarationName = getDeclarationName(block)
+      if (declarationName === `${primaryName}DisplayOptions`) {
+        return true
+      }
+
+      return (
         !block.includes(`interface ${primaryName}`) &&
-        !block.includes(`type ${primaryName} =`),
-    )
+        !block.includes(`type ${primaryName} =`)
+      )
+    })
 
     sections[section].push({
       name: primaryName,
