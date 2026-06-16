@@ -1,6 +1,5 @@
 import { expect, test } from "bun:test"
-import { resistance } from "../src/units"
-import { parseAndConvertSiUnit } from "../src/utils/convert-si-unit-to-number"
+import { parseAndConvertSiUnit, resistance } from "../src/units"
 
 test("resistance parses common resistor shorthand with case-sensitive prefixes", () => {
   expect(resistance.parse("10m")).toBe(0.01)

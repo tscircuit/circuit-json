@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { parseAndConvertSiUnit } from "../src/utils/convert-si-unit-to-number"
+import { parseAndConvertSiUnit } from "../src/units"
 
 test("parseAndConvertSiUnit", () => {
   expect(parseAndConvertSiUnit(undefined)).toEqual({

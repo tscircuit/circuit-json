@@ -4,10 +4,10 @@ import {
   current,
   frequency,
   inductance,
+  parseAndConvertSiUnit,
   resistance,
   voltage,
 } from "../src/units"
-import { parseAndConvertSiUnit } from "../src/utils/convert-si-unit-to-number"
 
 test("parseAndConvertSiUnit parses bare SI prefixes with expected units", () => {
   expect(parseAndConvertSiUnit("10f", "F").value).toBeCloseTo(10e-15)

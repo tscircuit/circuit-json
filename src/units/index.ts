@@ -1,5 +1,9 @@
-import { parseAndConvertSiUnit } from "src/utils/convert-si-unit-to-number"
+import { parseAndConvertSiUnit } from "format-si-unit"
 import { z } from "zod"
+export {
+  parseAndConvertSiUnit,
+  type BaseTscircuitUnit,
+} from "format-si-unit"
 
 // // Currently, removing uncommon SI Prefixes for type simplicity.
 // export type SIPrefix =
