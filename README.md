@@ -1110,6 +1110,11 @@ interface SourceSimpleVoltageSource extends SourceComponentBase {
   wave_shape?: "sinewave" | "square" | "triangle" | "sawtooth"
   phase?: number
   duty_cycle?: number
+  pulse_delay?: number // ms
+  rise_time?: number // ms
+  fall_time?: number // ms
+  pulse_width?: number // ms
+  period?: number // ms
 }
 ```
 
@@ -3293,6 +3298,14 @@ interface SimulationExperiment {
   time_per_step?: number // ms
   start_time_ms?: number // ms
   end_time_ms?: number // ms
+  spice_options?: SpiceSimulationOptions
+}
+
+interface SpiceSimulationOptions {
+  method?: "trap" | "gear"
+  reltol?: number | string
+  abstol?: number | string
+  vntol?: number | string
 }
 ```
 
@@ -3412,6 +3425,14 @@ interface SimulationVoltageProbe {
   reference_input_source_net_id?: string
   subcircuit_id?: string
   color?: string
+  display_options?: SimulationVoltageProbeDisplayOptions
+}
+
+interface SimulationVoltageProbeDisplayOptions {
+  label?: string
+  center?: number
+  offset_divs?: number
+  units_per_div?: number
 }
 ```
 
@@ -3452,6 +3473,11 @@ interface SimulationAcVoltageSource {
   wave_shape?: WaveShape
   phase?: number
   duty_cycle?: number
+  pulse_delay?: number // ms
+  rise_time?: number // ms
+  fall_time?: number // ms
+  pulse_width?: number // ms
+  period?: number // ms
 }
 ```
 

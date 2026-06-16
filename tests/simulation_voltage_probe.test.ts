@@ -96,6 +96,33 @@ test("simulation_voltage_probe parses with name", () => {
   expect(probe.name).toBe("My Probe")
 })
 
+test("simulation_voltage_probe parses with display options", () => {
+  const input: SimulationVoltageProbeInput = {
+    type: "simulation_voltage_probe",
+    signal_input_source_net_id: "net1",
+    name: "VOUT_PROBE",
+    color: "#315cff",
+    display_options: {
+      label: "VO",
+      center: 3.3,
+      offset_divs: 3,
+      units_per_div: 0.05,
+    },
+  }
+
+  const result = simulation_voltage_probe.parse(input)
+  const probe = result as SimulationVoltageProbe
+
+  expect(probe.display_options).toEqual({
+    label: "VO",
+    center: 3.3,
+    offset_divs: 3,
+    units_per_div: 0.05,
+  })
+  expect(probe.color).toBe("#315cff")
+  expect(() => any_circuit_element.parse(input)).not.toThrow()
+})
+
 test("simulation_voltage_probe (differential) with mixed connections should throw", () => {
   const input: SimulationVoltageProbeInput = {
     type: "simulation_voltage_probe",
