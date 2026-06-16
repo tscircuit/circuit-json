@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { parseAndConvertSiUnit } from "../src/utils/convert-si-unit-to-number"
+import { parseAndConvertSiUnit } from "../src/units"
 
 test("parseAndConvertSiUnit", () => {
   expect(parseAndConvertSiUnit(undefined)).toEqual({
@@ -162,5 +162,35 @@ test("parseAndConvertSiUnit", () => {
     parsedUnit: "kohm",
     unitOfValue: "Ω",
     value: 20000,
+  })
+
+  expect(parseAndConvertSiUnit("10mΩ")).toEqual({
+    parsedUnit: "mΩ",
+    unitOfValue: "Ω",
+    value: 0.01,
+  })
+
+  expect(parseAndConvertSiUnit("10mOhm")).toEqual({
+    parsedUnit: "mOhm",
+    unitOfValue: "Ω",
+    value: 0.01,
+  })
+
+  expect(parseAndConvertSiUnit("10MOhm")).toEqual({
+    parsedUnit: "MOhm",
+    unitOfValue: "Ω",
+    value: 10000000,
+  })
+
+  expect(parseAndConvertSiUnit("10mH")).toEqual({
+    parsedUnit: "mH",
+    unitOfValue: "H",
+    value: 0.01,
+  })
+
+  expect(parseAndConvertSiUnit("10MF")).toEqual({
+    parsedUnit: "MF",
+    unitOfValue: "F",
+    value: 10000000,
   })
 })

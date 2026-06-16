@@ -96,3 +96,25 @@ test("simulation_voltage_source AC with duty_cycle", () => {
   const acSource2 = source2 as SimulationAcVoltageSource
   expect(acSource2.duty_cycle).toBe(0.25)
 })
+
+test("simulation_voltage_source AC with pulse timing controls", () => {
+  const source_obj: SimulationAcVoltageSourceInput = {
+    type: "simulation_voltage_source",
+    is_dc_source: false,
+    voltage: "4.2V",
+    wave_shape: "square",
+    pulse_delay: "1us",
+    rise_time: "1ns",
+    fall_time: "1ns",
+    pulse_width: "2ms",
+    period: "4ms",
+  }
+
+  const source = simulation_voltage_source.parse(source_obj)
+  const acSource = source as SimulationAcVoltageSource
+  expect(acSource.pulse_delay).toBe(0.001)
+  expect(acSource.rise_time).toBe(0.000001)
+  expect(acSource.fall_time).toBe(0.000001)
+  expect(acSource.pulse_width).toBe(2)
+  expect(acSource.period).toBe(4)
+})
