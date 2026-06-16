@@ -56,12 +56,12 @@ import { z } from "zod"
 export const resistance = z
   .string()
   .or(z.number())
-  .transform((v) => parseAndConvertSiUnit(v).value!)
+  .transform((v) => parseAndConvertSiUnit(v, "Ω").value!)
 
 export const capacitance = z
   .string()
   .or(z.number())
-  .transform((v) => parseAndConvertSiUnit(v).value!)
+  .transform((v) => parseAndConvertSiUnit(v, "F").value!)
   .transform((value) => {
     return Number.parseFloat(value.toPrecision(12)) // Round to 12 significant digits
   })
@@ -69,12 +69,12 @@ export const capacitance = z
 export const inductance = z
   .string()
   .or(z.number())
-  .transform((v) => parseAndConvertSiUnit(v).value!)
+  .transform((v) => parseAndConvertSiUnit(v, "H").value!)
 
 export const voltage = z
   .string()
   .or(z.number())
-  .transform((v) => parseAndConvertSiUnit(v).value!)
+  .transform((v) => parseAndConvertSiUnit(v, "V").value!)
 
 export const length = z
   .string()
@@ -84,7 +84,7 @@ export const length = z
 export const frequency = z
   .string()
   .or(z.number())
-  .transform((v) => parseAndConvertSiUnit(v).value!)
+  .transform((v) => parseAndConvertSiUnit(v, "Hz").value!)
 
 /**
  * Length in meters
@@ -97,7 +97,7 @@ export const distance = length
 export const current = z
   .string()
   .or(z.number())
-  .transform((v) => parseAndConvertSiUnit(v).value!)
+  .transform((v) => parseAndConvertSiUnit(v, "A").value!)
 
 export const duration_ms = z
   .string()

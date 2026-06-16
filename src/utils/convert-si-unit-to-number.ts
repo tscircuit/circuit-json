@@ -1,3 +1,5 @@
+import { getSiPrefixMultiplier } from "format-si-unit"
+
 type UnitInfo = {
   baseUnit: BaseTscircuitUnit
   conversionFactor: number
@@ -26,13 +28,29 @@ const unitMappings: Record<
     baseUnit: "Ω",
     variants: {
       mΩ: 1e-3,
+      mohm: 1e-3,
+      mOhm: 1e-3,
+      milliohm: 1e-3,
       Ω: 1,
+      ohm: 1,
+      Ohm: 1,
       kΩ: 1e3,
       KΩ: 1e3,
       kohm: 1e3,
+      kOhm: 1e3,
+      KOhm: 1e3,
+      Kohm: 1e3,
       MΩ: 1e6,
+      Mohm: 1e6,
+      MOhm: 1e6,
+      megohm: 1e6,
+      Megohm: 1e6,
       GΩ: 1e9,
+      Gohm: 1e9,
+      GOhm: 1e9,
       TΩ: 1e12,
+      Tohm: 1e12,
+      TOhm: 1e12,
     },
   },
   V: {
@@ -67,6 +85,23 @@ const unitMappings: Record<
       uF: 1e-6,
       mF: 1e-3,
       F: 1,
+      kF: 1e3,
+      KF: 1e3,
+      MF: 1e6,
+    },
+  },
+  H: {
+    baseUnit: "H",
+    variants: {
+      pH: 1e-12,
+      nH: 1e-9,
+      µH: 1e-6,
+      uH: 1e-6,
+      mH: 1e-3,
+      H: 1,
+      kH: 1e3,
+      KH: 1e3,
+      MH: 1e6,
     },
   },
   ml: {
@@ -134,6 +169,20 @@ function getBaseTscircuitUnit(unit: string): UnitInfo {
         conversionFactor: info.variants[unit]!,
       }
     }
+
+    for (const [variant, conversionFactor] of Object.entries(info.variants)) {
+      if (!unit.endsWith(variant)) continue
+
+      const prefix = unit.slice(0, -variant.length)
+      const prefixMultiplier = getSiPrefixMultiplier(prefix)
+
+      if (prefixMultiplier == null) continue
+
+      return {
+        baseUnit: info.baseUnit,
+        conversionFactor: prefixMultiplier * conversionFactor,
+      }
+    }
   }
   return {
     baseUnit: unit as BaseTscircuitUnit,
@@ -141,29 +190,6 @@ function getBaseTscircuitUnit(unit: string): UnitInfo {
   }
 }
 
-const si_prefix_multiplier = {
-  tera: 1e12,
-  T: 1e12,
-  giga: 1e9,
-  G: 1e9,
-  mega: 1e6,
-  M: 1e6,
-  kilo: 1e3,
-  k: 1e3,
-  deci: 1e-1,
-  d: 1e-1,
-  centi: 1e-2,
-  c: 1e-2,
-  milli: 1e-3,
-  m: 1e-3,
-  micro: 1e-6,
-  u: 1e-6,
-  µ: 1e-6,
-  nano: 1e-9,
-  n: 1e-9,
-  pico: 1e-12,
-  p: 1e-12,
-}
 type BaseTscircuitUnit =
   | "ms"
   | "mm"
@@ -177,15 +203,21 @@ type BaseTscircuitUnit =
   | "F"
   | "H"
 
-export function parseAndConvertSiUnit(v: {
-  x: string | number
-  y: string | number
-}): {
+export function parseAndConvertSiUnit(
+  v: {
+    x: string | number
+    y: string | number
+  },
+  unitOfValue?: BaseTscircuitUnit,
+): {
   parsedUnit: string | null
   unitOfValue: BaseTscircuitUnit | null
   value: { x: number; y: number } | null
 }
-export function parseAndConvertSiUnit(v: string | number | undefined | null): {
+export function parseAndConvertSiUnit(
+  v: string | number | undefined | null,
+  unitOfValue?: BaseTscircuitUnit,
+): {
   parsedUnit: string | null
   unitOfValue: BaseTscircuitUnit | null
   value: number | null
@@ -197,6 +229,7 @@ export function parseAndConvertSiUnit(
     | undefined
     | null
     | { x: string | number; y: string | number },
+  unitOfValue?: BaseTscircuitUnit,
 ): {
   parsedUnit: string | null
   unitOfValue: BaseTscircuitUnit | null
@@ -213,15 +246,15 @@ export function parseAndConvertSiUnit(
   if (typeof v === "number")
     return { value: v, parsedUnit: null, unitOfValue: null }
   if (typeof v === "object" && "x" in v && "y" in v) {
-    const { parsedUnit, unitOfValue } = parseAndConvertSiUnit(v.x)
-    const xResult = parseAndConvertSiUnit(v.x)
-    const yResult = parseAndConvertSiUnit(v.y)
+    const firstResult = parseAndConvertSiUnit(v.x, unitOfValue)
+    const xResult = parseAndConvertSiUnit(v.x, unitOfValue)
+    const yResult = parseAndConvertSiUnit(v.y, unitOfValue)
     if (xResult.value === null || yResult.value === null) {
       return { parsedUnit: null, unitOfValue: null, value: null }
     }
     return {
-      parsedUnit: parsedUnit,
-      unitOfValue: unitOfValue,
+      parsedUnit: firstResult.parsedUnit,
+      unitOfValue: firstResult.unitOfValue,
       value: {
         x: xResult.value,
         y: yResult.value,
@@ -236,16 +269,23 @@ export function parseAndConvertSiUnit(
   const unit = unit_reversed.split("").reverse().join("")
 
   const numberPart = v.slice(0, -unit.length)
+  const bareSiPrefixMultiplier = getSiPrefixMultiplier(unit)
+  if (unitOfValue && bareSiPrefixMultiplier != null) {
+    return {
+      parsedUnit: null,
+      unitOfValue,
+      value: Number.parseFloat(numberPart) * bareSiPrefixMultiplier,
+    }
+  }
+
   if (
-    unit in si_prefix_multiplier &&
+    bareSiPrefixMultiplier != null &&
     !unitMappingAndVariantSuffixes.has(unit)
   ) {
-    const siMultiplier =
-      si_prefix_multiplier[unit as keyof typeof si_prefix_multiplier]
     return {
       parsedUnit: null,
       unitOfValue: null,
-      value: Number.parseFloat(numberPart) * siMultiplier,
+      value: Number.parseFloat(numberPart) * bareSiPrefixMultiplier,
     }
   }
 
