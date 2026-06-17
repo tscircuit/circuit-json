@@ -32,6 +32,10 @@ import {
   type SourceSimpleCurrentSource,
 } from "./source_simple_current_source"
 import {
+  source_simple_current_probe,
+  type SourceSimpleCurrentProbe,
+} from "./source_simple_current_probe"
+import {
   source_simple_battery,
   type SourceSimpleBattery,
 } from "./source_simple_battery"
@@ -150,6 +154,7 @@ export const any_source_component = z.union([
   source_simple_chip,
   source_simple_power_source,
   source_simple_current_source,
+  source_simple_current_probe,
   source_simple_battery,
   source_simple_inductor,
   source_simple_push_button,
@@ -195,6 +200,7 @@ export type AnySourceElement =
   | SourceSimpleChip
   | SourceSimplePowerSource
   | SourceSimpleCurrentSource
+  | SourceSimpleCurrentProbe
   | SourceSimpleBattery
   | SourceSimpleInductor
   | SourceSimplePushButton

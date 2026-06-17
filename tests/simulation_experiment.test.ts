@@ -4,6 +4,8 @@ import {
   simulation_experiment,
 } from "../src/simulation/simulation_experiment"
 import { simulation_transient_voltage_graph } from "../src/simulation/simulation_transient_voltage_graph"
+import { simulation_transient_current_graph } from "../src/simulation/simulation_transient_current_graph"
+import { any_circuit_element } from "../src/any_circuit_element"
 
 test("simulation_experiment requires valid experiment_type", () => {
   const parsed = simulation_experiment.parse({
@@ -58,6 +60,27 @@ test("simulation_transient_voltage_graph parses required data", () => {
   expect(graph.simulation_transient_voltage_graph_id).toBeString()
   expect(graph.simulation_experiment_id).toBe("simulation_experiment_123")
   expect(graph.voltage_levels).toEqual([0, 1, 0.5])
+  expect(graph.timestamps_ms).toBeUndefined()
+  expect(graph.time_per_step).toBe(0.1)
+  expect(graph.start_time_ms).toBe(0)
+  expect(graph.end_time_ms).toBe(2)
+  expect(() => any_circuit_element.parse(graph)).not.toThrow()
+})
+
+test("simulation_transient_current_graph parses required data", () => {
+  const graph = simulation_transient_current_graph.parse({
+    type: "simulation_transient_current_graph",
+    simulation_experiment_id: "simulation_experiment_123",
+    current_levels: [0, 0.01, 0.005],
+    time_per_step: "0.1ms",
+    start_time_ms: "0ms",
+    end_time_ms: "2ms",
+    name: "Output current",
+  })
+
+  expect(graph.simulation_transient_current_graph_id).toBeString()
+  expect(graph.simulation_experiment_id).toBe("simulation_experiment_123")
+  expect(graph.current_levels).toEqual([0, 0.01, 0.005])
   expect(graph.timestamps_ms).toBeUndefined()
   expect(graph.time_per_step).toBe(0.1)
   expect(graph.start_time_ms).toBe(0)
