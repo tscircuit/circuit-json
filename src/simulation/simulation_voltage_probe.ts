@@ -16,10 +16,6 @@ export const simulation_voltage_probe = z
     reference_input_source_net_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     color: z.string().optional(),
-    display_name: z.string().optional(),
-    display_center_value: z.number().optional(),
-    display_center_offset_divs: z.number().optional(),
-    volts_per_div: z.number().optional(),
   })
   .describe(
     "Defines a voltage probe for simulation. If a reference input is not provided, it measures against ground. If a reference input is provided, it measures the differential voltage between two points.",
@@ -88,10 +84,6 @@ type InferredSimulationVoltageProbe = z.infer<typeof simulation_voltage_probe>
  * Defines a voltage probe for simulation. If a reference input is not provided,
  * it measures against ground. If a reference input is provided, it measures
  * the differential voltage between two points.
- *
- * Scope display fields map measured volts into display divisions using
- * display_div = display_center_offset_divs + (raw_voltage - display_center_value) / volts_per_div.
- * They describe visual scaling only, not the measured signal itself.
  */
 export interface SimulationVoltageProbe {
   type: "simulation_voltage_probe"
@@ -104,10 +96,6 @@ export interface SimulationVoltageProbe {
   reference_input_source_net_id?: string
   subcircuit_id?: string
   color?: string
-  display_name?: string
-  display_center_value?: number
-  display_center_offset_divs?: number
-  volts_per_div?: number
 }
 
 expectTypesMatch<SimulationVoltageProbe, InferredSimulationVoltageProbe>(true)

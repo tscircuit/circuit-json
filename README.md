@@ -193,6 +193,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationCurrentSource](#simulationcurrentsource)
     - [SimulationExperiment](#simulationexperiment)
     - [SimulationOpAmp](#simulationopamp)
+    - [SimulationOscilloscopeTrace](#simulationoscilloscopetrace)
     - [SimulationSpiceSubcircuit](#simulationspicesubcircuit)
     - [SimulationSwitch](#simulationswitch)
     - [SimulationTransientCurrentGraph](#simulationtransientcurrentgraph)
@@ -3267,11 +3268,7 @@ interface SchematicVoltageProbe {
 
 ```typescript
 /** Defines a current probe for simulation. It measures current flowing from the
- * positive endpoint to the negative endpoint.
- *
- * Scope display fields map measured amps into display divisions using
- * display_div = display_center_offset_divs + (raw_current - display_center_value) / amps_per_div.
- * They describe visual scaling only, not the measured signal itself. */
+ * positive endpoint to the negative endpoint. */
 interface SimulationCurrentProbe {
   type: "simulation_current_probe"
   simulation_current_probe_id: string
@@ -3283,10 +3280,6 @@ interface SimulationCurrentProbe {
   negative_source_net_id?: string
   subcircuit_id?: string
   color?: string
-  display_name?: string
-  display_center_value?: number
-  display_center_offset_divs?: number
-  amps_per_div?: number
 }
 ```
 
@@ -3371,6 +3364,34 @@ interface SimulationOpAmp {
   output_source_port_id: string
   positive_supply_source_port_id: string
   negative_supply_source_port_id: string
+}
+```
+
+### SimulationOscilloscopeTrace
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_oscilloscope_trace.ts)
+
+```typescript
+/** Defines how a simulation measurement is rendered as an oscilloscope-style
+ * trace. Display fields live here because they describe the relationship
+ * between measurement data and a graph, not the probe itself.
+ *
+ * Scope display fields map measured values into display divisions using
+ * display_div = display_center_offset_divs + (raw_value - display_center_value) / units_per_div.
+ * Use volts_per_div for voltage traces and amps_per_div for current traces. */
+interface SimulationOscilloscopeTrace {
+  type: "simulation_oscilloscope_trace"
+  simulation_oscilloscope_trace_id: string
+  simulation_transient_voltage_graph_id?: string
+  simulation_transient_current_graph_id?: string
+  simulation_voltage_probe_id?: string
+  simulation_current_probe_id?: string
+  display_name?: string
+  color?: string
+  display_center_value?: number
+  display_center_offset_divs?: number
+  volts_per_div?: number
+  amps_per_div?: number
 }
 ```
 
@@ -3479,11 +3500,7 @@ interface SimulationUnknownExperimentError extends BaseCircuitJsonError {
 ```typescript
 /** Defines a voltage probe for simulation. If a reference input is not provided,
  * it measures against ground. If a reference input is provided, it measures
- * the differential voltage between two points.
- *
- * Scope display fields map measured volts into display divisions using
- * display_div = display_center_offset_divs + (raw_voltage - display_center_value) / volts_per_div.
- * They describe visual scaling only, not the measured signal itself. */
+ * the differential voltage between two points. */
 interface SimulationVoltageProbe {
   type: "simulation_voltage_probe"
   simulation_voltage_probe_id: string
@@ -3495,10 +3512,6 @@ interface SimulationVoltageProbe {
   reference_input_source_net_id?: string
   subcircuit_id?: string
   color?: string
-  display_name?: string
-  display_center_value?: number
-  display_center_offset_divs?: number
-  volts_per_div?: number
 }
 ```
 
