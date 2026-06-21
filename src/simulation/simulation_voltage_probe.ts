@@ -2,13 +2,6 @@ import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-export const simulation_voltage_probe_display_options = z.object({
-  label: z.string().optional(),
-  center: z.number().optional(),
-  offset_divs: z.number().optional(),
-  units_per_div: z.number().optional(),
-})
-
 export const simulation_voltage_probe = z
   .object({
     type: z.literal("simulation_voltage_probe"),
@@ -23,7 +16,10 @@ export const simulation_voltage_probe = z
     reference_input_source_net_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     color: z.string().optional(),
-    display_options: simulation_voltage_probe_display_options.optional(),
+    display_name: z.string().optional(),
+    display_center_value: z.number().optional(),
+    display_center_offset_divs: z.number().optional(),
+    volts_per_div: z.number().optional(),
   })
   .describe(
     "Defines a voltage probe for simulation. If a reference input is not provided, it measures against ground. If a reference input is provided, it measures the differential voltage between two points.",
@@ -87,14 +83,15 @@ export type SimulationVoltageProbeInput = z.input<
   typeof simulation_voltage_probe
 >
 type InferredSimulationVoltageProbe = z.infer<typeof simulation_voltage_probe>
-type InferredSimulationVoltageProbeDisplayOptions = z.infer<
-  typeof simulation_voltage_probe_display_options
->
 
 /**
  * Defines a voltage probe for simulation. If a reference input is not provided,
  * it measures against ground. If a reference input is provided, it measures
  * the differential voltage between two points.
+ *
+ * Scope display fields map measured volts into display divisions using
+ * display_div = display_center_offset_divs + (raw_voltage - display_center_value) / volts_per_div.
+ * They describe visual scaling only, not the measured signal itself.
  */
 export interface SimulationVoltageProbe {
   type: "simulation_voltage_probe"
@@ -107,18 +104,10 @@ export interface SimulationVoltageProbe {
   reference_input_source_net_id?: string
   subcircuit_id?: string
   color?: string
-  display_options?: SimulationVoltageProbeDisplayOptions
+  display_name?: string
+  display_center_value?: number
+  display_center_offset_divs?: number
+  volts_per_div?: number
 }
 
-export interface SimulationVoltageProbeDisplayOptions {
-  label?: string
-  center?: number
-  offset_divs?: number
-  units_per_div?: number
-}
-
-expectTypesMatch<
-  SimulationVoltageProbeDisplayOptions,
-  InferredSimulationVoltageProbeDisplayOptions
->(true)
 expectTypesMatch<SimulationVoltageProbe, InferredSimulationVoltageProbe>(true)

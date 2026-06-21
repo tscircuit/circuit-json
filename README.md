@@ -70,6 +70,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourcePort](#sourceport)
     - [SourceProjectMetadata](#sourceprojectmetadata)
     - [SourcePropertyIgnoredWarning](#sourcepropertyignoredwarning)
+    - [SourceSimpleAmmeter](#sourcesimpleammeter)
     - [SourceSimpleBattery](#sourcesimplebattery)
     - [SourceSimpleCapacitor](#sourcesimplecapacitor)
     - [SourceSimpleChip](#sourcesimplechip)
@@ -188,11 +189,13 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicTrace](#schematictrace)
     - [SchematicVoltageProbe](#schematicvoltageprobe)
   - [Simulation Elements](#simulation-elements)
+    - [SimulationCurrentProbe](#simulationcurrentprobe)
     - [SimulationCurrentSource](#simulationcurrentsource)
     - [SimulationExperiment](#simulationexperiment)
     - [SimulationOpAmp](#simulationopamp)
     - [SimulationSpiceSubcircuit](#simulationspicesubcircuit)
     - [SimulationSwitch](#simulationswitch)
+    - [SimulationTransientCurrentGraph](#simulationtransientcurrentgraph)
     - [SimulationTransientVoltageGraph](#simulationtransientvoltagegraph)
     - [SimulationUnknownExperimentError](#simulationunknownexperimenterror)
     - [SimulationVoltageProbe](#simulationvoltageprobe)
@@ -734,6 +737,19 @@ interface SourcePropertyIgnoredWarning {
   subcircuit_id?: string
   error_type: "source_property_ignored_warning"
   message: string
+}
+```
+
+### SourceSimpleAmmeter
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_ammeter.ts)
+
+Defines a simple ammeter component for simulation and measurement
+
+```typescript
+/** Defines a simple ammeter component for simulation and measurement */
+interface SourceSimpleAmmeter extends SourceComponentBase {
+  ftype: "simple_ammeter"
 }
 ```
 
@@ -3245,6 +3261,35 @@ interface SchematicVoltageProbe {
 
 ## Simulation Elements
 
+### SimulationCurrentProbe
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_current_probe.ts)
+
+```typescript
+/** Defines a current probe for simulation. It measures current flowing from the
+ * positive endpoint to the negative endpoint.
+ *
+ * Scope display fields map measured amps into display divisions using
+ * display_div = display_center_offset_divs + (raw_current - display_center_value) / amps_per_div.
+ * They describe visual scaling only, not the measured signal itself. */
+interface SimulationCurrentProbe {
+  type: "simulation_current_probe"
+  simulation_current_probe_id: string
+  source_component_id?: string
+  name?: string
+  positive_source_port_id?: string
+  negative_source_port_id?: string
+  positive_source_net_id?: string
+  negative_source_net_id?: string
+  subcircuit_id?: string
+  color?: string
+  display_name?: string
+  display_center_value?: number
+  display_center_offset_divs?: number
+  amps_per_div?: number
+}
+```
+
 ### SimulationCurrentSource
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_current_source.ts)
@@ -3368,6 +3413,27 @@ interface SimulationSwitch {
 }
 ```
 
+### SimulationTransientCurrentGraph
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_transient_current_graph.ts)
+
+```typescript
+interface SimulationTransientCurrentGraph {
+  type: "simulation_transient_current_graph"
+  simulation_transient_current_graph_id: string
+  simulation_experiment_id: string
+  timestamps_ms?: number[]
+  current_levels: number[]
+  source_component_id?: string
+  subcircuit_connectivity_map_key?: string
+  time_per_step: number
+  start_time_ms: number
+  end_time_ms: number
+  name?: string
+  color?: string
+}
+```
+
 ### SimulationTransientVoltageGraph
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_transient_voltage_graph.ts)
@@ -3413,7 +3479,11 @@ interface SimulationUnknownExperimentError extends BaseCircuitJsonError {
 ```typescript
 /** Defines a voltage probe for simulation. If a reference input is not provided,
  * it measures against ground. If a reference input is provided, it measures
- * the differential voltage between two points. */
+ * the differential voltage between two points.
+ *
+ * Scope display fields map measured volts into display divisions using
+ * display_div = display_center_offset_divs + (raw_voltage - display_center_value) / volts_per_div.
+ * They describe visual scaling only, not the measured signal itself. */
 interface SimulationVoltageProbe {
   type: "simulation_voltage_probe"
   simulation_voltage_probe_id: string
@@ -3425,14 +3495,10 @@ interface SimulationVoltageProbe {
   reference_input_source_net_id?: string
   subcircuit_id?: string
   color?: string
-  display_options?: SimulationVoltageProbeDisplayOptions
-}
-
-interface SimulationVoltageProbeDisplayOptions {
-  label?: string
-  center?: number
-  offset_divs?: number
-  units_per_div?: number
+  display_name?: string
+  display_center_value?: number
+  display_center_offset_divs?: number
+  volts_per_div?: number
 }
 ```
 

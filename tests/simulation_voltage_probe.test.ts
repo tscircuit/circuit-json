@@ -96,29 +96,25 @@ test("simulation_voltage_probe parses with name", () => {
   expect(probe.name).toBe("My Probe")
 })
 
-test("simulation_voltage_probe parses with display options", () => {
+test("simulation_voltage_probe parses with scope display fields", () => {
   const input: SimulationVoltageProbeInput = {
     type: "simulation_voltage_probe",
     signal_input_source_net_id: "net1",
     name: "VOUT_PROBE",
     color: "#315cff",
-    display_options: {
-      label: "VO",
-      center: 3.3,
-      offset_divs: 3,
-      units_per_div: 0.05,
-    },
+    display_name: "VO",
+    display_center_value: 3.3,
+    display_center_offset_divs: 3,
+    volts_per_div: 0.05,
   }
 
   const result = simulation_voltage_probe.parse(input)
   const probe = result as SimulationVoltageProbe
 
-  expect(probe.display_options).toEqual({
-    label: "VO",
-    center: 3.3,
-    offset_divs: 3,
-    units_per_div: 0.05,
-  })
+  expect(probe.display_name).toBe("VO")
+  expect(probe.display_center_value).toBe(3.3)
+  expect(probe.display_center_offset_divs).toBe(3)
+  expect(probe.volts_per_div).toBe(0.05)
   expect(probe.color).toBe("#315cff")
   expect(() => any_circuit_element.parse(input)).not.toThrow()
 })

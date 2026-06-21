@@ -2,13 +2,6 @@ import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-export const simulation_current_probe_display_options = z.object({
-  label: z.string().optional(),
-  center: z.number().optional(),
-  offset_divs: z.number().optional(),
-  units_per_div: z.number().optional(),
-})
-
 export const simulation_current_probe = z
   .object({
     type: z.literal("simulation_current_probe"),
@@ -23,7 +16,10 @@ export const simulation_current_probe = z
     negative_source_net_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     color: z.string().optional(),
-    display_options: simulation_current_probe_display_options.optional(),
+    display_name: z.string().optional(),
+    display_center_value: z.number().optional(),
+    display_center_offset_divs: z.number().optional(),
+    amps_per_div: z.number().optional(),
   })
   .describe(
     "Defines a current probe for simulation. It measures current flowing from the positive endpoint to the negative endpoint.",
@@ -77,13 +73,14 @@ export type SimulationCurrentProbeInput = z.input<
   typeof simulation_current_probe
 >
 type InferredSimulationCurrentProbe = z.infer<typeof simulation_current_probe>
-type InferredSimulationCurrentProbeDisplayOptions = z.infer<
-  typeof simulation_current_probe_display_options
->
 
 /**
  * Defines a current probe for simulation. It measures current flowing from the
  * positive endpoint to the negative endpoint.
+ *
+ * Scope display fields map measured amps into display divisions using
+ * display_div = display_center_offset_divs + (raw_current - display_center_value) / amps_per_div.
+ * They describe visual scaling only, not the measured signal itself.
  */
 export interface SimulationCurrentProbe {
   type: "simulation_current_probe"
@@ -96,18 +93,10 @@ export interface SimulationCurrentProbe {
   negative_source_net_id?: string
   subcircuit_id?: string
   color?: string
-  display_options?: SimulationCurrentProbeDisplayOptions
+  display_name?: string
+  display_center_value?: number
+  display_center_offset_divs?: number
+  amps_per_div?: number
 }
 
-export interface SimulationCurrentProbeDisplayOptions {
-  label?: string
-  center?: number
-  offset_divs?: number
-  units_per_div?: number
-}
-
-expectTypesMatch<
-  SimulationCurrentProbeDisplayOptions,
-  InferredSimulationCurrentProbeDisplayOptions
->(true)
 expectTypesMatch<SimulationCurrentProbe, InferredSimulationCurrentProbe>(true)
