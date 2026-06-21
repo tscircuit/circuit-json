@@ -2,13 +2,6 @@ import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-export const simulation_current_probe_display_options = z.object({
-  label: z.string().optional(),
-  center: z.number().optional(),
-  offset_divs: z.number().optional(),
-  units_per_div: z.number().optional(),
-})
-
 export const simulation_current_probe = z
   .object({
     type: z.literal("simulation_current_probe"),
@@ -23,7 +16,6 @@ export const simulation_current_probe = z
     negative_source_net_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     color: z.string().optional(),
-    display_options: simulation_current_probe_display_options.optional(),
   })
   .describe(
     "Defines a current probe for simulation. It measures current flowing from the positive endpoint to the negative endpoint.",
@@ -77,9 +69,6 @@ export type SimulationCurrentProbeInput = z.input<
   typeof simulation_current_probe
 >
 type InferredSimulationCurrentProbe = z.infer<typeof simulation_current_probe>
-type InferredSimulationCurrentProbeDisplayOptions = z.infer<
-  typeof simulation_current_probe_display_options
->
 
 /**
  * Defines a current probe for simulation. It measures current flowing from the
@@ -96,18 +85,6 @@ export interface SimulationCurrentProbe {
   negative_source_net_id?: string
   subcircuit_id?: string
   color?: string
-  display_options?: SimulationCurrentProbeDisplayOptions
 }
 
-export interface SimulationCurrentProbeDisplayOptions {
-  label?: string
-  center?: number
-  offset_divs?: number
-  units_per_div?: number
-}
-
-expectTypesMatch<
-  SimulationCurrentProbeDisplayOptions,
-  InferredSimulationCurrentProbeDisplayOptions
->(true)
 expectTypesMatch<SimulationCurrentProbe, InferredSimulationCurrentProbe>(true)
