@@ -70,6 +70,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourcePort](#sourceport)
     - [SourceProjectMetadata](#sourceprojectmetadata)
     - [SourcePropertyIgnoredWarning](#sourcepropertyignoredwarning)
+    - [SourceSimpleAmmeter](#sourcesimpleammeter)
     - [SourceSimpleBattery](#sourcesimplebattery)
     - [SourceSimpleCapacitor](#sourcesimplecapacitor)
     - [SourceSimpleChip](#sourcesimplechip)
@@ -188,11 +189,14 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicTrace](#schematictrace)
     - [SchematicVoltageProbe](#schematicvoltageprobe)
   - [Simulation Elements](#simulation-elements)
+    - [SimulationCurrentProbe](#simulationcurrentprobe)
     - [SimulationCurrentSource](#simulationcurrentsource)
     - [SimulationExperiment](#simulationexperiment)
     - [SimulationOpAmp](#simulationopamp)
+    - [SimulationOscilloscopeTrace](#simulationoscilloscopetrace)
     - [SimulationSpiceSubcircuit](#simulationspicesubcircuit)
     - [SimulationSwitch](#simulationswitch)
+    - [SimulationTransientCurrentGraph](#simulationtransientcurrentgraph)
     - [SimulationTransientVoltageGraph](#simulationtransientvoltagegraph)
     - [SimulationUnknownExperimentError](#simulationunknownexperimenterror)
     - [SimulationVoltageProbe](#simulationvoltageprobe)
@@ -734,6 +738,19 @@ interface SourcePropertyIgnoredWarning {
   subcircuit_id?: string
   error_type: "source_property_ignored_warning"
   message: string
+}
+```
+
+### SourceSimpleAmmeter
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_ammeter.ts)
+
+Defines a simple ammeter component for simulation and measurement
+
+```typescript
+/** Defines a simple ammeter component for simulation and measurement */
+interface SourceSimpleAmmeter extends SourceComponentBase {
+  ftype: "simple_ammeter"
 }
 ```
 
@@ -3245,6 +3262,27 @@ interface SchematicVoltageProbe {
 
 ## Simulation Elements
 
+### SimulationCurrentProbe
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_current_probe.ts)
+
+```typescript
+/** Defines a current probe for simulation. It measures current flowing from the
+ * positive endpoint to the negative endpoint. */
+interface SimulationCurrentProbe {
+  type: "simulation_current_probe"
+  simulation_current_probe_id: string
+  source_component_id?: string
+  name?: string
+  positive_source_port_id?: string
+  negative_source_port_id?: string
+  positive_source_net_id?: string
+  negative_source_net_id?: string
+  subcircuit_id?: string
+  color?: string
+}
+```
+
 ### SimulationCurrentSource
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_current_source.ts)
@@ -3329,6 +3367,34 @@ interface SimulationOpAmp {
 }
 ```
 
+### SimulationOscilloscopeTrace
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_oscilloscope_trace.ts)
+
+```typescript
+/** Defines how a simulation measurement is rendered as an oscilloscope-style
+ * trace. Display fields live here because they describe the relationship
+ * between measurement data and a graph, not the probe itself.
+ *
+ * Scope display fields map measured values into display divisions using
+ * display_div = display_center_offset_divs + (raw_value - display_center_value) / units_per_div.
+ * Use volts_per_div for voltage traces and amps_per_div for current traces. */
+interface SimulationOscilloscopeTrace {
+  type: "simulation_oscilloscope_trace"
+  simulation_oscilloscope_trace_id: string
+  simulation_transient_voltage_graph_id?: string
+  simulation_transient_current_graph_id?: string
+  simulation_voltage_probe_id?: string
+  simulation_current_probe_id?: string
+  display_name?: string
+  color?: string
+  display_center_value?: number
+  display_center_offset_divs?: number
+  volts_per_div?: number
+  amps_per_div?: number
+}
+```
+
 ### SimulationSpiceSubcircuit
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_spice_subcircuit.ts)
@@ -3365,6 +3431,27 @@ interface SimulationSwitch {
   opens_at?: number
   starts_closed?: boolean
   switching_frequency?: number
+}
+```
+
+### SimulationTransientCurrentGraph
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_transient_current_graph.ts)
+
+```typescript
+interface SimulationTransientCurrentGraph {
+  type: "simulation_transient_current_graph"
+  simulation_transient_current_graph_id: string
+  simulation_experiment_id: string
+  timestamps_ms?: number[]
+  current_levels: number[]
+  source_component_id?: string
+  subcircuit_connectivity_map_key?: string
+  time_per_step: number
+  start_time_ms: number
+  end_time_ms: number
+  name?: string
+  color?: string
 }
 ```
 
@@ -3425,14 +3512,6 @@ interface SimulationVoltageProbe {
   reference_input_source_net_id?: string
   subcircuit_id?: string
   color?: string
-  display_options?: SimulationVoltageProbeDisplayOptions
-}
-
-interface SimulationVoltageProbeDisplayOptions {
-  label?: string
-  center?: number
-  offset_divs?: number
-  units_per_div?: number
 }
 ```
 

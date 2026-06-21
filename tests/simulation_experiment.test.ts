@@ -5,6 +5,7 @@ import {
 } from "../src/simulation/simulation_experiment"
 import { simulation_transient_voltage_graph } from "../src/simulation/simulation_transient_voltage_graph"
 import { simulation_transient_current_graph } from "../src/simulation/simulation_transient_current_graph"
+import { simulation_oscilloscope_trace } from "../src/simulation/simulation_oscilloscope_trace"
 import { any_circuit_element } from "../src/any_circuit_element"
 
 test("simulation_experiment requires valid experiment_type", () => {
@@ -85,4 +86,55 @@ test("simulation_transient_current_graph parses required data", () => {
   expect(graph.time_per_step).toBe(0.1)
   expect(graph.start_time_ms).toBe(0)
   expect(graph.end_time_ms).toBe(2)
+})
+
+test("simulation_oscilloscope_trace configures voltage graph display", () => {
+  const trace = simulation_oscilloscope_trace.parse({
+    type: "simulation_oscilloscope_trace",
+    simulation_transient_voltage_graph_id:
+      "simulation_transient_voltage_graph_123",
+    display_name: "VOUT",
+    color: "#315cff",
+    display_center_value: 3.3,
+    display_center_offset_divs: 3,
+    volts_per_div: 0.05,
+  })
+
+  expect(trace.simulation_oscilloscope_trace_id).toBeString()
+  expect(trace.display_name).toBe("VOUT")
+  expect(trace.display_center_value).toBe(3.3)
+  expect(trace.display_center_offset_divs).toBe(3)
+  expect(trace.volts_per_div).toBe(0.05)
+  expect(() => any_circuit_element.parse(trace)).not.toThrow()
+})
+
+test("simulation_oscilloscope_trace configures current probe display", () => {
+  const trace = simulation_oscilloscope_trace.parse({
+    type: "simulation_oscilloscope_trace",
+    simulation_current_probe_id: "simulation_current_probe_123",
+    display_name: "IOUT",
+    amps_per_div: 0.001,
+  })
+
+  expect(trace.simulation_current_probe_id).toBe("simulation_current_probe_123")
+  expect(trace.amps_per_div).toBe(0.001)
+  expect(() => any_circuit_element.parse(trace)).not.toThrow()
+})
+
+test("simulation_oscilloscope_trace rejects ambiguous references and units", () => {
+  expect(() =>
+    simulation_oscilloscope_trace.parse({
+      type: "simulation_oscilloscope_trace",
+      simulation_voltage_probe_id: "simulation_voltage_probe_123",
+      simulation_current_probe_id: "simulation_current_probe_123",
+    }),
+  ).toThrow()
+
+  expect(() =>
+    simulation_oscilloscope_trace.parse({
+      type: "simulation_oscilloscope_trace",
+      simulation_voltage_probe_id: "simulation_voltage_probe_123",
+      amps_per_div: 0.001,
+    }),
+  ).toThrow()
 })
