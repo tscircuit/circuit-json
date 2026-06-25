@@ -68,6 +68,7 @@ export const any_circuit_element = z.union([
   pcb.pcb_net,
   pcb.pcb_text,
   pcb.pcb_trace,
+  pcb.pcb_trace_preview,
   pcb.pcb_trace_warning,
   pcb.pcb_via,
   pcb.pcb_smtpad,
