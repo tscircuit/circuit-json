@@ -795,6 +795,7 @@ Defines a simple integrated circuit component
 /** Defines a simple integrated circuit component */
 interface SourceSimpleChip extends SourceComponentBase {
   ftype: "simple_chip"
+  footprint_variant?: string
 }
 ```
 

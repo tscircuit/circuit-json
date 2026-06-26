@@ -15,6 +15,7 @@ interface SourceSimpleChip {
   source_component_id: string
   name: string
   manufacturer_part_number?: string
+  footprint_variant?: string
   supplier_part_numbers?: Partial<Record<string, string[]>>
   display_value?: string
 }

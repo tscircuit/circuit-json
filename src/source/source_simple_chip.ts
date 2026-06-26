@@ -7,6 +7,7 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const source_simple_chip = source_component_base.extend({
   ftype: z.literal("simple_chip"),
+  footprint_variant: z.string().optional(),
 })
 
 export type SourceSimpleChipInput = z.input<typeof source_simple_chip>
@@ -17,6 +18,7 @@ type InferredSourceSimpleChip = z.infer<typeof source_simple_chip>
  */
 export interface SourceSimpleChip extends SourceComponentBase {
   ftype: "simple_chip"
+  footprint_variant?: string
 }
 
 expectTypesMatch<SourceSimpleChip, InferredSourceSimpleChip>(true)
