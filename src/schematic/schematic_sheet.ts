@@ -25,7 +25,7 @@ export interface SchematicSheet {
   schematic_sheet_id: string
   name?: string
   subcircuit_id?: string
-  sheet_color?: string
+  sheet_outline_color?: string
 }
 
 expectTypesMatch<SchematicSheet, InferredSchematicSheet>(true)
