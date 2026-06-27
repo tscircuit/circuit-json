@@ -8,6 +8,7 @@ export const schematic_sheet = z
     schematic_sheet_id: getZodPrefixedIdWithDefault("schematic_sheet"),
     name: z.string().optional(),
     subcircuit_id: z.string().optional(),
+    sheet_color: z.string().optional()
   })
   .describe(
     "Defines a schematic sheet or page that components can be placed on",
@@ -24,6 +25,7 @@ export interface SchematicSheet {
   schematic_sheet_id: string
   name?: string
   subcircuit_id?: string
+  sheet_color?: string
 }
 
 expectTypesMatch<SchematicSheet, InferredSchematicSheet>(true)
