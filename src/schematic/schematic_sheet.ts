@@ -8,7 +8,7 @@ export const schematic_sheet = z
     schematic_sheet_id: getZodPrefixedIdWithDefault("schematic_sheet"),
     name: z.string().optional(),
     subcircuit_id: z.string().optional(),
-    sheet_outline_color: z.string().optional()
+    outline_color: z.string().optional()
   })
   .describe(
     "Defines a schematic sheet or page that components can be placed on",
