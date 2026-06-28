@@ -3143,6 +3143,7 @@ interface SchematicSheet {
   type: "schematic_sheet"
   schematic_sheet_id: string
   name?: string
+  sheet_index?: number
   subcircuit_id?: string
   outline_color?: string
 }
