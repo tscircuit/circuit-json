@@ -6,6 +6,7 @@ export interface SchematicPort {
   type: "schematic_port"
   schematic_port_id: string
   source_port_id: string
+  schematic_sheet_id?: string
   schematic_component_id?: string
   center: Point
   facing_direction?: "up" | "down" | "left" | "right"
@@ -26,6 +27,7 @@ export const schematic_port = z
     type: z.literal("schematic_port"),
     schematic_port_id: z.string(),
     source_port_id: z.string(),
+    schematic_sheet_id: z.string().optional(),
     schematic_component_id: z.string().optional(),
     center: point,
     facing_direction: z.enum(["up", "down", "left", "right"]).optional(),

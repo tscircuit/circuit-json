@@ -19,6 +19,7 @@ export interface SchematicTraceEdge {
 export interface SchematicTrace {
   type: "schematic_trace"
   schematic_trace_id: string
+  schematic_sheet_id?: string
   source_trace_id?: string
   junctions: {
     x: number
@@ -33,6 +34,7 @@ export interface SchematicTrace {
 export const schematic_trace = z.object({
   type: z.literal("schematic_trace"),
   schematic_trace_id: z.string(),
+  schematic_sheet_id: z.string().optional(),
   source_trace_id: z.string().optional(),
   junctions: z.array(
     z.object({

@@ -1148,6 +1148,7 @@ interface SourceTrace {
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
   max_length?: number
+  name?: string
   display_name?: string
   min_trace_thickness?: number
 }
@@ -2776,6 +2777,7 @@ Draws a styled arc on the schematic
 interface SchematicArc {
   type: "schematic_arc"
   schematic_arc_id: string
+  schematic_sheet_id?: string
   schematic_component_id?: string
   schematic_symbol_id?: string
   center: Point
@@ -2797,6 +2799,7 @@ interface SchematicArc {
 ```typescript
 interface SchematicBox {
   type: "schematic_box"
+  schematic_sheet_id?: string
   schematic_component_id?: string
   schematic_symbol_id?: string
   width: number
@@ -2819,6 +2822,7 @@ Draws a styled circle on the schematic
 interface SchematicCircle {
   type: "schematic_circle"
   schematic_circle_id: string
+  schematic_sheet_id?: string
   schematic_component_id?: string
   schematic_symbol_id?: string
   center: Point
@@ -2843,6 +2847,7 @@ interface SchematicComponent {
   center: Point
   source_component_id?: string
   schematic_component_id: string
+  schematic_sheet_id?: string
   schematic_symbol_id?: string
   pin_spacing?: number
   pin_styles?: Record<
@@ -2949,6 +2954,7 @@ Defines a group of components on the schematic
 interface SchematicGroup {
   type: "schematic_group"
   schematic_group_id: string
+  schematic_sheet_id?: string
   source_group_id: string
   is_subcircuit?: boolean
   subcircuit_id?: string
@@ -2988,6 +2994,7 @@ Draws a styled line on the schematic
 interface SchematicLine {
   type: "schematic_line"
   schematic_line_id: string
+  schematic_sheet_id?: string
   schematic_component_id?: string
   schematic_symbol_id?: string
   x1: number
@@ -3031,6 +3038,7 @@ interface SchematicManualEditConflictWarning {
 interface SchematicNetLabel {
   type: "schematic_net_label"
   schematic_net_label_id: string
+  schematic_sheet_id?: string
   schematic_trace_id?: string
   source_trace_id?: string
   source_net_id: string
@@ -3055,6 +3063,7 @@ interface SchematicNetLabel {
 interface SchematicPath {
   type: "schematic_path"
   schematic_path_id: string
+  schematic_sheet_id?: string
   schematic_component_id?: string
   schematic_symbol_id?: string
   fill_color?: string
@@ -3078,6 +3087,7 @@ interface SchematicPort {
   type: "schematic_port"
   schematic_port_id: string
   source_port_id: string
+  schematic_sheet_id?: string
   schematic_component_id?: string
   center: Point
   facing_direction?: "up" | "down" | "left" | "right"
@@ -3105,6 +3115,7 @@ Draws a styled rectangle on the schematic
 interface SchematicRect {
   type: "schematic_rect"
   schematic_rect_id: string
+  schematic_sheet_id?: string
   schematic_component_id?: string
   schematic_symbol_id?: string
   center: Point
@@ -3133,6 +3144,7 @@ interface SchematicSheet {
   schematic_sheet_id: string
   name?: string
   subcircuit_id?: string
+  outline_color?: string
 }
 ```
 
@@ -3160,6 +3172,7 @@ Defines a table on the schematic, useful for displaying data in a structured for
 interface SchematicTable {
   type: "schematic_table"
   schematic_table_id: string
+  schematic_sheet_id?: string
   anchor_position: Point
   column_widths: Length[]
   row_heights: Length[]
@@ -3182,6 +3195,7 @@ Defines a cell within a schematic_table
 interface SchematicTableCell {
   type: "schematic_table_cell"
   schematic_table_cell_id: string
+  schematic_sheet_id?: string
   schematic_table_id: string
   start_row_index: number
   end_row_index: number
@@ -3205,6 +3219,7 @@ interface SchematicTableCell {
 ```typescript
 interface SchematicText {
   type: "schematic_text"
+  schematic_sheet_id?: string
   schematic_component_id?: string
   schematic_symbol_id?: string
   schematic_text_id: string
@@ -3249,6 +3264,7 @@ interface SchematicTraceEdge {
 interface SchematicVoltageProbe {
   type: "schematic_voltage_probe"
   schematic_voltage_probe_id: string
+  schematic_sheet_id?: string
   source_component_id?: string
   name?: string
   position: Point

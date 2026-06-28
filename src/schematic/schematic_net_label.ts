@@ -6,6 +6,7 @@ import { getZodPrefixedIdWithDefault } from "src/common"
 export interface SchematicNetLabel {
   type: "schematic_net_label"
   schematic_net_label_id: string
+  schematic_sheet_id?: string
   schematic_trace_id?: string
   source_trace_id?: string
   source_net_id: string
@@ -25,6 +26,7 @@ export interface SchematicNetLabel {
 export const schematic_net_label = z.object({
   type: z.literal("schematic_net_label"),
   schematic_net_label_id: getZodPrefixedIdWithDefault("schematic_net_label"),
+  schematic_sheet_id: z.string().optional(),
   schematic_trace_id: z.string().optional(),
   source_trace_id: z.string().optional(),
   source_net_id: z.string(),

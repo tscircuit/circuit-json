@@ -8,6 +8,7 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 export interface SchematicArc {
   type: "schematic_arc"
   schematic_arc_id: string
+  schematic_sheet_id?: string
   schematic_component_id?: string
   schematic_symbol_id?: string
   center: Point
@@ -25,6 +26,7 @@ export const schematic_arc = z
   .object({
     type: z.literal("schematic_arc"),
     schematic_arc_id: getZodPrefixedIdWithDefault("schematic_arc"),
+    schematic_sheet_id: z.string().optional(),
     schematic_component_id: z.string().optional(),
     schematic_symbol_id: z.string().optional(),
     center: point,
