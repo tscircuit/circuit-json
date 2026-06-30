@@ -1189,8 +1189,6 @@ interface SourceUnnamedTraceWarning {
   warning_type: "source_unnamed_trace_warning"
   message: string
   source_trace_id: string
-  connected_source_port_ids?: string[]
-  connected_source_net_ids?: string[]
   subcircuit_id?: string
 }
 ```

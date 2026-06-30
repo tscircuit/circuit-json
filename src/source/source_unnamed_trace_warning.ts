@@ -13,8 +13,6 @@ export const source_unnamed_trace_warning = z
       .default("source_unnamed_trace_warning"),
     message: z.string(),
     source_trace_id: z.string(),
-    connected_source_port_ids: z.array(z.string()).optional(),
-    connected_source_net_ids: z.array(z.string()).optional(),
     subcircuit_id: z.string().optional(),
   })
   .describe("Warning emitted when a source trace is missing a name")
@@ -35,8 +33,6 @@ export interface SourceUnnamedTraceWarning {
   warning_type: "source_unnamed_trace_warning"
   message: string
   source_trace_id: string
-  connected_source_port_ids?: string[]
-  connected_source_net_ids?: string[]
   subcircuit_id?: string
 }
 

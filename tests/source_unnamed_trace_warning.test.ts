@@ -7,8 +7,6 @@ test("source_unnamed_trace_warning parses", () => {
     type: "source_unnamed_trace_warning",
     message: "Trace is missing a name",
     source_trace_id: "source_trace_0",
-    connected_source_port_ids: ["source_port_0", "source_port_1"],
-    connected_source_net_ids: ["source_net_0"],
   })
 
   expect(warning.source_unnamed_trace_warning_id).toBeDefined()
