@@ -99,6 +99,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceSimpleVoltageSource](#sourcesimplevoltagesource)
     - [SourceTrace](#sourcetrace)
     - [SourceTraceNotConnectedError](#sourcetracenotconnectederror)
+    - [SourceUnnamedTraceWarning](#sourceunnamedtracewarning)
     - [UnknownErrorFindingPart](#unknownerrorfindingpart)
   - [CAD Components](#cad-components)
     - [CadComponent](#cadcomponent)
@@ -1171,6 +1172,26 @@ interface SourceTraceNotConnectedError extends BaseCircuitJsonError {
   source_trace_id?: string
   connected_source_port_ids?: string[]
   selectors_not_found?: string[]
+}
+```
+
+### SourceUnnamedTraceWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_unnamed_trace_warning.ts)
+
+Warning emitted when a source trace is missing a name
+
+```typescript
+/** Warning emitted when a source trace is missing a name */
+interface SourceUnnamedTraceWarning {
+  type: "source_unnamed_trace_warning"
+  source_unnamed_trace_warning_id: string
+  warning_type: "source_unnamed_trace_warning"
+  message: string
+  source_trace_id: string
+  connected_source_port_ids?: string[]
+  connected_source_net_ids?: string[]
+  subcircuit_id?: string
 }
 ```
 
