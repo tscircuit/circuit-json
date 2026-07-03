@@ -7,6 +7,7 @@ export const schematic_group = z
   .object({
     type: z.literal("schematic_group"),
     schematic_group_id: getZodPrefixedIdWithDefault("schematic_group"),
+    schematic_sheet_id: z.string().optional(),
     source_group_id: z.string(),
     is_subcircuit: z.boolean().optional(),
     subcircuit_id: z.string().optional(),
@@ -29,6 +30,7 @@ type InferredSchematicGroup = z.infer<typeof schematic_group>
 export interface SchematicGroup {
   type: "schematic_group"
   schematic_group_id: string
+  schematic_sheet_id?: string
   source_group_id: string
   is_subcircuit?: boolean
   subcircuit_id?: string

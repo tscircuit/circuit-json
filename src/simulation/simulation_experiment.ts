@@ -12,6 +12,22 @@ export const experiment_type = z.union([
 
 export type ExperimentType = z.infer<typeof experiment_type>
 
+export const spice_simulation_options = z
+  .object({
+    method: z.enum(["trap", "gear"]).optional(),
+    reltol: z.union([z.number(), z.string()]).optional(),
+    abstol: z.union([z.number(), z.string()]).optional(),
+    vntol: z.union([z.number(), z.string()]).optional(),
+  })
+  .describe("SPICE solver options for a simulation experiment")
+
+export interface SpiceSimulationOptions {
+  method?: "trap" | "gear"
+  reltol?: number | string
+  abstol?: number | string
+  vntol?: number | string
+}
+
 export interface SimulationExperiment {
   type: "simulation_experiment"
   simulation_experiment_id: string
@@ -20,6 +36,7 @@ export interface SimulationExperiment {
   time_per_step?: number // ms
   start_time_ms?: number // ms
   end_time_ms?: number // ms
+  spice_options?: SpiceSimulationOptions
 }
 
 export const simulation_experiment = z
@@ -33,6 +50,7 @@ export const simulation_experiment = z
     time_per_step: duration_ms.optional(),
     start_time_ms: ms.optional(),
     end_time_ms: ms.optional(),
+    spice_options: spice_simulation_options.optional(),
   })
   .describe("Defines a simulation experiment configuration")
 

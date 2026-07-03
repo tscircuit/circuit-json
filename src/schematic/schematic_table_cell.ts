@@ -9,6 +9,7 @@ export const schematic_table_cell = z
     schematic_table_cell_id: getZodPrefixedIdWithDefault(
       "schematic_table_cell",
     ),
+    schematic_sheet_id: z.string().optional(),
     schematic_table_id: z.string(),
     start_row_index: z.number(),
     end_row_index: z.number(),
@@ -34,6 +35,7 @@ type InferredSchematicTableCell = z.infer<typeof schematic_table_cell>
 export interface SchematicTableCell {
   type: "schematic_table_cell"
   schematic_table_cell_id: string
+  schematic_sheet_id?: string
   schematic_table_id: string
   start_row_index: number
   end_row_index: number

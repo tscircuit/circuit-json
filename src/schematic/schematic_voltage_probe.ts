@@ -10,6 +10,7 @@ import {
 export interface SchematicVoltageProbe {
   type: "schematic_voltage_probe"
   schematic_voltage_probe_id: string
+  schematic_sheet_id?: string
   source_component_id?: string
   name?: string
   position: Point
@@ -24,6 +25,7 @@ export const schematic_voltage_probe = z
   .object({
     type: z.literal("schematic_voltage_probe"),
     schematic_voltage_probe_id: z.string(),
+    schematic_sheet_id: z.string().optional(),
     source_component_id: z.string().optional(),
     name: z.string().optional(),
     position: point,

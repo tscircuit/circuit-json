@@ -70,6 +70,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourcePort](#sourceport)
     - [SourceProjectMetadata](#sourceprojectmetadata)
     - [SourcePropertyIgnoredWarning](#sourcepropertyignoredwarning)
+    - [SourceSimpleAmmeter](#sourcesimpleammeter)
     - [SourceSimpleBattery](#sourcesimplebattery)
     - [SourceSimpleCapacitor](#sourcesimplecapacitor)
     - [SourceSimpleChip](#sourcesimplechip)
@@ -98,6 +99,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceSimpleVoltageSource](#sourcesimplevoltagesource)
     - [SourceTrace](#sourcetrace)
     - [SourceTraceNotConnectedError](#sourcetracenotconnectederror)
+    - [SourceUnnamedTraceWarning](#sourceunnamedtracewarning)
     - [UnknownErrorFindingPart](#unknownerrorfindingpart)
   - [CAD Components](#cad-components)
     - [CadComponent](#cadcomponent)
@@ -188,11 +190,14 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicTrace](#schematictrace)
     - [SchematicVoltageProbe](#schematicvoltageprobe)
   - [Simulation Elements](#simulation-elements)
+    - [SimulationCurrentProbe](#simulationcurrentprobe)
     - [SimulationCurrentSource](#simulationcurrentsource)
     - [SimulationExperiment](#simulationexperiment)
     - [SimulationOpAmp](#simulationopamp)
+    - [SimulationOscilloscopeTrace](#simulationoscilloscopetrace)
     - [SimulationSpiceSubcircuit](#simulationspicesubcircuit)
     - [SimulationSwitch](#simulationswitch)
+    - [SimulationTransientCurrentGraph](#simulationtransientcurrentgraph)
     - [SimulationTransientVoltageGraph](#simulationtransientvoltagegraph)
     - [SimulationUnknownExperimentError](#simulationunknownexperimenterror)
     - [SimulationVoltageProbe](#simulationvoltageprobe)
@@ -737,6 +742,19 @@ interface SourcePropertyIgnoredWarning {
 }
 ```
 
+### SourceSimpleAmmeter
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_ammeter.ts)
+
+Defines a simple ammeter component for simulation and measurement
+
+```typescript
+/** Defines a simple ammeter component for simulation and measurement */
+interface SourceSimpleAmmeter extends SourceComponentBase {
+  ftype: "simple_ammeter"
+}
+```
+
 ### SourceSimpleBattery
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_battery.ts)
@@ -1110,6 +1128,11 @@ interface SourceSimpleVoltageSource extends SourceComponentBase {
   wave_shape?: "sinewave" | "square" | "triangle" | "sawtooth"
   phase?: number
   duty_cycle?: number
+  pulse_delay?: number // ms
+  rise_time?: number // ms
+  fall_time?: number // ms
+  pulse_width?: number // ms
+  period?: number // ms
 }
 ```
 
@@ -1126,6 +1149,7 @@ interface SourceTrace {
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
   max_length?: number
+  name?: string
   display_name?: string
   min_trace_thickness?: number
 }
@@ -1148,6 +1172,24 @@ interface SourceTraceNotConnectedError extends BaseCircuitJsonError {
   source_trace_id?: string
   connected_source_port_ids?: string[]
   selectors_not_found?: string[]
+}
+```
+
+### SourceUnnamedTraceWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_unnamed_trace_warning.ts)
+
+Warning emitted when a source trace is missing a name
+
+```typescript
+/** Warning emitted when a source trace is missing a name */
+interface SourceUnnamedTraceWarning {
+  type: "source_unnamed_trace_warning"
+  source_unnamed_trace_warning_id: string
+  warning_type: "source_unnamed_trace_warning"
+  message: string
+  source_trace_id: string
+  subcircuit_id?: string
 }
 ```
 
@@ -2754,6 +2796,7 @@ Draws a styled arc on the schematic
 interface SchematicArc {
   type: "schematic_arc"
   schematic_arc_id: string
+  schematic_sheet_id?: string
   schematic_component_id?: string
   schematic_symbol_id?: string
   center: Point
@@ -2775,6 +2818,7 @@ interface SchematicArc {
 ```typescript
 interface SchematicBox {
   type: "schematic_box"
+  schematic_sheet_id?: string
   schematic_component_id?: string
   schematic_symbol_id?: string
   width: number
@@ -2797,6 +2841,7 @@ Draws a styled circle on the schematic
 interface SchematicCircle {
   type: "schematic_circle"
   schematic_circle_id: string
+  schematic_sheet_id?: string
   schematic_component_id?: string
   schematic_symbol_id?: string
   center: Point
@@ -2821,6 +2866,7 @@ interface SchematicComponent {
   center: Point
   source_component_id?: string
   schematic_component_id: string
+  schematic_sheet_id?: string
   schematic_symbol_id?: string
   pin_spacing?: number
   pin_styles?: Record<
@@ -2927,6 +2973,7 @@ Defines a group of components on the schematic
 interface SchematicGroup {
   type: "schematic_group"
   schematic_group_id: string
+  schematic_sheet_id?: string
   source_group_id: string
   is_subcircuit?: boolean
   subcircuit_id?: string
@@ -2966,6 +3013,7 @@ Draws a styled line on the schematic
 interface SchematicLine {
   type: "schematic_line"
   schematic_line_id: string
+  schematic_sheet_id?: string
   schematic_component_id?: string
   schematic_symbol_id?: string
   x1: number
@@ -3009,6 +3057,7 @@ interface SchematicManualEditConflictWarning {
 interface SchematicNetLabel {
   type: "schematic_net_label"
   schematic_net_label_id: string
+  schematic_sheet_id?: string
   schematic_trace_id?: string
   source_trace_id?: string
   source_net_id: string
@@ -3033,6 +3082,7 @@ interface SchematicNetLabel {
 interface SchematicPath {
   type: "schematic_path"
   schematic_path_id: string
+  schematic_sheet_id?: string
   schematic_component_id?: string
   schematic_symbol_id?: string
   fill_color?: string
@@ -3056,6 +3106,7 @@ interface SchematicPort {
   type: "schematic_port"
   schematic_port_id: string
   source_port_id: string
+  schematic_sheet_id?: string
   schematic_component_id?: string
   center: Point
   facing_direction?: "up" | "down" | "left" | "right"
@@ -3083,6 +3134,7 @@ Draws a styled rectangle on the schematic
 interface SchematicRect {
   type: "schematic_rect"
   schematic_rect_id: string
+  schematic_sheet_id?: string
   schematic_component_id?: string
   schematic_symbol_id?: string
   center: Point
@@ -3110,7 +3162,9 @@ interface SchematicSheet {
   type: "schematic_sheet"
   schematic_sheet_id: string
   name?: string
+  sheet_index?: number
   subcircuit_id?: string
+  outline_color?: string
 }
 ```
 
@@ -3138,6 +3192,7 @@ Defines a table on the schematic, useful for displaying data in a structured for
 interface SchematicTable {
   type: "schematic_table"
   schematic_table_id: string
+  schematic_sheet_id?: string
   anchor_position: Point
   column_widths: Length[]
   row_heights: Length[]
@@ -3160,6 +3215,7 @@ Defines a cell within a schematic_table
 interface SchematicTableCell {
   type: "schematic_table_cell"
   schematic_table_cell_id: string
+  schematic_sheet_id?: string
   schematic_table_id: string
   start_row_index: number
   end_row_index: number
@@ -3183,6 +3239,7 @@ interface SchematicTableCell {
 ```typescript
 interface SchematicText {
   type: "schematic_text"
+  schematic_sheet_id?: string
   schematic_component_id?: string
   schematic_symbol_id?: string
   schematic_text_id: string
@@ -3227,6 +3284,7 @@ interface SchematicTraceEdge {
 interface SchematicVoltageProbe {
   type: "schematic_voltage_probe"
   schematic_voltage_probe_id: string
+  schematic_sheet_id?: string
   source_component_id?: string
   name?: string
   position: Point
@@ -3239,6 +3297,27 @@ interface SchematicVoltageProbe {
 ```
 
 ## Simulation Elements
+
+### SimulationCurrentProbe
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_current_probe.ts)
+
+```typescript
+/** Defines a current probe for simulation. It measures current flowing from the
+ * positive endpoint to the negative endpoint. */
+interface SimulationCurrentProbe {
+  type: "simulation_current_probe"
+  simulation_current_probe_id: string
+  source_component_id?: string
+  name?: string
+  positive_source_port_id?: string
+  negative_source_port_id?: string
+  positive_source_net_id?: string
+  negative_source_net_id?: string
+  subcircuit_id?: string
+  color?: string
+}
+```
 
 ### SimulationCurrentSource
 
@@ -3293,6 +3372,14 @@ interface SimulationExperiment {
   time_per_step?: number // ms
   start_time_ms?: number // ms
   end_time_ms?: number // ms
+  spice_options?: SpiceSimulationOptions
+}
+
+interface SpiceSimulationOptions {
+  method?: "trap" | "gear"
+  reltol?: number | string
+  abstol?: number | string
+  vntol?: number | string
 }
 ```
 
@@ -3313,6 +3400,34 @@ interface SimulationOpAmp {
   output_source_port_id: string
   positive_supply_source_port_id: string
   negative_supply_source_port_id: string
+}
+```
+
+### SimulationOscilloscopeTrace
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_oscilloscope_trace.ts)
+
+```typescript
+/** Defines how a simulation measurement is rendered as an oscilloscope-style
+ * trace. Display fields live here because they describe the relationship
+ * between measurement data and a graph, not the probe itself.
+ *
+ * Scope display fields map measured values into display divisions using
+ * display_div = display_center_offset_divs + (raw_value - display_center_value) / units_per_div.
+ * Use volts_per_div for voltage traces and amps_per_div for current traces. */
+interface SimulationOscilloscopeTrace {
+  type: "simulation_oscilloscope_trace"
+  simulation_oscilloscope_trace_id: string
+  simulation_transient_voltage_graph_id?: string
+  simulation_transient_current_graph_id?: string
+  simulation_voltage_probe_id?: string
+  simulation_current_probe_id?: string
+  display_name?: string
+  color?: string
+  display_center_value?: number
+  display_center_offset_divs?: number
+  volts_per_div?: number
+  amps_per_div?: number
 }
 ```
 
@@ -3352,6 +3467,27 @@ interface SimulationSwitch {
   opens_at?: number
   starts_closed?: boolean
   switching_frequency?: number
+}
+```
+
+### SimulationTransientCurrentGraph
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_transient_current_graph.ts)
+
+```typescript
+interface SimulationTransientCurrentGraph {
+  type: "simulation_transient_current_graph"
+  simulation_transient_current_graph_id: string
+  simulation_experiment_id: string
+  timestamps_ms?: number[]
+  current_levels: number[]
+  source_component_id?: string
+  subcircuit_connectivity_map_key?: string
+  time_per_step: number
+  start_time_ms: number
+  end_time_ms: number
+  name?: string
+  color?: string
 }
 ```
 
@@ -3452,6 +3588,11 @@ interface SimulationAcVoltageSource {
   wave_shape?: WaveShape
   phase?: number
   duty_cycle?: number
+  pulse_delay?: number // ms
+  rise_time?: number // ms
+  fall_time?: number // ms
+  pulse_width?: number // ms
+  period?: number // ms
 }
 ```
 

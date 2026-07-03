@@ -7,6 +7,7 @@ import { distance } from "../units"
 export interface SchematicPath {
   type: "schematic_path"
   schematic_path_id: string
+  schematic_sheet_id?: string
   schematic_component_id?: string
   schematic_symbol_id?: string
   fill_color?: string
@@ -23,6 +24,7 @@ export interface SchematicPath {
 export const schematic_path = z.object({
   type: z.literal("schematic_path"),
   schematic_path_id: getZodPrefixedIdWithDefault("schematic_path"),
+  schematic_sheet_id: z.string().optional(),
   schematic_component_id: z.string().optional(),
   schematic_symbol_id: z.string().optional(),
   fill_color: z.string().optional(),
