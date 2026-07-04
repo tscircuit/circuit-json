@@ -9,7 +9,7 @@ test("source_refdes_convention_warning parses", () => {
       'Component C1 has ftype="simple_resistor" but reference designator should start with R',
     source_component_id: "source_component_0",
     refdes: "C1",
-    ftype: "simple_resistor",
+    source_component_ftype: "simple_resistor",
     expected_prefixes: ["R"],
     actual_prefix: "C",
   })
@@ -29,7 +29,7 @@ test("any_circuit_element includes source_refdes_convention_warning", () => {
       'Component C1 has ftype="simple_resistor" but reference designator should start with R',
     source_component_id: "source_component_0",
     refdes: "C1",
-    ftype: "simple_resistor",
+    source_component_ftype: "simple_resistor",
     expected_prefixes: ["R"],
     actual_prefix: "C",
   })

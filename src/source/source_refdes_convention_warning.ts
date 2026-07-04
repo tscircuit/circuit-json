@@ -14,7 +14,7 @@ export const source_refdes_convention_warning = z
     message: z.string(),
     source_component_id: z.string(),
     refdes: z.string(),
-    ftype: z.string(),
+    source_component_ftype: z.string(),
     expected_prefixes: z.array(z.string()),
     actual_prefix: z.string().optional(),
     subcircuit_id: z.string().optional(),
@@ -40,7 +40,7 @@ export interface SourceRefdesConventionWarning {
   message: string
   source_component_id: string
   refdes: string
-  ftype: string
+  source_component_ftype: string
   expected_prefixes: string[]
   actual_prefix?: string
   subcircuit_id?: string
