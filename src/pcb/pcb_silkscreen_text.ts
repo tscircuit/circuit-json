@@ -36,6 +36,7 @@ export const pcb_silkscreen_text = z
     ccw_rotation: z.number().optional(),
     layer: layer_ref,
     is_mirrored: z.boolean().default(false).optional(),
+    keep_upright: z.boolean().default(false).optional(),
     anchor_position: point.default({ x: 0, y: 0 }),
     anchor_alignment: ninePointAnchor.default("center"),
   })
@@ -66,6 +67,12 @@ export interface PcbSilkscreenText {
   ccw_rotation?: number
   layer: LayerRef
   is_mirrored?: boolean
+  /**
+   * When true, a renderer should keep the text readable ("keep upright",
+   * like KiCad) by flipping any ccw_rotation that would render it upside-down,
+   * rather than drawing the raw rotation. Defaults to false.
+   */
+  keep_upright?: boolean
   anchor_position: Point
   anchor_alignment: NinePointAnchor
 }
