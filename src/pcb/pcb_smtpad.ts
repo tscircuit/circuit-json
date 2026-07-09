@@ -19,6 +19,7 @@ const pcb_smtpad_circle = z.object({
   pcb_port_id: z.string().optional(),
   is_covered_with_solder_mask: z.boolean().optional(),
   soldermask_margin: z.number().optional(),
+  solver_mask: z.boolean().optional(),
 })
 
 const pcb_smtpad_rect = z.object({
@@ -39,6 +40,7 @@ const pcb_smtpad_rect = z.object({
   pcb_port_id: z.string().optional(),
   is_covered_with_solder_mask: z.boolean().optional(),
   soldermask_margin: z.number().optional(),
+  solver_mask: z.boolean().optional(),
   soldermask_margin_left: z.number().optional(),
   soldermask_margin_top: z.number().optional(),
   soldermask_margin_right: z.number().optional(),
@@ -64,6 +66,7 @@ const pcb_smtpad_rotated_rect = z.object({
   pcb_port_id: z.string().optional(),
   is_covered_with_solder_mask: z.boolean().optional(),
   soldermask_margin: z.number().optional(),
+  solver_mask: z.boolean().optional(),
   soldermask_margin_left: z.number().optional(),
   soldermask_margin_top: z.number().optional(),
   soldermask_margin_right: z.number().optional(),
@@ -87,6 +90,7 @@ export const pcb_smtpad_pill = z.object({
   pcb_port_id: z.string().optional(),
   is_covered_with_solder_mask: z.boolean().optional(),
   soldermask_margin: z.number().optional(),
+  solver_mask: z.boolean().optional(),
 })
 const pcb_smtpad_rotated_pill = z.object({
   type: z.literal("pcb_smtpad"),
@@ -106,6 +110,7 @@ const pcb_smtpad_rotated_pill = z.object({
   pcb_port_id: z.string().optional(),
   is_covered_with_solder_mask: z.boolean().optional(),
   soldermask_margin: z.number().optional(),
+  solver_mask: z.boolean().optional(),
 })
 
 const pcb_smtpad_polygon = z.object({
@@ -121,6 +126,7 @@ const pcb_smtpad_polygon = z.object({
   pcb_port_id: z.string().optional(),
   is_covered_with_solder_mask: z.boolean().optional(),
   soldermask_margin: z.number().optional(),
+  solver_mask: z.boolean().optional(),
 })
 
 export const pcb_smtpad = z
@@ -160,6 +166,7 @@ export interface PcbSmtPadCircle {
   pcb_port_id?: string
   is_covered_with_solder_mask?: boolean
   soldermask_margin?: number
+  solver_mask?: boolean
 }
 
 /**
@@ -183,6 +190,7 @@ export interface PcbSmtPadRect {
   pcb_port_id?: string
   is_covered_with_solder_mask?: boolean
   soldermask_margin?: number
+  solver_mask?: boolean
   soldermask_margin_left?: number
   soldermask_margin_top?: number
   soldermask_margin_right?: number
@@ -211,6 +219,7 @@ export interface PcbSmtPadRotatedRect {
   pcb_port_id?: string
   is_covered_with_solder_mask?: boolean
   soldermask_margin?: number
+  solver_mask?: boolean
   soldermask_margin_left?: number
   soldermask_margin_top?: number
   soldermask_margin_right?: number
@@ -236,6 +245,7 @@ export interface PcbSmtPadPill {
   pcb_port_id?: string
   is_covered_with_solder_mask?: boolean
   soldermask_margin?: number
+  solver_mask?: boolean
 }
 
 /**
@@ -259,6 +269,7 @@ export interface PcbSmtPadRotatedPill {
   pcb_port_id?: string
   is_covered_with_solder_mask?: boolean
   soldermask_margin?: number
+  solver_mask?: boolean
 }
 
 /**
@@ -277,6 +288,7 @@ export interface PcbSmtPadPolygon {
   pcb_port_id?: string
   is_covered_with_solder_mask?: boolean
   soldermask_margin?: number
+  solver_mask?: boolean
 }
 
 export type PcbSmtPad =
