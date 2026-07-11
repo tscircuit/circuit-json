@@ -14,6 +14,7 @@ export * from "./pcb_solder_paste"
 export * from "./pcb_text"
 export * from "./pcb_trace"
 export * from "./pcb_trace_warning"
+export * from "./pcb_trace_too_long_warning"
 export * from "./pcb_trace_error"
 export * from "./pcb_trace_missing_error"
 export * from "./pcb_port_not_matched_error"
@@ -82,6 +83,7 @@ import type { PcbSolderPaste } from "./pcb_solder_paste"
 import type { PcbText } from "./pcb_text"
 import type { PcbTrace } from "./pcb_trace"
 import type { PcbTraceWarning } from "./pcb_trace_warning"
+import type { PcbTraceTooLongWarning } from "./pcb_trace_too_long_warning"
 import type { PcbTraceError } from "./pcb_trace_error"
 import type { PcbTraceMissingError } from "./pcb_trace_missing_error"
 import type { PcbPortNotMatchedError } from "./pcb_port_not_matched_error"
@@ -146,6 +148,7 @@ export type PcbCircuitElement =
   | PcbText
   | PcbTrace
   | PcbTraceWarning
+  | PcbTraceTooLongWarning
   | PcbTraceError
   | PcbTraceMissingError
   | PcbMissingFootprintError

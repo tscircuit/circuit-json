@@ -163,6 +163,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbTraceError](#pcbtraceerror)
     - [PcbTraceHint](#pcbtracehint)
     - [PcbTraceMissingError](#pcbtracemissingerror)
+    - [PcbTraceTooLongWarning](#pcbtracetoolongwarning)
     - [PcbTraceWarning](#pcbtracewarning)
     - [PcbVia](#pcbvia)
     - [PcbViaClearanceError](#pcbviaclearanceerror)
@@ -2680,6 +2681,28 @@ interface PcbTraceMissingError extends BaseCircuitJsonError {
   source_trace_id: string
   pcb_component_ids: string[]
   pcb_port_ids: string[]
+  subcircuit_id?: string
+}
+```
+
+### PcbTraceTooLongWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_trace_too_long_warning.ts)
+
+Warning emitted when a PCB trace is longer than its maximum allowed length
+
+```typescript
+/** Warning emitted when a PCB trace is longer than its maximum allowed length */
+interface PcbTraceTooLongWarning {
+  type: "pcb_trace_too_long_warning"
+  pcb_trace_too_long_warning_id: string
+  warning_type: "pcb_trace_too_long_warning"
+  message: string
+  pcb_trace_id: string
+  source_net_id?: string
+  source_trace_id?: string
+  actual_trace_length: Distance
+  maximum_trace_length: Distance
   subcircuit_id?: string
 }
 ```
