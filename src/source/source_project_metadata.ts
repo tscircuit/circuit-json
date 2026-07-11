@@ -7,6 +7,7 @@ export interface SourceProjectMetadata {
   name?: string
   software_used_string?: string
   project_url?: string
+  source_filesystem_md5_hash?: string
   created_at?: string // ISO8601 timestamp
 }
 
@@ -15,6 +16,7 @@ export const source_project_metadata = z.object({
   name: z.string().optional(),
   software_used_string: z.string().optional(),
   project_url: z.string().optional(),
+  source_filesystem_md5_hash: z.string().optional(),
   created_at: timestamp.optional(),
 })
 

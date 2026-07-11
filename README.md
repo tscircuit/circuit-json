@@ -720,6 +720,7 @@ interface SourceProjectMetadata {
   name?: string
   software_used_string?: string
   project_url?: string
+  source_filesystem_md5_hash?: string
   created_at?: string // ISO8601 timestamp
 }
 ```
