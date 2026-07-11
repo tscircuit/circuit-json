@@ -14,7 +14,8 @@ export const pcb_trace_too_long_warning = z
       .default("pcb_trace_too_long_warning"),
     message: z.string(),
     pcb_trace_id: z.string(),
-    source_trace_id: z.string(),
+    source_net_id: z.string().optional(),
+    source_trace_id: z.string().optional(),
     actual_trace_length: distance,
     maximum_trace_length: distance,
     subcircuit_id: z.string().optional(),
@@ -35,7 +36,8 @@ export interface PcbTraceTooLongWarning {
   warning_type: "pcb_trace_too_long_warning"
   message: string
   pcb_trace_id: string
-  source_trace_id: string
+  source_net_id?: string
+  source_trace_id?: string
   actual_trace_length: Distance
   maximum_trace_length: Distance
   subcircuit_id?: string

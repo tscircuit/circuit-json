@@ -2699,7 +2699,8 @@ interface PcbTraceTooLongWarning {
   warning_type: "pcb_trace_too_long_warning"
   message: string
   pcb_trace_id: string
-  source_trace_id: string
+  source_net_id?: string
+  source_trace_id?: string
   actual_trace_length: Distance
   maximum_trace_length: Distance
   subcircuit_id?: string
