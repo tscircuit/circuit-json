@@ -28,6 +28,7 @@ test("simulation_experiment parses start time and spice options", () => {
     time_per_step: "5ns",
     start_time_ms: "697.58us",
     end_time_ms: "715.56us",
+    timeout_ms: "2s",
     spice_options: {
       method: "gear",
       reltol: 0.01,
@@ -39,6 +40,7 @@ test("simulation_experiment parses start time and spice options", () => {
   expect(parsed.time_per_step).toBeCloseTo(0.000005)
   expect(parsed.start_time_ms).toBeCloseTo(0.69758)
   expect(parsed.end_time_ms).toBeCloseTo(0.71556)
+  expect(parsed.timeout_ms).toBe(2000)
   expect(parsed.spice_options).toEqual({
     method: "gear",
     reltol: 0.01,

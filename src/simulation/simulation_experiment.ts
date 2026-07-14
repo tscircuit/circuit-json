@@ -36,6 +36,7 @@ export interface SimulationExperiment {
   time_per_step?: number // ms
   start_time_ms?: number // ms
   end_time_ms?: number // ms
+  timeout_ms?: number // wall-clock ms
   spice_options?: SpiceSimulationOptions
 }
 
@@ -50,6 +51,7 @@ export const simulation_experiment = z
     time_per_step: duration_ms.optional(),
     start_time_ms: ms.optional(),
     end_time_ms: ms.optional(),
+    timeout_ms: ms.optional(),
     spice_options: spice_simulation_options.optional(),
   })
   .describe("Defines a simulation experiment configuration")
