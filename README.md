@@ -847,6 +847,10 @@ Defines a simple integrated circuit component
 /** Defines a simple integrated circuit component */
 interface SourceSimpleChip extends SourceComponentBase {
   ftype: "simple_chip"
+  /** Indicates that the chip is intentionally outside the analog simulation.
+   * Converters may omit it instead of reporting a missing SPICE model. */
+
+  is_simulation_boundary?: boolean
 }
 ```
 
