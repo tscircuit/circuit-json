@@ -20,6 +20,8 @@ export type PcbRenderLayer =
   | "inner4_copper"
   | "inner5_copper"
   | "inner6_copper"
+  | "inner7_copper"
+  | "inner8_copper"
   | "edge_cuts"
   | "drill"
 
@@ -42,6 +44,8 @@ export const pcbRenderLayer = z.enum([
   "inner4_copper",
   "inner5_copper",
   "inner6_copper",
+  "inner7_copper",
+  "inner8_copper",
   "edge_cuts",
   "drill",
 ])

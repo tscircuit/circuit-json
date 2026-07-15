@@ -10,6 +10,8 @@ export const all_layers = [
   "inner4",
   "inner5",
   "inner6",
+  "inner7",
+  "inner8",
 ] as const
 
 export const layer_string = z.enum(all_layers)
