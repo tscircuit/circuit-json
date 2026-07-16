@@ -47,12 +47,15 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
 
   - [Source Components](#source-components)
     - [SourceAmbiguousPortReference](#sourceambiguousportreference)
+    - [SourceAssemblyDevice](#sourceassemblydevice)
     - [SourceBoard](#sourceboard)
     - [SourceComponentBase](#sourcecomponentbase)
     - [SourceComponentInternalConnection](#sourcecomponentinternalconnection)
     - [SourceComponentMisconfiguredError](#sourcecomponentmisconfigurederror)
     - [SourceComponentPinsUnderspecifiedWarning](#sourcecomponentpinsunderspecifiedwarning)
+    - [SourceCutoutAperture](#sourcecutoutaperture)
     - [SourceFailedToCreateComponentError](#sourcefailedtocreatecomponenterror)
+    - [SourceFdmEnclosure](#sourcefdmenclosure)
     - [SourceGroup](#sourcegroup)
     - [SourceI2cMisconfiguredError](#sourcei2cmisconfigurederror)
     - [SourceInterconnect](#sourceinterconnect)
@@ -63,6 +66,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceNet](#sourcenet)
     - [SourceNoGroundPinDefinedWarning](#sourcenogroundpindefinedwarning)
     - [SourceNoPowerPinDefinedWarning](#sourcenopowerpindefinedwarning)
+    - [SourcePartNotFoundWarning](#sourcepartnotfoundwarning)
     - [SourcePcbGroundPlane](#sourcepcbgroundplane)
     - [SourcePinAttributes](#sourcepinattributes)
     - [SourcePinMissingTraceWarning](#sourcepinmissingtracewarning)
@@ -70,6 +74,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourcePort](#sourceport)
     - [SourceProjectMetadata](#sourceprojectmetadata)
     - [SourcePropertyIgnoredWarning](#sourcepropertyignoredwarning)
+    - [SourceRefdesConventionWarning](#sourcerefdesconventionwarning)
     - [SourceSimpleAmmeter](#sourcesimpleammeter)
     - [SourceSimpleBattery](#sourcesimplebattery)
     - [SourceSimpleCapacitor](#sourcesimplecapacitor)
@@ -103,6 +108,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [UnknownErrorFindingPart](#unknownerrorfindingpart)
   - [CAD Components](#cad-components)
     - [CadComponent](#cadcomponent)
+    - [CadFdmEnclosure](#cadfdmenclosure)
   - [PCB Elements](#pcb-elements)
     - [PcbAutoroutingError](#pcbautoroutingerror)
     - [PcbBoard](#pcbboard)
@@ -295,6 +301,21 @@ interface SourceAmbiguousPortReference extends BaseCircuitJsonError {
 }
 ```
 
+### SourceAssemblyDevice
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_assembly_device.ts)
+
+Defines a product-level physical assembly in the source domain.
+
+```typescript
+/** Defines a product-level physical assembly in the source domain. */
+interface SourceAssemblyDevice {
+  type: "source_assembly_device"
+  source_assembly_device_id: string
+  name?: string
+}
+```
+
 ### SourceBoard
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_board.ts)
@@ -382,6 +403,44 @@ interface SourceComponentPinsUnderspecifiedWarning {
 }
 ```
 
+### SourceCutoutAperture
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_cutout_aperture.ts)
+
+Defines a part-owned aperture required in an enclosing mechanical body.
+
+```typescript
+/** Defines a part-owned aperture required in an enclosing mechanical body. */
+type SourceCutoutAperture =
+  | SourceRectCutoutAperture
+  | SourcePillCutoutAperture
+  | SourceCircleCutoutAperture
+
+interface SourceApertureBase {
+  type: "source_cutout_aperture"
+  source_cutout_aperture_id: string
+  source_component_id: string
+  margin?: Length
+}
+
+interface SourceRectCutoutAperture extends SourceApertureBase {
+  shape: "rect"
+  width: Length
+  height: Length
+}
+
+interface SourcePillCutoutAperture extends SourceApertureBase {
+  shape: "pill"
+  width: Length
+  height: Length
+}
+
+interface SourceCircleCutoutAperture extends SourceApertureBase {
+  shape: "circle"
+  radius: Length
+}
+```
+
 ### SourceFailedToCreateComponentError
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_failed_to_create_component_error.ts)
@@ -404,6 +463,34 @@ interface SourceFailedToCreateComponentError extends BaseCircuitJsonError {
     x?: number
     y?: number
   }
+}
+```
+
+### SourceFdmEnclosure
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_fdm_enclosure.ts)
+
+Defines an FDM enclosure associated with an assembly device and source board.
+
+```typescript
+/** Defines an FDM enclosure associated with an assembly device and source board. */
+interface SourceFdmEnclosure {
+  type: "source_fdm_enclosure"
+  source_fdm_enclosure_id: string
+  source_assembly_device_id: string
+  source_board_id: string
+  name?: string
+  width?: Length
+  height?: Length
+  depth?: Length
+  wall_thickness: Length
+  floor_thickness?: Length
+  lid_thickness?: Length
+  board_clearance?: Length
+  standoff_height?: Length
+  top_headroom?: Length
+  lid_lip_depth?: Length
+  auto_cutouts?: boolean
 }
 ```
 
@@ -588,6 +675,28 @@ interface SourceNoPowerPinDefinedWarning {
 }
 ```
 
+### SourcePartNotFoundWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_part_not_found_warning.ts)
+
+Warning emitted when a requested part can not be found
+
+```typescript
+/** Warning emitted when a requested part can not be found */
+interface SourcePartNotFoundWarning {
+  type: "source_part_not_found_warning"
+  source_part_not_found_warning_id: string
+  warning_type: "source_part_not_found_warning"
+  message: string
+  source_component_id?: string
+  subcircuit_id?: string
+  supplier_name?: SupplierName
+  manufacturer_part_number?: string
+  supplier_part_number?: string
+  part_name?: string
+}
+```
+
 ### SourcePcbGroundPlane
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_pcb_ground_plane.ts)
@@ -741,6 +850,28 @@ interface SourcePropertyIgnoredWarning {
   subcircuit_id?: string
   error_type: "source_property_ignored_warning"
   message: string
+}
+```
+
+### SourceRefdesConventionWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_refdes_convention_warning.ts)
+
+Warning emitted when a source component reference designator does not match the component type convention
+
+```typescript
+/** Warning emitted when a source component reference designator does not match the component type convention */
+interface SourceRefdesConventionWarning {
+  type: "source_refdes_convention_warning"
+  source_refdes_convention_warning_id: string
+  warning_type: "source_refdes_convention_warning"
+  message: string
+  source_component_id: string
+  refdes: string
+  source_component_ftype: string
+  expected_prefixes: string[]
+  actual_prefix?: string
+  subcircuit_id?: string
 }
 ```
 
@@ -1251,6 +1382,35 @@ interface CadComponent {
   show_as_translucent_model?: boolean
   show_as_bounding_box?: boolean
   anchor_alignment: CadComponentAnchorAlignment
+}
+```
+
+### CadFdmEnclosure
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_fdm_enclosure.ts)
+
+Defines generated CAD output for an FDM enclosure.
+
+```typescript
+/** Defines generated CAD output for an FDM enclosure. */
+interface CadFdmEnclosure {
+  type: "cad_fdm_enclosure"
+  cad_fdm_enclosure_id: string
+  source_fdm_enclosure_id: string
+  name?: string
+  position: Point3
+  rotation?: Point3
+  size?: Point3
+  model_obj_url?: string
+  model_stl_url?: string
+  model_3mf_url?: string
+  model_gltf_url?: string
+  model_glb_url?: string
+  model_step_url?: string
+  model_wrl_url?: string
+  model_asset?: Asset
+  model_unit_to_mm_scale_factor?: number
+  model_jscad?: any
 }
 ```
 
