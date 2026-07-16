@@ -2892,6 +2892,9 @@ interface SchematicComponent {
   schematic_component_id: string
   schematic_sheet_id?: string
   schematic_symbol_id?: string
+  /** Identifies an independently placeable schematic unit of a shared source
+   * component, for example "A" in a dual op-amp shown as U1A. */
+  unit?: string
   pin_spacing?: number
   pin_styles?: Record<
     string,

@@ -42,6 +42,11 @@ export interface SchematicComponent {
   schematic_component_id: string
   schematic_sheet_id?: string
   schematic_symbol_id?: string
+  /**
+   * Identifies an independently placeable schematic unit of a shared source
+   * component, for example "A" in a dual op-amp shown as U1A.
+   */
+  unit?: string
   pin_spacing?: number
   pin_styles?: Record<
     string,
@@ -125,6 +130,7 @@ export const schematic_component = z.object({
   schematic_component_id: z.string(),
   schematic_sheet_id: z.string().optional(),
   schematic_symbol_id: z.string().optional(),
+  unit: z.string().optional(),
   pin_spacing: length.optional(),
   pin_styles: schematic_pin_styles.optional(),
   box_width: length.optional(),

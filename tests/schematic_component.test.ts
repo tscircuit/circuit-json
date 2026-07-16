@@ -31,3 +31,14 @@ test("schematic_component allows schematic_symbol_id", () => {
 
   expect(component.schematic_symbol_id).toBe("schematic_symbol_1")
 })
+
+test("schematic_component allows a shared-component unit", () => {
+  const component = schematic_component.parse({
+    ...baseComponent,
+    source_component_id: "source_component_1",
+    unit: "A",
+  })
+
+  expect(component.source_component_id).toBe("source_component_1")
+  expect(component.unit).toBe("A")
+})
