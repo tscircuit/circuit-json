@@ -20,6 +20,9 @@
     "typescript": "^5.7.2",
     "zod": "3"
   },
+  "peerDependencies": {
+    "format-si-unit": "*"
+  },
   "description": "Definitions for the tscircuit intermediary JSON format",
   "files": [
     "dist"
