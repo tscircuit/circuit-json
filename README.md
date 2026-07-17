@@ -63,6 +63,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceNet](#sourcenet)
     - [SourceNoGroundPinDefinedWarning](#sourcenogroundpindefinedwarning)
     - [SourceNoPowerPinDefinedWarning](#sourcenopowerpindefinedwarning)
+    - [SourcePartNotFoundWarning](#sourcepartnotfoundwarning)
     - [SourcePcbGroundPlane](#sourcepcbgroundplane)
     - [SourcePinAttributes](#sourcepinattributes)
     - [SourcePinMissingTraceWarning](#sourcepinmissingtracewarning)
@@ -70,6 +71,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourcePort](#sourceport)
     - [SourceProjectMetadata](#sourceprojectmetadata)
     - [SourcePropertyIgnoredWarning](#sourcepropertyignoredwarning)
+    - [SourceRefdesConventionWarning](#sourcerefdesconventionwarning)
     - [SourceSimpleAmmeter](#sourcesimpleammeter)
     - [SourceSimpleBattery](#sourcesimplebattery)
     - [SourceSimpleCapacitor](#sourcesimplecapacitor)
@@ -194,7 +196,10 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationCurrentProbe](#simulationcurrentprobe)
     - [SimulationCurrentSource](#simulationcurrentsource)
     - [SimulationExperiment](#simulationexperiment)
+    - [SimulationExperimentError](#simulationexperimenterror)
     - [SimulationOpAmp](#simulationopamp)
+    - [SimulationOperatingPointCurrent](#simulationoperatingpointcurrent)
+    - [SimulationOperatingPointVoltage](#simulationoperatingpointvoltage)
     - [SimulationOscilloscopeTrace](#simulationoscilloscopetrace)
     - [SimulationSpiceSubcircuit](#simulationspicesubcircuit)
     - [SimulationSwitch](#simulationswitch)
@@ -588,6 +593,28 @@ interface SourceNoPowerPinDefinedWarning {
 }
 ```
 
+### SourcePartNotFoundWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_part_not_found_warning.ts)
+
+Warning emitted when a requested part can not be found
+
+```typescript
+/** Warning emitted when a requested part can not be found */
+interface SourcePartNotFoundWarning {
+  type: "source_part_not_found_warning"
+  source_part_not_found_warning_id: string
+  warning_type: "source_part_not_found_warning"
+  message: string
+  source_component_id?: string
+  subcircuit_id?: string
+  supplier_name?: SupplierName
+  manufacturer_part_number?: string
+  supplier_part_number?: string
+  part_name?: string
+}
+```
+
 ### SourcePcbGroundPlane
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_pcb_ground_plane.ts)
@@ -744,6 +771,28 @@ interface SourcePropertyIgnoredWarning {
 }
 ```
 
+### SourceRefdesConventionWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_refdes_convention_warning.ts)
+
+Warning emitted when a source component reference designator does not match the component type convention
+
+```typescript
+/** Warning emitted when a source component reference designator does not match the component type convention */
+interface SourceRefdesConventionWarning {
+  type: "source_refdes_convention_warning"
+  source_refdes_convention_warning_id: string
+  warning_type: "source_refdes_convention_warning"
+  message: string
+  source_component_id: string
+  refdes: string
+  source_component_ftype: string
+  expected_prefixes: string[]
+  actual_prefix?: string
+  subcircuit_id?: string
+}
+```
+
 ### SourceSimpleAmmeter
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_ammeter.ts)
@@ -798,6 +847,10 @@ Defines a simple integrated circuit component
 /** Defines a simple integrated circuit component */
 interface SourceSimpleChip extends SourceComponentBase {
   ftype: "simple_chip"
+  /** Indicates that the chip is intentionally outside the analog simulation.
+   * Converters may omit it instead of reporting a missing SPICE model. */
+
+  is_simulation_boundary?: boolean
 }
 ```
 
@@ -3396,6 +3449,7 @@ interface SimulationExperiment {
   time_per_step?: number // ms
   start_time_ms?: number // ms
   end_time_ms?: number // ms
+  timeout_ms?: number // wall-clock ms
   spice_options?: SpiceSimulationOptions
 }
 
@@ -3404,6 +3458,24 @@ interface SpiceSimulationOptions {
   reltol?: number | string
   abstol?: number | string
   vntol?: number | string
+}
+```
+
+### SimulationExperimentError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_experiment_error.ts)
+
+```typescript
+interface SimulationExperimentError {
+  type: "simulation_experiment_error"
+  simulation_experiment_error_id: string
+  error_type: "simulation_experiment_error"
+  simulation_experiment_id: string
+  error_code: SimulationExperimentErrorCode
+  message: string
+  diagnostics?: string[]
+  is_fatal?: boolean
+  subcircuit_id?: string
 }
 ```
 
@@ -3424,6 +3496,42 @@ interface SimulationOpAmp {
   output_source_port_id: string
   positive_supply_source_port_id: string
   negative_supply_source_port_id: string
+}
+```
+
+### SimulationOperatingPointCurrent
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_operating_point_current.ts)
+
+```typescript
+interface SimulationOperatingPointCurrent {
+  type: "simulation_operating_point_current"
+  simulation_operating_point_current_id: string
+  simulation_experiment_id: string
+  simulation_current_probe_id?: string
+  current: number
+  name?: string
+  source_component_id?: string
+  source_trace_id?: string
+  color?: string
+}
+```
+
+### SimulationOperatingPointVoltage
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_operating_point_voltage.ts)
+
+```typescript
+interface SimulationOperatingPointVoltage {
+  type: "simulation_operating_point_voltage"
+  simulation_operating_point_voltage_id: string
+  simulation_experiment_id: string
+  simulation_voltage_probe_id?: string
+  voltage: number
+  name?: string
+  source_node_name?: string
+  reference_node_name?: string
+  color?: string
 }
 ```
 
