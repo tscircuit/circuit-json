@@ -7,6 +7,7 @@ export interface SimulationTransientVoltageGraph {
   type: "simulation_transient_voltage_graph"
   simulation_transient_voltage_graph_id: string
   simulation_experiment_id: string
+  simulation_parameter_sweep_point_id?: string
   timestamps_ms?: number[]
   voltage_levels: number[]
   source_component_id?: string
@@ -25,6 +26,7 @@ export const simulation_transient_voltage_graph = z
       "simulation_transient_voltage_graph",
     ),
     simulation_experiment_id: z.string(),
+    simulation_parameter_sweep_point_id: z.string().optional(),
     timestamps_ms: z.array(z.number()).optional(),
     voltage_levels: z.array(z.number()),
     source_component_id: z.string().optional(),

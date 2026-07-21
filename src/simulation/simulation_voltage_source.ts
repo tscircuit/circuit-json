@@ -36,6 +36,8 @@ export const simulation_dc_voltage_source = z
     positive_source_net_id: z.string().optional(),
     negative_source_net_id: z.string().optional(),
     voltage: voltage,
+    ac_magnitude: voltage.optional(),
+    ac_phase: rotation.optional(),
   })
   .describe("Defines a DC voltage source for simulation")
 
@@ -61,6 +63,8 @@ export const simulation_ac_voltage_source = z
     fall_time: ms.optional(),
     pulse_width: ms.optional(),
     period: ms.optional(),
+    ac_magnitude: voltage.optional(),
+    ac_phase: rotation.optional(),
   })
   .describe("Defines an AC voltage source for simulation")
 
@@ -90,6 +94,8 @@ export interface SimulationDcVoltageSource {
   negative_source_port_id?: string
   negative_source_net_id?: string
   voltage: number
+  ac_magnitude?: number
+  ac_phase?: number
 }
 
 /**
@@ -114,6 +120,8 @@ export interface SimulationAcVoltageSource {
   fall_time?: number // ms
   pulse_width?: number // ms
   period?: number // ms
+  ac_magnitude?: number
+  ac_phase?: number
 }
 
 export type SimulationVoltageSource =

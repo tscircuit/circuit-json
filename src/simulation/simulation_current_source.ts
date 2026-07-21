@@ -37,6 +37,8 @@ export const simulation_dc_current_source = z
     positive_source_net_id: z.string().optional(),
     negative_source_net_id: z.string().optional(),
     current: current,
+    ac_magnitude: current.optional(),
+    ac_phase: rotation.optional(),
   })
   .describe("Defines a DC current source for simulation")
 
@@ -57,6 +59,8 @@ export const simulation_ac_current_source = z
     wave_shape: wave_shape.optional(),
     phase: rotation.optional(),
     duty_cycle: percentage.optional(),
+    ac_magnitude: current.optional(),
+    ac_phase: rotation.optional(),
   })
   .describe("Defines an AC current source for simulation")
 
@@ -86,6 +90,8 @@ export interface SimulationDcCurrentSource {
   negative_source_port_id?: string
   negative_source_net_id?: string
   current: number
+  ac_magnitude?: number
+  ac_phase?: number
 }
 
 /**
@@ -105,6 +111,8 @@ export interface SimulationAcCurrentSource {
   wave_shape?: WaveShape
   phase?: number
   duty_cycle?: number
+  ac_magnitude?: number
+  ac_phase?: number
 }
 
 export type SimulationCurrentSource =
