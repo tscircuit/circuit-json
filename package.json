@@ -30,7 +30,6 @@
   "keywords": [],
   "license": "ISC",
   "scripts": {
-    "prepublish": "npm run build",
     "prepare": "npm run build",
     "build": "tsup-node --config ./tsup.config.ts",
     "format": "biome format . --write",
