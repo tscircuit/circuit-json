@@ -3141,6 +3141,8 @@ interface SchematicPort {
   display_pin_label?: string
   subcircuit_id?: string
   is_connected?: boolean
+  is_internal_circuit_port?: boolean
+  is_overlapping_internal_circuit_port?: boolean
   has_input_arrow?: boolean
   has_output_arrow?: boolean
   is_drawn_with_inversion_circle?: boolean
