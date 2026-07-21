@@ -30,7 +30,7 @@
   "keywords": [],
   "license": "ISC",
   "scripts": {
-    "prepare": "npm run build",
+    "prepare": "bun ./scripts/prepare-git-dependency.ts",
     "build": "tsup-node --config ./tsup.config.ts",
     "format": "biome format . --write",
     "generate-docs": "bun scripts/generate-readme-docs.ts && prettier --no-semi -w README.md",
