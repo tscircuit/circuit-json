@@ -177,6 +177,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicComponent](#schematiccomponent)
     - [SchematicComponentOverlapWarning](#schematiccomponentoverlapwarning)
     - [SchematicDebugObject](#schematicdebugobject)
+    - [SchematicElementOutsideSheetWarning](#schematicelementoutsidesheetwarning)
     - [SchematicError](#schematicerror)
     - [SchematicGroup](#schematicgroup)
     - [SchematicLayoutError](#schematiclayouterror)
@@ -3035,6 +3036,28 @@ interface SchematicDebugPoint {
   shape: "point"
   center: Point
   subcircuit_id?: string
+}
+```
+
+### SchematicElementOutsideSheetWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_element_outside_sheet_warning.ts)
+
+Warning emitted when a schematic component, net label, or trace extends outside its schematic sheet
+
+```typescript
+/** Warning emitted when a schematic component, net label, or trace extends outside its schematic sheet */
+interface SchematicElementOutsideSheetWarning {
+  type: "schematic_element_outside_sheet_warning"
+  schematic_element_outside_sheet_warning_id: string
+  warning_type: "schematic_element_outside_sheet_warning"
+  message: string
+  schematic_sheet_id: string
+  schematic_element_type:
+    | "schematic_component"
+    | "schematic_net_label"
+    | "schematic_trace"
+  schematic_element_id: string
 }
 ```
 
