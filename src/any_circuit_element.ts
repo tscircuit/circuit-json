@@ -142,6 +142,7 @@ export const any_circuit_element = z.union([
   sch.schematic_debug_object,
   sch.schematic_voltage_probe,
   sch.schematic_manual_edit_conflict_warning,
+  sch.schematic_component_overlap_warning,
   sch.schematic_group,
   sch.schematic_sheet,
   sch.schematic_table,
