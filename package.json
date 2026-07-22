@@ -15,9 +15,7 @@
     "format-si-unit": "^0.0.7",
     "prettier": "^3.4.2",
     "ts-expect": "^1.3.0",
-    "ts-node": "^10.9.2"
-  },
-  "dependencies": {
+    "ts-node": "^10.9.2",
     "tsup": "^8.3.0",
     "typescript": "^5.7.2",
     "zod": "3"
@@ -32,8 +30,8 @@
   "keywords": [],
   "license": "ISC",
   "scripts": {
-    "prepare": "bun ./scripts/prepare-git-dependency.ts",
-    "build": "tsup-node --config ./tsup.config.ts",
+    "prepublish": "npm run build",
+    "build": "tsup-node ./src/index.ts --format esm --dts --sourcemap",
     "format": "biome format . --write",
     "generate-docs": "bun scripts/generate-readme-docs.ts && prettier --no-semi -w README.md",
     "lint:zod": "bun run scripts/zod-lint.ts",
