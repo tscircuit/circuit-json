@@ -63,6 +63,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceNet](#sourcenet)
     - [SourceNoGroundPinDefinedWarning](#sourcenogroundpindefinedwarning)
     - [SourceNoPowerPinDefinedWarning](#sourcenopowerpindefinedwarning)
+    - [SourcePartNotFoundWarning](#sourcepartnotfoundwarning)
     - [SourcePcbGroundPlane](#sourcepcbgroundplane)
     - [SourcePinAttributes](#sourcepinattributes)
     - [SourcePinMissingTraceWarning](#sourcepinmissingtracewarning)
@@ -70,6 +71,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourcePort](#sourceport)
     - [SourceProjectMetadata](#sourceprojectmetadata)
     - [SourcePropertyIgnoredWarning](#sourcepropertyignoredwarning)
+    - [SourceRefdesConventionWarning](#sourcerefdesconventionwarning)
     - [SourceSimpleAmmeter](#sourcesimpleammeter)
     - [SourceSimpleBattery](#sourcesimplebattery)
     - [SourceSimpleCapacitor](#sourcesimplecapacitor)
@@ -173,6 +175,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicBox](#schematicbox)
     - [SchematicCircle](#schematiccircle)
     - [SchematicComponent](#schematiccomponent)
+    - [SchematicComponentOverlapWarning](#schematiccomponentoverlapwarning)
     - [SchematicDebugObject](#schematicdebugobject)
     - [SchematicError](#schematicerror)
     - [SchematicGroup](#schematicgroup)
@@ -588,6 +591,28 @@ interface SourceNoPowerPinDefinedWarning {
 }
 ```
 
+### SourcePartNotFoundWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_part_not_found_warning.ts)
+
+Warning emitted when a requested part can not be found
+
+```typescript
+/** Warning emitted when a requested part can not be found */
+interface SourcePartNotFoundWarning {
+  type: "source_part_not_found_warning"
+  source_part_not_found_warning_id: string
+  warning_type: "source_part_not_found_warning"
+  message: string
+  source_component_id?: string
+  subcircuit_id?: string
+  supplier_name?: SupplierName
+  manufacturer_part_number?: string
+  supplier_part_number?: string
+  part_name?: string
+}
+```
+
 ### SourcePcbGroundPlane
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_pcb_ground_plane.ts)
@@ -741,6 +766,28 @@ interface SourcePropertyIgnoredWarning {
   subcircuit_id?: string
   error_type: "source_property_ignored_warning"
   message: string
+}
+```
+
+### SourceRefdesConventionWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_refdes_convention_warning.ts)
+
+Warning emitted when a source component reference designator does not match the component type convention
+
+```typescript
+/** Warning emitted when a source component reference designator does not match the component type convention */
+interface SourceRefdesConventionWarning {
+  type: "source_refdes_convention_warning"
+  source_refdes_convention_warning_id: string
+  warning_type: "source_refdes_convention_warning"
+  message: string
+  source_component_id: string
+  refdes: string
+  source_component_ftype: string
+  expected_prefixes: string[]
+  actual_prefix?: string
+  subcircuit_id?: string
 }
 ```
 
@@ -2934,6 +2981,24 @@ interface SchematicPortArrangementBySides {
 type SchematicPortArrangement =
   | SchematicPortArrangementBySize
   | SchematicPortArrangementBySides
+```
+
+### SchematicComponentOverlapWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_component_overlap_warning.ts)
+
+Warning emitted when the rendered bounds of two schematic components overlap
+
+```typescript
+/** Warning emitted when the rendered bounds of two schematic components overlap */
+interface SchematicComponentOverlapWarning {
+  type: "schematic_component_overlap_warning"
+  schematic_component_overlap_warning_id: string
+  warning_type: "schematic_component_overlap_warning"
+  message: string
+  schematic_component_ids: [string, string]
+  schematic_sheet_id?: string
+}
 ```
 
 ### SchematicDebugObject
