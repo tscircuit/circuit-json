@@ -6,7 +6,6 @@ import {
   simulation_dc_sweep_current_graph,
   simulation_experiment,
   simulation_parameter_sweep,
-  simulation_parameter_sweep_point,
 } from "../src"
 
 test("parses analysis-specific experiment fields", () => {
@@ -25,8 +24,7 @@ test("parses analysis-specific experiment fields", () => {
     type: "simulation_experiment",
     name: "line-regulation",
     experiment_type: "spice_dc_sweep",
-    dc_sweep_source_id: "simulation_voltage_source_0",
-    dc_sweep_source_type: "voltage",
+    dc_sweep_voltage_source_id: "simulation_voltage_source_0",
     dc_sweep_start: 2.5,
     dc_sweep_stop: 5.5,
     dc_sweep_step: 0.1,
@@ -48,7 +46,7 @@ test("rejects incomplete analysis experiments", () => {
   ).toThrow()
 })
 
-test("parses parameter sweeps and their coordinates", () => {
+test("parses parameter sweeps", () => {
   const sweep = simulation_parameter_sweep.parse({
     type: "simulation_parameter_sweep",
     simulation_experiment_id: "simulation_experiment_0",
@@ -57,14 +55,6 @@ test("parses parameter sweeps and their coordinates", () => {
     parameter_values: [100, 330, 1_000],
     parameter_unit: "Ω",
   })
-  const sweepPoint = simulation_parameter_sweep_point.parse({
-    type: "simulation_parameter_sweep_point",
-    simulation_parameter_sweep_id: sweep.simulation_parameter_sweep_id,
-    sweep_index: 1,
-    parameter_value: 330,
-    parameter_unit: "Ω",
-  })
-  expect(sweepPoint.sweep_index).toBe(1)
   expect(any_circuit_element.parse(sweep).type).toBe(
     "simulation_parameter_sweep",
   )
@@ -76,8 +66,17 @@ test("parses analysis-specific simulation results", () => {
     simulation_experiment_id: "simulation_experiment_0",
     simulation_voltage_probe_id: "simulation_voltage_probe_0",
     voltage: 3.3,
+    simulation_parameter_sweep_coordinate: {
+      simulation_parameter_sweep_id: "simulation_parameter_sweep_0",
+      sweep_index: 1,
+      parameter_value: 330,
+      parameter_unit: "Ω",
+    },
   })
   expect(operatingPoint.voltage).toBe(3.3)
+  expect(
+    operatingPoint.simulation_parameter_sweep_coordinate?.sweep_index,
+  ).toBe(1)
 
   const dcSweep = simulation_dc_sweep_current_graph.parse({
     type: "simulation_dc_sweep_current_graph",

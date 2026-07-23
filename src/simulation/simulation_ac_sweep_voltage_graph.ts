@@ -1,27 +1,20 @@
 import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
-
-export const simulation_complex_sample = z.object({
-  re: z.number(),
-  im: z.number(),
-})
-
-export interface SimulationComplexSample {
-  re: number
-  im: number
-}
-
-expectTypesMatch<
-  SimulationComplexSample,
-  z.infer<typeof simulation_complex_sample>
->(true)
+import {
+  simulation_complex_sample,
+  type SimulationComplexSample,
+} from "./simulation_complex_sample"
+import {
+  simulation_parameter_sweep_coordinate,
+  type SimulationParameterSweepCoordinate,
+} from "./simulation_parameter_sweep_coordinate"
 
 export interface SimulationAcSweepVoltageGraph {
   type: "simulation_ac_sweep_voltage_graph"
   simulation_ac_sweep_voltage_graph_id: string
   simulation_experiment_id: string
-  simulation_parameter_sweep_point_id?: string
+  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
   simulation_voltage_probe_id: string
   frequencies_hz: number[]
   complex_voltages: SimulationComplexSample[]
@@ -36,7 +29,8 @@ export const simulation_ac_sweep_voltage_graph = z
       "simulation_ac_sweep_voltage_graph",
     ),
     simulation_experiment_id: z.string(),
-    simulation_parameter_sweep_point_id: z.string().optional(),
+    simulation_parameter_sweep_coordinate:
+      simulation_parameter_sweep_coordinate.optional(),
     simulation_voltage_probe_id: z.string(),
     frequencies_hz: z.array(z.number()),
     complex_voltages: z.array(simulation_complex_sample),

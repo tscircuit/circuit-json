@@ -38,8 +38,8 @@ export interface SimulationExperiment {
   start_time_ms?: number // ms
   end_time_ms?: number // ms
   spice_options?: SpiceSimulationOptions
-  dc_sweep_source_id?: string
-  dc_sweep_source_type?: "voltage" | "current"
+  dc_sweep_voltage_source_id?: string
+  dc_sweep_current_source_id?: string
   dc_sweep_start?: number
   dc_sweep_stop?: number
   dc_sweep_step?: number
@@ -63,8 +63,8 @@ export const simulation_experiment = z
     start_time_ms: ms.optional(),
     end_time_ms: ms.optional(),
     spice_options: spice_simulation_options.optional(),
-    dc_sweep_source_id: z.string().optional(),
-    dc_sweep_source_type: z.enum(["voltage", "current"]).optional(),
+    dc_sweep_voltage_source_id: z.string().optional(),
+    dc_sweep_current_source_id: z.string().optional(),
     dc_sweep_start: z.number().optional(),
     dc_sweep_stop: z.number().optional(),
     dc_sweep_step: z
@@ -81,8 +81,6 @@ export const simulation_experiment = z
   .superRefine((experiment, context) => {
     if (experiment.experiment_type === "spice_dc_sweep") {
       const requiredFields = [
-        "dc_sweep_source_id",
-        "dc_sweep_source_type",
         "dc_sweep_start",
         "dc_sweep_stop",
         "dc_sweep_step",
@@ -96,6 +94,19 @@ export const simulation_experiment = z
             message: `${field} is required for a DC sweep`,
           })
         }
+      }
+
+      const hasVoltageSource =
+        experiment.dc_sweep_voltage_source_id !== undefined
+      const hasCurrentSource =
+        experiment.dc_sweep_current_source_id !== undefined
+      if (hasVoltageSource === hasCurrentSource) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["dc_sweep_voltage_source_id"],
+          message:
+            "Exactly one DC sweep voltage or current source ID is required",
+        })
       }
     }
 

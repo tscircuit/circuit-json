@@ -1,12 +1,16 @@
 import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import {
+  simulation_parameter_sweep_coordinate,
+  type SimulationParameterSweepCoordinate,
+} from "./simulation_parameter_sweep_coordinate"
 
 export interface SimulationDcOperatingPointVoltage {
   type: "simulation_dc_operating_point_voltage"
   simulation_dc_operating_point_voltage_id: string
   simulation_experiment_id: string
-  simulation_parameter_sweep_point_id?: string
+  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
   simulation_voltage_probe_id: string
   voltage: number
   name?: string
@@ -19,7 +23,8 @@ export const simulation_dc_operating_point_voltage = z.object({
     "simulation_dc_operating_point_voltage",
   ),
   simulation_experiment_id: z.string(),
-  simulation_parameter_sweep_point_id: z.string().optional(),
+  simulation_parameter_sweep_coordinate:
+    simulation_parameter_sweep_coordinate.optional(),
   simulation_voltage_probe_id: z.string(),
   voltage: z.number(),
   name: z.string().optional(),

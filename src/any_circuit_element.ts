@@ -161,7 +161,6 @@ export const any_circuit_element = z.union([
   sim.simulation_ac_sweep_voltage_graph,
   sim.simulation_ac_sweep_current_graph,
   sim.simulation_parameter_sweep,
-  sim.simulation_parameter_sweep_point,
   sim.simulation_switch,
   sim.simulation_voltage_probe,
   sim.simulation_current_probe,
