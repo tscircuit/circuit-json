@@ -27,7 +27,7 @@ export const source_component_base = z.object({
   name: z.string(),
   manufacturer_part_number: z.string().optional(),
   supplier_part_numbers: z
-    .record(supplier_name, z.array(z.string()))
+    .partialRecord(supplier_name, z.array(z.string()))
     .optional(),
   display_value: z.string().optional(),
   display_name: z.string().optional(),

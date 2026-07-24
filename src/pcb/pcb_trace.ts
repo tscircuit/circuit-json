@@ -54,10 +54,7 @@ export const pcb_trace = z
     pcb_trace_id: getZodPrefixedIdWithDefault("pcb_trace"),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
-    route_thickness_mode: z
-      .enum(["constant", "interpolated"])
-      .default("constant")
-      .optional(),
+    route_thickness_mode: z.enum(["constant", "interpolated"]).optional(),
     route_order_index: z.number().optional(),
     should_round_corners: z.boolean().optional(),
     trace_length: z.number().optional(),

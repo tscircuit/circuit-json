@@ -5,6 +5,7 @@ import { length } from "../units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const schematic_pin_styles = z.record(
+  z.string(),
   z.object({
     left_margin: length.optional(),
     right_margin: length.optional(),
@@ -130,7 +131,7 @@ export const schematic_component = z.object({
   box_width: length.optional(),
   symbol_name: z.string().optional(),
   port_arrangement: port_arrangement.optional(),
-  port_labels: z.record(z.string()).optional(),
+  port_labels: z.record(z.string(), z.string()).optional(),
   symbol_display_value: z.string().optional(),
   subcircuit_id: z.string().optional(),
   schematic_group_id: z.string().optional(),

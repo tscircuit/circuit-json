@@ -18,7 +18,7 @@ export const pcb_note_line = z
     x2: distance,
     y2: distance,
     layer: visible_layer.default("top"),
-    stroke_width: distance.default("0.1mm"),
+    stroke_width: distance.prefault("0.1mm"),
     color: z.string().optional(),
     is_dashed: z.boolean().optional(),
   })

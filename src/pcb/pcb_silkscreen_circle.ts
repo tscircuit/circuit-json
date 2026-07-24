@@ -21,7 +21,7 @@ export const pcb_silkscreen_circle = z
     center: point,
     radius: length,
     layer: visible_layer,
-    stroke_width: length.default("1mm"),
+    stroke_width: length.prefault("1mm"),
     is_filled: z.boolean().optional(),
   })
   .describe("Defines a silkscreen circle on the PCB")
