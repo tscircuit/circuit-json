@@ -195,11 +195,21 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicTrace](#schematictrace)
     - [SchematicVoltageProbe](#schematicvoltageprobe)
   - [Simulation Elements](#simulation-elements)
+    - [SimulationAcSweepCurrentGraph](#simulationacsweepcurrentgraph)
+    - [SimulationAcSweepVoltageGraph](#simulationacsweepvoltagegraph)
+    - [SimulationAnalysisResult](#simulationanalysisresult)
+    - [SimulationComplexSample](#simulationcomplexsample)
     - [SimulationCurrentProbe](#simulationcurrentprobe)
     - [SimulationCurrentSource](#simulationcurrentsource)
+    - [SimulationDcOperatingPointCurrent](#simulationdcoperatingpointcurrent)
+    - [SimulationDcOperatingPointVoltage](#simulationdcoperatingpointvoltage)
+    - [SimulationDcSweepCurrentGraph](#simulationdcsweepcurrentgraph)
+    - [SimulationDcSweepVoltageGraph](#simulationdcsweepvoltagegraph)
     - [SimulationExperiment](#simulationexperiment)
     - [SimulationOpAmp](#simulationopamp)
     - [SimulationOscilloscopeTrace](#simulationoscilloscopetrace)
+    - [SimulationParameterSweep](#simulationparametersweep)
+    - [SimulationParameterSweepCoordinate](#simulationparametersweepcoordinate)
     - [SimulationSpiceSubcircuit](#simulationspicesubcircuit)
     - [SimulationSwitch](#simulationswitch)
     - [SimulationTransientCurrentGraph](#simulationtransientcurrentgraph)
@@ -3412,6 +3422,81 @@ interface SchematicVoltageProbe {
 
 ## Simulation Elements
 
+### SimulationAcSweepCurrentGraph
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_ac_sweep_current_graph.ts)
+
+```typescript
+interface SimulationAcSweepCurrentGraph {
+  type: "simulation_ac_sweep_current_graph"
+  simulation_ac_sweep_current_graph_id: string
+  simulation_experiment_id: string
+  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_current_probe_id: string
+  frequencies_hz: number[]
+  complex_currents: SimulationComplexSample[]
+  name?: string
+  color?: string
+}
+```
+
+### SimulationAcSweepVoltageGraph
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_ac_sweep_voltage_graph.ts)
+
+```typescript
+interface SimulationAcSweepVoltageGraph {
+  type: "simulation_ac_sweep_voltage_graph"
+  simulation_ac_sweep_voltage_graph_id: string
+  simulation_experiment_id: string
+  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_voltage_probe_id: string
+  frequencies_hz: number[]
+  complex_voltages: SimulationComplexSample[]
+  name?: string
+  color?: string
+}
+```
+
+### SimulationAnalysisResult
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_analysis_result.ts)
+
+```typescript
+type SimulationAnalysisResult =
+  | SimulationVoltageAnalysisResult
+  | SimulationCurrentAnalysisResult
+
+type SimulationNonTransientVoltageAnalysisResult =
+  | SimulationDcOperatingPointVoltage
+  | SimulationDcSweepVoltageGraph
+  | SimulationAcSweepVoltageGraph
+
+type SimulationNonTransientCurrentAnalysisResult =
+  | SimulationDcOperatingPointCurrent
+  | SimulationDcSweepCurrentGraph
+  | SimulationAcSweepCurrentGraph
+
+type SimulationVoltageAnalysisResult =
+  | SimulationTransientVoltageGraph
+  | SimulationNonTransientVoltageAnalysisResult
+
+type SimulationCurrentAnalysisResult =
+  | SimulationTransientCurrentGraph
+  | SimulationNonTransientCurrentAnalysisResult
+```
+
+### SimulationComplexSample
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_complex_sample.ts)
+
+```typescript
+interface SimulationComplexSample {
+  re: number
+  im: number
+}
+```
+
 ### SimulationCurrentProbe
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_current_probe.ts)
@@ -3453,6 +3538,8 @@ interface SimulationDcCurrentSource {
   negative_source_port_id?: string
   negative_source_net_id?: string
   current: number
+  ac_magnitude?: number
+  ac_phase?: number
 }
 
 /** Defines an AC current source for simulation purposes. */
@@ -3470,6 +3557,80 @@ interface SimulationAcCurrentSource {
   wave_shape?: WaveShape
   phase?: number
   duty_cycle?: number
+  ac_magnitude?: number
+  ac_phase?: number
+}
+```
+
+### SimulationDcOperatingPointCurrent
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_dc_operating_point_current.ts)
+
+```typescript
+interface SimulationDcOperatingPointCurrent {
+  type: "simulation_dc_operating_point_current"
+  simulation_dc_operating_point_current_id: string
+  simulation_experiment_id: string
+  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_current_probe_id: string
+  current: number
+  name?: string
+  color?: string
+}
+```
+
+### SimulationDcOperatingPointVoltage
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_dc_operating_point_voltage.ts)
+
+```typescript
+interface SimulationDcOperatingPointVoltage {
+  type: "simulation_dc_operating_point_voltage"
+  simulation_dc_operating_point_voltage_id: string
+  simulation_experiment_id: string
+  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_voltage_probe_id: string
+  voltage: number
+  name?: string
+  color?: string
+}
+```
+
+### SimulationDcSweepCurrentGraph
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_dc_sweep_current_graph.ts)
+
+```typescript
+interface SimulationDcSweepCurrentGraph {
+  type: "simulation_dc_sweep_current_graph"
+  simulation_dc_sweep_current_graph_id: string
+  simulation_experiment_id: string
+  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_current_probe_id: string
+  sweep_values: number[]
+  sweep_unit: SimulationDcSweepUnit
+  current_levels: number[]
+  name?: string
+  color?: string
+}
+```
+
+### SimulationDcSweepVoltageGraph
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_dc_sweep_voltage_graph.ts)
+
+```typescript
+interface SimulationDcSweepVoltageGraph {
+  type: "simulation_dc_sweep_voltage_graph"
+  simulation_dc_sweep_voltage_graph_id: string
+  simulation_experiment_id: string
+  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_voltage_probe_id: string
+  sweep_values: number[]
+  sweep_unit: SimulationDcSweepUnit
+  voltage_levels: number[]
+  name?: string
+  color?: string
 }
 ```
 
@@ -3487,6 +3648,17 @@ interface SimulationExperiment {
   start_time_ms?: number // ms
   end_time_ms?: number // ms
   spice_options?: SpiceSimulationOptions
+  dc_sweep_voltage_source_id?: string
+  dc_sweep_current_source_id?: string
+  dc_sweep_start?: number
+  dc_sweep_stop?: number
+  dc_sweep_step?: number
+  dc_sweep_unit?: "V" | "A"
+  ac_sweep_type?: "linear" | "decade" | "octave"
+  ac_samples_per_interval?: number
+  ac_sample_count?: number
+  ac_start_frequency_hz?: number
+  ac_stop_frequency_hz?: number
 }
 
 interface SpiceSimulationOptions {
@@ -3545,6 +3717,60 @@ interface SimulationOscilloscopeTrace {
 }
 ```
 
+### SimulationParameterSweep
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_parameter_sweep.ts)
+
+```typescript
+type SimulationParameterSweep =
+  | SimulationResistanceParameterSweep
+  | SimulationCapacitanceParameterSweep
+  | SimulationInductanceParameterSweep
+  | SimulationVoltageParameterSweep
+  | SimulationCurrentParameterSweep
+
+interface SimulationResistanceParameterSweep
+  extends SimulationParameterSweepBase {
+  parameter_type: "resistance"
+  resistor_source_component_id: string
+}
+
+interface SimulationCapacitanceParameterSweep
+  extends SimulationParameterSweepBase {
+  parameter_type: "capacitance"
+  capacitor_source_component_id: string
+}
+
+interface SimulationInductanceParameterSweep
+  extends SimulationParameterSweepBase {
+  parameter_type: "inductance"
+  inductor_source_component_id: string
+}
+
+interface SimulationVoltageParameterSweep extends SimulationParameterSweepBase {
+  parameter_type: "voltage"
+  source_net_id: string
+}
+
+interface SimulationCurrentParameterSweep extends SimulationParameterSweepBase {
+  parameter_type: "current"
+  current_source_component_id: string
+}
+```
+
+### SimulationParameterSweepCoordinate
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_parameter_sweep_coordinate.ts)
+
+```typescript
+interface SimulationParameterSweepCoordinate {
+  simulation_parameter_sweep_id: string
+  sweep_index: number
+  parameter_value: number
+  parameter_unit: SimulationParameterUnit
+}
+```
+
 ### SimulationSpiceSubcircuit
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_spice_subcircuit.ts)
@@ -3593,6 +3819,7 @@ interface SimulationTransientCurrentGraph {
   type: "simulation_transient_current_graph"
   simulation_transient_current_graph_id: string
   simulation_experiment_id: string
+  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
   timestamps_ms?: number[]
   current_levels: number[]
   source_component_id?: string
@@ -3614,6 +3841,7 @@ interface SimulationTransientVoltageGraph {
   type: "simulation_transient_voltage_graph"
   simulation_transient_voltage_graph_id: string
   simulation_experiment_id: string
+  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
   timestamps_ms?: number[]
   voltage_levels: number[]
   source_component_id?: string
@@ -3685,6 +3913,8 @@ interface SimulationDcVoltageSource {
   negative_source_port_id?: string
   negative_source_net_id?: string
   voltage: number
+  ac_magnitude?: number
+  ac_phase?: number
 }
 
 /** Defines an AC voltage source for simulation purposes. */
@@ -3707,6 +3937,8 @@ interface SimulationAcVoltageSource {
   fall_time?: number // ms
   pulse_width?: number // ms
   period?: number // ms
+  ac_magnitude?: number
+  ac_phase?: number
 }
 ```
 
