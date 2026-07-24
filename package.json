@@ -12,13 +12,11 @@
     "@typescript-eslint/parser": "^8.18.1",
     "@typescript-eslint/typescript-estree": "^8.18.1",
     "esbuild": "^0.20.2",
-    "format-si-unit": "^0.0.7",
     "prettier": "^3.4.2",
     "ts-expect": "^1.3.0",
     "ts-node": "^10.9.2",
     "tsup": "^8.3.0",
-    "typescript": "^5.7.2",
-    "zod": "3"
+    "typescript": "^5.7.2"
   },
   "peerDependencies": {
     "format-si-unit": "*"
@@ -36,5 +34,9 @@
     "generate-docs": "bun scripts/generate-readme-docs.ts && prettier --no-semi -w README.md",
     "lint:zod": "bun run scripts/zod-lint.ts",
     "check-snake-case": "bun run scripts/check-snake-case.ts"
+  },
+  "dependencies": {
+    "format-si-unit": "^0.0.7",
+    "zod": "3"
   }
 }
