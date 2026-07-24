@@ -15,10 +15,10 @@ export const pcb_copper_text = z
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     font: z.literal("tscircuit2024").default("tscircuit2024"),
-    font_size: distance.default("0.2mm"),
+    font_size: distance.prefault("0.2mm"),
     pcb_component_id: z.string(),
     text: z.string(),
-    is_knockout: z.boolean().default(false).optional(),
+    is_knockout: z.boolean().optional(),
     knockout_padding: z
       .object({
         left: length,
@@ -26,16 +26,10 @@ export const pcb_copper_text = z
         bottom: length,
         right: length,
       })
-      .default({
-        left: "0.2mm",
-        top: "0.2mm",
-        bottom: "0.2mm",
-        right: "0.2mm",
-      })
       .optional(),
     ccw_rotation: z.number().optional(),
     layer: layer_ref,
-    is_mirrored: z.boolean().default(false).optional(),
+    is_mirrored: z.boolean().optional(),
     anchor_position: point.default({ x: 0, y: 0 }),
     anchor_alignment: ninePointAnchor.default("center"),
   })

@@ -14,7 +14,7 @@ export const pcb_fabrication_note_text = z
     subcircuit_id: z.string().optional(),
     pcb_group_id: z.string().optional(),
     font: z.literal("tscircuit2024").default("tscircuit2024"),
-    font_size: distance.default("1mm"),
+    font_size: distance.prefault("1mm"),
     pcb_component_id: z.string(),
     text: z.string(),
     ccw_rotation: z.number().optional(),

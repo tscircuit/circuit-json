@@ -31,3 +31,18 @@ test("schematic_component allows schematic_symbol_id", () => {
 
   expect(component.schematic_symbol_id).toBe("schematic_symbol_1")
 })
+
+test("schematic_component accepts dynamic pin styles and port labels", () => {
+  const component = schematic_component.parse({
+    ...baseComponent,
+    pin_styles: {
+      pin1: { left_margin: 1 },
+    },
+    port_labels: {
+      pin1: "VCC",
+    },
+  })
+
+  expect(component.pin_styles?.pin1?.left_margin).toBe(1)
+  expect(component.port_labels).toEqual({ pin1: "VCC" })
+})
