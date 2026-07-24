@@ -1,6 +1,7 @@
 import type {
   PcbTraceError,
   PcbPlacementError,
+  PcbPackingError,
   PcbPortNotMatchedError,
   PcbAutoroutingError,
   PcbFootprintOverlapError,
@@ -17,6 +18,7 @@ import type {
 export type CircuitJsonError =
   | PcbTraceError
   | PcbPlacementError
+  | PcbPackingError
   | PcbPortNotMatchedError
   | PcbAutoroutingError
   | PcbFootprintOverlapError
