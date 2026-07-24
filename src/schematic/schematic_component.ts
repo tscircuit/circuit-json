@@ -42,6 +42,7 @@ export interface SchematicComponent {
   schematic_component_id: string
   schematic_sheet_id?: string
   schematic_symbol_id?: string
+  /** @deprecated */
   pin_spacing?: number
   pin_styles?: Record<
     string,
@@ -125,6 +126,7 @@ export const schematic_component = z.object({
   schematic_component_id: z.string(),
   schematic_sheet_id: z.string().optional(),
   schematic_symbol_id: z.string().optional(),
+  /** @deprecated */
   pin_spacing: length.optional(),
   pin_styles: schematic_pin_styles.optional(),
   box_width: length.optional(),

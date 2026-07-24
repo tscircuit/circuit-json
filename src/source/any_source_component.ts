@@ -116,6 +116,10 @@ import {
   type SourcePropertyIgnoredWarning,
 } from "./source_property_ignored_warning"
 import {
+  source_deprecated_props_warning,
+  type SourceDeprecatedPropsWarning,
+} from "./source_deprecated_props_warning"
+import {
   source_pin_missing_trace_warning,
   type SourcePinMissingTraceWarning,
 } from "./source_pin_missing_trace_warning"
@@ -183,6 +187,7 @@ export const any_source_component = z.union([
   source_failed_to_create_component_error,
   source_trace_not_connected_error,
   source_property_ignored_warning,
+  source_deprecated_props_warning,
   source_pin_missing_trace_warning,
   source_missing_manufacturer_part_number_warning,
   source_refdes_convention_warning,
@@ -230,6 +235,7 @@ export type AnySourceElement =
   | SourceFailedToCreateComponentError
   | SourceTraceNotConnectedError
   | SourcePropertyIgnoredWarning
+  | SourceDeprecatedPropsWarning
   | SourcePinMissingTraceWarning
   | SourceMissingManufacturerPartNumberWarning
   | SourceRefdesConventionWarning
