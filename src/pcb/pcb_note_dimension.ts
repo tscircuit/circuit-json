@@ -24,10 +24,10 @@ export const pcb_note_dimension = z
       })
       .optional(),
     font: z.literal("tscircuit2024").default("tscircuit2024"),
-    font_size: length.default("1mm"),
+    font_size: length.prefault("1mm"),
     layer: visible_layer.default("top"),
     color: z.string().optional(),
-    arrow_size: length.default("1mm"),
+    arrow_size: length.prefault("1mm"),
   })
   .describe("Defines a measurement annotation within PCB documentation notes")
 

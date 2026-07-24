@@ -17,7 +17,7 @@ export const pcb_note_rect = z
     width: length,
     height: length,
     layer: visible_layer.default("top"),
-    stroke_width: length.default("0.1mm"),
+    stroke_width: length.prefault("0.1mm"),
     corner_radius: length.optional(),
     is_filled: z.boolean().optional(),
     has_stroke: z.boolean().optional(),
