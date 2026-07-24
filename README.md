@@ -140,7 +140,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbNotePath](#pcbnotepath)
     - [PcbNoteRect](#pcbnoterect)
     - [PcbNoteText](#pcbnotetext)
-    - [PcbPackingFailure](#pcbpackingfailure)
+    - [PcbPackingError](#pcbpackingerror)
     - [PcbPadPadClearanceError](#pcbpadpadclearanceerror)
     - [PcbPadTraceClearanceError](#pcbpadtraceclearanceerror)
     - [PcbPanel](#pcbpanel)
@@ -2104,18 +2104,18 @@ interface PcbNoteText {
 }
 ```
 
-### PcbPackingFailure
+### PcbPackingError
 
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_packing_failure.ts)
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_packing_error.ts)
 
 Defines a failure to pack PCB components within layout bounds
 
 ```typescript
 /** Defines a failure to pack PCB components within layout bounds */
-interface PcbPackingFailure extends BaseCircuitJsonError {
-  type: "pcb_packing_failure"
-  pcb_packing_failure_id: string
-  error_type: "pcb_packing_failure"
+interface PcbPackingError extends BaseCircuitJsonError {
+  type: "pcb_packing_error"
+  pcb_packing_error_id: string
+  error_type: "pcb_packing_error"
   pcb_group_id?: string
   subcircuit_id?: string
 }

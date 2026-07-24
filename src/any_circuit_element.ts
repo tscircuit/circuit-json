@@ -92,7 +92,7 @@ export const any_circuit_element = z.union([
   pcb.pcb_trace_error,
   pcb.pcb_trace_missing_error,
   pcb.pcb_placement_error,
-  pcb.pcb_packing_failure,
+  pcb.pcb_packing_error,
   pcb.pcb_panelization_placement_error,
   pcb.pcb_port_not_matched_error,
   pcb.pcb_port_not_connected_error,
