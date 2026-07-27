@@ -46,7 +46,13 @@ export const pcb_group = z
     layout_mode: z.string().optional(),
     autorouter_configuration: z
       .object({
-        trace_clearance: length,
+        trace_clearance: length.optional(),
+        allow_via_in_pad: z
+          .boolean()
+          .optional()
+          .describe(
+            "Allows the autorouter to place vias inside connected pads. Omitted or false keeps via-in-pad routing disabled.",
+          ),
       })
       .optional(),
     autorouter_used_string: z.string().optional(),
@@ -82,7 +88,8 @@ export interface PcbGroup {
   description?: string
   layout_mode?: string
   autorouter_configuration?: {
-    trace_clearance: Length
+    trace_clearance?: Length
+    allow_via_in_pad?: boolean
   }
   autorouter_used_string?: string
 }
