@@ -75,6 +75,31 @@ export const pcb_component = z
       .describe(
         "Does this component take up all the space within its bounds on a layer. This is generally true except for when separated pin headers are being represented by a single component (in which case, chips can be placed between the pin headers) or for tall modules where chips fit underneath",
       ),
+    relational_constraints: z
+      .object({
+        anchor_to: z
+          .string()
+          .optional()
+          .describe(
+            "The name of another component that this component should be placed near (soft constraint for auto-placement engines)",
+          ),
+        max_distance: z
+          .number()
+          .optional()
+          .describe(
+            "Maximum allowable Euclidean distance in mm between this component's center and the anchor_to component's center",
+          ),
+        keep_near: z
+          .string()
+          .optional()
+          .describe(
+            "Hint for auto-placement engines to keep this component in the same tile/cluster as the named component",
+          ),
+      })
+      .optional()
+      .describe(
+        "Soft placement relationships between this component and others, used by auto-placement engines",
+      ),
   })
   .describe("Defines a component on the PCB")
 
@@ -117,6 +142,23 @@ export interface PcbComponent {
     | "from_back"
   metadata?: PcbComponentMetadata
   obstructs_within_bounds: boolean
+  relational_constraints?: {
+    /**
+     * The name of another component that this component should be placed near.
+     * Soft constraint for auto-placement engines.
+     */
+    anchor_to?: string
+    /**
+     * Maximum allowable Euclidean distance in mm between this component's
+     * center and the anchor_to component's center.
+     */
+    max_distance?: number
+    /**
+     * Hint for auto-placement engines to keep this component in the same
+     * tile or cluster as the named component.
+     */
+    keep_near?: string
+  }
 }
 
 /**
