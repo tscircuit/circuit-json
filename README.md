@@ -1879,7 +1879,7 @@ interface PcbGroup {
   description?: string
   layout_mode?: string
   autorouter_configuration?: {
-    trace_clearance?: Length
+    trace_clearance: Length
     allow_via_in_pad?: boolean
   }
   autorouter_used_string?: string

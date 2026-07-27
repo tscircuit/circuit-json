@@ -16,7 +16,7 @@ test("pcb_group.autorouter_configuration.trace_clearance parses", () => {
   expect(group.autorouter_configuration?.trace_clearance).toBe(0.2)
 })
 
-test("pcb_group.autorouter_configuration.allow_via_in_pad parses independently", () => {
+test("pcb_group.autorouter_configuration.allow_via_in_pad parses", () => {
   const group = pcb_group.parse({
     type: "pcb_group",
     source_group_id: "g1",
@@ -24,11 +24,14 @@ test("pcb_group.autorouter_configuration.allow_via_in_pad parses independently",
     width: 10,
     height: 10,
     pcb_component_ids: [],
-    autorouter_configuration: { allow_via_in_pad: true },
+    autorouter_configuration: {
+      trace_clearance: 0.2,
+      allow_via_in_pad: true,
+    },
   })
 
   expect(group.autorouter_configuration?.allow_via_in_pad).toBe(true)
-  expect(group.autorouter_configuration?.trace_clearance).toBeUndefined()
+  expect(group.autorouter_configuration?.trace_clearance).toBe(0.2)
 })
 
 test("pcb_group.autorouter_used_string is optional", () => {
