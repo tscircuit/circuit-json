@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { distance, type Distance } from "src/units"
+import { distance, type Distance, rotation, type Rotation } from "src/units"
 import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
@@ -63,6 +63,23 @@ const pcb_solder_paste_rotated_rect = z.object({
   pcb_smtpad_id: z.string().optional(),
 })
 
+const pcb_solder_paste_rotated_pill = z.object({
+  type: z.literal("pcb_solder_paste"),
+  shape: z.literal("rotated_pill"),
+  pcb_solder_paste_id: getZodPrefixedIdWithDefault("pcb_solder_paste"),
+  pcb_group_id: z.string().optional(),
+  subcircuit_id: z.string().optional(),
+  x: distance,
+  y: distance,
+  width: z.number(),
+  height: z.number(),
+  radius: z.number(),
+  ccw_rotation: rotation,
+  layer: layer_ref,
+  pcb_component_id: z.string().optional(),
+  pcb_smtpad_id: z.string().optional(),
+})
+
 const pcb_solder_paste_oval = z.object({
   type: z.literal("pcb_solder_paste"),
   shape: z.literal("oval"),
@@ -84,6 +101,7 @@ export const pcb_solder_paste = z
     pcb_solder_paste_rect,
     pcb_solder_paste_pill,
     pcb_solder_paste_rotated_rect,
+    pcb_solder_paste_rotated_pill,
     pcb_solder_paste_oval,
   ])
   .describe("Defines solderpaste on the PCB")
@@ -94,6 +112,9 @@ type InferredPcbSolderPasteRect = z.infer<typeof pcb_solder_paste_rect>
 type InferredPcbSolderPastePill = z.infer<typeof pcb_solder_paste_pill>
 type InferredPcbSolderPasteRotatedRect = z.infer<
   typeof pcb_solder_paste_rotated_rect
+>
+type InferredPcbSolderPasteRotatedPill = z.infer<
+  typeof pcb_solder_paste_rotated_pill
 >
 type InferredPcbSolderPasteOval = z.infer<typeof pcb_solder_paste_oval>
 
@@ -170,6 +191,25 @@ export interface PcbSolderPasteRotatedRect {
 /**
  * Defines solderpaste on the PCB
  */
+export interface PcbSolderPasteRotatedPill {
+  type: "pcb_solder_paste"
+  shape: "rotated_pill"
+  pcb_solder_paste_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  x: Distance
+  y: Distance
+  width: number
+  height: number
+  radius: number
+  ccw_rotation: Rotation
+  layer: LayerRef
+  pcb_component_id?: string
+  pcb_smtpad_id?: string
+}
+/**
+ * Defines solderpaste on the PCB
+ */
 export interface PcbSolderPasteOval {
   type: "pcb_solder_paste"
   shape: "oval"
@@ -190,12 +230,16 @@ export type PcbSolderPaste =
   | PcbSolderPasteRect
   | PcbSolderPastePill
   | PcbSolderPasteRotatedRect
+  | PcbSolderPasteRotatedPill
   | PcbSolderPasteOval
 
 expectTypesMatch<PcbSolderPasteCircle, InferredPcbSolderPasteCircle>(true)
 expectTypesMatch<PcbSolderPasteRect, InferredPcbSolderPasteRect>(true)
 expectTypesMatch<PcbSolderPastePill, InferredPcbSolderPastePill>(true)
 expectTypesMatch<PcbSolderPasteRotatedRect, InferredPcbSolderPasteRotatedRect>(
+  true,
+)
+expectTypesMatch<PcbSolderPasteRotatedPill, InferredPcbSolderPasteRotatedPill>(
   true,
 )
 expectTypesMatch<PcbSolderPasteOval, InferredPcbSolderPasteOval>(true)
