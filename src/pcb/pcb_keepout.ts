@@ -1,7 +1,7 @@
-import { z } from "zod"
-import { point, type Point } from "../common"
-import { distance } from "../units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
+import { type Point, point } from "../common"
+import { distance } from "../units"
 
 export const pcb_keepout = z
   .object({
@@ -15,6 +15,7 @@ export const pcb_keepout = z
     pcb_keepout_id: z.string(),
     layers: z.array(z.string()), // Specify layers where the keepout applies
     description: z.string().optional(), // Optional description of the keepout
+    excluded_pcb_component_ids: z.array(z.string()).optional(),
   })
   .or(
     z.object({
@@ -27,6 +28,7 @@ export const pcb_keepout = z
       pcb_keepout_id: z.string(),
       layers: z.array(z.string()), // Specify layers where the keepout applies
       description: z.string().optional(), // Optional description of the keepout
+      excluded_pcb_component_ids: z.array(z.string()).optional(),
     }),
   )
 
@@ -44,6 +46,8 @@ export interface PCBKeepoutRect {
   pcb_keepout_id: string
   layers: string[]
   description?: string
+  /** PCB components excluded from keepout DRC enforcement. */
+  excluded_pcb_component_ids?: string[]
 }
 
 export interface PCBKeepoutCircle {
@@ -56,6 +60,8 @@ export interface PCBKeepoutCircle {
   pcb_keepout_id: string
   layers: string[]
   description?: string
+  /** PCB components excluded from keepout DRC enforcement. */
+  excluded_pcb_component_ids?: string[]
 }
 
 export type PCBKeepout = PCBKeepoutRect | PCBKeepoutCircle
