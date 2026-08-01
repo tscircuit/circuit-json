@@ -8,7 +8,7 @@ export const source_manually_placed_via = z
     type: z.literal("source_manually_placed_via"),
     source_manually_placed_via_id: z.string(),
     source_group_id: z.string(),
-    source_net_id: z.string(),
+    source_net_id: z.string().min(1).optional(),
     subcircuit_id: z.string().optional(),
     source_trace_id: z.string().optional(),
   })
@@ -28,7 +28,7 @@ export interface SourceManuallyPlacedVia {
   type: "source_manually_placed_via"
   source_manually_placed_via_id: string
   source_group_id: string
-  source_net_id: string
+  source_net_id?: string
   subcircuit_id?: string
   source_trace_id?: string
 }
