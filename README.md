@@ -20,6 +20,13 @@ could then read the DSN file back to Circuit JSON.
 This module has the zod definitions and conversion functions for using circuit json,
 and is the primary way that Circuit JSON is defined and maintained.
 
+> **Zod v4 migration:** `circuit-json` schemas now require `zod@^4`. Because
+> Zod v3 and v4 schemas cannot be composed, downstream packages that pass these
+> schemas between package boundaries must upgrade together. Consumers that inspect
+> raw Zod errors should migrate to Zod v4's error APIs, and should account for Zod
+> v4 rejecting non-finite numbers and unsafe integers where earlier versions
+> accepted them.
+
 https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
 
 > To quickly generate Circuit JSON with tscircuit, use [tscircuit/eval](https://github.com/tscircuit/eval)

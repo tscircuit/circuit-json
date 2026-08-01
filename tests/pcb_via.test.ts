@@ -14,6 +14,18 @@ test("pcb_via allows subcircuit_connectivity_map_key", () => {
   expect(via.subcircuit_connectivity_map_key).toBe("foo")
 })
 
+test("pcb_via converts default dimensions to numbers", () => {
+  const via = pcb_via.parse({
+    type: "pcb_via",
+    x: 1,
+    y: 2,
+    layers: ["top", "bottom"],
+  })
+
+  expect(via.outer_diameter).toBeCloseTo(0.6)
+  expect(via.hole_diameter).toBeCloseTo(0.25)
+})
+
 test("any_circuit_element includes pcb_via with subcircuit_connectivity_map_key", () => {
   const via = any_circuit_element.parse({
     type: "pcb_via",

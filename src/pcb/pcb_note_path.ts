@@ -15,7 +15,7 @@ export const pcb_note_path = z
     text: z.string().optional(),
     route: z.array(point),
     layer: visible_layer.default("top"),
-    stroke_width: length.default("0.1mm"),
+    stroke_width: length.prefault("0.1mm"),
     color: z.string().optional(),
   })
   .describe("Defines a polyline documentation note on the PCB")

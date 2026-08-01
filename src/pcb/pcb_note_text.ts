@@ -13,7 +13,7 @@ export const pcb_note_text = z
     subcircuit_id: z.string().optional(),
     name: z.string().optional(),
     font: z.literal("tscircuit2024").default("tscircuit2024"),
-    font_size: distance.default("1mm"),
+    font_size: distance.prefault("1mm"),
     text: z.string().optional(),
     anchor_position: point.default({ x: 0, y: 0 }),
     anchor_alignment: z

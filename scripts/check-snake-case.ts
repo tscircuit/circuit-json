@@ -1,7 +1,7 @@
-import type { z } from "zod"
+import { z } from "zod"
 import { any_circuit_element } from "../src/any_circuit_element"
 
-const seen = new Set<z.ZodTypeAny>()
+const seen = new Set<z.core.$ZodType>()
 const errors: string[] = []
 
 const SNAKE_CASE_IGNORED_PATH_FRAGMENTS = [
@@ -24,52 +24,48 @@ function checkSnakeCase(name: string, path: string) {
   }
 }
 
-function traverse(schema: z.ZodTypeAny, path: string) {
+function traverse(schema: z.core.$ZodType, path: string) {
   if (seen.has(schema)) return
   seen.add(schema)
 
-  const def = schema._def
-  const typeName = def.typeName
-
-  if (typeName === "ZodObject") {
-    const shape = def.shape()
-    for (const key in shape) {
+  if (schema instanceof z.ZodObject) {
+    for (const key in schema.shape) {
       checkSnakeCase(key, `${path}.${key}`)
-      traverse(shape[key], `${path}.${key}`)
+      traverse(schema.shape[key], `${path}.${key}`)
     }
-  } else if (typeName === "ZodUnion" || typeName === "ZodDiscriminatedUnion") {
-    const options =
-      def.options || (def.optionsMap ? Array.from(def.optionsMap.values()) : [])
-    options.forEach((opt: any, i: number) => {
-      traverse(opt, `${path}[union:${i}]`)
-    })
-  } else if (typeName === "ZodArray") {
-    traverse(def.type, `${path}[]`)
   } else if (
-    typeName === "ZodOptional" ||
-    typeName === "ZodNullable" ||
-    typeName === "ZodBranded"
+    schema instanceof z.ZodUnion ||
+    schema instanceof z.ZodDiscriminatedUnion
   ) {
-    traverse(def.innerType, path)
-  } else if (typeName === "ZodEnum") {
-    for (const v of def.values as string[]) {
-      checkSnakeCase(v, `${path} (enum value)`)
+    schema.options.forEach((option, index) => {
+      traverse(option, `${path}[union:${index}]`)
+    })
+  } else if (schema instanceof z.ZodArray) {
+    traverse(schema.element, `${path}[]`)
+  } else if (
+    schema instanceof z.ZodOptional ||
+    schema instanceof z.ZodNullable ||
+    schema instanceof z.ZodDefault ||
+    schema instanceof z.ZodPrefault
+  ) {
+    traverse(schema.unwrap(), path)
+  } else if (schema instanceof z.ZodEnum) {
+    for (const value of schema.options) {
+      if (typeof value === "string") {
+        checkSnakeCase(value, `${path} (enum value)`)
+      }
     }
-  } else if (typeName === "ZodRecord") {
-    traverse(def.keyType, `${path}[key]`)
-    traverse(def.valueType, `${path}[value]`)
-  } else if (typeName === "ZodLazy") {
-    traverse(def.getter(), path)
-  } else if (typeName === "ZodEffects") {
-    traverse(def.schema, path)
-  } else if (typeName === "ZodPipeline") {
-    traverse(def.in, path)
-    traverse(def.out, path)
-  } else if (typeName === "ZodIntersection") {
-    traverse(def.left, path)
-    traverse(def.right, path)
-  } else if (typeName === "ZodDefault") {
-    traverse(def.innerType, path)
+  } else if (schema instanceof z.ZodRecord) {
+    traverse(schema.keyType, `${path}[key]`)
+    traverse(schema.valueType, `${path}[value]`)
+  } else if (schema instanceof z.ZodLazy) {
+    traverse(schema.unwrap(), path)
+  } else if (schema instanceof z.ZodPipe) {
+    traverse(schema.in, path)
+    traverse(schema.out, path)
+  } else if (schema instanceof z.ZodIntersection) {
+    traverse(schema.def.left, path)
+    traverse(schema.def.right, path)
   }
 }
 
