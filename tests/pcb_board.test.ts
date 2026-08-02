@@ -92,6 +92,18 @@ test("pcb_board shape property is optional", () => {
   expect(board.shape).toBeUndefined()
 })
 
+test("pcb_board allows vias in pads to be explicitly allowed", () => {
+  const board = pcb_board.parse({
+    type: "pcb_board",
+    width: "10mm",
+    height: "20mm",
+    center: { x: 0, y: 0 },
+    is_via_in_pad_allowed: true,
+  })
+
+  expect(board.is_via_in_pad_allowed).toBe(true)
+})
+
 test("pcb_board with solder mask and silkscreen colors", () => {
   const board = pcb_board.parse({
     type: "pcb_board",

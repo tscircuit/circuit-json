@@ -22,6 +22,7 @@ export const pcb_board = z
     is_subcircuit: z.boolean().optional(),
     subcircuit_id: z.string().optional(),
     is_mounted_to_carrier_board: z.boolean().optional(),
+    is_via_in_pad_allowed: z.boolean().optional(),
     width: length.optional(),
     height: length.optional(),
     center: point,
@@ -62,6 +63,7 @@ export interface PcbBoard extends ManufacturingDrcProperties {
   is_subcircuit?: boolean
   subcircuit_id?: string
   is_mounted_to_carrier_board?: boolean
+  is_via_in_pad_allowed?: boolean
   width?: Length
   height?: Length
   display_offset_x?: string
