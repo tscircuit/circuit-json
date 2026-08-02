@@ -22,6 +22,7 @@ export const pcb_via = z
     layers: z.array(layer_ref),
     pcb_trace_id: z.string().optional(),
     source_trace_id: z.string().optional(),
+    source_net_id: z.string().min(1).optional(),
     net_is_assignable: z.boolean().optional(),
     net_assigned: z.boolean().optional(),
     is_tented: z.boolean().optional(),
@@ -51,6 +52,7 @@ export interface PcbVia {
   layers: LayerRef[]
   pcb_trace_id?: string
   source_trace_id?: string
+  source_net_id?: string
   net_is_assignable?: boolean
   net_assigned?: boolean
   is_tented?: boolean
