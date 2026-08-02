@@ -1344,6 +1344,7 @@ interface PcbBoard extends ManufacturingDrcProperties {
   is_subcircuit?: boolean
   subcircuit_id?: string
   is_mounted_to_carrier_board?: boolean
+  is_via_in_pad_allowed?: boolean
   width?: Length
   height?: Length
   display_offset_x?: string

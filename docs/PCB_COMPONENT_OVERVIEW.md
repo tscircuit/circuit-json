@@ -672,6 +672,7 @@ export interface PcbBreakoutPoint {
 export interface PcbBoard {
   type: "pcb_board"
   pcb_board_id: string
+  is_via_in_pad_allowed?: boolean
   width: Length
   height: Length
   thickness: Length
