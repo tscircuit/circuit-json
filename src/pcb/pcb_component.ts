@@ -7,6 +7,10 @@ import {
   type NinePointAnchor,
   ninePointAnchor,
 } from "src/common/NinePointAnchor"
+import {
+  type InsertionDirection,
+  insertion_direction,
+} from "src/pcb/properties/insertion_direction"
 import { type LayerRef, layer_ref } from "src/pcb/properties/layer_ref"
 import { type Length, type Rotation, length, rotation } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
@@ -55,15 +59,7 @@ export const pcb_component = z
     positioned_relative_to_pcb_group_id: z.string().optional(),
     positioned_relative_to_pcb_board_id: z.string().optional(),
     cable_insertion_center: point.optional(),
-    insertion_direction: z
-      .enum([
-        "from_above",
-        "from_left",
-        "from_right",
-        "from_front",
-        "from_back",
-      ])
-      .optional(),
+    insertion_direction: insertion_direction.optional(),
     metadata: z
       .object({
         kicad_footprint: kicadFootprintMetadata.optional(),
@@ -109,12 +105,7 @@ export interface PcbComponent {
   positioned_relative_to_pcb_group_id?: string
   positioned_relative_to_pcb_board_id?: string
   cable_insertion_center?: Point
-  insertion_direction?:
-    | "from_above"
-    | "from_left"
-    | "from_right"
-    | "from_front"
-    | "from_back"
+  insertion_direction?: InsertionDirection
   metadata?: PcbComponentMetadata
   obstructs_within_bounds: boolean
 }
