@@ -71,10 +71,11 @@ test("pcb_component allows cable_insertion_center", () => {
 test("pcb_component allows insertion_direction options", () => {
   const insertionDirections = [
     "from_above",
+    "from_below",
     "from_left",
     "from_right",
-    "from_front",
-    "from_back",
+    "from_top",
+    "from_bottom",
   ] as const
 
   for (const insertion_direction of insertionDirections) {
@@ -88,8 +89,46 @@ test("pcb_component allows insertion_direction options", () => {
   }
 })
 
+test("pcb_component normalizes cartesian insertion_direction spellings", () => {
+  const cartesianToNamed = {
+    from_x_neg: "from_left",
+    from_x_pos: "from_right",
+    from_y_pos: "from_top",
+    from_y_neg: "from_bottom",
+    from_z_pos: "from_above",
+    from_z_neg: "from_below",
+  } as const
+
+  for (const [cartesian, named] of Object.entries(cartesianToNamed)) {
+    const parsed = pcb_component.parse({
+      ...baseComponent,
+      pcb_component_id: `pcb_component_${named}`,
+      insertion_direction: cartesian,
+    })
+
+    expect(parsed.insertion_direction).toBe(named)
+  }
+})
+
+test("pcb_component normalizes deprecated insertion_direction spellings", () => {
+  const deprecatedToNamed = {
+    from_front: "from_top",
+    from_back: "from_bottom",
+  } as const
+
+  for (const [deprecated, named] of Object.entries(deprecatedToNamed)) {
+    const parsed = pcb_component.parse({
+      ...baseComponent,
+      pcb_component_id: `pcb_component_${named}`,
+      insertion_direction: deprecated,
+    })
+
+    expect(parsed.insertion_direction).toBe(named)
+  }
+})
+
 test("pcb_component rejects invalid insertion_direction", () => {
-  for (const insertion_direction of ["from_side", "from_top", "from_bottom"]) {
+  for (const insertion_direction of ["from_side", "from_y+", "from_beneath"]) {
     expect(() =>
       pcb_component.parse({
         ...baseComponent,

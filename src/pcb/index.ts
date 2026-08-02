@@ -1,4 +1,5 @@
 export * from "./properties/brep"
+export * from "./properties/insertion_direction"
 export * from "./properties/layer_ref"
 export * from "./properties/pcb_route_hints"
 export * from "./properties/supplier_name"
