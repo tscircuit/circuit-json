@@ -28,6 +28,10 @@ export interface PcbComponentMetadata {
   kicad_footprint?: KicadFootprintMetadata
 }
 
+export type SupplierPin1LocationMap = Partial<
+  Record<SupplierName, PcbPin1Location>
+>
+
 export const pcb_component = z
   .object({
     type: z.literal("pcb_component"),
@@ -126,7 +130,7 @@ export interface PcbComponent {
   cable_insertion_center?: Point
   insertion_direction?: InsertionDirection
   pin1_location?: PcbPin1Location
-  supplier_pin1_location_map?: Partial<Record<SupplierName, PcbPin1Location>>
+  supplier_pin1_location_map?: SupplierPin1LocationMap
   metadata?: PcbComponentMetadata
   obstructs_within_bounds: boolean
 }
