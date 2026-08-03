@@ -19,17 +19,21 @@ const rotationCycles = [
   ],
 ] as const satisfies readonly (readonly PcbPin1Location[])[]
 
+const quarterTurnRotations = [0, 90, 180, 270] as const
+
 test("maps every rotation-compatible pin 1 location pair", () => {
   for (const cycle of rotationCycles) {
     for (let fromIndex = 0; fromIndex < cycle.length; fromIndex++) {
       for (let toIndex = 0; toIndex < cycle.length; toIndex++) {
         const expectedRotation =
-          ((toIndex - fromIndex + cycle.length) % cycle.length) * 90
+          quarterTurnRotations[
+            (toIndex - fromIndex + cycle.length) % cycle.length
+          ]!
 
         expect(
           getRotationBetweenPcbPin1Locations(
-            cycle[fromIndex],
-            cycle[toIndex],
+            cycle[fromIndex]!,
+            cycle[toIndex]!,
           ),
         ).toBe(expectedRotation)
       }
