@@ -28,3 +28,42 @@ export type PcbPin1Location =
   | "bottomside_right"
 
 expectTypesMatch<PcbPin1Location, InferredPcbPin1Location>(true)
+
+export type PcbPin1LocationRotation = 0 | 90 | 180 | 270
+
+const pin1LocationRotationCycles: readonly (readonly PcbPin1Location[])[] = [
+  [
+    "leftside_top",
+    "bottomside_left",
+    "rightside_bottom",
+    "topside_right",
+  ],
+  [
+    "leftside_bottom",
+    "bottomside_right",
+    "rightside_top",
+    "topside_left",
+  ],
+]
+
+/**
+ * Returns the counter-clockwise rotation that maps one pin 1 location to
+ * another, or null when the locations differ by reflection rather than
+ * rotation.
+ */
+export const getRotationBetweenPcbPin1Locations = (
+  from: PcbPin1Location,
+  to: PcbPin1Location,
+): PcbPin1LocationRotation | null => {
+  for (const cycle of pin1LocationRotationCycles) {
+    const fromIndex = cycle.indexOf(from)
+    const toIndex = cycle.indexOf(to)
+
+    if (fromIndex !== -1 && toIndex !== -1) {
+      return (((toIndex - fromIndex + cycle.length) % cycle.length) *
+        90) as PcbPin1LocationRotation
+    }
+  }
+
+  return null
+}
