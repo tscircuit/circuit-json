@@ -3,15 +3,15 @@ import { getZodPrefixedIdWithDefault } from "src/common"
 import { duration_ms, ms } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import {
-  simulation_parameter_sweep_coordinate,
-  type SimulationParameterSweepCoordinate,
-} from "./simulation_parameter_sweep_coordinate"
+  simulation_parameter_sweep_result_fields,
+  type SimulationParameterSweepResultFields,
+} from "./simulation_parameter_sweep_result_fields"
 
-export interface SimulationTransientCurrentGraph {
+export interface SimulationTransientCurrentGraph
+  extends SimulationParameterSweepResultFields {
   type: "simulation_transient_current_graph"
   simulation_transient_current_graph_id: string
   simulation_experiment_id: string
-  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
   timestamps_ms?: number[]
   current_levels: number[]
   source_component_id?: string
@@ -30,8 +30,6 @@ export const simulation_transient_current_graph = z
       "simulation_transient_current_graph",
     ),
     simulation_experiment_id: z.string(),
-    simulation_parameter_sweep_coordinate:
-      simulation_parameter_sweep_coordinate.optional(),
     timestamps_ms: z.array(z.number()).optional(),
     current_levels: z.array(z.number()),
     source_component_id: z.string().optional(),
@@ -42,6 +40,7 @@ export const simulation_transient_current_graph = z
     name: z.string().optional(),
     color: z.string().optional(),
   })
+  .extend(simulation_parameter_sweep_result_fields)
   .describe("Stores current measurements over time for a simulation")
 
 export type SimulationTransientCurrentGraphInput = z.input<
