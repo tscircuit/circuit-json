@@ -12,6 +12,14 @@ import {
   insertion_direction,
 } from "src/pcb/properties/insertion_direction"
 import { type LayerRef, layer_ref } from "src/pcb/properties/layer_ref"
+import {
+  type PcbPin1Location,
+  pcb_pin1_location,
+} from "src/pcb/properties/pcb_pin1_location"
+import {
+  type SupplierName,
+  supplier_name,
+} from "src/pcb/properties/supplier_name"
 import { type Length, type Rotation, length, rotation } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import { z } from "zod"
@@ -19,6 +27,10 @@ import { z } from "zod"
 export interface PcbComponentMetadata {
   kicad_footprint?: KicadFootprintMetadata
 }
+
+export type SupplierPin1LocationMap = Partial<
+  Record<SupplierName, PcbPin1Location>
+>
 
 export const pcb_component = z
   .object({
@@ -60,6 +72,17 @@ export const pcb_component = z
     positioned_relative_to_pcb_board_id: z.string().optional(),
     cable_insertion_center: point.optional(),
     insertion_direction: insertion_direction.optional(),
+    pin1_location: pcb_pin1_location
+      .optional()
+      .describe(
+        "Location of pin 1 on the unrotated, top-view component footprint",
+      ),
+    supplier_pin1_location_map: z
+      .record(supplier_name, pcb_pin1_location)
+      .optional()
+      .describe(
+        "Pin 1 location for each supplier's unrotated, top-view footprint",
+      ),
     metadata: z
       .object({
         kicad_footprint: kicadFootprintMetadata.optional(),
@@ -106,6 +129,8 @@ export interface PcbComponent {
   positioned_relative_to_pcb_board_id?: string
   cable_insertion_center?: Point
   insertion_direction?: InsertionDirection
+  pin1_location?: PcbPin1Location
+  supplier_pin1_location_map?: SupplierPin1LocationMap
   metadata?: PcbComponentMetadata
   obstructs_within_bounds: boolean
 }

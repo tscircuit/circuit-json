@@ -175,6 +175,39 @@ test("pcb_component allows optional metadata.kicad_footprint", () => {
   expect(parsed.metadata?.kicad_footprint?.attributes?.smd).toBe(true)
 })
 
+test("pcb_component allows semantic pin 1 locations", () => {
+  const parsed = pcb_component.parse({
+    ...baseComponent,
+    pin1_location: "leftside_top",
+    supplier_pin1_location_map: {
+      jlcpcb: "topside_left",
+      pcbway: "rightside_bottom",
+    },
+  })
+
+  expect(parsed.pin1_location).toBe("leftside_top")
+  expect(parsed.supplier_pin1_location_map).toEqual({
+    jlcpcb: "topside_left",
+    pcbway: "rightside_bottom",
+  })
+})
+
+test("pcb_component rejects invalid semantic pin 1 locations", () => {
+  expect(() =>
+    pcb_component.parse({
+      ...baseComponent,
+      pin1_location: "top_left",
+    }),
+  ).toThrowError()
+
+  expect(() =>
+    pcb_component.parse({
+      ...baseComponent,
+      supplier_pin1_location_map: { jlcpcb: "top_left" },
+    }),
+  ).toThrowError()
+})
+
 test("pcb_component rejects invalid position_mode", () => {
   expect(() =>
     pcb_component.parse({
