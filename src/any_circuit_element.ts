@@ -44,6 +44,7 @@ export const any_circuit_element = z.union([
   src.source_project_metadata,
   src.source_invalid_component_property_error,
   src.source_trace_not_connected_error,
+  src.source_differential_pair_not_point_to_point_error,
   src.source_pin_missing_trace_warning,
   src.source_unnamed_trace_warning,
   src.source_missing_manufacturer_part_number_warning,

@@ -112,6 +112,10 @@ import {
   type SourceTraceNotConnectedError,
 } from "./source_trace_not_connected_error"
 import {
+  source_differential_pair_not_point_to_point_error,
+  type SourceDifferentialPairNotPointToPointError,
+} from "./source_differential_pair_not_point_to_point_error"
+import {
   source_property_ignored_warning,
   type SourcePropertyIgnoredWarning,
 } from "./source_property_ignored_warning"
@@ -182,6 +186,7 @@ export const any_source_component = z.union([
   source_invalid_component_property_error,
   source_failed_to_create_component_error,
   source_trace_not_connected_error,
+  source_differential_pair_not_point_to_point_error,
   source_property_ignored_warning,
   source_pin_missing_trace_warning,
   source_missing_manufacturer_part_number_warning,
@@ -229,6 +234,7 @@ export type AnySourceElement =
   | SourceInvalidComponentPropertyError
   | SourceFailedToCreateComponentError
   | SourceTraceNotConnectedError
+  | SourceDifferentialPairNotPointToPointError
   | SourcePropertyIgnoredWarning
   | SourcePinMissingTraceWarning
   | SourceMissingManufacturerPartNumberWarning
