@@ -11,8 +11,9 @@ import type {
 import type { SchematicError } from "src/schematic"
 import type { SimulationUnknownExperimentError } from "src/simulation"
 import type {
-  UnknownErrorFindingPart,
+  SourceDifferentialPairNotPointToPointError,
   SourcePinMustBeConnectedError,
+  UnknownErrorFindingPart,
 } from "src/source"
 
 export type CircuitJsonError =
@@ -28,3 +29,4 @@ export type CircuitJsonError =
   | UnknownErrorFindingPart
   | SimulationUnknownExperimentError
   | SourcePinMustBeConnectedError
+  | SourceDifferentialPairNotPointToPointError

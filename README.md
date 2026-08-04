@@ -52,6 +52,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceComponentInternalConnection](#sourcecomponentinternalconnection)
     - [SourceComponentMisconfiguredError](#sourcecomponentmisconfigurederror)
     - [SourceComponentPinsUnderspecifiedWarning](#sourcecomponentpinsunderspecifiedwarning)
+    - [SourceDifferentialPairNotPointToPointError](#sourcedifferentialpairnotpointtopointerror)
     - [SourceFailedToCreateComponentError](#sourcefailedtocreatecomponenterror)
     - [SourceGroup](#sourcegroup)
     - [SourceI2cMisconfiguredError](#sourcei2cmisconfigurederror)
@@ -394,6 +395,28 @@ interface SourceComponentPinsUnderspecifiedWarning {
   source_component_id: string
   source_port_ids: string[]
   subcircuit_id?: string
+}
+```
+
+### SourceDifferentialPairNotPointToPointError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_differential_pair_not_point_to_point_error.ts)
+
+```typescript
+/** Error emitted when one side of a differential pair does not connect exactly
+ * two source ports. */
+interface SourceDifferentialPairNotPointToPointError
+  extends BaseCircuitJsonError {
+  type: "source_differential_pair_not_point_to_point_error"
+  source_differential_pair_not_point_to_point_error_id: string
+  error_type: "source_differential_pair_not_point_to_point_error"
+  subcircuit_id?: string
+  differential_pair_name?: string
+  connection_polarity: "positive" | "negative"
+  connection_selector: string
+  subcircuit_connectivity_map_key?: string
+  source_net_id?: string
+  connected_source_port_ids: string[]
 }
 ```
 

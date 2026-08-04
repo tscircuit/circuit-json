@@ -1,5 +1,6 @@
 import { expect, test } from "bun:test"
 import { any_circuit_element } from "../src/any_circuit_element"
+import type { CircuitJsonError } from "../src/common"
 import { source_differential_pair_not_point_to_point_error } from "../src/source/source_differential_pair_not_point_to_point_error"
 
 const errorInput = {
@@ -35,6 +36,10 @@ test("source_differential_pair_not_point_to_point_error schema parses and defaul
     "source_port_2",
     "source_port_3",
   ])
+  const circuitJsonError: CircuitJsonError = error
+  expect(circuitJsonError.type).toBe(
+    "source_differential_pair_not_point_to_point_error",
+  )
 })
 
 test("any_circuit_element includes source_differential_pair_not_point_to_point_error", () => {
