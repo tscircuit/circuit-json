@@ -12,6 +12,7 @@ export interface SimulationTransientCurrentGraph {
   simulation_transient_current_graph_id: string
   simulation_experiment_id: string
   simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_parameter_sweep_coordinates?: SimulationParameterSweepCoordinate[]
   timestamps_ms?: number[]
   current_levels: number[]
   source_component_id?: string
@@ -32,6 +33,10 @@ export const simulation_transient_current_graph = z
     simulation_experiment_id: z.string(),
     simulation_parameter_sweep_coordinate:
       simulation_parameter_sweep_coordinate.optional(),
+    simulation_parameter_sweep_coordinates: z
+      .array(simulation_parameter_sweep_coordinate)
+      .min(2)
+      .optional(),
     timestamps_ms: z.array(z.number()).optional(),
     current_levels: z.array(z.number()),
     source_component_id: z.string().optional(),
