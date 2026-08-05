@@ -2,7 +2,7 @@ import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import {
-  simulation_parameter_sweep_coordinate_set,
+  simulation_parameter_sweep_coordinate,
   type SimulationParameterSweepCoordinate,
 } from "./simulation_parameter_sweep_coordinate"
 
@@ -16,10 +16,6 @@ export interface SimulationMeasurementResult {
   simulation_parameter_sweep_coordinate_sets?: SimulationParameterSweepCoordinate[][]
 }
 
-const finiteMeasurementValue = z.number().refine(Number.isFinite, {
-  message: "Measurement values must be finite",
-})
-
 export const simulation_measurement_result = z
   .object({
     type: z.literal("simulation_measurement_result"),
@@ -28,10 +24,10 @@ export const simulation_measurement_result = z
     ),
     simulation_experiment_id: z.string(),
     name: z.string().min(1),
-    measurement_values: z.array(finiteMeasurementValue).min(1),
+    measurement_values: z.array(z.number().finite()).min(1),
     measurement_unit: z.string().min(1),
     simulation_parameter_sweep_coordinate_sets: z
-      .array(simulation_parameter_sweep_coordinate_set)
+      .array(z.array(simulation_parameter_sweep_coordinate).min(1))
       .min(1)
       .optional(),
   })
@@ -56,37 +52,6 @@ export const simulation_measurement_result = z
         message:
           "measurement_values and simulation_parameter_sweep_coordinate_sets must have the same length",
       })
-    }
-
-    const expectedParameterSweepIds = coordinateSets[0]?.map(
-      (coordinate) => coordinate.simulation_parameter_sweep_id,
-    )
-    if (!expectedParameterSweepIds) return
-
-    for (const [
-      coordinateSetIndex,
-      coordinateSet,
-    ] of coordinateSets.entries()) {
-      const parameterSweepIds = coordinateSet.map(
-        (coordinate) => coordinate.simulation_parameter_sweep_id,
-      )
-      const hasExpectedSweepOrder =
-        parameterSweepIds.length === expectedParameterSweepIds.length &&
-        parameterSweepIds.every(
-          (parameterSweepId, sweepIndex) =>
-            parameterSweepId === expectedParameterSweepIds[sweepIndex],
-        )
-      if (!hasExpectedSweepOrder) {
-        context.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: [
-            "simulation_parameter_sweep_coordinate_sets",
-            coordinateSetIndex,
-          ],
-          message:
-            "Every coordinate set must contain the same parameter sweeps in the same order",
-        })
-      }
     }
   })
   .describe("Stores scalar measurements for a simulation experiment")

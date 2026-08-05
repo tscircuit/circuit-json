@@ -7,16 +7,15 @@ import {
 } from "./simulation_complex_sample"
 import {
   simulation_parameter_sweep_coordinate,
-  simulation_parameter_sweep_coordinates,
-  type SimulationParameterSweepResultCoordinates,
-  validateSimulationParameterSweepResultCoordinates,
+  type SimulationParameterSweepCoordinate,
 } from "./simulation_parameter_sweep_coordinate"
 
-export interface SimulationAcSweepCurrentGraph
-  extends SimulationParameterSweepResultCoordinates {
+export interface SimulationAcSweepCurrentGraph {
   type: "simulation_ac_sweep_current_graph"
   simulation_ac_sweep_current_graph_id: string
   simulation_experiment_id: string
+  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_parameter_sweep_coordinates?: SimulationParameterSweepCoordinate[]
   simulation_current_probe_id: string
   frequencies_hz: number[]
   complex_currents: SimulationComplexSample[]
@@ -33,15 +32,16 @@ export const simulation_ac_sweep_current_graph = z
     simulation_experiment_id: z.string(),
     simulation_parameter_sweep_coordinate:
       simulation_parameter_sweep_coordinate.optional(),
-    simulation_parameter_sweep_coordinates:
-      simulation_parameter_sweep_coordinates.optional(),
+    simulation_parameter_sweep_coordinates: z
+      .array(simulation_parameter_sweep_coordinate)
+      .min(2)
+      .optional(),
     simulation_current_probe_id: z.string(),
     frequencies_hz: z.array(z.number()),
     complex_currents: z.array(simulation_complex_sample),
     name: z.string().optional(),
     color: z.string().optional(),
   })
-  .superRefine(validateSimulationParameterSweepResultCoordinates)
   .refine(
     (graph) => graph.frequencies_hz.length === graph.complex_currents.length,
     {

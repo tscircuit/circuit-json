@@ -3,39 +3,38 @@ import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import {
   simulation_parameter_sweep_coordinate,
-  simulation_parameter_sweep_coordinates,
-  type SimulationParameterSweepResultCoordinates,
-  validateSimulationParameterSweepResultCoordinates,
+  type SimulationParameterSweepCoordinate,
 } from "./simulation_parameter_sweep_coordinate"
 
-export interface SimulationDcOperatingPointVoltage
-  extends SimulationParameterSweepResultCoordinates {
+export interface SimulationDcOperatingPointVoltage {
   type: "simulation_dc_operating_point_voltage"
   simulation_dc_operating_point_voltage_id: string
   simulation_experiment_id: string
+  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_parameter_sweep_coordinates?: SimulationParameterSweepCoordinate[]
   simulation_voltage_probe_id: string
   voltage: number
   name?: string
   color?: string
 }
 
-export const simulation_dc_operating_point_voltage = z
-  .object({
-    type: z.literal("simulation_dc_operating_point_voltage"),
-    simulation_dc_operating_point_voltage_id: getZodPrefixedIdWithDefault(
-      "simulation_dc_operating_point_voltage",
-    ),
-    simulation_experiment_id: z.string(),
-    simulation_parameter_sweep_coordinate:
-      simulation_parameter_sweep_coordinate.optional(),
-    simulation_parameter_sweep_coordinates:
-      simulation_parameter_sweep_coordinates.optional(),
-    simulation_voltage_probe_id: z.string(),
-    voltage: z.number(),
-    name: z.string().optional(),
-    color: z.string().optional(),
-  })
-  .superRefine(validateSimulationParameterSweepResultCoordinates)
+export const simulation_dc_operating_point_voltage = z.object({
+  type: z.literal("simulation_dc_operating_point_voltage"),
+  simulation_dc_operating_point_voltage_id: getZodPrefixedIdWithDefault(
+    "simulation_dc_operating_point_voltage",
+  ),
+  simulation_experiment_id: z.string(),
+  simulation_parameter_sweep_coordinate:
+    simulation_parameter_sweep_coordinate.optional(),
+  simulation_parameter_sweep_coordinates: z
+    .array(simulation_parameter_sweep_coordinate)
+    .min(2)
+    .optional(),
+  simulation_voltage_probe_id: z.string(),
+  voltage: z.number(),
+  name: z.string().optional(),
+  color: z.string().optional(),
+})
 
 export type SimulationDcOperatingPointVoltageInput = z.input<
   typeof simulation_dc_operating_point_voltage

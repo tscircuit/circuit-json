@@ -3470,11 +3470,12 @@ interface SchematicVoltageProbe {
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_ac_sweep_current_graph.ts)
 
 ```typescript
-interface SimulationAcSweepCurrentGraph
-  extends SimulationParameterSweepResultCoordinates {
+interface SimulationAcSweepCurrentGraph {
   type: "simulation_ac_sweep_current_graph"
   simulation_ac_sweep_current_graph_id: string
   simulation_experiment_id: string
+  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_parameter_sweep_coordinates?: SimulationParameterSweepCoordinate[]
   simulation_current_probe_id: string
   frequencies_hz: number[]
   complex_currents: SimulationComplexSample[]
@@ -3488,11 +3489,12 @@ interface SimulationAcSweepCurrentGraph
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_ac_sweep_voltage_graph.ts)
 
 ```typescript
-interface SimulationAcSweepVoltageGraph
-  extends SimulationParameterSweepResultCoordinates {
+interface SimulationAcSweepVoltageGraph {
   type: "simulation_ac_sweep_voltage_graph"
   simulation_ac_sweep_voltage_graph_id: string
   simulation_experiment_id: string
+  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_parameter_sweep_coordinates?: SimulationParameterSweepCoordinate[]
   simulation_voltage_probe_id: string
   frequencies_hz: number[]
   complex_voltages: SimulationComplexSample[]
@@ -3610,11 +3612,12 @@ interface SimulationAcCurrentSource {
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_dc_operating_point_current.ts)
 
 ```typescript
-interface SimulationDcOperatingPointCurrent
-  extends SimulationParameterSweepResultCoordinates {
+interface SimulationDcOperatingPointCurrent {
   type: "simulation_dc_operating_point_current"
   simulation_dc_operating_point_current_id: string
   simulation_experiment_id: string
+  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_parameter_sweep_coordinates?: SimulationParameterSweepCoordinate[]
   simulation_current_probe_id: string
   current: number
   name?: string
@@ -3627,11 +3630,12 @@ interface SimulationDcOperatingPointCurrent
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_dc_operating_point_voltage.ts)
 
 ```typescript
-interface SimulationDcOperatingPointVoltage
-  extends SimulationParameterSweepResultCoordinates {
+interface SimulationDcOperatingPointVoltage {
   type: "simulation_dc_operating_point_voltage"
   simulation_dc_operating_point_voltage_id: string
   simulation_experiment_id: string
+  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_parameter_sweep_coordinates?: SimulationParameterSweepCoordinate[]
   simulation_voltage_probe_id: string
   voltage: number
   name?: string
@@ -3644,11 +3648,12 @@ interface SimulationDcOperatingPointVoltage
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_dc_sweep_current_graph.ts)
 
 ```typescript
-interface SimulationDcSweepCurrentGraph
-  extends SimulationParameterSweepResultCoordinates {
+interface SimulationDcSweepCurrentGraph {
   type: "simulation_dc_sweep_current_graph"
   simulation_dc_sweep_current_graph_id: string
   simulation_experiment_id: string
+  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_parameter_sweep_coordinates?: SimulationParameterSweepCoordinate[]
   simulation_current_probe_id: string
   sweep_values: number[]
   sweep_unit: SimulationDcSweepUnit
@@ -3663,11 +3668,12 @@ interface SimulationDcSweepCurrentGraph
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_dc_sweep_voltage_graph.ts)
 
 ```typescript
-interface SimulationDcSweepVoltageGraph
-  extends SimulationParameterSweepResultCoordinates {
+interface SimulationDcSweepVoltageGraph {
   type: "simulation_dc_sweep_voltage_graph"
   simulation_dc_sweep_voltage_graph_id: string
   simulation_experiment_id: string
+  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_parameter_sweep_coordinates?: SimulationParameterSweepCoordinate[]
   simulation_voltage_probe_id: string
   sweep_values: number[]
   sweep_unit: SimulationDcSweepUnit
@@ -3828,13 +3834,6 @@ interface SimulationParameterSweepCoordinate {
   parameter_value: number
   parameter_unit: SimulationParameterUnit
 }
-
-interface SimulationParameterSweepResultCoordinates {
-  /** Coordinate for a one-dimensional parameter sweep. */
-  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
-  /** Ordered coordinates for a multidimensional parameter sweep. */
-  simulation_parameter_sweep_coordinates?: SimulationParameterSweepCoordinate[]
-}
 ```
 
 ### SimulationSpiceSubcircuit
@@ -3881,11 +3880,12 @@ interface SimulationSwitch {
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_transient_current_graph.ts)
 
 ```typescript
-interface SimulationTransientCurrentGraph
-  extends SimulationParameterSweepResultCoordinates {
+interface SimulationTransientCurrentGraph {
   type: "simulation_transient_current_graph"
   simulation_transient_current_graph_id: string
   simulation_experiment_id: string
+  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_parameter_sweep_coordinates?: SimulationParameterSweepCoordinate[]
   timestamps_ms?: number[]
   current_levels: number[]
   source_component_id?: string
@@ -3903,11 +3903,12 @@ interface SimulationTransientCurrentGraph
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_transient_voltage_graph.ts)
 
 ```typescript
-interface SimulationTransientVoltageGraph
-  extends SimulationParameterSweepResultCoordinates {
+interface SimulationTransientVoltageGraph {
   type: "simulation_transient_voltage_graph"
   simulation_transient_voltage_graph_id: string
   simulation_experiment_id: string
+  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_parameter_sweep_coordinates?: SimulationParameterSweepCoordinate[]
   timestamps_ms?: number[]
   voltage_levels: number[]
   source_component_id?: string

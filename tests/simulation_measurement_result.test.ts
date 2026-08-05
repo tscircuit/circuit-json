@@ -113,46 +113,6 @@ test("rejects multiple values when there are no parameter sweeps", () => {
   )
 })
 
-test("rejects coordinate sets with inconsistent sweep order", () => {
-  expect(() =>
-    simulation_measurement_result.parse({
-      type: "simulation_measurement_result",
-      simulation_experiment_id: "simulation_experiment_load_regulation",
-      name: "output-voltage-regulation",
-      measurement_values: [-0.08, -0.07],
-      measurement_unit: "%",
-      simulation_parameter_sweep_coordinate_sets: [
-        [inputVoltageCoordinate, loadCurrentCoordinate],
-        [loadCurrentCoordinate, inputVoltageCoordinate],
-      ],
-    }),
-  ).toThrow(
-    "Every coordinate set must contain the same parameter sweeps in the same order",
-  )
-})
-
-test("rejects duplicate sweep IDs in one coordinate set", () => {
-  expect(() =>
-    simulation_measurement_result.parse({
-      type: "simulation_measurement_result",
-      simulation_experiment_id: "simulation_experiment_load_regulation",
-      name: "output-voltage-regulation",
-      measurement_values: [-0.08],
-      measurement_unit: "%",
-      simulation_parameter_sweep_coordinate_sets: [
-        [
-          inputVoltageCoordinate,
-          {
-            ...inputVoltageCoordinate,
-            parameter_value: 3.6,
-            sweep_index: 1,
-          },
-        ],
-      ],
-    }),
-  ).toThrow("Parameter sweep coordinate IDs must be unique")
-})
-
 test("rejects non-finite measurement values", () => {
   expect(() =>
     simulation_measurement_result.parse({

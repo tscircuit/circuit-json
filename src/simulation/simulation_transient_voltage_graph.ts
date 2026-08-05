@@ -4,16 +4,15 @@ import { duration_ms, ms } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import {
   simulation_parameter_sweep_coordinate,
-  simulation_parameter_sweep_coordinates,
-  type SimulationParameterSweepResultCoordinates,
-  validateSimulationParameterSweepResultCoordinates,
+  type SimulationParameterSweepCoordinate,
 } from "./simulation_parameter_sweep_coordinate"
 
-export interface SimulationTransientVoltageGraph
-  extends SimulationParameterSweepResultCoordinates {
+export interface SimulationTransientVoltageGraph {
   type: "simulation_transient_voltage_graph"
   simulation_transient_voltage_graph_id: string
   simulation_experiment_id: string
+  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_parameter_sweep_coordinates?: SimulationParameterSweepCoordinate[]
   timestamps_ms?: number[]
   voltage_levels: number[]
   source_component_id?: string
@@ -34,8 +33,10 @@ export const simulation_transient_voltage_graph = z
     simulation_experiment_id: z.string(),
     simulation_parameter_sweep_coordinate:
       simulation_parameter_sweep_coordinate.optional(),
-    simulation_parameter_sweep_coordinates:
-      simulation_parameter_sweep_coordinates.optional(),
+    simulation_parameter_sweep_coordinates: z
+      .array(simulation_parameter_sweep_coordinate)
+      .min(2)
+      .optional(),
     timestamps_ms: z.array(z.number()).optional(),
     voltage_levels: z.array(z.number()),
     source_component_id: z.string().optional(),
@@ -46,7 +47,6 @@ export const simulation_transient_voltage_graph = z
     name: z.string().optional(),
     color: z.string().optional(),
   })
-  .superRefine(validateSimulationParameterSweepResultCoordinates)
   .describe("Stores voltage measurements over time for a simulation")
 
 export type SimulationTransientVoltageGraphInput = z.input<
