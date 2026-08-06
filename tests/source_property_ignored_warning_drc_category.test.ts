@@ -11,6 +11,7 @@ const validCategories = [
   "pin_specification",
   "placement",
   "routing",
+  "unknown",
 ] as const satisfies readonly DrcCategory[]
 
 const warning = {
@@ -37,13 +38,13 @@ test("source property warnings preserve valid DRC categories", () => {
   expect(
     source_property_ignored_warning.safeParse({
       ...warning,
-      drc_category: "unknown",
+      drc_category: "invalid",
     }).success,
   ).toBe(false)
 
   const parsedCircuitElement = any_circuit_element.parse({
     ...warning,
-    drc_category: "netlist",
+    drc_category: "unknown",
   })
-  expect(parsedCircuitElement).toMatchObject({ drc_category: "netlist" })
+  expect(parsedCircuitElement).toMatchObject({ drc_category: "unknown" })
 })

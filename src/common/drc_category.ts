@@ -6,11 +6,12 @@ export const drc_category = z.enum([
   "pin_specification",
   "placement",
   "routing",
+  "unknown",
 ])
 
 export type DrcCategory = z.infer<typeof drc_category>
 
 expectTypesMatch<
   DrcCategory,
-  "netlist" | "pin_specification" | "placement" | "routing"
+  "netlist" | "pin_specification" | "placement" | "routing" | "unknown"
 >(true)
