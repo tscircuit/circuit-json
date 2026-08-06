@@ -776,6 +776,7 @@ interface SourcePropertyIgnoredWarning {
   source_component_id: string
   property_name: string
   subcircuit_id?: string
+  drc_category?: DrcCategory
   error_type: "source_property_ignored_warning"
   message: string
 }

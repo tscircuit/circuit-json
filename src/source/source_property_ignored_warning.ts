@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
+import { drc_category, type DrcCategory } from "src/common/drc_category"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const source_property_ignored_warning = z
@@ -11,6 +12,7 @@ export const source_property_ignored_warning = z
     source_component_id: z.string(),
     property_name: z.string(),
     subcircuit_id: z.string().optional(),
+    drc_category: drc_category.optional(),
     error_type: z
       .literal("source_property_ignored_warning")
       .default("source_property_ignored_warning"),
@@ -34,6 +36,7 @@ export interface SourcePropertyIgnoredWarning {
   source_component_id: string
   property_name: string
   subcircuit_id?: string
+  drc_category?: DrcCategory
   error_type: "source_property_ignored_warning"
   message: string
 }
