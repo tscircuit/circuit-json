@@ -12,6 +12,13 @@ export interface SchematicText {
   schematic_component_id?: string
   schematic_symbol_id?: string
   schematic_text_id: string
+  /**
+   * Set when the text annotates a trace rather than a component, as an inline
+   * net label does - the net name drawn alongside a point-to-point wire instead
+   * of as an anchored `schematic_net_label`. Lets consumers tell such a label
+   * apart from free-standing text and resolve the net it belongs to.
+   */
+  source_trace_id?: string
   text: string
   font_size: number
   position: {
@@ -30,6 +37,7 @@ export const schematic_text = z.object({
   schematic_component_id: z.string().optional(),
   schematic_symbol_id: z.string().optional(),
   schematic_text_id: z.string(),
+  source_trace_id: z.string().optional(),
   text: z.string(),
   font_size: z.number().default(0.18),
   position: z.object({
