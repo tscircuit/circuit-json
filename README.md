@@ -110,6 +110,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbBoard](#pcbboard)
     - [PcbBreakoutPoint](#pcbbreakoutpoint)
     - [PcbComponent](#pcbcomponent)
+    - [PcbComponentInsideSilkscreenWarning](#pcbcomponentinsidesilkscreenwarning)
     - [PcbComponentInvalidLayerError](#pcbcomponentinvalidlayererror)
     - [PcbComponentNotOnBoardEdgeError](#pcbcomponentnotonboardedgeerror)
     - [PcbComponentOutsideBoardError](#pcbcomponentoutsideboarderror)
@@ -1391,6 +1392,26 @@ interface PcbBreakoutPoint {
 ```typescript
 interface PcbComponentMetadata {
   kicad_footprint?: KicadFootprintMetadata
+}
+```
+
+### PcbComponentInsideSilkscreenWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_component_inside_silkscreen_warning.ts)
+
+Warning emitted when a PCB component is placed inside another component's silkscreen bounds
+
+```typescript
+/** Warning emitted when a PCB component is placed inside another component's silkscreen bounds */
+interface PcbComponentInsideSilkscreenWarning {
+  type: "pcb_component_inside_silkscreen_warning"
+  pcb_component_inside_silkscreen_warning_id: string
+  warning_type: "pcb_component_inside_silkscreen_warning"
+  message: string
+  /** Placed component first, component owning the enclosing silkscreen second */
+  pcb_component_ids: [string, string]
+  pcb_board_id?: string
+  subcircuit_id?: string
 }
 ```
 
