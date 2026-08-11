@@ -11,6 +11,7 @@ export const source_simple_capacitor = source_component_base.extend({
   capacitance,
   max_voltage_rating: voltage.optional(),
   display_capacitance: z.string().optional(),
+  display_tolerance: z.string().optional(),
   max_decoupling_trace_length: distance.optional(),
 })
 
@@ -25,6 +26,7 @@ export interface SourceSimpleCapacitor extends SourceComponentBase {
   capacitance: number
   max_voltage_rating?: number
   display_capacitance?: string
+  display_tolerance?: string
   max_decoupling_trace_length?: number
 }
 

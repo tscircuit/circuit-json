@@ -10,6 +10,7 @@ export const source_simple_inductor = source_component_base.extend({
   ftype: z.literal("simple_inductor"),
   inductance,
   display_inductance: z.string().optional(),
+  display_tolerance: z.string().optional(),
   max_current_rating: z.number().optional(),
 })
 
@@ -23,6 +24,7 @@ export interface SourceSimpleInductor extends SourceComponentBase {
   ftype: "simple_inductor"
   inductance: number
   display_inductance?: string
+  display_tolerance?: string
   max_current_rating?: number
 }
 

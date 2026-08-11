@@ -843,6 +843,7 @@ interface SourceSimpleCapacitor extends SourceComponentBase {
   capacitance: number
   max_voltage_rating?: number
   display_capacitance?: string
+  display_tolerance?: string
   max_decoupling_trace_length?: number
 }
 ```
@@ -972,6 +973,7 @@ interface SourceSimpleInductor extends SourceComponentBase {
   ftype: "simple_inductor"
   inductance: number
   display_inductance?: string
+  display_tolerance?: string
   max_current_rating?: number
 }
 ```
@@ -1095,6 +1097,7 @@ interface SourceSimpleResistor extends SourceComponentBase {
   ftype: "simple_resistor"
   resistance: number
   display_resistance?: string
+  display_tolerance?: string
 }
 ```
 
