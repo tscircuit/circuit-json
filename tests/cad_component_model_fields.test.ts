@@ -44,3 +44,16 @@ test("cad_component accepts show_as_bounding_box", () => {
 
   expect(component.show_as_bounding_box).toBe(true)
 })
+
+test("cad_component accepts show_hidden_edges", () => {
+  const component = cad_component.parse({
+    type: "cad_component",
+    cad_component_id: "cad-hidden-edges",
+    pcb_component_id: "pcb-hidden-edges",
+    source_component_id: "src-hidden-edges",
+    position: { x: 0, y: 0, z: 0 },
+    show_hidden_edges: true,
+  })
+
+  expect(component.show_hidden_edges).toBe(true)
+})
