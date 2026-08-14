@@ -167,6 +167,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbTraceHint](#pcbtracehint)
     - [PcbTraceMissingError](#pcbtracemissingerror)
     - [PcbTraceTooLongWarning](#pcbtracetoolongwarning)
+    - [PcbTraceTooManyViasWarning](#pcbtracetoomanyviaswarning)
     - [PcbTraceWarning](#pcbtracewarning)
     - [PcbVia](#pcbvia)
     - [PcbViaClearanceError](#pcbviaclearanceerror)
@@ -1211,6 +1212,7 @@ interface SourceTrace {
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
   max_length?: number
+  max_via_count?: number
   name?: string
   display_name?: string
   min_trace_thickness?: number
@@ -2782,6 +2784,28 @@ interface PcbTraceTooLongWarning {
   source_trace_id?: string
   actual_trace_length: Distance
   maximum_trace_length: Distance
+  subcircuit_id?: string
+}
+```
+
+### PcbTraceTooManyViasWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_trace_too_many_vias_warning.ts)
+
+Warning emitted when a PCB trace has more vias than its maximum allowed count
+
+```typescript
+/** Warning emitted when a PCB trace has more vias than its maximum allowed count */
+interface PcbTraceTooManyViasWarning {
+  type: "pcb_trace_too_many_vias_warning"
+  pcb_trace_too_many_vias_warning_id: string
+  warning_type: "pcb_trace_too_many_vias_warning"
+  message: string
+  pcb_trace_id: string
+  source_net_id?: string
+  source_trace_id?: string
+  actual_via_count: number
+  maximum_via_count: number
   subcircuit_id?: string
 }
 ```
