@@ -177,6 +177,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicCircle](#schematiccircle)
     - [SchematicComponent](#schematiccomponent)
     - [SchematicComponentOverlapWarning](#schematiccomponentoverlapwarning)
+    - [SchematicComponentStylingWarning](#schematiccomponentstylingwarning)
     - [SchematicDebugObject](#schematicdebugobject)
     - [SchematicElementOutsideSheetWarning](#schematicelementoutsidesheetwarning)
     - [SchematicError](#schematicerror)
@@ -3028,6 +3029,28 @@ interface SchematicComponentOverlapWarning {
   message: string
   schematic_component_ids: [string, string]
   schematic_sheet_id?: string
+}
+```
+
+### SchematicComponentStylingWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_component_styling_warning.ts)
+
+Warning emitted when a schematic component has a visual styling issue
+
+```typescript
+/** Warning emitted when a schematic component has a visual styling issue */
+interface SchematicComponentStylingWarning {
+  type: "schematic_component_styling_warning"
+  schematic_component_styling_warning_id: string
+  warning_type: "schematic_component_styling_warning"
+  message: string
+  schematic_component_id: string
+  styling_issue_type: string
+  schematic_port_ids?: string[]
+  source_component_id?: string
+  schematic_sheet_id?: string
+  subcircuit_id?: string
 }
 ```
 
