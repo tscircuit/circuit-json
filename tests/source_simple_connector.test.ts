@@ -36,6 +36,46 @@ test("source_simple_connector parses with m2 standard", () => {
   expect(connector.standard).toBe("m2")
 })
 
+test("source_simple_connector parses JST standards with pin_count", () => {
+  const jstStandards = [
+    "jst_sh",
+    "jst_gh",
+    "jst_zh",
+    "jst_ph",
+    "jst_xh",
+    "jst_vh",
+  ] as const
+
+  for (const standard of jstStandards) {
+    const connector = source_simple_connector.parse({
+      type: "source_component",
+      ftype: "simple_connector",
+      source_component_id: `connector_${standard}`,
+      name: "J1",
+      standard,
+      pin_count: 4,
+    })
+
+    expect(connector.standard).toBe(standard)
+    expect(connector.pin_count).toBe(4)
+  }
+})
+
+test("source_simple_connector rejects invalid pin_count", () => {
+  for (const pin_count of [0, -1, 1.5]) {
+    expect(() =>
+      source_simple_connector.parse({
+        type: "source_component",
+        ftype: "simple_connector",
+        source_component_id: "connector_invalid_pin_count",
+        name: "J1",
+        standard: "jst_ph",
+        pin_count,
+      }),
+    ).toThrow()
+  }
+})
+
 test("source_simple_connector rejects invalid standard", () => {
   expect(() =>
     source_simple_connector.parse({
@@ -54,10 +94,13 @@ test("any_circuit_element includes source_simple_connector", () => {
     ftype: "simple_connector",
     source_component_id: "connector5",
     name: "J5",
-    standard: "usb_c",
+    standard: "jst_ph",
+    pin_count: 2,
   })
   if ("ftype" in parsed && parsed.ftype === "simple_connector") {
     expect(parsed.ftype).toBe("simple_connector")
+    expect(parsed.standard).toBe("jst_ph")
+    expect(parsed.pin_count).toBe(2)
   } else {
     throw new Error("Parsed element not a source_simple_connector")
   }
