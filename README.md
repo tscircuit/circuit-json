@@ -35,6 +35,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
 - Display [PCBs on the web](https://github.com/tscircuit/pcb-viewer)
 - Display [Schematics on the web](https://github.com/tscircuit/schematic-viewer)
 - Display [3d models of electronics on the web](https://github.com/tscircuit/3d-viewer)
+- Render [Circuit JSON to a GLTF](https://github.com/tscircuit/circuit-json-to-gltf)
 
 ## Table of Contents
 
