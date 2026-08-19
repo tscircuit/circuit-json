@@ -11,6 +11,7 @@ export interface SimulationDcOperatingPointCurrent {
   simulation_dc_operating_point_current_id: string
   simulation_experiment_id: string
   simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_parameter_sweep_coordinates?: SimulationParameterSweepCoordinate[]
   simulation_current_probe_id: string
   current: number
   name?: string
@@ -25,6 +26,10 @@ export const simulation_dc_operating_point_current = z.object({
   simulation_experiment_id: z.string(),
   simulation_parameter_sweep_coordinate:
     simulation_parameter_sweep_coordinate.optional(),
+  simulation_parameter_sweep_coordinates: z
+    .array(simulation_parameter_sweep_coordinate)
+    .min(2)
+    .optional(),
   simulation_current_probe_id: z.string(),
   current: z.number(),
   name: z.string().optional(),
