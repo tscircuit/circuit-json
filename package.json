@@ -1,6 +1,10 @@
 {
   "name": "circuit-json",
   "version": "0.0.469",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tscircuit/circuit-json.git"
+  },
   "author": "",
   "main": "dist/index.mjs",
   "devDependencies": {
