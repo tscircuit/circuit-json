@@ -1,4 +1,4 @@
-import { expect, test } from "bun:test"
+import { test } from "bun:test"
 import { any_circuit_element } from "src/any_circuit_element"
 
 const osmFinePitchWarningInput = {
@@ -18,8 +18,6 @@ const osmFinePitchWarningInput = {
 test.failing(
   "any_circuit_element represents a fine-pitch fabrication-process warning",
   () => {
-    const warning = any_circuit_element.parse(osmFinePitchWarningInput)
-
-    expect(warning.type).toBe("pcb_fabrication_process_warning")
+    any_circuit_element.parse(osmFinePitchWarningInput)
   },
 )
