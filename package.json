@@ -34,7 +34,7 @@
   "keywords": [],
   "license": "ISC",
   "scripts": {
-    "prepare": "tsup-node ./src/index.ts --format esm --dts --sourcemap --tsconfig ./tsconfig.json",
+    "prepare": "bun --cwd \"${npm_package_json%/package.json}\" run build",
     "prepublish": "npm run build",
     "build": "tsup-node ./src/index.ts --format esm --dts --sourcemap",
     "format": "biome format . --write",
