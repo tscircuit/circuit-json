@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { getZodPrefixedIdWithDefault } from "src/common"
+import { getZodPrefixedIdWithDefault, point, type Point } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const schematic_sheet = z
@@ -8,6 +8,7 @@ export const schematic_sheet = z
     schematic_sheet_id: getZodPrefixedIdWithDefault("schematic_sheet"),
     name: z.string().optional(),
     sheet_index: z.number().optional(),
+    center: point.optional(),
     subcircuit_id: z.string().optional(),
     outline_color: z.string().optional(),
   })
@@ -26,6 +27,7 @@ export interface SchematicSheet {
   schematic_sheet_id: string
   name?: string
   sheet_index?: number
+  center?: Point
   subcircuit_id?: string
   outline_color?: string
 }

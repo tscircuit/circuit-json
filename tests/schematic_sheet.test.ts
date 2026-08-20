@@ -7,10 +7,12 @@ test("schematic_sheet parse", () => {
     schematic_sheet_id: "sheet1",
     name: "Main Schematic",
     sheet_index: 0,
+    center: { x: -1.45, y: -0.685 },
   })
 
   expect(sheet.type).toBe("schematic_sheet")
   expect(sheet.schematic_sheet_id).toBe("sheet1")
   expect(sheet.name).toBe("Main Schematic")
   expect(sheet.sheet_index).toBe(0)
+  expect(sheet.center).toEqual({ x: -1.45, y: -0.685 })
 })
