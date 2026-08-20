@@ -118,3 +118,45 @@ test("simulation_voltage_source AC with pulse timing controls", () => {
   expect(acSource.pulse_width).toBe(2)
   expect(acSource.period).toBe(4)
 })
+
+test("simulation_voltage_source parses a piecewise-linear waveform", () => {
+  const source = simulation_voltage_source.parse({
+    type: "simulation_voltage_source",
+    is_dc_source: false,
+    voltage: "2.2V",
+    voltage_waveform: {
+      timestamps_ms: ["0ms", "1ms", "1.001ms"],
+      voltage_values: ["2.2V", "2.2V", "4.2V"],
+    },
+  }) as SimulationAcVoltageSource
+
+  expect(source.voltage_waveform).toEqual({
+    timestamps_ms: [0, 1, 1.001],
+    voltage_values: [2.2, 2.2, 4.2],
+  })
+})
+
+test("simulation_voltage_source rejects invalid piecewise-linear waveforms", () => {
+  expect(() =>
+    simulation_voltage_source.parse({
+      type: "simulation_voltage_source",
+      is_dc_source: false,
+      voltage_waveform: {
+        timestamps_ms: [0, 1, 1],
+        voltage_values: [2.2, 2.2, 4.2],
+      },
+    }),
+  ).toThrow("timestamps_ms must be strictly increasing")
+
+  expect(() =>
+    simulation_voltage_source.parse({
+      type: "simulation_voltage_source",
+      is_dc_source: false,
+      wave_shape: "square",
+      voltage_waveform: {
+        timestamps_ms: [0, 1],
+        voltage_values: [0, 1],
+      },
+    }),
+  ).toThrow("voltage_waveform and wave_shape cannot be used together")
+})
