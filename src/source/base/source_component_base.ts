@@ -12,6 +12,8 @@ export interface SourceComponentBase {
   name: string
   manufacturer_part_number?: string
   supplier_part_numbers?: Partial<Record<SupplierName, string[]>>
+  /** The assembly part is supplied outside the selected supplier catalog. */
+  customer_supplied?: boolean
   display_value?: string
   display_name?: string
   are_pins_interchangeable?: boolean
@@ -29,6 +31,7 @@ export const source_component_base = z.object({
   supplier_part_numbers: z
     .record(supplier_name, z.array(z.string()))
     .optional(),
+  customer_supplied: z.boolean().optional(),
   display_value: z.string().optional(),
   display_name: z.string().optional(),
   are_pins_interchangeable: z.boolean().optional(),
