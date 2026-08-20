@@ -1,11 +1,12 @@
-import { z } from "zod"
-import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
+import { getZodPrefixedIdWithDefault } from "src/common"
+import { type PointWithBulge, point_with_bulge } from "src/pcb/properties/brep"
 import {
-  visible_layer,
   type VisibleLayerRef,
+  visible_layer,
 } from "src/pcb/properties/layer_ref"
-import { length, type Length } from "src/units"
+import { type Length, length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const pcb_silkscreen_path = z
   .object({
@@ -15,7 +16,7 @@ export const pcb_silkscreen_path = z
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     layer: visible_layer,
-    route: z.array(point),
+    route: z.array(point_with_bulge),
     stroke_width: length,
   })
   .describe("Defines a silkscreen path on the PCB")
@@ -33,7 +34,8 @@ export interface PcbSilkscreenPath {
   pcb_group_id?: string
   subcircuit_id?: string
   layer: VisibleLayerRef
-  route: Point[]
+  /** Each bulge describes the circular arc from that point to the next. */
+  route: PointWithBulge[]
   stroke_width: Length
 }
 

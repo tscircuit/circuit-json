@@ -1,13 +1,14 @@
-import { z } from "zod"
-import { getZodPrefixedIdWithDefault, point, type Point } from "src/common"
-import { distance, type Distance } from "src/units"
-import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
+import { type Point, getZodPrefixedIdWithDefault, point } from "src/common"
+import { type LayerRef, layer_ref } from "src/pcb/properties/layer_ref"
+import { type Distance, distance } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const pcb_trace_route_point_wire = z.object({
   route_type: z.literal("wire"),
   x: distance,
   y: distance,
+  bulge: z.number().optional(),
   width: distance,
   copper_pour_id: z.string().optional(),
   is_inside_copper_pour: z.boolean().optional(),
@@ -73,6 +74,11 @@ export interface PcbTraceRoutePointWire {
   route_type: "wire"
   x: Distance
   y: Distance
+  /**
+   * tan(ccw_sweep_radians / 4) for the circular arc from this route point to
+   * the next route point. Omit for a straight segment.
+   */
+  bulge?: number
   width: Distance
   copper_pour_id?: string
   is_inside_copper_pour?: boolean

@@ -1,8 +1,8 @@
-import { z } from "zod"
-import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
-import { visible_layer, type VisibleLayer } from "src/pcb/properties/layer_ref"
-import { length, type Length } from "src/units"
+import { getZodPrefixedIdWithDefault } from "src/common"
+import { type PointWithBulge, point_with_bulge } from "src/pcb/properties/brep"
+import { type VisibleLayer, visible_layer } from "src/pcb/properties/layer_ref"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const pcb_courtyard_outline = z
   .object({
@@ -14,7 +14,7 @@ export const pcb_courtyard_outline = z
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     layer: visible_layer,
-    outline: z.array(point).min(2),
+    outline: z.array(point_with_bulge).min(2),
   })
   .describe("Defines a courtyard outline on the PCB")
 
@@ -31,7 +31,7 @@ export interface PcbCourtyardOutline {
   pcb_group_id?: string
   subcircuit_id?: string
   layer: VisibleLayer
-  outline: Point[]
+  outline: PointWithBulge[]
 }
 
 /**
