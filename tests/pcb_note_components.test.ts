@@ -96,3 +96,23 @@ test("pcb note text allows optional name and text", () => {
   expect(note.text).toBeUndefined()
   expect(note.is_mirrored_from_top_view).toBe(true)
 })
+
+test("pcb note text allows optional ccw rotation", () => {
+  const note = pcb_note_text.parse({
+    type: "pcb_note_text",
+    text: "Rotate me",
+    ccw_rotation: 45,
+  })
+
+  expect(note.ccw_rotation).toBe(45)
+})
+
+test("pcb note text allows unit-suffixed ccw rotation", () => {
+  const note = pcb_note_text.parse({
+    type: "pcb_note_text",
+    text: "Rotate me too",
+    ccw_rotation: "0.5rad",
+  })
+
+  expect(note.ccw_rotation).toBeCloseTo((0.5 * 180) / Math.PI)
+})
