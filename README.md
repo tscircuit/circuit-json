@@ -124,6 +124,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbCourtyardPolygon](#pcbcourtyardpolygon)
     - [PcbCourtyardRect](#pcbcourtyardrect)
     - [PcbCutout](#pcbcutout)
+    - [PcbDebugObject](#pcbdebugobject)
     - [PcbFabricationNoteDimension](#pcbfabricationnotedimension)
     - [PcbFabricationNotePath](#pcbfabricationnotepath)
     - [PcbFabricationNoteRect](#pcbfabricationnoterect)
@@ -1685,6 +1686,43 @@ interface PcbCutoutRect {
   height: Length
   rotation?: Rotation
   corner_radius?: Length
+}
+```
+
+### PcbDebugObject
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_debug_object.ts)
+
+```typescript
+type PcbDebugObject = PcbDebugRect | PcbDebugLine | PcbDebugPoint
+
+interface PcbDebugRect {
+  type: "pcb_debug_object"
+  pcb_debug_object_id: string
+  label?: string
+  shape: "rect"
+  center: Point
+  size: Size
+  subcircuit_id?: string
+}
+
+interface PcbDebugLine {
+  type: "pcb_debug_object"
+  pcb_debug_object_id: string
+  label?: string
+  shape: "line"
+  start: Point
+  end: Point
+  subcircuit_id?: string
+}
+
+interface PcbDebugPoint {
+  type: "pcb_debug_object"
+  pcb_debug_object_id: string
+  label?: string
+  shape: "point"
+  center: Point
+  subcircuit_id?: string
 }
 ```
 

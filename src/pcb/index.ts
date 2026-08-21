@@ -8,6 +8,7 @@ export * from "./properties/route_hint_point"
 export * from "./properties/manufacturing_drc_properties"
 
 export * from "./pcb_component"
+export * from "./pcb_debug_object"
 export * from "./pcb_hole"
 export * from "./pcb_plated_hole"
 export * from "./pcb_port"
@@ -80,6 +81,7 @@ export * from "./pcb_courtyard_circle"
 export * from "./pcb_courtyard_pill"
 
 import type { PcbComponent } from "./pcb_component"
+import type { PcbDebugObject } from "./pcb_debug_object"
 import type { PcbHole } from "./pcb_hole"
 import type { PcbPlatedHole } from "./pcb_plated_hole"
 import type { PcbPort } from "./pcb_port"
@@ -148,6 +150,7 @@ import type { PcbCourtyardPill } from "./pcb_courtyard_pill"
 
 export type PcbCircuitElement =
   | PcbComponent
+  | PcbDebugObject
   | PcbHole
   | PcbPlatedHole
   | PcbPort
