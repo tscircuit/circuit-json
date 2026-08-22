@@ -1,21 +1,21 @@
 import { z } from "zod"
-import { point, type Point } from "../common"
+import { type Point, point } from "../common"
 import { expectTypesMatch } from "../utils/expect-types-match"
 
 /** Suppresses electrical-rule checks at a schematic point. */
-export interface NoErc {
-  type: "no_erc"
-  no_erc_id: string
+export interface SchematicNoErc {
+  type: "schematic_no_erc"
+  schematic_no_erc_id: string
   schematic_sheet_id?: string
   source_port_id?: string
   center: Point
   subcircuit_id?: string
 }
 
-export const no_erc = z
+export const schematic_no_erc = z
   .object({
-    type: z.literal("no_erc"),
-    no_erc_id: z.string(),
+    type: z.literal("schematic_no_erc"),
+    schematic_no_erc_id: z.string(),
     schematic_sheet_id: z.string().optional(),
     source_port_id: z.string().optional(),
     center: point,
@@ -23,7 +23,7 @@ export const no_erc = z
   })
   .describe("Suppresses electrical-rule checks at a schematic point")
 
-export type NoErcInput = z.input<typeof no_erc>
-type InferredNoErc = z.infer<typeof no_erc>
+export type SchematicNoErcInput = z.input<typeof schematic_no_erc>
+type InferredSchematicNoErc = z.infer<typeof schematic_no_erc>
 
-expectTypesMatch<NoErc, InferredNoErc>(true)
+expectTypesMatch<SchematicNoErc, InferredSchematicNoErc>(true)
