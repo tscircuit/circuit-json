@@ -188,7 +188,6 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicLine](#schematicline)
     - [SchematicManualEditConflictWarning](#schematicmanualeditconflictwarning)
     - [SchematicNetLabel](#schematicnetlabel)
-    - [SchematicNoConnect](#schematicnoconnect)
     - [SchematicPath](#schematicpath)
     - [SchematicPort](#schematicport)
     - [SchematicRect](#schematicrect)
@@ -3260,24 +3259,6 @@ interface SchematicNetLabel {
    * position is fixed by the element it is attached to. */
 
   is_movable?: boolean
-  subcircuit_id?: string
-}
-```
-
-### SchematicNoConnect
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_no_connect.ts)
-
-Marks a schematic point as deliberately unconnected.
-
-```typescript
-/** Marks a schematic point as deliberately unconnected. */
-interface SchematicNoConnect {
-  type: "schematic_no_connect"
-  schematic_no_connect_id: string
-  schematic_sheet_id?: string
-  source_port_id?: string
-  center: Point
   subcircuit_id?: string
 }
 ```
