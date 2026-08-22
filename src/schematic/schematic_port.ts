@@ -1,6 +1,6 @@
-import { z } from "zod"
-import { point, type Point } from "../common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
+import { type Point, point } from "../common"
 
 export interface SchematicPort {
   type: "schematic_port"
@@ -16,6 +16,8 @@ export interface SchematicPort {
   pin_number?: number
   display_pin_label?: string
   subcircuit_id?: string
+  /** Suppresses electrical-rule checks at this port. */
+  no_erc?: boolean
   is_connected?: boolean
   is_internal_circuit_port?: boolean
   is_overlapping_internal_circuit_port?: boolean
@@ -39,6 +41,7 @@ export const schematic_port = z
     pin_number: z.number().optional(),
     display_pin_label: z.string().optional(),
     subcircuit_id: z.string().optional(),
+    no_erc: z.boolean().optional(),
     is_connected: z.boolean().optional(),
     is_internal_circuit_port: z.boolean().optional(),
     is_overlapping_internal_circuit_port: z.boolean().optional(),
