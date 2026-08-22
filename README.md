@@ -1356,6 +1356,8 @@ interface PcbBoard extends ManufacturingDrcProperties {
   display_offset_y?: string
   thickness: Length
   num_layers: number
+  /** Whether autorouters may generate blind and buried vias. */
+  allow_blind_and_buried_vias?: boolean
   center: Point
   outline?: Point[]
   shape?: "rect" | "polygon"
