@@ -58,6 +58,7 @@ export const any_circuit_element = z.union([
   src.source_component_misconfigured_error,
   src.source_ambiguous_port_reference,
   pcb.pcb_component,
+  pcb.pcb_debug_object,
   pcb.pcb_hole,
   pcb.pcb_missing_footprint_error,
   pcb.external_footprint_load_error,
