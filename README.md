@@ -188,7 +188,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicLine](#schematicline)
     - [SchematicManualEditConflictWarning](#schematicmanualeditconflictwarning)
     - [SchematicNetLabel](#schematicnetlabel)
-    - [SchematicNoConnect](#schematicnoconnect)
+    - [NoErc](#noerc)
     - [SchematicPath](#schematicpath)
     - [SchematicPort](#schematicport)
     - [SchematicRect](#schematicrect)
@@ -3264,17 +3264,17 @@ interface SchematicNetLabel {
 }
 ```
 
-### SchematicNoConnect
+### NoErc
 
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_no_connect.ts)
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/no_erc.ts)
 
-Marks a schematic point as deliberately unconnected for ERC.
+Suppresses electrical-rule checks at a schematic point.
 
 ```typescript
-/** Marks a schematic point as deliberately unconnected for ERC. */
-interface SchematicNoConnect {
-  type: "schematic_no_connect"
-  schematic_no_connect_id: string
+/** Suppresses electrical-rule checks at a schematic point. */
+interface NoErc {
+  type: "no_erc"
+  no_erc_id: string
   schematic_sheet_id?: string
   source_port_id?: string
   center: Point
