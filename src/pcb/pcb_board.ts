@@ -1,17 +1,17 @@
-import { z } from "zod"
 import {
-  point,
+  type NinePointAnchor,
   type Point,
   getZodPrefixedIdWithDefault,
   ninePointAnchor,
-  type NinePointAnchor,
+  point,
 } from "src/common"
-import { length, type Length } from "src/units"
-import { expectTypesMatch } from "src/utils/expect-types-match"
 import {
-  manufacturing_drc_properties,
   type ManufacturingDrcProperties,
+  manufacturing_drc_properties,
 } from "src/pcb/properties/manufacturing_drc_properties"
+import { type Length, length } from "src/units"
+import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const pcb_board = z
   .object({
@@ -40,6 +40,12 @@ export const pcb_board = z
       ),
     thickness: length.optional().default(1.4),
     num_layers: z.number().optional().default(4),
+    allow_blind_and_buried_vias: z
+      .boolean()
+      .optional()
+      .describe(
+        "Whether autorouters may generate blind and buried vias. False restricts newly generated vias to the full board stack.",
+      ),
     outline: z.array(point).optional(),
     shape: z.enum(["rect", "polygon"]).optional(),
     material: z.enum(["fr4", "fr1"]).default("fr4"),
@@ -70,6 +76,8 @@ export interface PcbBoard extends ManufacturingDrcProperties {
   display_offset_y?: string
   thickness: Length
   num_layers: number
+  /** Whether autorouters may generate blind and buried vias. */
+  allow_blind_and_buried_vias?: boolean
   center: Point
   outline?: Point[]
   shape?: "rect" | "polygon"
