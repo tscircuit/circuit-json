@@ -112,6 +112,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbBreakoutPoint](#pcbbreakoutpoint)
     - [PcbComponent](#pcbcomponent)
     - [PcbComponentInvalidLayerError](#pcbcomponentinvalidlayererror)
+    - [PcbComponentMissingCourtyardWarning](#pcbcomponentmissingcourtyardwarning)
     - [PcbComponentNotOnBoardEdgeError](#pcbcomponentnotonboardedgeerror)
     - [PcbComponentOutsideBoardError](#pcbcomponentoutsideboarderror)
     - [PcbConnectorNotInAccessibleOrientationWarning](#pcbconnectornotinaccessibleorientationwarning)
@@ -147,6 +148,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbPadTraceClearanceError](#pcbpadtraceclearanceerror)
     - [PcbPanel](#pcbpanel)
     - [PcbPanelizationPlacementError](#pcbpanelizationplacementerror)
+    - [PcbPin1Location](#pcbpin1location)
     - [PcbPlacementError](#pcbplacementerror)
     - [PcbPlatedHole](#pcbplatedhole)
     - [PcbPort](#pcbport)
@@ -189,6 +191,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicLine](#schematicline)
     - [SchematicManualEditConflictWarning](#schematicmanualeditconflictwarning)
     - [SchematicNetLabel](#schematicnetlabel)
+    - [SchematicOval](#schematicoval)
     - [SchematicPath](#schematicpath)
     - [SchematicPort](#schematicport)
     - [SchematicRect](#schematicrect)
@@ -505,7 +508,7 @@ interface SourceManuallyPlacedVia {
   type: "source_manually_placed_via"
   source_manually_placed_via_id: string
   source_group_id: string
-  source_net_id: string
+  source_net_id?: string
   subcircuit_id?: string
   source_trace_id?: string
 }
@@ -874,8 +877,14 @@ Defines a simple connector component
 /** Defines a simple connector component */
 interface SourceSimpleConnector extends SourceComponentBase {
   ftype: "simple_connector"
-  standard?: "usb_c" | "m2"
+  /** Connector interface or product family, such as usb_c, m2, or jst_ph */
+  standard?: SourceSimpleConnectorStandard
+  /** Number of electrical circuits in the connector */
+  pin_count?: number
 }
+
+type SourceSimpleConnectorStandard =
+  (typeof source_simple_connector_standards)[number]
 ```
 
 ### SourceSimpleCrystal
@@ -1314,6 +1323,7 @@ interface CadComponent {
   model_jscad?: any
   show_as_translucent_model?: boolean
   show_as_bounding_box?: boolean
+  show_hidden_edges?: boolean
   anchor_alignment: CadComponentAnchorAlignment
 }
 ```
@@ -1399,6 +1409,8 @@ interface PcbBreakoutPoint {
 interface PcbComponentMetadata {
   kicad_footprint?: KicadFootprintMetadata
 }
+
+type SupplierPin1LocationMap = Partial<Record<SupplierName, PcbPin1Location>>
 ```
 
 ### PcbComponentInvalidLayerError
@@ -1416,6 +1428,25 @@ interface PcbComponentInvalidLayerError extends BaseCircuitJsonError {
   pcb_component_id?: string
   source_component_id: string
   layer: LayerRef
+  subcircuit_id?: string
+}
+```
+
+### PcbComponentMissingCourtyardWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_component_missing_courtyard_warning.ts)
+
+Warning emitted when a PCB component has no courtyard geometry
+
+```typescript
+/** Warning emitted when a PCB component has no courtyard geometry */
+interface PcbComponentMissingCourtyardWarning {
+  type: "pcb_component_missing_courtyard_warning"
+  pcb_component_missing_courtyard_warning_id: string
+  warning_type: "pcb_component_missing_courtyard_warning"
+  message: string
+  pcb_component_id: string
+  source_component_id?: string
   subcircuit_id?: string
 }
 ```
@@ -2250,6 +2281,24 @@ interface PcbPanelizationPlacementError extends BaseCircuitJsonError {
 }
 ```
 
+### PcbPin1Location
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/properties/pcb_pin1_location.ts)
+
+```typescript
+type PcbPin1Location =
+  | "leftside_top"
+  | "leftside_bottom"
+  | "rightside_top"
+  | "rightside_bottom"
+  | "topside_left"
+  | "topside_right"
+  | "bottomside_left"
+  | "bottomside_right"
+
+type PcbPin1LocationRotation = 0 | 90 | 180 | 270
+```
+
 ### PcbPlacementError
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_placement_error.ts)
@@ -2897,6 +2946,8 @@ interface PcbVia {
   to_layer?: LayerRef
   layers: LayerRef[]
   pcb_trace_id?: string
+  source_trace_id?: string
+  source_net_id?: string
   net_is_assignable?: boolean
   net_assigned?: boolean
   is_tented?: boolean
@@ -3303,6 +3354,32 @@ interface SchematicNetLabel {
 }
 ```
 
+### SchematicOval
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_oval.ts)
+
+Draws a styled oval on the schematic
+
+```typescript
+/** Draws a styled oval on the schematic */
+interface SchematicOval {
+  type: "schematic_oval"
+  schematic_oval_id: string
+  schematic_sheet_id?: string
+  schematic_component_id?: string
+  schematic_symbol_id?: string
+  center: Point
+  radius_x: number
+  radius_y: number
+  stroke_width?: number | null
+  color: string
+  is_filled: boolean
+  fill_color?: string
+  is_dashed: boolean
+  subcircuit_id?: string
+}
+```
+
 ### SchematicPath
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_path.ts)
@@ -3371,6 +3448,7 @@ interface SchematicRect {
   center: Point
   width: number
   height: number
+  corner_radius?: number
   rotation: number
   stroke_width?: number | null
   color: string
@@ -3474,6 +3552,12 @@ interface SchematicText {
   schematic_component_id?: string
   schematic_symbol_id?: string
   schematic_text_id: string
+  /** Set when the text annotates a trace rather than a component, as an inline
+   * net label does - the net name drawn alongside a point-to-point wire instead
+   * of as an anchored `schematic_net_label`. Lets consumers tell such a label
+   * apart from free-standing text and resolve the net it belongs to. */
+
+  source_trace_id?: string
   text: string
   font_size: number
   position: {
