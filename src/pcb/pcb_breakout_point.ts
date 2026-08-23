@@ -1,7 +1,8 @@
-import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
-import { distance, type Distance } from "src/units"
+import { type LayerRef, layer_ref } from "src/pcb/properties/layer_ref"
+import { type Distance, distance } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const pcb_breakout_point = z
   .object({
@@ -12,6 +13,7 @@ export const pcb_breakout_point = z
     source_trace_id: z.string().optional(),
     source_port_id: z.string().optional(),
     source_net_id: z.string().optional(),
+    layer: layer_ref.optional(),
     x: distance,
     y: distance,
   })
@@ -33,6 +35,7 @@ export interface PcbBreakoutPoint {
   source_trace_id?: string
   source_port_id?: string
   source_net_id?: string
+  layer?: LayerRef
   x: Distance
   y: Distance
 }

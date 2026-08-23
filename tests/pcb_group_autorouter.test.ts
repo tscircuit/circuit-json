@@ -1,4 +1,5 @@
-import { test, expect } from "bun:test"
+import { expect, test } from "bun:test"
+import { pcb_breakout_point } from "../src/pcb/pcb_breakout_point"
 import { pcb_group } from "../src/pcb/pcb_group"
 
 // Test autorouter_configuration optional and shape
@@ -66,4 +67,23 @@ test("pcb_group allows width and height to be omitted when outline is provided",
   expect(group.width).toBeUndefined()
   expect(group.height).toBeUndefined()
   expect(group.outline?.length).toBe(4)
+})
+
+test("pcb_breakout_point accepts an optional routing layer", () => {
+  const withoutLayer = pcb_breakout_point.parse({
+    type: "pcb_breakout_point",
+    pcb_group_id: "pcb_group_1",
+    x: 1,
+    y: 2,
+  })
+  const withLayer = pcb_breakout_point.parse({
+    type: "pcb_breakout_point",
+    pcb_group_id: "pcb_group_1",
+    layer: { name: "inner1" },
+    x: 1,
+    y: 2,
+  })
+
+  expect(withoutLayer.layer).toBeUndefined()
+  expect(withLayer.layer).toBe("inner1")
 })
