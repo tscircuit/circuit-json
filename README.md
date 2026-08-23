@@ -1386,6 +1386,7 @@ interface PcbBreakoutPoint {
   source_trace_id?: string
   source_port_id?: string
   source_net_id?: string
+  layer?: LayerRef
   x: Distance
   y: Distance
 }
