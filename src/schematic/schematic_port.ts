@@ -15,6 +15,7 @@ export interface SchematicPort {
   true_ccw_index?: number
   pin_number?: number
   display_pin_label?: string
+  display_pin_label_font_size?: number | "default" | "sm"
   subcircuit_id?: string
   is_connected?: boolean
   is_internal_circuit_port?: boolean
@@ -38,6 +39,12 @@ export const schematic_port = z
     true_ccw_index: z.number().optional(),
     pin_number: z.number().optional(),
     display_pin_label: z.string().optional(),
+    display_pin_label_font_size: z
+      .number()
+      .positive()
+      .finite()
+      .or(z.enum(["default", "sm"]))
+      .optional(),
     subcircuit_id: z.string().optional(),
     is_connected: z.boolean().optional(),
     is_internal_circuit_port: z.boolean().optional(),

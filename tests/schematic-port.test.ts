@@ -22,3 +22,38 @@ test("schematic ports can identify internal circuit port roles", () => {
   expect(internalCircuitPort.is_internal_circuit_port).toBe(true)
   expect(overlappingPort.is_overlapping_internal_circuit_port).toBe(true)
 })
+
+test("schematic ports accept an optional display pin-label font size", () => {
+  for (const display_pin_label_font_size of [0.1, "default", "sm"] as const) {
+    const port = schematic_port.parse({
+      ...baseSchematicPort,
+      schematic_port_id: `schematic_port_${display_pin_label_font_size}`,
+      display_pin_label_font_size,
+    })
+
+    expect(port.display_pin_label_font_size).toBe(display_pin_label_font_size)
+  }
+
+  const portWithoutOverride = schematic_port.parse({
+    ...baseSchematicPort,
+    schematic_port_id: "schematic_port_without_font_size",
+  })
+  expect(portWithoutOverride.display_pin_label_font_size).toBeUndefined()
+})
+
+test("schematic ports reject invalid display pin-label font sizes", () => {
+  for (const display_pin_label_font_size of [
+    0,
+    -0.1,
+    Number.POSITIVE_INFINITY,
+    "large",
+  ]) {
+    expect(
+      schematic_port.safeParse({
+        ...baseSchematicPort,
+        schematic_port_id: "schematic_port_invalid_font_size",
+        display_pin_label_font_size,
+      }).success,
+    ).toBe(false)
+  }
+})
