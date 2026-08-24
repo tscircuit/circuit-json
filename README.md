@@ -3397,6 +3397,10 @@ interface SchematicSheet {
   sheet_index?: number
   subcircuit_id?: string
   outline_color?: string
+  center?: Point
+  width?: Length
+  height?: Length
+  is_root?: boolean
 }
 ```
 
