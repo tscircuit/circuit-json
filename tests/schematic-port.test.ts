@@ -24,14 +24,17 @@ test("schematic ports can identify internal circuit port roles", () => {
 })
 
 test("schematic ports accept an optional display pin-label font size", () => {
-  for (const display_pin_label_font_size of [0.1, "default", "sm"] as const) {
+  for (const [display_pin_label_font_size, expectedFontSize] of [
+    [0.1, 0.1],
+    ["0.12mm", 0.12],
+  ] as const) {
     const port = schematic_port.parse({
       ...baseSchematicPort,
       schematic_port_id: `schematic_port_${display_pin_label_font_size}`,
       display_pin_label_font_size,
     })
 
-    expect(port.display_pin_label_font_size).toBe(display_pin_label_font_size)
+    expect(port.display_pin_label_font_size).toBe(expectedFontSize)
   }
 
   const portWithoutOverride = schematic_port.parse({
@@ -46,6 +49,8 @@ test("schematic ports reject invalid display pin-label font sizes", () => {
     0,
     -0.1,
     Number.POSITIVE_INFINITY,
+    "default",
+    "sm",
     "large",
   ]) {
     expect(
