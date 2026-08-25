@@ -3345,7 +3345,7 @@ interface SchematicPort {
   true_ccw_index?: number
   pin_number?: number
   display_pin_label?: string
-  display_pin_label_font_size?: Length
+  display_pin_label_font_size?: number
   subcircuit_id?: string
   is_connected?: boolean
   is_internal_circuit_port?: boolean
