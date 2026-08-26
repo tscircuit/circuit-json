@@ -18,5 +18,7 @@ test("schematic_graphic parses a required asset without SVG content", () => {
   expect(graphic.schematic_sheet_id).toBe("schematic_sheet_1")
   expect(graphic.asset).toEqual(graphicAsset)
   expect(graphic.svg_content).toBeUndefined()
+  expect(graphic.width).toBeUndefined()
+  expect(graphic.height).toBeUndefined()
   expect(any_circuit_element.parse(graphic)).toEqual(graphic)
 })

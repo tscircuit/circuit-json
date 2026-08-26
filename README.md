@@ -3197,16 +3197,21 @@ interface SchematicError extends BaseCircuitJsonError {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_graphic.ts)
 
-References a graphic asset on a schematic sheet.
+References a graphic asset with optional centered layout bounds on a schematic sheet.
 
 ```typescript
-/** References a graphic asset on a schematic sheet. */
+/** References a graphic asset on a schematic sheet. Optional width and height
+ * define centered layout bounds; omitted bounds allow full-sheet rendering. */
 interface SchematicGraphic {
   type: "schematic_graphic"
   schematic_graphic_id: string
   schematic_sheet_id?: string
   asset: Asset
   svg_content?: string
+  /** Positive centered layout width in schematic units. */
+  width?: number
+  /** Positive centered layout height in schematic units. */
+  height?: number
 }
 ```
 
