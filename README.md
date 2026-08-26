@@ -3397,6 +3397,8 @@ interface SchematicSheet {
   name?: string
   sheet_index?: number
   sheet_size?: "a4" | "ansi_b"
+  sheet_width?: number
+  sheet_height?: number
   subcircuit_id?: string
   outline_color?: string
 }
