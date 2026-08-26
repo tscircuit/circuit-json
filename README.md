@@ -3197,15 +3197,16 @@ interface SchematicError extends BaseCircuitJsonError {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_graphic.ts)
 
-Embeds SVG content on a schematic sheet.
+References a graphic asset on a schematic sheet.
 
 ```typescript
-/** Embeds SVG content on a schematic sheet. */
+/** References a graphic asset on a schematic sheet. */
 interface SchematicGraphic {
   type: "schematic_graphic"
   schematic_graphic_id: string
   schematic_sheet_id?: string
-  svg_content: string
+  asset: Asset
+  svg_content?: string
 }
 ```
 
