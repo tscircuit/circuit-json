@@ -7,7 +7,7 @@ const graphicAsset = {
   mimetype: "image/svg+xml",
 }
 
-test("schematic_graphic parses a required asset without SVG content", () => {
+test("schematic_graphic parses an asset without SVG content", () => {
   const graphic = schematic_graphic.parse({
     type: "schematic_graphic",
     schematic_sheet_id: "schematic_sheet_1",

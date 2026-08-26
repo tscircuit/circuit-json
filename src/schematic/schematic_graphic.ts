@@ -10,27 +10,34 @@ export const schematic_graphic = z
     type: z.literal("schematic_graphic"),
     schematic_graphic_id: getZodPrefixedIdWithDefault("schematic_graphic"),
     schematic_sheet_id: z.string().optional(),
-    asset,
+    asset: asset.optional(),
     svg_content: z.string().optional(),
     width: positiveFiniteDistance.optional(),
     height: positiveFiniteDistance.optional(),
   })
   .describe(
-    "References a graphic asset with optional centered layout bounds on a schematic sheet",
+    "References a graphic asset or inline SVG content with optional centered layout bounds on a schematic sheet",
   )
+  .superRefine(({ asset, svg_content }, ctx) => {
+    if (asset === undefined && svg_content === undefined) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "At least one of asset or svg_content is required",
+      })
+    }
+  })
 
 export type SchematicGraphicInput = z.input<typeof schematic_graphic>
 type InferredSchematicGraphic = z.infer<typeof schematic_graphic>
 
-/**
- * References a graphic asset on a schematic sheet. Optional width and height
- * define centered layout bounds; omitted bounds allow full-sheet rendering.
- */
+/** References a graphic asset or inline SVG content on a schematic sheet. */
 export interface SchematicGraphic {
   type: "schematic_graphic"
   schematic_graphic_id: string
   schematic_sheet_id?: string
-  asset: Asset
+  /** Optional canonical source asset; at least one graphic source is required. */
+  asset?: Asset
+  /** Optional inline SVG source or materialized fallback content. */
   svg_content?: string
   /** Positive centered layout width in schematic units. */
   width?: number
