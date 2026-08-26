@@ -184,6 +184,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicDebugObject](#schematicdebugobject)
     - [SchematicElementOutsideSheetWarning](#schematicelementoutsidesheetwarning)
     - [SchematicError](#schematicerror)
+    - [SchematicGraphic](#schematicgraphic)
     - [SchematicGroup](#schematicgroup)
     - [SchematicLayoutError](#schematiclayouterror)
     - [SchematicLine](#schematicline)
@@ -3189,6 +3190,29 @@ interface SchematicError extends BaseCircuitJsonError {
   schematic_error_id: string
   error_type: "schematic_port_not_found"
   subcircuit_id?: string
+}
+```
+
+### SchematicGraphic
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_graphic.ts)
+
+References a graphic asset or inline SVG content with optional centered layout bounds on a schematic sheet. At least one graphic source is required.
+
+```typescript
+/** References a graphic asset or inline SVG content on a schematic sheet. */
+interface SchematicGraphic {
+  type: "schematic_graphic"
+  schematic_graphic_id: string
+  schematic_sheet_id?: string
+  /** Optional canonical source asset; at least one graphic source is required. */
+  asset?: Asset
+  /** Optional inline SVG source or materialized fallback content. */
+  svg_content?: string
+  /** Positive centered layout width in schematic units. */
+  width?: number
+  /** Positive centered layout height in schematic units. */
+  height?: number
 }
 ```
 
