@@ -1,13 +1,13 @@
-import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
+import { type PointWithBulge, point_with_bulge } from "src/pcb/properties/brep"
 import {
+  type LayerRef,
   layer_ref,
   visible_layer,
-  type LayerRef,
 } from "src/pcb/properties/layer_ref"
-import { point, type Point } from "src/common"
-import { length, type Length } from "src/units"
+import { type Length, length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const pcb_fabrication_note_path = z
   .object({
@@ -18,7 +18,7 @@ export const pcb_fabrication_note_path = z
     pcb_component_id: z.string(),
     subcircuit_id: z.string().optional(),
     layer: layer_ref,
-    route: z.array(point),
+    route: z.array(point_with_bulge),
     stroke_width: length,
     color: z.string().optional(),
   })
@@ -40,7 +40,7 @@ export interface PcbFabricationNotePath {
   pcb_component_id: string
   subcircuit_id?: string
   layer: LayerRef
-  route: Point[]
+  route: PointWithBulge[]
   stroke_width: Length
   color?: string
 }
