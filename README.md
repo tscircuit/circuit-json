@@ -184,6 +184,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicDebugObject](#schematicdebugobject)
     - [SchematicElementOutsideSheetWarning](#schematicelementoutsidesheetwarning)
     - [SchematicError](#schematicerror)
+    - [SchematicGraphic](#schematicgraphic)
     - [SchematicGroup](#schematicgroup)
     - [SchematicLayoutError](#schematiclayouterror)
     - [SchematicLine](#schematicline)
@@ -3189,6 +3190,22 @@ interface SchematicError extends BaseCircuitJsonError {
   schematic_error_id: string
   error_type: "schematic_port_not_found"
   subcircuit_id?: string
+}
+```
+
+### SchematicGraphic
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_graphic.ts)
+
+Embeds SVG content on a schematic sheet.
+
+```typescript
+/** Embeds SVG content on a schematic sheet. */
+interface SchematicGraphic {
+  type: "schematic_graphic"
+  schematic_graphic_id: string
+  schematic_sheet_id?: string
+  svg_content: string
 }
 ```
 
