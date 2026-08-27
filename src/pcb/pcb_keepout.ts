@@ -3,12 +3,12 @@ import { z } from "zod"
 import { type Point, point } from "../common"
 import { distance, type Length, length } from "../units"
 
-export const pcb_keepout_path = z.object({
+export const pcb_keepout_outline = z.object({
   type: z.literal("pcb_keepout"),
-  shape: z.literal("path"),
+  shape: z.literal("outline"),
   pcb_group_id: z.string().optional(),
   subcircuit_id: z.string().optional(),
-  route: z.array(point).min(2),
+  outline: z.array(point).min(2),
   stroke_width: length,
   pcb_keepout_id: z.string(),
   layers: z.array(z.string()),
@@ -16,8 +16,8 @@ export const pcb_keepout_path = z.object({
   excluded_pcb_component_ids: z.array(z.string()).optional(),
 })
 
-export type PcbKeepoutPathInput = z.input<typeof pcb_keepout_path>
-type InferredPcbKeepoutPath = z.infer<typeof pcb_keepout_path>
+export type PcbKeepoutOutlineInput = z.input<typeof pcb_keepout_outline>
+type InferredPcbKeepoutOutline = z.infer<typeof pcb_keepout_outline>
 
 export const pcb_keepout = z
   .object({
@@ -47,7 +47,7 @@ export const pcb_keepout = z
       excluded_pcb_component_ids: z.array(z.string()).optional(),
     }),
   )
-  .or(pcb_keepout_path)
+  .or(pcb_keepout_outline)
 
 export type PCBKeepoutInput = z.input<typeof pcb_keepout>
 type InferredPCBKeepout = z.infer<typeof pcb_keepout>
@@ -81,12 +81,12 @@ export interface PCBKeepoutCircle {
   excluded_pcb_component_ids?: string[]
 }
 
-export interface PcbKeepoutPath {
+export interface PcbKeepoutOutline {
   type: "pcb_keepout"
-  shape: "path"
+  shape: "outline"
   pcb_group_id?: string
   subcircuit_id?: string
-  route: Point[]
+  outline: Point[]
   stroke_width: Length
   pcb_keepout_id: string
   layers: string[]
@@ -95,8 +95,8 @@ export interface PcbKeepoutPath {
   excluded_pcb_component_ids?: string[]
 }
 
-expectTypesMatch<PcbKeepoutPath, InferredPcbKeepoutPath>(true)
+expectTypesMatch<PcbKeepoutOutline, InferredPcbKeepoutOutline>(true)
 
-export type PCBKeepout = PCBKeepoutRect | PCBKeepoutCircle | PcbKeepoutPath
+export type PCBKeepout = PCBKeepoutRect | PCBKeepoutCircle | PcbKeepoutOutline
 
 expectTypesMatch<PCBKeepout, InferredPCBKeepout>(true)
