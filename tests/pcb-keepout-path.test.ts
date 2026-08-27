@@ -1,6 +1,6 @@
 import { expect, test } from "bun:test"
 import { any_circuit_element } from "../src/any_circuit_element"
-import { type PCBKeepoutPath, pcb_keepout } from "../src/pcb/pcb_keepout"
+import { pcb_keepout } from "../src/pcb/pcb_keepout"
 
 test("parses a path-shaped PCB keepout", () => {
   const input = {
@@ -17,11 +17,18 @@ test("parses a path-shaped PCB keepout", () => {
   }
 
   const keepout = pcb_keepout.parse(input)
-  const circuitElement = any_circuit_element.parse(input) as PCBKeepoutPath
+  const circuitElement = any_circuit_element.parse(input)
+  if (
+    circuitElement.type !== "pcb_keepout" ||
+    circuitElement.shape !== "path"
+  ) {
+    throw new Error("Expected a path-shaped PCB keepout")
+  }
 
-  expect(keepout).toEqual({
+  const expectedKeepout = {
     ...input,
     stroke_width: 0.2,
-  })
-  expect(circuitElement).toEqual(keepout)
+  }
+  expect(keepout).toEqual(expectedKeepout)
+  expect(circuitElement).toEqual(expectedKeepout)
 })
