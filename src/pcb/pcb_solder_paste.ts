@@ -1,7 +1,7 @@
 import { z } from "zod"
 import { distance, type Distance, rotation, type Rotation } from "src/units"
 import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
-import { getZodPrefixedIdWithDefault } from "src/common"
+import { getZodPrefixedIdWithDefault, point, type Point } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 const pcb_solder_paste_circle = z.object({
@@ -95,14 +95,27 @@ const pcb_solder_paste_oval = z.object({
   pcb_smtpad_id: z.string().optional(),
 })
 
+const pcb_solder_paste_polygon = z.object({
+  type: z.literal("pcb_solder_paste"),
+  shape: z.literal("polygon"),
+  pcb_solder_paste_id: getZodPrefixedIdWithDefault("pcb_solder_paste"),
+  pcb_group_id: z.string().optional(),
+  subcircuit_id: z.string().optional(),
+  points: z.array(point),
+  layer: layer_ref,
+  pcb_component_id: z.string().optional(),
+  pcb_smtpad_id: z.string().optional(),
+})
+
 export const pcb_solder_paste = z
-  .union([
+  .discriminatedUnion("shape", [
     pcb_solder_paste_circle,
     pcb_solder_paste_rect,
     pcb_solder_paste_pill,
     pcb_solder_paste_rotated_rect,
     pcb_solder_paste_rotated_pill,
     pcb_solder_paste_oval,
+    pcb_solder_paste_polygon,
   ])
   .describe("Defines solderpaste on the PCB")
 
@@ -117,6 +130,7 @@ type InferredPcbSolderPasteRotatedPill = z.infer<
   typeof pcb_solder_paste_rotated_pill
 >
 type InferredPcbSolderPasteOval = z.infer<typeof pcb_solder_paste_oval>
+type InferredPcbSolderPastePolygon = z.infer<typeof pcb_solder_paste_polygon>
 
 /**
  * Defines solderpaste on the PCB
@@ -225,6 +239,21 @@ export interface PcbSolderPasteOval {
   pcb_smtpad_id?: string
 }
 
+/**
+ * Defines polygonal solder paste on the PCB
+ */
+export interface PcbSolderPastePolygon {
+  type: "pcb_solder_paste"
+  shape: "polygon"
+  pcb_solder_paste_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  points: Point[]
+  layer: LayerRef
+  pcb_component_id?: string
+  pcb_smtpad_id?: string
+}
+
 export type PcbSolderPaste =
   | PcbSolderPasteCircle
   | PcbSolderPasteRect
@@ -232,6 +261,7 @@ export type PcbSolderPaste =
   | PcbSolderPasteRotatedRect
   | PcbSolderPasteRotatedPill
   | PcbSolderPasteOval
+  | PcbSolderPastePolygon
 
 expectTypesMatch<PcbSolderPasteCircle, InferredPcbSolderPasteCircle>(true)
 expectTypesMatch<PcbSolderPasteRect, InferredPcbSolderPasteRect>(true)
@@ -243,3 +273,4 @@ expectTypesMatch<PcbSolderPasteRotatedPill, InferredPcbSolderPasteRotatedPill>(
   true,
 )
 expectTypesMatch<PcbSolderPasteOval, InferredPcbSolderPasteOval>(true)
+expectTypesMatch<PcbSolderPastePolygon, InferredPcbSolderPastePolygon>(true)
