@@ -161,6 +161,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbSilkscreenPill](#pcbsilkscreenpill)
     - [PcbSilkscreenRect](#pcbsilkscreenrect)
     - [PcbSilkscreenText](#pcbsilkscreentext)
+    - [PcbSoldermaskOpening](#pcbsoldermaskopening)
     - [PcbSolderPaste](#pcbsolderpaste)
     - [PcbText](#pcbtext)
     - [PcbThermalSpoke](#pcbthermalspoke)
@@ -2655,6 +2656,26 @@ interface PcbSilkscreenText {
   is_mirrored?: boolean
   anchor_position: Point
   anchor_alignment: NinePointAnchor
+}
+```
+
+### PcbSoldermaskOpening
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_soldermask_opening.ts)
+
+```typescript
+/** Defines a circular opening in the PCB solder mask. */
+interface PcbSoldermaskOpeningCircle {
+  type: "pcb_soldermask_opening"
+  pcb_soldermask_opening_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  shape: "circle"
+  x: Distance
+  y: Distance
+  radius: Distance
+  layer: LayerRef
+  pcb_component_id?: string
 }
 ```
 
