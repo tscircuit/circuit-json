@@ -198,6 +198,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicTable](#schematictable)
     - [SchematicTableCell](#schematictablecell)
     - [SchematicText](#schematictext)
+    - [SchematicTextOverlapWarning](#schematictextoverlapwarning)
     - [SchematicTrace](#schematictrace)
     - [SchematicVoltageProbe](#schematicvoltageprobe)
   - [Simulation Elements](#simulation-elements)
@@ -3512,6 +3513,25 @@ interface SchematicText {
   rotation: number
   anchor: NinePointAnchor | FivePointAnchor
   color: string
+  subcircuit_id?: string
+}
+```
+
+### SchematicTextOverlapWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_text_overlap_warning.ts)
+
+Warning emitted when two schematic text elements overlap
+
+```typescript
+/** Warning emitted when two schematic text elements overlap */
+interface SchematicTextOverlapWarning {
+  type: "schematic_text_overlap_warning"
+  schematic_text_overlap_warning_id: string
+  warning_type: "schematic_text_overlap_warning"
+  message: string
+  schematic_text_ids: [string, string]
+  schematic_sheet_id?: string
   subcircuit_id?: string
 }
 ```
