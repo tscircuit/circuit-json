@@ -16,6 +16,7 @@ export * from "./pcb_smtpad"
 export * from "./pcb_solder_paste"
 export * from "./pcb_text"
 export * from "./pcb_trace"
+export * from "./pcb_trace_preview"
 export * from "./pcb_trace_warning"
 export * from "./pcb_trace_too_long_warning"
 export * from "./pcb_trace_too_many_vias_warning"
@@ -89,6 +90,7 @@ import type { PcbSmtPad } from "./pcb_smtpad"
 import type { PcbSolderPaste } from "./pcb_solder_paste"
 import type { PcbText } from "./pcb_text"
 import type { PcbTrace } from "./pcb_trace"
+import type { PcbTracePreview } from "./pcb_trace_preview"
 import type { PcbTraceWarning } from "./pcb_trace_warning"
 import type { PcbTraceTooLongWarning } from "./pcb_trace_too_long_warning"
 import type { PcbTraceTooManyViasWarning } from "./pcb_trace_too_many_vias_warning"
@@ -158,6 +160,7 @@ export type PcbCircuitElement =
   | PcbSolderPaste
   | PcbText
   | PcbTrace
+  | PcbTracePreview
   | PcbTraceWarning
   | PcbTraceTooLongWarning
   | PcbTraceTooManyViasWarning
