@@ -1,8 +1,9 @@
-import { z } from "zod"
-import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
-import { visible_layer, type VisibleLayer } from "src/pcb/properties/layer_ref"
-import { length, type Length } from "src/units"
+import { getZodPrefixedIdWithDefault } from "src/common"
+import { type PointWithBulge, point_with_bulge } from "src/pcb/properties/brep"
+import { type VisibleLayer, visible_layer } from "src/pcb/properties/layer_ref"
+import { type Length, length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 export const pcb_note_path = z
   .object({
@@ -13,7 +14,7 @@ export const pcb_note_path = z
     subcircuit_id: z.string().optional(),
     name: z.string().optional(),
     text: z.string().optional(),
-    route: z.array(point),
+    route: z.array(point_with_bulge),
     layer: visible_layer.default("top"),
     stroke_width: length.default("0.1mm"),
     color: z.string().optional(),
@@ -34,7 +35,7 @@ export interface PcbNotePath {
   subcircuit_id?: string
   name?: string
   text?: string
-  route: Point[]
+  route: PointWithBulge[]
   layer: VisibleLayer
   stroke_width: Length
   color?: string
