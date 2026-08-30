@@ -11,6 +11,7 @@ export interface SimulationDcOperatingPointVoltage {
   simulation_dc_operating_point_voltage_id: string
   simulation_experiment_id: string
   simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_parameter_sweep_coordinates?: SimulationParameterSweepCoordinate[]
   simulation_voltage_probe_id: string
   voltage: number
   name?: string
@@ -25,6 +26,10 @@ export const simulation_dc_operating_point_voltage = z.object({
   simulation_experiment_id: z.string(),
   simulation_parameter_sweep_coordinate:
     simulation_parameter_sweep_coordinate.optional(),
+  simulation_parameter_sweep_coordinates: z
+    .array(simulation_parameter_sweep_coordinate)
+    .min(2)
+    .optional(),
   simulation_voltage_probe_id: z.string(),
   voltage: z.number(),
   name: z.string().optional(),
