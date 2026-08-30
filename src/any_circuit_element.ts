@@ -12,7 +12,6 @@ import {
 export const any_circuit_element = z.union([
   // TODO source_config
   // TODO pcb_config
-  // TODO schematic_config
   // TODO schematic_group
   src.source_trace,
   src.source_port,
@@ -152,6 +151,7 @@ export const any_circuit_element = z.union([
   sch.schematic_graphic,
   sch.schematic_group,
   sch.schematic_sheet,
+  sch.schematic_config,
   sch.schematic_table,
   sch.schematic_table_cell,
   cad.cad_component,
