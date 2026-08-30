@@ -19,6 +19,10 @@ export const simulation_parameter_sweep_coordinate = z.object({
   parameter_unit: simulation_parameter_unit,
 })
 
+export const simulation_parameter_sweep_coordinates = z.array(
+  simulation_parameter_sweep_coordinate,
+)
+
 expectTypesMatch<
   SimulationParameterSweepCoordinate,
   z.infer<typeof simulation_parameter_sweep_coordinate>
