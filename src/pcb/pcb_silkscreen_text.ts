@@ -7,6 +7,7 @@ import {
   ninePointAnchor,
   type NinePointAnchor,
 } from "src/common/NinePointAnchor"
+import { text_typography } from "src/common/text_typography"
 
 export const pcb_silkscreen_text = z
   .object({
@@ -39,6 +40,7 @@ export const pcb_silkscreen_text = z
     anchor_position: point.default({ x: 0, y: 0 }),
     anchor_alignment: ninePointAnchor.default("center"),
   })
+  .extend(text_typography)
   .describe("Defines silkscreen text on the PCB")
 
 export type PcbSilkscreenTextInput = z.input<typeof pcb_silkscreen_text>
@@ -53,6 +55,9 @@ export interface PcbSilkscreenText {
   pcb_group_id?: string
   subcircuit_id?: string
   font: "tscircuit2024"
+  font_family?: string
+  font_weight?: "normal" | "bold"
+  font_style?: "normal" | "italic"
   font_size: Length
   pcb_component_id: string
   text: string

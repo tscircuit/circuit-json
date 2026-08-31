@@ -3,6 +3,7 @@ import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
 import { visible_layer, type VisibleLayer } from "src/pcb/properties/layer_ref"
 import { distance, type Length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { text_typography } from "src/common/text_typography"
 
 export const pcb_note_text = z
   .object({
@@ -23,6 +24,7 @@ export const pcb_note_text = z
     is_mirrored_from_top_view: z.boolean().optional(),
     color: z.string().optional(),
   })
+  .extend(text_typography)
   .describe("Defines a documentation note in text on the PCB")
 
 export type PcbNoteTextInput = z.input<typeof pcb_note_text>
@@ -39,6 +41,9 @@ export interface PcbNoteText {
   subcircuit_id?: string
   name?: string
   font: "tscircuit2024"
+  font_family?: string
+  font_weight?: "normal" | "bold"
+  font_style?: "normal" | "italic"
   font_size: Length
   text?: string
   anchor_position: Point

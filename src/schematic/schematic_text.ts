@@ -5,6 +5,7 @@ import { ninePointAnchor } from "src/common/NinePointAnchor"
 import type { NinePointAnchor } from "src/common/NinePointAnchor"
 import type { FivePointAnchor } from "src/common/FivePointAnchor"
 import { fivePointAnchor } from "src/common/FivePointAnchor"
+import { text_typography } from "src/common/text_typography"
 
 export interface SchematicText {
   type: "schematic_text"
@@ -21,6 +22,9 @@ export interface SchematicText {
   source_trace_id?: string
   text: string
   font_size: number
+  font_family?: string
+  font_weight?: "normal" | "bold"
+  font_style?: "normal" | "italic"
   position: {
     x: number
     y: number
@@ -31,26 +35,28 @@ export interface SchematicText {
   subcircuit_id?: string
 }
 
-export const schematic_text = z.object({
-  type: z.literal("schematic_text"),
-  schematic_sheet_id: z.string().optional(),
-  schematic_component_id: z.string().optional(),
-  schematic_symbol_id: z.string().optional(),
-  schematic_text_id: z.string(),
-  source_trace_id: z.string().optional(),
-  text: z.string(),
-  font_size: z.number().default(0.18),
-  position: z.object({
-    x: distance,
-    y: distance,
-  }),
-  rotation: z.number().default(0),
-  anchor: z
-    .union([fivePointAnchor.describe("legacy"), ninePointAnchor])
-    .default("center"),
-  color: z.string().default("#000000"),
-  subcircuit_id: z.string().optional(),
-})
+export const schematic_text = z
+  .object({
+    type: z.literal("schematic_text"),
+    schematic_sheet_id: z.string().optional(),
+    schematic_component_id: z.string().optional(),
+    schematic_symbol_id: z.string().optional(),
+    schematic_text_id: z.string(),
+    source_trace_id: z.string().optional(),
+    text: z.string(),
+    font_size: z.number().default(0.18),
+    position: z.object({
+      x: distance,
+      y: distance,
+    }),
+    rotation: z.number().default(0),
+    anchor: z
+      .union([fivePointAnchor.describe("legacy"), ninePointAnchor])
+      .default("center"),
+    color: z.string().default("#000000"),
+    subcircuit_id: z.string().optional(),
+  })
+  .extend(text_typography)
 
 export type SchematicTextInput = z.input<typeof schematic_text>
 type InferredSchematicText = z.infer<typeof schematic_text>

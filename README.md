@@ -1529,6 +1529,9 @@ interface PcbCopperText {
   pcb_group_id?: string
   subcircuit_id?: string
   font: "tscircuit2024"
+  font_family?: string
+  font_weight?: "normal" | "bold"
+  font_style?: "normal" | "italic"
   font_size: Length
   pcb_component_id: string
   text: string
@@ -1823,6 +1826,9 @@ interface PcbFabricationNoteText {
   subcircuit_id?: string
   pcb_group_id?: string
   font: "tscircuit2024"
+  font_family?: string
+  font_weight?: "normal" | "bold"
+  font_style?: "normal" | "italic"
   font_size: Length
   pcb_component_id: string
   text: string
@@ -2136,6 +2142,9 @@ interface PcbNoteText {
   subcircuit_id?: string
   name?: string
   font: "tscircuit2024"
+  font_family?: string
+  font_weight?: "normal" | "bold"
+  font_style?: "normal" | "italic"
   font_size: Length
   text?: string
   anchor_position: Point
@@ -2640,6 +2649,9 @@ interface PcbSilkscreenText {
   pcb_group_id?: string
   subcircuit_id?: string
   font: "tscircuit2024"
+  font_family?: string
+  font_weight?: "normal" | "bold"
+  font_style?: "normal" | "italic"
   font_size: Length
   pcb_component_id: string
   text: string
@@ -3505,6 +3517,9 @@ interface SchematicText {
   schematic_text_id: string
   text: string
   font_size: number
+  font_family?: string
+  font_weight?: "normal" | "bold"
+  font_style?: "normal" | "italic"
   position: {
     x: number
     y: number

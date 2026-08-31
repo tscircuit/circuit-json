@@ -4,6 +4,7 @@ import { distance, type Length } from "src/units"
 import { visible_layer, type VisibleLayer } from "src/pcb/properties/layer_ref"
 import { getZodPrefixedIdWithDefault } from "src/common/getZodPrefixedIdWithDefault"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { text_typography } from "src/common/text_typography"
 
 export const pcb_fabrication_note_text = z
   .object({
@@ -25,6 +26,7 @@ export const pcb_fabrication_note_text = z
       .default("center"),
     color: z.string().optional(),
   })
+  .extend(text_typography)
   .describe(
     "Defines a fabrication note in text on the PCB, useful for leaving notes for assemblers or fabricators",
   )
@@ -43,6 +45,9 @@ export interface PcbFabricationNoteText {
   subcircuit_id?: string
   pcb_group_id?: string
   font: "tscircuit2024"
+  font_family?: string
+  font_weight?: "normal" | "bold"
+  font_style?: "normal" | "italic"
   font_size: Length
   pcb_component_id: string
   text: string
