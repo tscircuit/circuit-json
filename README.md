@@ -2736,6 +2736,12 @@ interface PcbTraceRoutePointWire {
   route_type: "wire"
   x: Distance
   y: Distance
+  /**
+   * Curvature of the segment from this point to the next route point.
+   * The value is tan(sweepAngle / 4), where a positive sweep is
+   * counterclockwise. Omit this field for a straight segment.
+   */
+  bulge?: number
   width: Distance
   copper_pour_id?: string
   is_inside_copper_pour?: boolean
