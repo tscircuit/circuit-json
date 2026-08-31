@@ -3209,10 +3209,14 @@ interface SchematicGraphic {
   asset?: Asset
   /** Optional inline SVG source or materialized fallback content. */
   svg_content?: string
+  /** Optional center position in schematic units. */
+  center?: Point
   /** Positive centered layout width in schematic units. */
   width?: number
   /** Positive centered layout height in schematic units. */
   height?: number
+  /** Whether the graphic keeps its source aspect ratio inside its bounds. */
+  keep_aspect_ratio?: boolean
 }
 ```
 
