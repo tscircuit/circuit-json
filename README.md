@@ -1680,6 +1680,7 @@ Defines a rectangular cutout on the PCB.
 interface PcbCutoutRect {
   type: "pcb_cutout"
   pcb_cutout_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   pcb_board_id?: string
