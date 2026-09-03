@@ -1,12 +1,13 @@
-import { z } from "zod"
-import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
-import { length, type Length, rotation, type Rotation } from "src/units"
+import { type Point, getZodPrefixedIdWithDefault, point } from "src/common"
+import { type Length, type Rotation, length, rotation } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
 
 // Common properties base for all cutout shapes (internal)
 const pcb_cutout_base = z.object({
   type: z.literal("pcb_cutout"),
   pcb_cutout_id: getZodPrefixedIdWithDefault("pcb_cutout"),
+  pcb_component_id: z.string().optional(),
   pcb_group_id: z.string().optional(),
   subcircuit_id: z.string().optional(),
   pcb_board_id: z.string().optional(),
@@ -30,6 +31,7 @@ type InferredPcbCutoutRect = z.infer<typeof pcb_cutout_rect>
 export interface PcbCutoutRect {
   type: "pcb_cutout"
   pcb_cutout_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   pcb_board_id?: string
@@ -57,6 +59,7 @@ type InferredPcbCutoutCircle = z.infer<typeof pcb_cutout_circle>
 export interface PcbCutoutCircle {
   type: "pcb_cutout"
   pcb_cutout_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   pcb_board_id?: string
@@ -81,6 +84,7 @@ type InferredPcbCutoutPolygon = z.infer<typeof pcb_cutout_polygon>
 export interface PcbCutoutPolygon {
   type: "pcb_cutout"
   pcb_cutout_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   pcb_board_id?: string
@@ -110,6 +114,7 @@ type InferredPcbCutoutPath = z.infer<typeof pcb_cutout_path>
 export interface PcbCutoutPath {
   type: "pcb_cutout"
   pcb_cutout_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   pcb_board_id?: string
