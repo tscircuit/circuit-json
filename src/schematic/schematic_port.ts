@@ -2,6 +2,11 @@ import { z } from "zod"
 import { point, type Point } from "../common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
+export interface SchematicTextRun {
+  text: string
+  overline?: boolean
+}
+
 export interface SchematicPort {
   type: "schematic_port"
   schematic_port_id: string
@@ -15,6 +20,8 @@ export interface SchematicPort {
   true_ccw_index?: number
   pin_number?: number
   display_pin_label?: string
+  /** Ordered styled runs for the label. Plain-text consumers can fall back to display_pin_label. */
+  display_pin_label_text_runs?: SchematicTextRun[]
   display_pin_label_font_size?: number
   subcircuit_id?: string
   is_connected?: boolean
@@ -39,6 +46,14 @@ export const schematic_port = z
     true_ccw_index: z.number().optional(),
     pin_number: z.number().optional(),
     display_pin_label: z.string().optional(),
+    display_pin_label_text_runs: z
+      .array(
+        z.object({
+          text: z.string(),
+          overline: z.boolean().optional(),
+        }),
+      )
+      .optional(),
     display_pin_label_font_size: z.number().positive().finite().optional(),
     subcircuit_id: z.string().optional(),
     is_connected: z.boolean().optional(),

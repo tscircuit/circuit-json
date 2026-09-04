@@ -39,6 +39,25 @@ test("schematic ports accept an optional display pin-label font size", () => {
   expect(portWithoutOverride.display_pin_label_font_size).toBeUndefined()
 })
 
+test("schematic ports accept styled display pin-label runs", () => {
+  const port = schematic_port.parse({
+    ...baseSchematicPort,
+    schematic_port_id: "schematic_port_with_text_runs",
+    display_pin_label: "ABC",
+    display_pin_label_text_runs: [
+      { text: "A" },
+      { text: "B", overline: true },
+      { text: "C" },
+    ],
+  })
+
+  expect(port.display_pin_label_text_runs).toEqual([
+    { text: "A" },
+    { text: "B", overline: true },
+    { text: "C" },
+  ])
+})
+
 test("schematic ports reject invalid display pin-label font sizes", () => {
   for (const display_pin_label_font_size of [
     0,
