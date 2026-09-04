@@ -53,6 +53,7 @@ export const schematic_port = z
           overline: z.boolean().optional(),
         }),
       )
+      .min(1)
       .optional(),
     display_pin_label_font_size: z.number().positive().finite().optional(),
     subcircuit_id: z.string().optional(),

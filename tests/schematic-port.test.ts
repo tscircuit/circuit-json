@@ -58,6 +58,17 @@ test("schematic ports accept styled display pin-label runs", () => {
   ])
 })
 
+test("schematic ports reject empty styled display pin-label runs", () => {
+  expect(
+    schematic_port.safeParse({
+      ...baseSchematicPort,
+      schematic_port_id: "schematic_port_with_empty_text_runs",
+      display_pin_label: "ABC",
+      display_pin_label_text_runs: [],
+    }).success,
+  ).toBe(false)
+})
+
 test("schematic ports reject invalid display pin-label font sizes", () => {
   for (const display_pin_label_font_size of [
     0,
