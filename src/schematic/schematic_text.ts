@@ -20,6 +20,11 @@ export interface SchematicText {
    */
   source_trace_id?: string
   text: string
+  text_decoration_ranges?: Array<{
+    start: number
+    end: number
+    decoration: "overline" | "underline" | "line-through"
+  }>
   font_size: number
   position: {
     x: number
@@ -31,7 +36,8 @@ export interface SchematicText {
   subcircuit_id?: string
 }
 
-export const schematic_text = z.object({
+export const schematic_text = z
+  .object({
   type: z.literal("schematic_text"),
   schematic_sheet_id: z.string().optional(),
   schematic_component_id: z.string().optional(),
@@ -39,6 +45,15 @@ export const schematic_text = z.object({
   schematic_text_id: z.string(),
   source_trace_id: z.string().optional(),
   text: z.string(),
+  text_decoration_ranges: z
+    .array(
+      z.object({
+        start: z.number().int().nonnegative(),
+        end: z.number().int().positive(),
+        decoration: z.enum(["overline", "underline", "line-through"]),
+      }),
+    )
+    .optional(),
   font_size: z.number().default(0.18),
   position: z.object({
     x: distance,
@@ -49,8 +64,21 @@ export const schematic_text = z.object({
     .union([fivePointAnchor.describe("legacy"), ninePointAnchor])
     .default("center"),
   color: z.string().default("#000000"),
-  subcircuit_id: z.string().optional(),
-})
+    subcircuit_id: z.string().optional(),
+  })
+  .superRefine((value, context) => {
+    for (const [index, range] of (
+      value.text_decoration_ranges ?? []
+    ).entries()) {
+      if (range.end <= range.start || range.end > Array.from(value.text).length) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["text_decoration_ranges", index],
+          message: "Text decoration ranges must be non-empty and within the text",
+        })
+      }
+    }
+  })
 
 export type SchematicTextInput = z.input<typeof schematic_text>
 type InferredSchematicText = z.infer<typeof schematic_text>
