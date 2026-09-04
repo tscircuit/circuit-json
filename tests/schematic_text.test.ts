@@ -29,14 +29,12 @@ test("schematic_text allows source_trace_id", () => {
   expect(text.source_trace_id).toBe("source_trace_1")
 })
 
-test("schematic_text allows text decoration ranges", () => {
+test("schematic_text allows overline ranges", () => {
   const text = schematic_text.parse({
     type: "schematic_text",
     schematic_text_id: "schematic_text_decorated",
     text: "RESET/GPIO",
-    text_decoration_ranges: [
-      { start: 0, end: 5, decoration: "overline" },
-    ],
+    overline_ranges: [{ start_index: 0, end_index: 5 }],
     font_size: 0.18,
     position: { x: 0, y: 0 },
     rotation: 0,
@@ -44,9 +42,7 @@ test("schematic_text allows text decoration ranges", () => {
     color: "#000000",
   })
 
-  expect(text.text_decoration_ranges).toEqual([
-    { start: 0, end: 5, decoration: "overline" },
-  ])
+  expect(text.overline_ranges).toEqual([{ start_index: 0, end_index: 5 }])
 })
 
 test("any_circuit_element includes schematic_text with source_trace_id", () => {

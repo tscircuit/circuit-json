@@ -1,10 +1,10 @@
-import { z } from "zod"
-import { distance } from "../units"
-import { expectTypesMatch } from "src/utils/expect-types-match"
-import { ninePointAnchor } from "src/common/NinePointAnchor"
-import type { NinePointAnchor } from "src/common/NinePointAnchor"
 import type { FivePointAnchor } from "src/common/FivePointAnchor"
 import { fivePointAnchor } from "src/common/FivePointAnchor"
+import { ninePointAnchor } from "src/common/NinePointAnchor"
+import type { NinePointAnchor } from "src/common/NinePointAnchor"
+import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
+import { distance } from "../units"
 
 export interface SchematicText {
   type: "schematic_text"
@@ -20,10 +20,10 @@ export interface SchematicText {
    */
   source_trace_id?: string
   text: string
-  text_decoration_ranges?: Array<{
-    start: number
-    end: number
-    decoration: "overline" | "underline" | "line-through"
+  /** Ranges of Unicode characters in `text` that should have an overline. */
+  overline_ranges?: Array<{
+    start_index: number
+    end_index: number
   }>
   font_size: number
   position: {
@@ -38,43 +38,43 @@ export interface SchematicText {
 
 export const schematic_text = z
   .object({
-  type: z.literal("schematic_text"),
-  schematic_sheet_id: z.string().optional(),
-  schematic_component_id: z.string().optional(),
-  schematic_symbol_id: z.string().optional(),
-  schematic_text_id: z.string(),
-  source_trace_id: z.string().optional(),
-  text: z.string(),
-  text_decoration_ranges: z
-    .array(
-      z.object({
-        start: z.number().int().nonnegative(),
-        end: z.number().int().positive(),
-        decoration: z.enum(["overline", "underline", "line-through"]),
-      }),
-    )
-    .optional(),
-  font_size: z.number().default(0.18),
-  position: z.object({
-    x: distance,
-    y: distance,
-  }),
-  rotation: z.number().default(0),
-  anchor: z
-    .union([fivePointAnchor.describe("legacy"), ninePointAnchor])
-    .default("center"),
-  color: z.string().default("#000000"),
+    type: z.literal("schematic_text"),
+    schematic_sheet_id: z.string().optional(),
+    schematic_component_id: z.string().optional(),
+    schematic_symbol_id: z.string().optional(),
+    schematic_text_id: z.string(),
+    source_trace_id: z.string().optional(),
+    text: z.string(),
+    overline_ranges: z
+      .array(
+        z.object({
+          start_index: z.number().int().nonnegative(),
+          end_index: z.number().int().positive(),
+        }),
+      )
+      .optional(),
+    font_size: z.number().default(0.18),
+    position: z.object({
+      x: distance,
+      y: distance,
+    }),
+    rotation: z.number().default(0),
+    anchor: z
+      .union([fivePointAnchor.describe("legacy"), ninePointAnchor])
+      .default("center"),
+    color: z.string().default("#000000"),
     subcircuit_id: z.string().optional(),
   })
   .superRefine((value, context) => {
-    for (const [index, range] of (
-      value.text_decoration_ranges ?? []
-    ).entries()) {
-      if (range.end <= range.start || range.end > Array.from(value.text).length) {
+    for (const [index, range] of (value.overline_ranges ?? []).entries()) {
+      if (
+        range.end_index <= range.start_index ||
+        range.end_index > Array.from(value.text).length
+      ) {
         context.addIssue({
           code: z.ZodIssueCode.custom,
-          path: ["text_decoration_ranges", index],
-          message: "Text decoration ranges must be non-empty and within the text",
+          path: ["overline_ranges", index],
+          message: "Overline ranges must be non-empty and within the text",
         })
       }
     }
