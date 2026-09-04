@@ -2,12 +2,12 @@ import { z } from "zod"
 import { point, type Point } from "../common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-/** A contiguous part of a schematic pin label that shares the same styling. */
-export interface SchematicTextRun {
+/** One part of a schematic pin label with its display options. */
+export interface SchematicTextPart {
   /** The literal text displayed for this part of the label. */
   text: string
   /** Draw a line above this text, typically indicating an active-low signal. */
-  overline?: boolean
+  is_overlined?: boolean
 }
 
 export interface SchematicPort {
@@ -28,7 +28,7 @@ export interface SchematicPort {
    * For example, `A~{BC}D` is represented as `A`, overlined `BC`, then `D`.
    * Consumers that do not support styled text can use `display_pin_label`.
    */
-  display_pin_label_text_runs?: SchematicTextRun[]
+  display_pin_label_text_parts?: SchematicTextPart[]
   display_pin_label_font_size?: number
   subcircuit_id?: string
   is_connected?: boolean
@@ -53,11 +53,11 @@ export const schematic_port = z
     true_ccw_index: z.number().optional(),
     pin_number: z.number().optional(),
     display_pin_label: z.string().optional(),
-    display_pin_label_text_runs: z
+    display_pin_label_text_parts: z
       .array(
         z.object({
           text: z.string(),
-          overline: z.boolean().optional(),
+          is_overlined: z.boolean().optional(),
         }),
       )
       .min(1)

@@ -39,32 +39,32 @@ test("schematic ports accept an optional display pin-label font size", () => {
   expect(portWithoutOverride.display_pin_label_font_size).toBeUndefined()
 })
 
-test("schematic ports accept styled display pin-label runs", () => {
+test("schematic ports accept styled display pin-label parts", () => {
   const port = schematic_port.parse({
     ...baseSchematicPort,
     schematic_port_id: "schematic_port_with_text_runs",
     display_pin_label: "ABC",
-    display_pin_label_text_runs: [
+    display_pin_label_text_parts: [
       { text: "A" },
-      { text: "B", overline: true },
+      { text: "B", is_overlined: true },
       { text: "C" },
     ],
   })
 
-  expect(port.display_pin_label_text_runs).toEqual([
+  expect(port.display_pin_label_text_parts).toEqual([
     { text: "A" },
-    { text: "B", overline: true },
+    { text: "B", is_overlined: true },
     { text: "C" },
   ])
 })
 
-test("schematic ports reject empty styled display pin-label runs", () => {
+test("schematic ports reject empty styled display pin-label parts", () => {
   expect(
     schematic_port.safeParse({
       ...baseSchematicPort,
       schematic_port_id: "schematic_port_with_empty_text_runs",
       display_pin_label: "ABC",
-      display_pin_label_text_runs: [],
+      display_pin_label_text_parts: [],
     }).success,
   ).toBe(false)
 })
