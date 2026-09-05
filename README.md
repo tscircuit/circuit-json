@@ -342,6 +342,8 @@ interface SourceComponentBase {
   ftype?: string
   source_component_id: string
   name: string
+  // Opaque, JSON-serializable tool metadata. Prefer namespaced keys.
+  metadata?: Record<string, unknown>
   manufacturer_part_number?: string
   supplier_part_numbers?: Partial<Record<SupplierName, string[]>>
   display_value?: string
