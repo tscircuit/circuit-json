@@ -40,3 +40,24 @@ test("any_circuit_element includes schematic_text with source_trace_id", () => {
 
   expect(text.source_trace_id).toBe("source_trace_2")
 })
+
+test("schematic_text supports optional display superscripts for inline net labels", () => {
+  const input = {
+    type: "schematic_text",
+    schematic_text_id: "schematic_text_inline_gnd",
+    source_trace_id: "source_trace_gnd",
+    text: "GND",
+    position: { x: 1, y: 2 },
+  }
+  for (const suffix of [undefined, "", "1", "12", "A"]) {
+    const text = schematic_text.parse({ ...input, display_superscript: suffix })
+    if (suffix === undefined) expect(text.display_superscript).toBeUndefined()
+    else expect(text.display_superscript).toBe(suffix)
+    expect(text.text).toBe("GND")
+    expect(text.source_trace_id).toBe("source_trace_gnd")
+    expect(any_circuit_element.parse(text)).toEqual(text)
+  }
+  expect(
+    schematic_text.safeParse({ ...input, display_superscript: 1 }).success,
+  ).toBe(false)
+})

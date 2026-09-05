@@ -3527,6 +3527,8 @@ interface SchematicText {
   schematic_symbol_id?: string
   schematic_text_id: string
   text: string
+  /** Display-only superscript suffix, e.g. "1" in GND¹ for an inline net label. */
+  display_superscript?: string
   font_size: number
   position: {
     x: number
