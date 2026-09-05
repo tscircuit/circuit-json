@@ -53,6 +53,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceComponentInternalConnection](#sourcecomponentinternalconnection)
     - [SourceComponentMisconfiguredError](#sourcecomponentmisconfigurederror)
     - [SourceComponentPinsUnderspecifiedWarning](#sourcecomponentpinsunderspecifiedwarning)
+    - [SourceConfusingNetNameWarning](#sourceconfusingnetnamewarning)
     - [SourceFailedToCreateComponentError](#sourcefailedtocreatecomponenterror)
     - [SourceGroup](#sourcegroup)
     - [SourceI2cMisconfiguredError](#sourcei2cmisconfigurederror)
@@ -398,6 +399,25 @@ interface SourceComponentPinsUnderspecifiedWarning {
   message: string
   source_component_id: string
   source_port_ids: string[]
+  subcircuit_id?: string
+}
+```
+
+### SourceConfusingNetNameWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_confusing_net_name_warning.ts)
+
+Warning emitted when electrically disconnected source nets share a name
+
+```typescript
+/** Warning emitted when electrically disconnected source nets share a name */
+interface SourceConfusingNetNameWarning {
+  type: "source_confusing_net_name_warning"
+  source_confusing_net_name_warning_id: string
+  warning_type: "source_confusing_net_name_warning"
+  message: string
+  source_net_ids: string[]
+  net_name: string
   subcircuit_id?: string
 }
 ```
