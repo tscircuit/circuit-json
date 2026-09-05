@@ -3340,6 +3340,8 @@ interface SchematicNetLabel {
   anchor_position?: Point | undefined
   anchor_side: "top" | "bottom" | "left" | "right"
   text: string
+  /** Display-only superscript suffix, e.g. "1" in GND¹. Does not change net identity. */
+  display_superscript?: string
   symbol_name?: string | undefined
   /** When true the net label can be repositioned. When false the label's
    * position is fixed by the element it is attached to. */
