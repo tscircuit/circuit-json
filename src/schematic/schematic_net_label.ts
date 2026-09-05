@@ -14,6 +14,8 @@ export interface SchematicNetLabel {
   anchor_position?: Point | undefined
   anchor_side: "top" | "bottom" | "left" | "right"
   text: string
+  /** Display-only superscript suffix, e.g. "1" in GND¹. Does not change net identity. */
+  display_superscript?: string
   symbol_name?: string | undefined
   /**
    * When true the net label can be repositioned. When false the label's
@@ -34,6 +36,7 @@ export const schematic_net_label = z.object({
   anchor_position: point.optional(),
   anchor_side: z.enum(["top", "bottom", "left", "right"]),
   text: z.string(),
+  display_superscript: z.string().optional(),
   symbol_name: z.string().optional(),
   is_movable: z.boolean().optional(),
   subcircuit_id: z.string().optional(),
