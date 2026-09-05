@@ -4100,3 +4100,18 @@ interface SimulationAcVoltageSource {
 ```
 
 <!-- circuit-json-docs:end -->
+
+### Autorouting phase attribution
+
+DRC errors and `pcb_trace_too_long_warning` can carry optional `autorouting_phase` context:
+
+```ts
+{
+  subcircuit_id: "subcircuit_0",
+  routing_phase_index: 2,
+  name: "fanout",
+  stage_index: 0,
+}
+```
+
+`routing_phase_index` is the zero-based execution-stage index within a subcircuit (matching core autorouting events), not the user-supplied phase index. `stage_index` is the optional zero-based stage within a phase's autorouter pipeline. The context identifies where a diagnostic was observed; it does not imply that this stage introduced the violation. Existing records without context remain valid.
