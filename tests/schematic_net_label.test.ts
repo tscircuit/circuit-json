@@ -37,7 +37,8 @@ test("display_superscript is an optional display-only string", () => {
       ...input,
       display_superscript: suffix,
     })
-    expect(label.display_superscript).toBe(suffix)
+    if (suffix === undefined) expect(label.display_superscript).toBeUndefined()
+    else expect(label.display_superscript).toBe(suffix)
     expect(label.text).toBe("GND")
     expect(label.source_net_id).toBe("net_gnd")
   }
