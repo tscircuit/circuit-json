@@ -20,6 +20,8 @@ export interface SchematicText {
    */
   source_trace_id?: string
   text: string
+  /** Display-only superscript suffix, e.g. "1" in GND¹ for an inline net label. */
+  display_superscript?: string
   font_size: number
   position: {
     x: number
@@ -39,6 +41,7 @@ export const schematic_text = z.object({
   schematic_text_id: z.string(),
   source_trace_id: z.string().optional(),
   text: z.string(),
+  display_superscript: z.string().optional(),
   font_size: z.number().default(0.18),
   position: z.object({
     x: distance,
