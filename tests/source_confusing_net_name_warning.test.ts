@@ -2,7 +2,7 @@ import { test, expect } from "bun:test"
 import { any_circuit_element, source_confusing_net_name_warning } from "../src"
 
 const input = {
-  type: "source_confusing_net_name_warning",
+  type: "source_confusing_net_name_warning" as const,
   message: "Disconnected nets share the name GND",
   net_name: "GND",
   source_net_ids: ["net_a", "net_b"],
