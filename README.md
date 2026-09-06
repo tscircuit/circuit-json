@@ -108,6 +108,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
   - [CAD Components](#cad-components)
     - [CadComponent](#cadcomponent)
   - [PCB Elements](#pcb-elements)
+    - [PcbAutorouterWarning](#pcbautorouterwarning)
     - [PcbAutoroutingError](#pcbautoroutingerror)
     - [PcbBoard](#pcbboard)
     - [PcbBreakoutPoint](#pcbbreakoutpoint)
@@ -1340,6 +1341,28 @@ interface CadComponent {
 ```
 
 ## PCB Elements
+
+### PcbAutorouterWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_autorouter_warning.ts)
+
+Non-fatal diagnostic emitted by an autorouter
+
+```typescript
+/** Non-fatal diagnostic emitted by an autorouter */
+interface PcbAutorouterWarning {
+  type: "pcb_autorouter_warning"
+  pcb_autorouter_warning_id: string
+  warning_type: "pcb_autorouter_warning"
+  message: string
+  /** The autorouter's connection name, when the diagnostic concerns one connection */
+  connection_name?: string
+  pcb_port_ids?: string[]
+  /** Board coordinates in millimeters, with positive X right and positive Y up */
+  center?: Point
+  subcircuit_id?: string
+}
+```
 
 ### PcbAutoroutingError
 
