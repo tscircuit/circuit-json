@@ -1523,6 +1523,20 @@ interface PcbCopperPourRect {
   type: "pcb_copper_pour"
   pcb_copper_pour_id: string
   covered_with_solder_mask: boolean
+  /** Effective pour-to-pour clearance in millimeters. */
+  clearance?: Length
+  /** Effective clearance from pads in millimeters. */
+  pad_margin?: Length
+  /** Effective clearance from traces in millimeters. */
+  trace_margin?: Length
+  /** Effective clearance from the board edge in millimeters. */
+  board_edge_margin?: Length
+  /** Effective clearance from board cutouts in millimeters. */
+  cutout_margin?: Length
+  /** Whether the pour connects to same-net pads through thermal reliefs. */
+  use_thermal_reliefs?: boolean
+  /** Width of thermal relief spokes in millimeters, when enabled. */
+  thermal_relief_spoke_width?: Length
   pcb_group_id?: string
   subcircuit_id?: string
   layer: LayerRef
