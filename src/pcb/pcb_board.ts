@@ -48,7 +48,7 @@ export const pcb_board = z
       ),
     outline: z.array(point).optional(),
     shape: z.enum(["rect", "polygon"]).optional(),
-    material: z.enum(["fr4", "fr1"]).default("fr4"),
+    material: z.enum(["fr4", "fr1", "flex"]).default("fr4"),
     solder_mask_color: z.string().optional(),
     silkscreen_color: z.string().optional(),
     anchor_position: point.optional(),
@@ -81,7 +81,7 @@ export interface PcbBoard extends ManufacturingDrcProperties {
   center: Point
   outline?: Point[]
   shape?: "rect" | "polygon"
-  material: "fr4" | "fr1"
+  material: "fr4" | "fr1" | "flex"
   solder_mask_color?: string
   silkscreen_color?: string
   anchor_position?: Point
