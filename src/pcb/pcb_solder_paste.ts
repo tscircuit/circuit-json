@@ -57,7 +57,7 @@ const pcb_solder_paste_rotated_rect = z.object({
   y: distance,
   width: z.number(),
   height: z.number(),
-  ccw_rotation: distance,
+  ccw_rotation: rotation,
   layer: layer_ref,
   pcb_component_id: z.string().optional(),
   pcb_smtpad_id: z.string().optional(),
@@ -183,7 +183,7 @@ export interface PcbSolderPasteRotatedRect {
   y: Distance
   width: number
   height: number
-  ccw_rotation: Distance
+  ccw_rotation: Rotation
   layer: LayerRef
   pcb_component_id?: string
   pcb_smtpad_id?: string
