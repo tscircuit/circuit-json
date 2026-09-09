@@ -5,6 +5,7 @@ import { ninePointAnchor } from "src/common/NinePointAnchor"
 import type { NinePointAnchor } from "src/common/NinePointAnchor"
 import type { FivePointAnchor } from "src/common/FivePointAnchor"
 import { fivePointAnchor } from "src/common/FivePointAnchor"
+import type { SchematicTextPart } from "./schematic_port"
 
 export interface SchematicText {
   type: "schematic_text"
@@ -20,6 +21,8 @@ export interface SchematicText {
    */
   source_trace_id?: string
   text: string
+  /** Ordered display parts; text remains the plain-text fallback. */
+  text_parts?: SchematicTextPart[]
   /** Display-only superscript suffix, e.g. "1" in GND¹ for an inline net label. */
   display_superscript?: string
   font_size: number
@@ -41,6 +44,15 @@ export const schematic_text = z.object({
   schematic_text_id: z.string(),
   source_trace_id: z.string().optional(),
   text: z.string(),
+  text_parts: z
+    .array(
+      z.object({
+        text: z.string(),
+        is_overlined: z.boolean().optional(),
+      }),
+    )
+    .min(1)
+    .optional(),
   display_superscript: z.string().optional(),
   font_size: z.number().default(0.18),
   position: z.object({
