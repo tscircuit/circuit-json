@@ -1,7 +1,7 @@
 import { z } from "zod"
 import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
 import { visible_layer, type VisibleLayer } from "src/pcb/properties/layer_ref"
-import { distance, type Length } from "src/units"
+import { distance, rotation, type Length, type Rotation } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const pcb_note_text = z
@@ -22,6 +22,7 @@ export const pcb_note_text = z
     layer: visible_layer.default("top"),
     is_mirrored_from_top_view: z.boolean().optional(),
     color: z.string().optional(),
+    ccw_rotation: rotation.default(0),
   })
   .describe("Defines a documentation note in text on the PCB")
 
@@ -51,6 +52,7 @@ export interface PcbNoteText {
   layer: VisibleLayer
   is_mirrored_from_top_view?: boolean
   color?: string
+  ccw_rotation: Rotation
 }
 
 expectTypesMatch<PcbNoteText, InferredPcbNoteText>(true)
