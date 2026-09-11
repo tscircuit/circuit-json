@@ -139,6 +139,39 @@ test("pcb_board with anchor properties", () => {
   expect(board.display_offset_y).toBe("10mm")
 })
 
+test("pcb_board accepts flex material used by BoardProps", () => {
+  expect(() =>
+    pcb_board.parse({
+      type: "pcb_board",
+      width: "10mm",
+      height: "20mm",
+      center: { x: 0, y: 0 },
+      material: "flex",
+    }),
+  ).not.toThrow()
+
+  const board = pcb_board.parse({
+    type: "pcb_board",
+    width: "10mm",
+    height: "20mm",
+    center: { x: 0, y: 0 },
+    material: "flex",
+  })
+  expect(board.material).toBe("flex")
+})
+
+test("pcb_board still rejects unknown materials", () => {
+  expect(() =>
+    pcb_board.parse({
+      type: "pcb_board",
+      width: "10mm",
+      height: "20mm",
+      center: { x: 0, y: 0 },
+      material: "aluminum",
+    }),
+  ).toThrow()
+})
+
 test("pcb_board with manufacturing drc properties", () => {
   const board = pcb_board.parse({
     type: "pcb_board",
