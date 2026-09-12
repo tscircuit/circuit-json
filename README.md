@@ -190,6 +190,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicLayoutError](#schematiclayouterror)
     - [SchematicLine](#schematicline)
     - [SchematicManualEditConflictWarning](#schematicmanualeditconflictwarning)
+    - [SchematicMissingSheetWarning](#schematicmissingsheetwarning)
     - [SchematicNetLabel](#schematicnetlabel)
     - [SchematicPath](#schematicpath)
     - [SchematicPort](#schematicport)
@@ -3326,6 +3327,22 @@ interface SchematicManualEditConflictWarning {
   schematic_group_id?: string
   subcircuit_id?: string
   source_component_id: string
+}
+```
+
+### SchematicMissingSheetWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_missing_sheet_warning.ts)
+
+Circuit-wide warning that a schematic has no sheet; has no component target.
+
+```typescript
+/** Circuit-wide warning that a schematic has no sheet; has no component target. */
+interface SchematicMissingSheetWarning {
+  type: "schematic_missing_sheet_warning"
+  schematic_missing_sheet_warning_id: string
+  warning_type: "schematic_missing_sheet_warning"
+  message: string
 }
 ```
 
