@@ -108,7 +108,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
   - [CAD Components](#cad-components)
     - [CadComponent](#cadcomponent)
   - [PCB Elements](#pcb-elements)
-    - [FabricatorExtraChargeWarning](#fabricatorextrachargewarning)
+    - [PcbFabricatorExtraChargeWarning](#pcbfabricatorextrachargewarning)
     - [PcbAutoroutingError](#pcbautoroutingerror)
     - [PcbBoard](#pcbboard)
     - [PcbBreakoutPoint](#pcbbreakoutpoint)
@@ -1343,9 +1343,9 @@ interface CadComponent {
 
 ## PCB Elements
 
-### FabricatorExtraChargeWarning
+### PcbFabricatorExtraChargeWarning
 
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/fabricator_extra_charge_warning.ts)
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_fabricator_extra_charge_warning.ts)
 
 Records an extra charge for the selected fabricator preset. An intended trigger
 is a via hole diameter strictly below 0.3 mm with `jlcpcb_economy`,
@@ -1354,10 +1354,10 @@ A diameter of exactly 0.3 mm does not meet this condition. The producer detects
 the condition and emits this record; parsing Circuit JSON does not run the check.
 
 ```typescript
-interface FabricatorExtraChargeWarning {
-  type: "fabricator_extra_charge_warning"
-  fabricator_extra_charge_warning_id: string
-  warning_type: "fabricator_extra_charge_warning"
+interface PcbFabricatorExtraChargeWarning {
+  type: "pcb_fabricator_extra_charge_warning"
+  pcb_fabricator_extra_charge_warning_id: string
+  warning_type: "pcb_fabricator_extra_charge_warning"
   message: string
   fabricator_preset: string
   pcb_board_id?: string
@@ -1370,7 +1370,7 @@ The ID and `warning_type` are generated when omitted from input. For example:
 
 ```json
 {
-  "type": "fabricator_extra_charge_warning",
+  "type": "pcb_fabricator_extra_charge_warning",
   "fabricator_preset": "jlcpcb_economy",
   "message": "Via hole diameter 0.25 mm is below 0.3 mm and incurs an extra charge",
   "pcb_board_id": "pcb_board_0",

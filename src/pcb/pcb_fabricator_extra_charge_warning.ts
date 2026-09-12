@@ -2,15 +2,15 @@ import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-export const fabricator_extra_charge_warning = z
+export const pcb_fabricator_extra_charge_warning = z
   .object({
-    type: z.literal("fabricator_extra_charge_warning"),
-    fabricator_extra_charge_warning_id: getZodPrefixedIdWithDefault(
-      "fabricator_extra_charge_warning",
+    type: z.literal("pcb_fabricator_extra_charge_warning"),
+    pcb_fabricator_extra_charge_warning_id: getZodPrefixedIdWithDefault(
+      "pcb_fabricator_extra_charge_warning",
     ),
     warning_type: z
-      .literal("fabricator_extra_charge_warning")
-      .default("fabricator_extra_charge_warning"),
+      .literal("pcb_fabricator_extra_charge_warning")
+      .default("pcb_fabricator_extra_charge_warning"),
     message: z.string(),
     fabricator_preset: z.string(),
     pcb_board_id: z.string().optional(),
@@ -21,11 +21,11 @@ export const fabricator_extra_charge_warning = z
     "Warning that a design feature incurs an extra charge for the selected fabricator preset, such as via hole diameters below 0.3 mm with JLCPCB economy or standard presets.",
   )
 
-export type FabricatorExtraChargeWarningInput = z.input<
-  typeof fabricator_extra_charge_warning
+export type PcbFabricatorExtraChargeWarningInput = z.input<
+  typeof pcb_fabricator_extra_charge_warning
 >
-type InferredFabricatorExtraChargeWarning = z.infer<
-  typeof fabricator_extra_charge_warning
+type InferredPcbFabricatorExtraChargeWarning = z.infer<
+  typeof pcb_fabricator_extra_charge_warning
 >
 
 /**
@@ -34,10 +34,10 @@ type InferredFabricatorExtraChargeWarning = z.infer<
  * variants), via hole diameters below 0.3 mm are an intended use case.
  * The producer detects the condition; this record describes the warning.
  */
-export interface FabricatorExtraChargeWarning {
-  type: "fabricator_extra_charge_warning"
-  fabricator_extra_charge_warning_id: string
-  warning_type: "fabricator_extra_charge_warning"
+export interface PcbFabricatorExtraChargeWarning {
+  type: "pcb_fabricator_extra_charge_warning"
+  pcb_fabricator_extra_charge_warning_id: string
+  warning_type: "pcb_fabricator_extra_charge_warning"
   message: string
   /** Selected preset, for example jlcpcb_economy or jlcpcb_standard_20260912. */
   fabricator_preset: string
@@ -48,6 +48,6 @@ export interface FabricatorExtraChargeWarning {
 }
 
 expectTypesMatch<
-  FabricatorExtraChargeWarning,
-  InferredFabricatorExtraChargeWarning
+  PcbFabricatorExtraChargeWarning,
+  InferredPcbFabricatorExtraChargeWarning
 >(true)
