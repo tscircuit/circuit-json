@@ -149,6 +149,7 @@ export const any_circuit_element = z.union([
   sch.schematic_manual_edit_conflict_warning,
   sch.schematic_component_overlap_warning,
   sch.schematic_component_styling_warning,
+  sch.schematic_missing_sheet_warning,
   sch.schematic_element_outside_sheet_warning,
   sch.schematic_graphic,
   sch.schematic_group,
