@@ -2922,9 +2922,14 @@ interface PcbVia {
   pcb_trace_id?: string
   net_is_assignable?: boolean
   net_assigned?: boolean
-  is_tented?: boolean
+  tented_on_top?: boolean
+  tented_on_bottom?: boolean
 }
 ```
+
+Legacy `is_tented` input is deprecated and transformed into `tented_on_top` and
+`tented_on_bottom`. Explicit per-side values take precedence. Parsed output omits
+`is_tented`; both per-side fields are optional.
 
 ### PcbViaClearanceError
 
