@@ -25,7 +25,24 @@ export const pcb_via = z
     source_net_id: z.string().min(1).optional(),
     net_is_assignable: z.boolean().optional(),
     net_assigned: z.boolean().optional(),
-    is_tented: z.boolean().optional(),
+    is_tented: z
+      .boolean()
+      .optional()
+      .describe(
+        "Default solder mask coverage for both outer PCB faces. Per-side is_tented_top and is_tented_bottom override it, including explicit false. Omitted leaves coverage unspecified. Tenting does not fill or plug the via.",
+      ),
+    is_tented_top: z
+      .boolean()
+      .optional()
+      .describe(
+        "Solder mask coverage on the top PCB face. Overrides is_tented for this face, including explicit false. Omitted falls back to is_tented; if both are omitted, coverage remains unspecified.",
+      ),
+    is_tented_bottom: z
+      .boolean()
+      .optional()
+      .describe(
+        "Solder mask coverage on the bottom PCB face. Overrides is_tented for this face, including explicit false. Omitted falls back to is_tented; if both are omitted, coverage remains unspecified.",
+      ),
   })
   .describe("Defines a via on the PCB")
 
@@ -55,7 +72,22 @@ export interface PcbVia {
   source_net_id?: string
   net_is_assignable?: boolean
   net_assigned?: boolean
+  /**
+   * Default solder mask coverage for both outer PCB faces. Per-side fields
+   * override it, including explicit false. Omitted leaves coverage unspecified.
+   * Tenting does not fill or plug the via or change its plated drill geometry.
+   */
   is_tented?: boolean
+  /**
+   * Top PCB face coverage. Overrides is_tented, including explicit false.
+   * Omitted falls back to is_tented; if both are omitted, coverage is unspecified.
+   */
+  is_tented_top?: boolean
+  /**
+   * Bottom PCB face coverage. Overrides is_tented, including explicit false.
+   * Omitted falls back to is_tented; if both are omitted, coverage is unspecified.
+   */
+  is_tented_bottom?: boolean
 }
 
 /**

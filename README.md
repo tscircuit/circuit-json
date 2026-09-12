@@ -2920,9 +2920,23 @@ interface PcbVia {
   to_layer?: LayerRef
   layers: LayerRef[]
   pcb_trace_id?: string
+  source_trace_id?: string
+  source_net_id?: string
   net_is_assignable?: boolean
   net_assigned?: boolean
+  /** Default solder mask coverage for both outer PCB faces. Per-side fields
+   * override it, including explicit false. Omitted leaves coverage unspecified.
+   * Tenting does not fill or plug the via or change its plated drill geometry. */
+
   is_tented?: boolean
+  /** Top PCB face coverage. Overrides is_tented, including explicit false.
+   * Omitted falls back to is_tented; if both are omitted, coverage is unspecified. */
+
+  is_tented_top?: boolean
+  /** Bottom PCB face coverage. Overrides is_tented, including explicit false.
+   * Omitted falls back to is_tented; if both are omitted, coverage is unspecified. */
+
+  is_tented_bottom?: boolean
 }
 ```
 
