@@ -45,3 +45,59 @@ test("pcb_via rejects an empty source net id", () => {
     }),
   ).toThrow()
 })
+
+test("pcb_via accepts span-only input and preserves endpoint direction", () => {
+  const input = {
+    type: "pcb_via",
+    x: "1mm",
+    y: "2mm",
+    from_layer: { name: "inner2" },
+    to_layer: "top",
+    is_tented: true,
+  }
+  for (const schema of [pcb_via, any_circuit_element]) {
+    const via = schema.parse(input) as PcbVia
+    expect(via.from_layer).toBe("inner2")
+    expect(via.to_layer).toBe("top")
+    expect(via.x).toBe(1)
+    expect(via.outer_diameter).toBe(0.6)
+    expect(via.is_tented).toBe(true)
+    expect(via).not.toHaveProperty("layers")
+    expect(pcb_via.parse(via)).toEqual(via)
+  }
+})
+
+test("pcb_via normalizes unordered legacy layer references to physical extremes", () => {
+  for (const schema of [pcb_via, any_circuit_element]) {
+    const via = schema.parse({
+      type: "pcb_via",
+      x: 0,
+      y: 0,
+      layers: [{ name: "inner8" }, "inner2", "inner4", "inner2"],
+    }) as PcbVia
+    expect(via.from_layer).toBe("inner2")
+    expect(via.to_layer).toBe("inner8")
+    expect(via).not.toHaveProperty("layers")
+  }
+})
+
+test("pcb_via rejects missing spans and malformed legacy layers", () => {
+  for (const span of [
+    {},
+    { from_layer: "top" },
+    { to_layer: "bottom" },
+    { layers: [] },
+    { layers: ["top"] },
+    { layers: ["top", "top"] },
+    { layers: ["top", "inner9"] },
+    { from_layer: "top", to_layer: "bottom", layers: [] },
+    { from_layer: "top", to_layer: "bottom", layers: "top,bottom" },
+    { from_layer: "top", to_layer: "bottom", layers: null },
+  ]) {
+    for (const schema of [pcb_via, any_circuit_element]) {
+      expect(
+        schema.safeParse({ type: "pcb_via", x: 0, y: 0, ...span }).success,
+      ).toBe(false)
+    }
+  }
+})

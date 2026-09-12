@@ -2902,6 +2902,11 @@ interface PcbTraceWarning {
 
 Defines a via on the PCB
 
+Legacy `layers` arrays are accepted on input and converted to physical span
+endpoints in stack order. When both representations are supplied, `layers` takes
+precedence. Parsed output contains no `layers` property. Trace-route via
+endpoints continue to describe the logical signal transition.
+
 ```typescript
 /** Defines a via on the PCB */
 interface PcbVia {
@@ -2914,11 +2919,10 @@ interface PcbVia {
   y: Distance
   outer_diameter: Distance
   hole_diameter: Distance
-  /** @deprecated */
-  from_layer?: LayerRef
-  /** @deprecated */
-  to_layer?: LayerRef
-  layers: LayerRef[]
+  /** First copper layer of the physical via span. */
+  from_layer: LayerRef
+  /** Last copper layer of the physical via span, inclusive. */
+  to_layer: LayerRef
   pcb_trace_id?: string
   net_is_assignable?: boolean
   net_assigned?: boolean

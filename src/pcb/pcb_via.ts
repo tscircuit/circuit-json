@@ -2,9 +2,10 @@ import { z } from "zod"
 import { distance, type Distance } from "src/units"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
+import { getPcbViaSpanFromLayers } from "src/utils/pcb-via-span"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-export const pcb_via = z
+const pcb_via_with_span = z
   .object({
     type: z.literal("pcb_via"),
     pcb_via_id: getZodPrefixedIdWithDefault("pcb_via"),
@@ -15,11 +16,10 @@ export const pcb_via = z
     y: distance,
     outer_diameter: distance.default("0.6mm"),
     hole_diameter: distance.default("0.25mm"),
-    /** @deprecated */
-    from_layer: layer_ref.optional(),
-    /** @deprecated */
-    to_layer: layer_ref.optional(),
-    layers: z.array(layer_ref),
+    /** First copper layer of the physical via span. */
+    from_layer: layer_ref,
+    /** Last copper layer of the physical via span (inclusive). */
+    to_layer: layer_ref,
     pcb_trace_id: z.string().optional(),
     source_trace_id: z.string().optional(),
     source_net_id: z.string().min(1).optional(),
@@ -28,6 +28,29 @@ export const pcb_via = z
     is_tented: z.boolean().optional(),
   })
   .describe("Defines a via on the PCB")
+
+/** Accept legacy physical layers on input, but emit only span endpoints. */
+export const pcb_via = pcb_via_with_span
+  .extend({
+    from_layer: layer_ref.optional(),
+    to_layer: layer_ref.optional(),
+    layers: z
+      .array(layer_ref)
+      .refine(
+        (layers) => new Set(layers).size >= 2,
+        "A via span requires at least two distinct copper layers",
+      )
+      .optional(),
+  })
+  .transform(({ layers, ...via }) => {
+    if (layers === undefined) return via
+    // No board context is available here. The complete supported stack orders
+    // endpoints without adding intermediate layers. Legacy physical layers take
+    // precedence over deprecated endpoints, which may be logical transitions.
+    return { ...via, ...getPcbViaSpanFromLayers(layers, 10) }
+  })
+  .pipe(pcb_via_with_span)
+  .describe("Defines a via on the PCB with an inclusive physical layer span")
 
 export type PcbViaInput = z.input<typeof pcb_via>
 type InferredPcbVia = z.infer<typeof pcb_via>
@@ -45,11 +68,10 @@ export interface PcbVia {
   y: Distance
   outer_diameter: Distance
   hole_diameter: Distance
-  /** @deprecated */
-  from_layer?: LayerRef
-  /** @deprecated */
-  to_layer?: LayerRef
-  layers: LayerRef[]
+  /** First copper layer of the physical via span. */
+  from_layer: LayerRef
+  /** Last copper layer of the physical via span (inclusive). */
+  to_layer: LayerRef
   pcb_trace_id?: string
   source_trace_id?: string
   source_net_id?: string

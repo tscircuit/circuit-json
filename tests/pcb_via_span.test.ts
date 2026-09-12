@@ -5,10 +5,11 @@ import {
   getPcbViaSpanLayers,
   type LayerRef,
   type PcbVia,
+  type PcbViaInput,
 } from "../src"
 
-test("physical span does not use the legacy logical transition or change JSON", () => {
-  const input: PcbVia = {
+test("legacy physical layers override logical endpoints without mutating input", () => {
+  const input = {
     type: "pcb_via",
     pcb_via_id: "pcb_via_1",
     x: 1,
@@ -22,13 +23,15 @@ test("physical span does not use the legacy logical transition or change JSON", 
     pcb_trace_id: "pcb_trace_1",
     source_trace_id: "source_trace_1",
     subcircuit_connectivity_map_key: "connected_net_1",
-  }
+  } satisfies PcbViaInput
   const before = JSON.stringify(input)
   const via = any_circuit_element.parse(input) as PcbVia
-  const span = getPcbViaSpanFromLayers(via.layers, 4)
+  const span = { from_layer: via.from_layer, to_layer: via.to_layer }
   expect(span).toEqual({ from_layer: "top", to_layer: "bottom" })
   expect(getPcbViaSpanLayers(span, 4)).toEqual(input.layers)
-  expect(via).toEqual(input)
+  const { layers, ...rest } = input
+  expect(via).toEqual({ ...rest, from_layer: "top", to_layer: "bottom" })
+  expect(via).not.toHaveProperty("layers")
   expect(JSON.stringify(input)).toBe(before)
 })
 
