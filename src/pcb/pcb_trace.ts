@@ -24,6 +24,18 @@ export const pcb_trace_route_point_via = z.object({
   is_inside_copper_pour: z.boolean().optional(),
   hole_diameter: distance.optional(),
   outer_diameter: distance.optional(),
+  tented_on_top: z
+    .boolean()
+    .optional()
+    .describe(
+      "Top PCB face tenting override. Omitted inherits pcb_board.default_via_tented_on_top; without a board default, remains unspecified. Explicit false keeps the face exposed.",
+    ),
+  tented_on_bottom: z
+    .boolean()
+    .optional()
+    .describe(
+      "Bottom PCB face tenting override. Omitted inherits pcb_board.default_via_tented_on_bottom; without a board default, remains unspecified. Explicit false keeps the face exposed.",
+    ),
   from_layer: layer_ref,
   to_layer: layer_ref,
 })
@@ -89,6 +101,10 @@ export interface PcbTraceRoutePointVia {
   is_inside_copper_pour?: boolean
   hole_diameter?: Distance
   outer_diameter?: Distance
+  /** Top PCB face tenting override; omitted inherits the board default when available. */
+  tented_on_top?: boolean
+  /** Bottom PCB face tenting override; omitted inherits the board default when available. */
+  tented_on_bottom?: boolean
   from_layer: LayerRef
   to_layer: LayerRef
 }

@@ -1409,6 +1409,10 @@ interface PcbBoard extends ManufacturingDrcProperties {
   subcircuit_id?: string
   is_mounted_to_carrier_board?: boolean
   is_via_in_pad_allowed?: boolean
+  /** Default top-face tenting for standalone and trace-route vias without an explicit override. */
+  default_via_tented_on_top?: boolean
+  /** Default bottom-face tenting for standalone and trace-route vias without an explicit override. */
+  default_via_tented_on_bottom?: boolean
   width?: Length
   height?: Length
   display_offset_x?: string
@@ -1428,6 +1432,18 @@ interface PcbBoard extends ManufacturingDrcProperties {
   position_mode?: "relative_to_panel_anchor" | "none"
 }
 ```
+
+`default_via_tented_on_top` and `default_via_tented_on_bottom` apply to both
+[`pcb_via`](#pcbvia) elements and [`pcb_trace.route`](#pcbtrace) via points
+belonging to this board. Each face inherits independently: an explicit via value
+overrides the corresponding board default, including `false` for an exposed face.
+An omitted via value inherits the board default; if that default is also omitted,
+the face's tenting remains unspecified.
+
+For example, a board with `default_via_tented_on_top: true` tents the top face of
+vias that omit `tented_on_top`. A via with `tented_on_top: false` stays exposed on
+top. Consumers resolve these defaults when interpreting the circuit; parsing does
+not copy board defaults onto individual vias.
 
 ### PcbBreakoutPoint
 
@@ -2535,7 +2551,6 @@ interface PcbPreflightRoutingError extends BaseCircuitJsonError {
 }
 ```
 
-
 ### PcbRouteHints
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/properties/pcb_route_hints.ts)
@@ -2826,11 +2841,33 @@ interface PcbTraceRoutePointWire {
   layer: LayerRef
 }
 
+interface PcbTraceRoutePointVia {
+  route_type: "via"
+  x: Distance
+  y: Distance
+  copper_pour_id?: string
+  is_inside_copper_pour?: boolean
+  hole_diameter?: Distance
+  outer_diameter?: Distance
+  /** Top PCB face tenting override; omitted inherits the board default when available. */
+  tented_on_top?: boolean
+  /** Bottom PCB face tenting override; omitted inherits the board default when available. */
+  tented_on_bottom?: boolean
+  from_layer: LayerRef
+  to_layer: LayerRef
+}
+
 type PcbTraceRoutePoint =
   | PcbTraceRoutePointWire
   | PcbTraceRoutePointVia
   | PcbTraceRoutePointThroughPad
 ```
+
+Route via points use the same [board tenting inheritance](#pcbboard) as `pcb_via`.
+Without a `pcb_board`, explicit `tented_on_top` and `tented_on_bottom` values still
+apply, and omitted values remain unspecified. `true` means solder mask covers
+that PCB face of the via; `false` leaves it exposed. These are physical PCB faces,
+independent of the route's `from_layer`/`to_layer` order.
 
 ### PcbTraceError
 
@@ -2983,7 +3020,9 @@ interface PcbVia {
   pcb_trace_id?: string
   net_is_assignable?: boolean
   net_assigned?: boolean
+  /** Top PCB face tenting override; omitted inherits the board default when available. */
   tented_on_top?: boolean
+  /** Bottom PCB face tenting override; omitted inherits the board default when available. */
   tented_on_bottom?: boolean
 }
 ```
@@ -2991,6 +3030,11 @@ interface PcbVia {
 Legacy `is_tented` input is deprecated and transformed into `tented_on_top` and
 `tented_on_bottom`. Explicit per-side values take precedence. Parsed output omits
 `is_tented`; both per-side fields are optional.
+
+After legacy migration, any omitted face follows the [board tenting default](#pcbboard).
+Without a board default, it remains unspecified. Explicit values, including
+`false`, take precedence over the board default. Tenting describes solder mask
+coverage and does not fill or plug the via.
 
 ### PcbViaClearanceError
 
