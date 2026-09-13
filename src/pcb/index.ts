@@ -62,6 +62,7 @@ export * from "./pcb_manual_edit_conflict_warning"
 export * from "./pcb_connector_not_in_accessible_orientation_warning"
 export * from "./pcb_component_missing_courtyard_warning"
 export * from "./supplier_footprint_mismatch_warning"
+export * from "./pcb_fabricator_extra_charge_warning"
 export * from "./pcb_breakout_point"
 export * from "./pcb_ground_plane"
 export * from "./pcb_ground_plane_region"
@@ -109,6 +110,7 @@ import type { PcbManualEditConflictWarning } from "./pcb_manual_edit_conflict_wa
 import type { PcbConnectorNotInAccessibleOrientationWarning } from "./pcb_connector_not_in_accessible_orientation_warning"
 import type { PcbComponentMissingCourtyardWarning } from "./pcb_component_missing_courtyard_warning"
 import type { SupplierFootprintMismatchWarning } from "./supplier_footprint_mismatch_warning"
+import type { PcbFabricatorExtraChargeWarning } from "./pcb_fabricator_extra_charge_warning"
 import type { PcbTraceHint } from "./pcb_trace_hint"
 import type { PcbSilkscreenLine } from "./pcb_silkscreen_line"
 import type { PcbSilkscreenPath } from "./pcb_silkscreen_path"
@@ -170,6 +172,7 @@ export type PcbCircuitElement =
   | PcbConnectorNotInAccessibleOrientationWarning
   | PcbComponentMissingCourtyardWarning
   | SupplierFootprintMismatchWarning
+  | PcbFabricatorExtraChargeWarning
   | PcbPortNotMatchedError
   | PcbPortNotConnectedError
   | PcbVia
