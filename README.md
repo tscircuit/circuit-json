@@ -1409,9 +1409,7 @@ interface PcbBoard extends ManufacturingDrcProperties {
   subcircuit_id?: string
   is_mounted_to_carrier_board?: boolean
   is_via_in_pad_allowed?: boolean
-  /** Default top-face tenting for standalone and trace-route vias without an explicit override. */
   default_via_tented_on_top?: boolean
-  /** Default bottom-face tenting for standalone and trace-route vias without an explicit override. */
   default_via_tented_on_bottom?: boolean
   width?: Length
   height?: Length
@@ -2849,9 +2847,7 @@ interface PcbTraceRoutePointVia {
   is_inside_copper_pour?: boolean
   hole_diameter?: Distance
   outer_diameter?: Distance
-  /** Top PCB face tenting override; omitted inherits the board default when available. */
   tented_on_top?: boolean
-  /** Bottom PCB face tenting override; omitted inherits the board default when available. */
   tented_on_bottom?: boolean
   from_layer: LayerRef
   to_layer: LayerRef
@@ -3020,9 +3016,7 @@ interface PcbVia {
   pcb_trace_id?: string
   net_is_assignable?: boolean
   net_assigned?: boolean
-  /** Top PCB face tenting override; omitted inherits the board default when available. */
   tented_on_top?: boolean
-  /** Bottom PCB face tenting override; omitted inherits the board default when available. */
   tented_on_bottom?: boolean
 }
 ```

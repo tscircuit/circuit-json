@@ -23,18 +23,8 @@ export const pcb_board = z
     subcircuit_id: z.string().optional(),
     is_mounted_to_carrier_board: z.boolean().optional(),
     is_via_in_pad_allowed: z.boolean().optional(),
-    default_via_tented_on_top: z
-      .boolean()
-      .optional()
-      .describe(
-        "Default top-face tenting for pcb_via and pcb_trace.route vias on this board. Explicit via values, including false, override it. Omitted leaves the default unspecified.",
-      ),
-    default_via_tented_on_bottom: z
-      .boolean()
-      .optional()
-      .describe(
-        "Default bottom-face tenting for pcb_via and pcb_trace.route vias on this board. Explicit via values, including false, override it. Omitted leaves the default unspecified.",
-      ),
+    default_via_tented_on_top: z.boolean().optional(),
+    default_via_tented_on_bottom: z.boolean().optional(),
     width: length.optional(),
     height: length.optional(),
     center: point,
@@ -82,9 +72,7 @@ export interface PcbBoard extends ManufacturingDrcProperties {
   subcircuit_id?: string
   is_mounted_to_carrier_board?: boolean
   is_via_in_pad_allowed?: boolean
-  /** Default top-face tenting for standalone and trace-route vias without an explicit override. */
   default_via_tented_on_top?: boolean
-  /** Default bottom-face tenting for standalone and trace-route vias without an explicit override. */
   default_via_tented_on_bottom?: boolean
   width?: Length
   height?: Length

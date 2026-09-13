@@ -27,18 +27,8 @@ export const pcb_via = z
     net_assigned: z.boolean().optional(),
     /** @deprecated Use tented_on_top and tented_on_bottom instead. */
     is_tented: z.boolean().optional(),
-    tented_on_top: z
-      .boolean()
-      .optional()
-      .describe(
-        "Top PCB face tenting override. Omitted inherits pcb_board.default_via_tented_on_top; without a board default, remains unspecified. Explicit false keeps the face exposed.",
-      ),
-    tented_on_bottom: z
-      .boolean()
-      .optional()
-      .describe(
-        "Bottom PCB face tenting override. Omitted inherits pcb_board.default_via_tented_on_bottom; without a board default, remains unspecified. Explicit false keeps the face exposed.",
-      ),
+    tented_on_top: z.boolean().optional(),
+    tented_on_bottom: z.boolean().optional(),
   })
   .transform(({ is_tented, ...via }) => {
     if (is_tented !== undefined) {
@@ -75,9 +65,7 @@ export interface PcbVia {
   source_net_id?: string
   net_is_assignable?: boolean
   net_assigned?: boolean
-  /** Top PCB face tenting override; omitted inherits the board default when available. */
   tented_on_top?: boolean
-  /** Bottom PCB face tenting override; omitted inherits the board default when available. */
   tented_on_bottom?: boolean
 }
 
