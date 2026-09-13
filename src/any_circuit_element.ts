@@ -115,6 +115,7 @@ export const any_circuit_element = z.union([
   pcb.pcb_note_line,
   pcb.pcb_note_dimension,
   pcb.pcb_autorouting_error,
+  pcb.pcb_preflight_routing_error,
   pcb.pcb_footprint_overlap_error,
   pcb.pcb_courtyard_overlap_error,
   pcb.pcb_breakout_point,
