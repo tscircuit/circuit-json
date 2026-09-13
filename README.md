@@ -154,6 +154,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbPort](#pcbport)
     - [PcbPortNotConnectedError](#pcbportnotconnectederror)
     - [PcbPortNotMatchedError](#pcbportnotmatchederror)
+    - [PcbPreflightRoutingError](#pcbpreflightroutingerror)
     - [PcbRouteHints](#pcbroutehints)
     - [PcbSilkscreenCircle](#pcbsilkscreencircle)
     - [PcbSilkscreenGraphic](#pcbsilkscreengraphic)
@@ -2511,6 +2512,29 @@ interface PcbPortNotMatchedError extends BaseCircuitJsonError {
   subcircuit_id?: string
 }
 ```
+
+### PcbPreflightRoutingError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_preflight_routing_error.ts)
+
+```typescript
+interface PcbPreflightRoutingError extends BaseCircuitJsonError {
+  type: "pcb_preflight_routing_error"
+  pcb_preflight_routing_error_id: string
+  error_type: "pcb_preflight_routing_error"
+  error_code: string
+  subcircuit_id?: string
+  pcb_group_id?: string
+  routing_phase_index?: number
+  phase_name?: string
+  source_trace_ids?: string[]
+  pcb_component_ids?: string[]
+  pcb_port_ids?: string[]
+  related_error_ids?: string[]
+  measurements?: Record<string, number>
+}
+```
+
 
 ### PcbRouteHints
 
