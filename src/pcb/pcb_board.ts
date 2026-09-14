@@ -23,6 +23,8 @@ export const pcb_board = z
     subcircuit_id: z.string().optional(),
     is_mounted_to_carrier_board: z.boolean().optional(),
     is_via_in_pad_allowed: z.boolean().optional(),
+    default_via_tented_on_top: z.boolean().optional(),
+    default_via_tented_on_bottom: z.boolean().optional(),
     width: length.optional(),
     height: length.optional(),
     center: point,
@@ -70,6 +72,8 @@ export interface PcbBoard extends ManufacturingDrcProperties {
   subcircuit_id?: string
   is_mounted_to_carrier_board?: boolean
   is_via_in_pad_allowed?: boolean
+  default_via_tented_on_top?: boolean
+  default_via_tented_on_bottom?: boolean
   width?: Length
   height?: Length
   display_offset_x?: string

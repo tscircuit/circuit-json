@@ -24,6 +24,8 @@ export const pcb_trace_route_point_via = z.object({
   is_inside_copper_pour: z.boolean().optional(),
   hole_diameter: distance.optional(),
   outer_diameter: distance.optional(),
+  tented_on_top: z.boolean().optional(),
+  tented_on_bottom: z.boolean().optional(),
   from_layer: layer_ref,
   to_layer: layer_ref,
 })
@@ -89,6 +91,8 @@ export interface PcbTraceRoutePointVia {
   is_inside_copper_pour?: boolean
   hole_diameter?: Distance
   outer_diameter?: Distance
+  tented_on_top?: boolean
+  tented_on_bottom?: boolean
   from_layer: LayerRef
   to_layer: LayerRef
 }

@@ -1409,6 +1409,8 @@ interface PcbBoard extends ManufacturingDrcProperties {
   subcircuit_id?: string
   is_mounted_to_carrier_board?: boolean
   is_via_in_pad_allowed?: boolean
+  default_via_tented_on_top?: boolean
+  default_via_tented_on_bottom?: boolean
   width?: Length
   height?: Length
   display_offset_x?: string
@@ -2824,6 +2826,20 @@ interface PcbTraceRoutePointWire {
   start_pcb_port_id?: string
   end_pcb_port_id?: string
   layer: LayerRef
+}
+
+interface PcbTraceRoutePointVia {
+  route_type: "via"
+  x: Distance
+  y: Distance
+  copper_pour_id?: string
+  is_inside_copper_pour?: boolean
+  hole_diameter?: Distance
+  outer_diameter?: Distance
+  tented_on_top?: boolean
+  tented_on_bottom?: boolean
+  from_layer: LayerRef
+  to_layer: LayerRef
 }
 
 type PcbTraceRoutePoint =
