@@ -1431,18 +1431,6 @@ interface PcbBoard extends ManufacturingDrcProperties {
 }
 ```
 
-`default_via_tented_on_top` and `default_via_tented_on_bottom` apply to both
-[`pcb_via`](#pcbvia) elements and [`pcb_trace.route`](#pcbtrace) via points
-belonging to this board. Each face inherits independently: an explicit via value
-overrides the corresponding board default, including `false` for an exposed face.
-An omitted via value inherits the board default; if that default is also omitted,
-the face's tenting remains unspecified.
-
-For example, a board with `default_via_tented_on_top: true` tents the top face of
-vias that omit `tented_on_top`. A via with `tented_on_top: false` stays exposed on
-top. Consumers resolve these defaults when interpreting the circuit; parsing does
-not copy board defaults onto individual vias.
-
 ### PcbBreakoutPoint
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_breakout_point.ts)
@@ -2549,6 +2537,7 @@ interface PcbPreflightRoutingError extends BaseCircuitJsonError {
 }
 ```
 
+
 ### PcbRouteHints
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/properties/pcb_route_hints.ts)
@@ -2859,12 +2848,6 @@ type PcbTraceRoutePoint =
   | PcbTraceRoutePointThroughPad
 ```
 
-Route via points use the same [board tenting inheritance](#pcbboard) as `pcb_via`.
-Without a `pcb_board`, explicit `tented_on_top` and `tented_on_bottom` values still
-apply, and omitted values remain unspecified. `true` means solder mask covers
-that PCB face of the via; `false` leaves it exposed. These are physical PCB faces,
-independent of the route's `from_layer`/`to_layer` order.
-
 ### PcbTraceError
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_trace_error.ts)
@@ -3024,11 +3007,6 @@ interface PcbVia {
 Legacy `is_tented` input is deprecated and transformed into `tented_on_top` and
 `tented_on_bottom`. Explicit per-side values take precedence. Parsed output omits
 `is_tented`; both per-side fields are optional.
-
-After legacy migration, any omitted face follows the [board tenting default](#pcbboard).
-Without a board default, it remains unspecified. Explicit values, including
-`false`, take precedence over the board default. Tenting describes solder mask
-coverage and does not fill or plug the via.
 
 ### PcbViaClearanceError
 
