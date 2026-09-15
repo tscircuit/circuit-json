@@ -1,6 +1,53 @@
 import { expect, test } from "bun:test"
-import { pcb_via, type PcbVia } from "../src/pcb/pcb_via"
+import { pcb_via, type PcbVia, type PcbViaInput } from "../src/pcb/pcb_via"
 import { any_circuit_element } from "../src/any_circuit_element"
+
+const baseVia: PcbViaInput = {
+  type: "pcb_via",
+  x: 1,
+  y: 2,
+  layers: ["top", "bottom"],
+}
+
+for (const schema of [pcb_via, any_circuit_element]) {
+  test(`${schema === pcb_via ? "pcb_via" : "any_circuit_element"} migrates legacy tenting and preserves per-side overrides`, () => {
+    for (const legacy of [undefined, false, true]) {
+      for (const top of [undefined, false, true]) {
+        for (const bottom of [undefined, false, true]) {
+          const via = schema.parse({
+            ...baseVia,
+            ...(legacy !== undefined && { is_tented: legacy }),
+            ...(top !== undefined && { tented_on_top: top }),
+            ...(bottom !== undefined && { tented_on_bottom: bottom }),
+          }) as PcbVia
+
+          expect({
+            top: via.tented_on_top,
+            bottom: via.tented_on_bottom,
+          }).toEqual({ top: top ?? legacy, bottom: bottom ?? legacy })
+          expect(via).not.toHaveProperty("is_tented")
+          expect(schema.parse(via)).toEqual(via)
+        }
+      }
+    }
+  })
+}
+
+test("pcb_via leaves omitted tenting fields absent", () => {
+  const via = pcb_via.parse(baseVia)
+  expect(via).not.toHaveProperty("tented_on_top")
+  expect(via).not.toHaveProperty("tented_on_bottom")
+})
+
+test("pcb_via rejects non-boolean tenting fields", () => {
+  for (const field of ["is_tented", "tented_on_top", "tented_on_bottom"]) {
+    for (const value of ["true", 1, null]) {
+      expect(pcb_via.safeParse({ ...baseVia, [field]: value }).success).toBe(
+        false,
+      )
+    }
+  }
+})
 
 test("pcb_via allows source and subcircuit connectivity references", () => {
   const via = pcb_via.parse({

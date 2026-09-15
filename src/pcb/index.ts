@@ -58,10 +58,12 @@ export * from "./external_footprint_load_error"
 export * from "./circuit_json_footprint_load_error"
 export * from "./pcb_group"
 export * from "./pcb_autorouting_error"
+export * from "./pcb_preflight_routing_error"
 export * from "./pcb_manual_edit_conflict_warning"
 export * from "./pcb_connector_not_in_accessible_orientation_warning"
 export * from "./pcb_component_missing_courtyard_warning"
 export * from "./supplier_footprint_mismatch_warning"
+export * from "./pcb_fabricator_extra_charge_warning"
 export * from "./pcb_breakout_point"
 export * from "./pcb_ground_plane"
 export * from "./pcb_ground_plane_region"
@@ -109,6 +111,7 @@ import type { PcbManualEditConflictWarning } from "./pcb_manual_edit_conflict_wa
 import type { PcbConnectorNotInAccessibleOrientationWarning } from "./pcb_connector_not_in_accessible_orientation_warning"
 import type { PcbComponentMissingCourtyardWarning } from "./pcb_component_missing_courtyard_warning"
 import type { SupplierFootprintMismatchWarning } from "./supplier_footprint_mismatch_warning"
+import type { PcbFabricatorExtraChargeWarning } from "./pcb_fabricator_extra_charge_warning"
 import type { PcbTraceHint } from "./pcb_trace_hint"
 import type { PcbSilkscreenLine } from "./pcb_silkscreen_line"
 import type { PcbSilkscreenPath } from "./pcb_silkscreen_path"
@@ -127,6 +130,7 @@ import type { PcbNotePath } from "./pcb_note_path"
 import type { PcbNoteLine } from "./pcb_note_line"
 import type { PcbNoteDimension } from "./pcb_note_dimension"
 import type { PcbAutoroutingError } from "./pcb_autorouting_error"
+import type { PcbPreflightRoutingError } from "./pcb_preflight_routing_error"
 import type { PcbFootprintOverlapError } from "./pcb_footprint_overlap_error"
 import type { PcbCutout } from "./pcb_cutout"
 import type { PcbBreakoutPoint } from "./pcb_breakout_point"
@@ -170,6 +174,7 @@ export type PcbCircuitElement =
   | PcbConnectorNotInAccessibleOrientationWarning
   | PcbComponentMissingCourtyardWarning
   | SupplierFootprintMismatchWarning
+  | PcbFabricatorExtraChargeWarning
   | PcbPortNotMatchedError
   | PcbPortNotConnectedError
   | PcbVia
@@ -197,6 +202,7 @@ export type PcbCircuitElement =
   | PcbNoteLine
   | PcbNoteDimension
   | PcbAutoroutingError
+  | PcbPreflightRoutingError
   | PcbFootprintOverlapError
   | PcbCutout
   | PcbBreakoutPoint

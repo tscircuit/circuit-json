@@ -25,7 +25,17 @@ export const pcb_via = z
     source_net_id: z.string().min(1).optional(),
     net_is_assignable: z.boolean().optional(),
     net_assigned: z.boolean().optional(),
+    /** @deprecated Use tented_on_top and tented_on_bottom instead. */
     is_tented: z.boolean().optional(),
+    tented_on_top: z.boolean().optional(),
+    tented_on_bottom: z.boolean().optional(),
+  })
+  .transform(({ is_tented, ...via }) => {
+    if (is_tented !== undefined) {
+      via.tented_on_top ??= is_tented
+      via.tented_on_bottom ??= is_tented
+    }
+    return via
   })
   .describe("Defines a via on the PCB")
 
@@ -55,7 +65,8 @@ export interface PcbVia {
   source_net_id?: string
   net_is_assignable?: boolean
   net_assigned?: boolean
-  is_tented?: boolean
+  tented_on_top?: boolean
+  tented_on_bottom?: boolean
 }
 
 /**

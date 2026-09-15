@@ -108,6 +108,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
   - [CAD Components](#cad-components)
     - [CadComponent](#cadcomponent)
   - [PCB Elements](#pcb-elements)
+    - [PcbFabricatorExtraChargeWarning](#pcbfabricatorextrachargewarning)
     - [PcbAutoroutingError](#pcbautoroutingerror)
     - [PcbBoard](#pcbboard)
     - [PcbBreakoutPoint](#pcbbreakoutpoint)
@@ -153,6 +154,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbPort](#pcbport)
     - [PcbPortNotConnectedError](#pcbportnotconnectederror)
     - [PcbPortNotMatchedError](#pcbportnotmatchederror)
+    - [PcbPreflightRoutingError](#pcbpreflightroutingerror)
     - [PcbRouteHints](#pcbroutehints)
     - [PcbSilkscreenCircle](#pcbsilkscreencircle)
     - [PcbSilkscreenGraphic](#pcbsilkscreengraphic)
@@ -190,6 +192,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicLayoutError](#schematiclayouterror)
     - [SchematicLine](#schematicline)
     - [SchematicManualEditConflictWarning](#schematicmanualeditconflictwarning)
+    - [SchematicMissingSheetWarning](#schematicmissingsheetwarning)
     - [SchematicNetLabel](#schematicnetlabel)
     - [SchematicPath](#schematicpath)
     - [SchematicPort](#schematicport)
@@ -1341,6 +1344,41 @@ interface CadComponent {
 
 ## PCB Elements
 
+### PcbFabricatorExtraChargeWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_fabricator_extra_charge_warning.ts)
+
+Records an extra charge for the selected fabricator preset. An intended trigger
+is a via hole diameter strictly below 0.3 mm with `jlcpcb_economy`,
+`jlcpcb_standard`, `jlcpcb_economy_20260912`, or `jlcpcb_standard_20260912`.
+A diameter of exactly 0.3 mm does not meet this condition. The producer detects
+the condition and emits this record; parsing Circuit JSON does not run the check.
+
+```typescript
+interface PcbFabricatorExtraChargeWarning {
+  type: "pcb_fabricator_extra_charge_warning"
+  pcb_fabricator_extra_charge_warning_id: string
+  warning_type: "pcb_fabricator_extra_charge_warning"
+  message: string
+  fabricator_preset: string
+  pcb_board_id?: string
+  pcb_via_ids?: string[]
+  subcircuit_id?: string
+}
+```
+
+The ID and `warning_type` are generated when omitted from input. For example:
+
+```json
+{
+  "type": "pcb_fabricator_extra_charge_warning",
+  "fabricator_preset": "jlcpcb_economy",
+  "message": "Via hole diameter 0.25 mm is below 0.3 mm and incurs an extra charge",
+  "pcb_board_id": "pcb_board_0",
+  "pcb_via_ids": ["pcb_via_0"]
+}
+```
+
 ### PcbAutoroutingError
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_autorouting_error.ts)
@@ -1371,6 +1409,8 @@ interface PcbBoard extends ManufacturingDrcProperties {
   subcircuit_id?: string
   is_mounted_to_carrier_board?: boolean
   is_via_in_pad_allowed?: boolean
+  default_via_tented_on_top?: boolean
+  default_via_tented_on_bottom?: boolean
   width?: Length
   height?: Length
   display_offset_x?: string
@@ -2489,6 +2529,29 @@ interface PcbPortNotMatchedError extends BaseCircuitJsonError {
 }
 ```
 
+### PcbPreflightRoutingError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_preflight_routing_error.ts)
+
+```typescript
+interface PcbPreflightRoutingError extends BaseCircuitJsonError {
+  type: "pcb_preflight_routing_error"
+  pcb_preflight_routing_error_id: string
+  error_type: "pcb_preflight_routing_error"
+  error_code: string
+  subcircuit_id?: string
+  pcb_group_id?: string
+  routing_phase_index?: number
+  phase_name?: string
+  source_trace_ids?: string[]
+  pcb_component_ids?: string[]
+  pcb_port_ids?: string[]
+  related_error_ids?: string[]
+  measurements?: Record<string, number>
+}
+```
+
+
 ### PcbRouteHints
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/properties/pcb_route_hints.ts)
@@ -2779,6 +2842,20 @@ interface PcbTraceRoutePointWire {
   layer: LayerRef
 }
 
+interface PcbTraceRoutePointVia {
+  route_type: "via"
+  x: Distance
+  y: Distance
+  copper_pour_id?: string
+  is_inside_copper_pour?: boolean
+  hole_diameter?: Distance
+  outer_diameter?: Distance
+  tented_on_top?: boolean
+  tented_on_bottom?: boolean
+  from_layer: LayerRef
+  to_layer: LayerRef
+}
+
 type PcbTraceRoutePoint =
   | PcbTraceRoutePointWire
   | PcbTraceRoutePointVia
@@ -2936,9 +3013,14 @@ interface PcbVia {
   pcb_trace_id?: string
   net_is_assignable?: boolean
   net_assigned?: boolean
-  is_tented?: boolean
+  tented_on_top?: boolean
+  tented_on_bottom?: boolean
 }
 ```
+
+Legacy `is_tented` input is deprecated and transformed into `tented_on_top` and
+`tented_on_bottom`. Explicit per-side values take precedence. Parsed output omits
+`is_tented`; both per-side fields are optional.
 
 ### PcbViaClearanceError
 
@@ -3335,6 +3417,22 @@ interface SchematicManualEditConflictWarning {
   schematic_group_id?: string
   subcircuit_id?: string
   source_component_id: string
+}
+```
+
+### SchematicMissingSheetWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_missing_sheet_warning.ts)
+
+Circuit-wide warning that a schematic has no sheet; has no component target.
+
+```typescript
+/** Circuit-wide warning that a schematic has no sheet; has no component target. */
+interface SchematicMissingSheetWarning {
+  type: "schematic_missing_sheet_warning"
+  schematic_missing_sheet_warning_id: string
+  warning_type: "schematic_missing_sheet_warning"
+  message: string
 }
 ```
 

@@ -1,14 +1,8 @@
 import { z } from "zod"
 import { point, type Point } from "../common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
-
-/** One part of a schematic pin label with its display options. */
-export interface SchematicTextPart {
-  /** The literal text displayed for this part of the label. */
-  text: string
-  /** Draw a line above this text, typically indicating an active-low signal. */
-  is_overlined?: boolean
-}
+import type { SchematicTextPart } from "./schematic_text_part"
+import { schematic_text_part } from "./schematic_text_part"
 
 export interface SchematicPort {
   type: "schematic_port"
@@ -54,12 +48,7 @@ export const schematic_port = z
     pin_number: z.number().optional(),
     display_pin_label: z.string().optional(),
     display_pin_label_text_parts: z
-      .array(
-        z.object({
-          text: z.string(),
-          is_overlined: z.boolean().optional(),
-        }),
-      )
+      .array(schematic_text_part)
       .min(1)
       .optional(),
     display_pin_label_font_size: z.number().positive().finite().optional(),
