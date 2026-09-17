@@ -15,6 +15,9 @@ export const pcb_via = z
     y: distance,
     outer_diameter: distance.default("0.6mm"),
     hole_diameter: distance.default("0.25mm"),
+    topmost_drill_layer: layer_ref.optional(),
+    bottommost_drill_layer: layer_ref.optional(),
+    through_hole: z.boolean().optional(),
     /** @deprecated */
     from_layer: layer_ref.optional(),
     /** @deprecated */
@@ -55,6 +58,9 @@ export interface PcbVia {
   y: Distance
   outer_diameter: Distance
   hole_diameter: Distance
+  topmost_drill_layer?: LayerRef
+  bottommost_drill_layer?: LayerRef
+  through_hole?: boolean
   /** @deprecated */
   from_layer?: LayerRef
   /** @deprecated */
