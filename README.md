@@ -49,6 +49,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
   - [Source Components](#source-components)
     - [SourceAmbiguousPortReference](#sourceambiguousportreference)
     - [SourceBoard](#sourceboard)
+    - [SourceBus](#sourcebus)
     - [SourceComponentBase](#sourcecomponentbase)
     - [SourceComponentInternalConnection](#sourcecomponentinternalconnection)
     - [SourceComponentMisconfiguredError](#sourcecomponentmisconfigurederror)
@@ -112,6 +113,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbAutoroutingError](#pcbautoroutingerror)
     - [PcbBoard](#pcbboard)
     - [PcbBreakoutPoint](#pcbbreakoutpoint)
+    - [PcbBusLengthSkewError](#pcbbuslengthskewerror)
     - [PcbComponent](#pcbcomponent)
     - [PcbComponentInvalidLayerError](#pcbcomponentinvalidlayererror)
     - [PcbComponentNotOnBoardEdgeError](#pcbcomponentnotonboardedgeerror)
@@ -171,6 +173,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbTraceError](#pcbtraceerror)
     - [PcbTraceHint](#pcbtracehint)
     - [PcbTraceMissingError](#pcbtracemissingerror)
+    - [PcbTraceTooLongError](#pcbtracetoolongerror)
     - [PcbTraceTooLongWarning](#pcbtracetoolongwarning)
     - [PcbTraceTooManyViasWarning](#pcbtracetoomanyviaswarning)
     - [PcbTraceWarning](#pcbtracewarning)
@@ -332,6 +335,25 @@ interface SourceBoard {
   source_board_id: string
   source_group_id: string
   title?: string
+}
+```
+
+### SourceBus
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_bus.ts)
+
+A group of resolved source traces with a maximum routed-length difference.
+
+```typescript
+/** A group of resolved source traces with a maximum routed-length difference. */
+interface SourceBus {
+  type: "source_bus"
+  source_bus_id: string
+  name?: string
+  source_trace_ids: string[]
+  /** Maximum difference between the longest and shortest member, in millimeters. */
+  max_length_skew?: number
+  subcircuit_id?: string
 }
 ```
 
@@ -1450,6 +1472,27 @@ interface PcbBreakoutPoint {
   layer?: LayerRef
   x: Distance
   y: Distance
+}
+```
+
+### PcbBusLengthSkewError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_bus_length_skew_error.ts)
+
+The routed lengths of a bus's members exceed its allowed skew.
+
+```typescript
+/** The routed lengths of a bus's members exceed its allowed skew. */
+interface PcbBusLengthSkewError extends BaseCircuitJsonError {
+  type: "pcb_bus_length_skew_error"
+  pcb_bus_length_skew_error_id: string
+  error_type: "pcb_bus_length_skew_error"
+  source_bus_id: string
+  source_trace_ids: string[]
+  pcb_trace_ids: string[]
+  actual_length_skew: number
+  maximum_length_skew: number
+  subcircuit_id?: string
 }
 ```
 
@@ -2903,6 +2946,28 @@ interface PcbTraceMissingError extends BaseCircuitJsonError {
   source_trace_id: string
   pcb_component_ids: string[]
   pcb_port_ids: string[]
+  subcircuit_id?: string
+}
+```
+
+### PcbTraceTooLongError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_trace_too_long_error.ts)
+
+Error emitted when a PCB trace is longer than its maximum allowed length
+
+```typescript
+/** Error emitted when a PCB trace is longer than its maximum allowed length */
+interface PcbTraceTooLongError {
+  type: "pcb_trace_too_long_error"
+  pcb_trace_too_long_error_id: string
+  error_type: "pcb_trace_too_long_error"
+  message: string
+  pcb_trace_id: string
+  source_net_id?: string
+  source_trace_id?: string
+  actual_trace_length: Distance
+  maximum_trace_length: Distance
   subcircuit_id?: string
 }
 ```
