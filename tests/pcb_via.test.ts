@@ -92,3 +92,28 @@ test("pcb_via rejects an empty source net id", () => {
     }),
   ).toThrow()
 })
+
+for (const schema of [pcb_via, any_circuit_element]) {
+  const schemaName = schema === pcb_via ? "pcb_via" : "any_circuit_element"
+
+  test(`${schemaName} preserves via port references`, () => {
+    const pcb_port_ids = ["pcb_port_top", "pcb_port_bottom", "pcb_port_pin1"]
+    const via = schema.parse({ ...baseVia, pcb_port_ids })
+    expect(via).toHaveProperty("pcb_port_ids", pcb_port_ids)
+    expect(schema.parse(via)).toEqual(via)
+  })
+
+  test(`${schemaName} allows omitted or empty via port references`, () => {
+    expect(schema.parse(baseVia)).not.toHaveProperty("pcb_port_ids")
+    expect(schema.parse({ ...baseVia, pcb_port_ids: [] })).toHaveProperty(
+      "pcb_port_ids",
+      [],
+    )
+  })
+
+  test(`${schemaName} rejects invalid via port references`, () => {
+    for (const pcb_port_ids of ["pcb_port_top", [123], null]) {
+      expect(schema.safeParse({ ...baseVia, pcb_port_ids }).success).toBe(false)
+    }
+  })
+}

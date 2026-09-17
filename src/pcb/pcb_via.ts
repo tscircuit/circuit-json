@@ -20,6 +20,8 @@ export const pcb_via = z
     /** @deprecated */
     to_layer: layer_ref.optional(),
     layers: z.array(layer_ref),
+    /** PCB ports belonging to this via, including layer ports and aliases. */
+    pcb_port_ids: z.array(z.string()).optional(),
     pcb_trace_id: z.string().optional(),
     source_trace_id: z.string().optional(),
     source_net_id: z.string().min(1).optional(),
@@ -60,6 +62,8 @@ export interface PcbVia {
   /** @deprecated */
   to_layer?: LayerRef
   layers: LayerRef[]
+  /** PCB ports belonging to this via, including layer ports and aliases. */
+  pcb_port_ids?: string[]
   pcb_trace_id?: string
   source_trace_id?: string
   source_net_id?: string

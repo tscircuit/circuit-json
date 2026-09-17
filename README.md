@@ -3061,6 +3061,8 @@ interface PcbVia {
   /** @deprecated */
   to_layer?: LayerRef
   layers: LayerRef[]
+  /** PCB ports belonging to this via, including layer ports and aliases. */
+  pcb_port_ids?: string[]
   pcb_trace_id?: string
   net_is_assignable?: boolean
   net_assigned?: boolean
