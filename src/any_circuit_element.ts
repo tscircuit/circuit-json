@@ -15,6 +15,7 @@ export const any_circuit_element = z.union([
   // TODO schematic_config
   // TODO schematic_group
   src.source_trace,
+  src.source_bus,
   src.source_port,
   src.source_component_internal_connection,
   src.any_source_component,
@@ -77,6 +78,8 @@ export const any_circuit_element = z.union([
   pcb.pcb_trace,
   pcb.pcb_trace_warning,
   pcb.pcb_trace_too_long_warning,
+  pcb.pcb_trace_too_long_error,
+  pcb.pcb_bus_length_skew_error,
   pcb.pcb_trace_too_many_vias_warning,
   pcb.pcb_via,
   pcb.pcb_smtpad,
