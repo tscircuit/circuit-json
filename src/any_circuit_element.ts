@@ -72,6 +72,7 @@ export const any_circuit_element = z.union([
   pcb.pcb_fabricator_extra_charge_warning,
   pcb.pcb_plated_hole,
   pcb.pcb_keepout,
+  pcb.pcb_keepout_overlap_warning,
   pcb.pcb_port,
   pcb.pcb_net,
   pcb.pcb_text,
