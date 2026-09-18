@@ -14,7 +14,7 @@ export const pcb_via = z
     x: distance,
     y: distance,
     outer_diameter: distance.default("0.6mm"),
-    hole_diameter: distance.default("0.25mm"),
+    hole_diameter: distance.default("0.3mm"),
     /** @deprecated */
     from_layer: layer_ref.optional(),
     /** @deprecated */
