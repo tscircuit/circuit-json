@@ -138,6 +138,8 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbGroundPlaneRegion](#pcbgroundplaneregion)
     - [PcbGroup](#pcbgroup)
     - [PcbHole](#pcbhole)
+    - [PcbKeepout](#pcbkeepout)
+    - [PcbKeepoutOverlapWarning](#pcbkeepoutoverlapwarning)
     - [PcbManualEditConflictWarning](#pcbmanualeditconflictwarning)
     - [PcbMissingFootprintError](#pcbmissingfootprinterror)
     - [PcbNet](#pcbnet)
@@ -2056,6 +2058,116 @@ interface PcbHoleCircle {
   y: Distance
   is_covered_with_solder_mask?: boolean
   soldermask_margin?: number
+}
+```
+
+### PcbKeepout
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_keepout.ts)
+
+A keepout region on specified PCB layers, with rectangle, circle, or outline geometry.
+
+`warning_only: true` makes the region advisory: routing and copper placement may
+cross it, and overlap checks should emit `pcb_keepout_overlap_warning` records
+instead of errors for that keepout. Omitted or `false` retains normal enforcement.
+The parser preserves omission; it does not insert a default. Only boolean values
+are accepted. `excluded_pcb_component_ids` continues to exempt the listed
+components from keepout diagnostics, including warnings.
+
+This is a data contract: parsing a keepout does not run routing or DRC. Producers
+and consumers must implement the advisory behavior. Unrelated DRC violations and
+violations of other, enforcing keepouts remain errors. Existing documents require
+no migration; older consumers may ignore the flag and enforce the region normally.
+
+```typescript
+interface PcbKeepoutOutline {
+  type: "pcb_keepout"
+  shape: "outline"
+  pcb_group_id?: string
+  subcircuit_id?: string
+  outline: Point[]
+  stroke_width: Length
+  pcb_keepout_id: string
+  layers: string[]
+  description?: string
+  /** PCB components excluded from keepout DRC enforcement. */
+  excluded_pcb_component_ids?: string[]
+  /**
+   * When true, this keepout is advisory: it does not block routing or copper
+   * placement, and DRC reports overlaps as pcb_keepout_overlap_warning records.
+   * False or omitted preserves normal enforcement. Component exclusions still apply.
+   */
+  warning_only?: boolean
+}
+
+interface PCBKeepoutRect {
+  type: "pcb_keepout"
+  shape: "rect"
+  pcb_group_id?: string
+  subcircuit_id?: string
+  center: Point
+  width: number
+  height: number
+  pcb_keepout_id: string
+  layers: string[]
+  description?: string
+  /** PCB components excluded from keepout DRC enforcement. */
+  excluded_pcb_component_ids?: string[]
+  /**
+   * When true, this keepout is advisory: it does not block routing or copper
+   * placement, and DRC reports overlaps as pcb_keepout_overlap_warning records.
+   * False or omitted preserves normal enforcement. Component exclusions still apply.
+   */
+  warning_only?: boolean
+}
+
+interface PCBKeepoutCircle {
+  type: "pcb_keepout"
+  shape: "circle"
+  pcb_group_id?: string
+  subcircuit_id?: string
+  center: Point
+  radius: number
+  pcb_keepout_id: string
+  layers: string[]
+  description?: string
+  /** PCB components excluded from keepout DRC enforcement. */
+  excluded_pcb_component_ids?: string[]
+  /**
+   * When true, this keepout is advisory: it does not block routing or copper
+   * placement, and DRC reports overlaps as pcb_keepout_overlap_warning records.
+   * False or omitted preserves normal enforcement. Component exclusions still apply.
+   */
+  warning_only?: boolean
+}
+
+type PCBKeepout = PCBKeepoutRect | PCBKeepoutCircle | PcbKeepoutOutline
+```
+
+### PcbKeepoutOverlapWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_keepout_overlap_warning.ts)
+
+Warning emitted when copper overlaps a PCB keepout with warning_only enabled.
+
+```typescript
+/** Warning emitted when copper overlaps a PCB keepout with warning_only enabled. */
+interface PcbKeepoutOverlapWarning {
+  type: "pcb_keepout_overlap_warning"
+  pcb_keepout_overlap_warning_id: string
+  warning_type: "pcb_keepout_overlap_warning"
+  message: string
+  /** The advisory keepout that was overlapped. */
+  pcb_keepout_id: string
+  /** IDs of the components and copper primitives involved in the overlap. */
+  pcb_component_ids?: string[]
+  pcb_trace_ids?: string[]
+  pcb_smtpad_ids?: string[]
+  pcb_plated_hole_ids?: string[]
+  pcb_via_ids?: string[]
+  /** Optional overlap location in PCB coordinates, in millimeters. */
+  center?: Point
+  subcircuit_id?: string
 }
 ```
 

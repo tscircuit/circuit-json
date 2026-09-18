@@ -54,6 +54,7 @@ export * from "./pcb_note_dimension"
 export * from "./pcb_footprint_overlap_error"
 export * from "./pcb_courtyard_overlap_error"
 export * from "./pcb_keepout"
+export * from "./pcb_keepout_overlap_warning"
 export * from "./pcb_cutout"
 export * from "./pcb_missing_footprint_error"
 export * from "./external_footprint_load_error"
@@ -93,6 +94,7 @@ import type { PcbSmtPad } from "./pcb_smtpad"
 import type { PcbSolderPaste } from "./pcb_solder_paste"
 import type { PcbText } from "./pcb_text"
 import type { PcbTrace } from "./pcb_trace"
+import type { PcbKeepoutOverlapWarning } from "./pcb_keepout_overlap_warning"
 import type { PcbTraceWarning } from "./pcb_trace_warning"
 import type { PcbTraceTooLongError } from "./pcb_trace_too_long_error"
 import type { PcbBusLengthSkewError } from "./pcb_bus_length_skew_error"
@@ -167,6 +169,7 @@ export type PcbCircuitElement =
   | PcbText
   | PcbTrace
   | PcbTraceWarning
+  | PcbKeepoutOverlapWarning
   | PcbTraceTooLongError
   | PcbBusLengthSkewError
   | PcbTraceTooLongWarning

@@ -14,6 +14,7 @@ export const pcb_keepout_outline = z.object({
   layers: z.array(z.string()),
   description: z.string().optional(),
   excluded_pcb_component_ids: z.array(z.string()).optional(),
+  warning_only: z.boolean().optional(),
 })
 
 export type PcbKeepoutOutlineInput = z.input<typeof pcb_keepout_outline>
@@ -32,6 +33,7 @@ export const pcb_keepout = z
     layers: z.array(z.string()), // Specify layers where the keepout applies
     description: z.string().optional(), // Optional description of the keepout
     excluded_pcb_component_ids: z.array(z.string()).optional(),
+    warning_only: z.boolean().optional(),
   })
   .or(
     z.object({
@@ -45,6 +47,7 @@ export const pcb_keepout = z
       layers: z.array(z.string()), // Specify layers where the keepout applies
       description: z.string().optional(), // Optional description of the keepout
       excluded_pcb_component_ids: z.array(z.string()).optional(),
+      warning_only: z.boolean().optional(),
     }),
   )
   .or(pcb_keepout_outline)
@@ -65,6 +68,12 @@ export interface PCBKeepoutRect {
   description?: string
   /** PCB components excluded from keepout DRC enforcement. */
   excluded_pcb_component_ids?: string[]
+  /**
+   * When true, this keepout is advisory: it does not block routing or copper
+   * placement, and DRC reports overlaps as pcb_keepout_overlap_warning records.
+   * False or omitted preserves normal enforcement. Component exclusions still apply.
+   */
+  warning_only?: boolean
 }
 
 export interface PCBKeepoutCircle {
@@ -79,6 +88,12 @@ export interface PCBKeepoutCircle {
   description?: string
   /** PCB components excluded from keepout DRC enforcement. */
   excluded_pcb_component_ids?: string[]
+  /**
+   * When true, this keepout is advisory: it does not block routing or copper
+   * placement, and DRC reports overlaps as pcb_keepout_overlap_warning records.
+   * False or omitted preserves normal enforcement. Component exclusions still apply.
+   */
+  warning_only?: boolean
 }
 
 export interface PcbKeepoutOutline {
@@ -93,6 +108,12 @@ export interface PcbKeepoutOutline {
   description?: string
   /** PCB components excluded from keepout DRC enforcement. */
   excluded_pcb_component_ids?: string[]
+  /**
+   * When true, this keepout is advisory: it does not block routing or copper
+   * placement, and DRC reports overlaps as pcb_keepout_overlap_warning records.
+   * False or omitted preserves normal enforcement. Component exclusions still apply.
+   */
+  warning_only?: boolean
 }
 
 expectTypesMatch<PcbKeepoutOutline, InferredPcbKeepoutOutline>(true)
