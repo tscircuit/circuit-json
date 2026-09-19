@@ -1637,7 +1637,6 @@ interface PcbCopperText {
   font_size: Length
   pcb_component_id: string
   text: string
-  is_visible?: boolean
   is_knockout?: boolean
   knockout_padding?: {
     left: Length
@@ -2883,6 +2882,9 @@ interface PcbSilkscreenText {
   font_size: Length
   pcb_component_id: string
   text: string
+  /** When true, preserve the text as source metadata but exclude it from rendered
+   * and manufacturing output. False or omitted means the text is visible. */
+  is_hidden?: boolean
   is_knockout?: boolean
   knockout_padding?: {
     left: Length

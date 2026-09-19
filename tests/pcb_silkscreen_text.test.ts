@@ -13,14 +13,14 @@ const baseSilkscreenText = {
   anchor_alignment: "center" as const,
 }
 
-test("preserves silkscreen text visibility metadata", () => {
+test("preserves hidden silkscreen text metadata", () => {
   expect(
     pcb_silkscreen_text.parse({
       ...baseSilkscreenText,
-      is_visible: false,
-    }).is_visible,
-  ).toBe(false)
+      is_hidden: true,
+    }).is_hidden,
+  ).toBe(true)
   expect(
-    pcb_silkscreen_text.parse(baseSilkscreenText).is_visible,
+    pcb_silkscreen_text.parse(baseSilkscreenText).is_hidden,
   ).toBeUndefined()
 })
