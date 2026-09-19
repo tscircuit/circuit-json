@@ -1933,12 +1933,14 @@ interface PcbFabricationNoteText {
   pcb_component_id: string
   text: string
   ccw_rotation?: number
+  is_visible?: boolean
+  is_mirrored?: boolean
   layer: VisibleLayer
   anchor_position: Point
   anchor_alignment:
-    | "center"
     | "top_left"
     | "top_right"
+    | "center"
     | "bottom_left"
     | "bottom_right"
   color?: string
