@@ -1637,6 +1637,7 @@ interface PcbCopperText {
   font_size: Length
   pcb_component_id: string
   text: string
+  is_visible?: boolean
   is_knockout?: boolean
   knockout_padding?: {
     left: Length
