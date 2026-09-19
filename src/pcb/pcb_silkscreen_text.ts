@@ -18,12 +18,7 @@ export const pcb_silkscreen_text = z
     font_size: distance.default("0.2mm"),
     pcb_component_id: z.string(),
     text: z.string(),
-    is_hidden: z
-      .boolean()
-      .optional()
-      .describe(
-        "When true, preserve the text as source metadata but exclude it from rendered and manufacturing output.",
-      ),
+    is_hidden: z.boolean().optional(),
     is_knockout: z.boolean().default(false).optional(),
     knockout_padding: z
       .object({
@@ -62,8 +57,6 @@ export interface PcbSilkscreenText {
   font_size: Length
   pcb_component_id: string
   text: string
-  /** When true, preserve the text as source metadata but exclude it from rendered
-   * and manufacturing output. False or omitted means the text is visible. */
   is_hidden?: boolean
   is_knockout?: boolean
   knockout_padding?: {
