@@ -2067,16 +2067,9 @@ interface PcbHoleCircle {
 
 A keepout region on specified PCB layers, with rectangle, circle, or outline geometry.
 
-`allow_traces` permits trace crossings, and `allow_placements` permits components
-and their pads/plated holes, without keepout diagnostics. Both are optional
-booleans; false or omission grants no permission. Copper pours remain excluded.
-See the [keepout permissions proposal](docs/KEEPOUT_PERMISSIONS_PROPOSAL.md) for
-interactions with advisory behavior and compatibility.
-
-`warning_only: true` makes the region advisory: routing and component placement may
+`warning_only: true` makes the region advisory: routing and copper placement may
 cross it, and overlap checks should emit `pcb_keepout_overlap_warning` records
-instead of errors for that keepout. Copper pours still avoid the region.
-Omitted or `false` retains normal enforcement.
+instead of errors for that keepout. Omitted or `false` retains normal enforcement.
 The parser preserves omission; it does not insert a default. Only boolean values
 are accepted. `excluded_pcb_component_ids` continues to exempt the listed
 components from keepout diagnostics, including warnings.
@@ -2099,16 +2092,12 @@ interface PcbKeepoutOutline {
   description?: string
   /** PCB components excluded from keepout DRC enforcement. */
   excluded_pcb_component_ids?: string[]
-  /** When true, this keepout is advisory: it does not block routing or component
-   * placement, and DRC reports prohibited overlaps as pcb_keepout_overlap_warning
-   * records. Copper pours still avoid the region.
-   * False or omitted preserves normal enforcement. Component exclusions still apply. */
-
+  /**
+   * When true, this keepout is advisory: it does not block routing or copper
+   * placement, and DRC reports overlaps as pcb_keepout_overlap_warning records.
+   * False or omitted preserves normal enforcement. Component exclusions still apply.
+   */
   warning_only?: boolean
-  /** Allow trace crossings without keepout diagnostics; copper pours remain excluded. */
-  allow_traces?: boolean
-  /** Allow components and their pads/plated holes without keepout diagnostics; copper pours remain excluded. */
-  allow_placements?: boolean
 }
 
 interface PCBKeepoutRect {
@@ -2124,16 +2113,12 @@ interface PCBKeepoutRect {
   description?: string
   /** PCB components excluded from keepout DRC enforcement. */
   excluded_pcb_component_ids?: string[]
-  /** When true, this keepout is advisory: it does not block routing or component
-   * placement, and DRC reports prohibited overlaps as pcb_keepout_overlap_warning
-   * records. Copper pours still avoid the region.
-   * False or omitted preserves normal enforcement. Component exclusions still apply. */
-
+  /**
+   * When true, this keepout is advisory: it does not block routing or copper
+   * placement, and DRC reports overlaps as pcb_keepout_overlap_warning records.
+   * False or omitted preserves normal enforcement. Component exclusions still apply.
+   */
   warning_only?: boolean
-  /** Allow trace crossings without keepout diagnostics; copper pours remain excluded. */
-  allow_traces?: boolean
-  /** Allow components and their pads/plated holes without keepout diagnostics; copper pours remain excluded. */
-  allow_placements?: boolean
 }
 
 interface PCBKeepoutCircle {
@@ -2148,16 +2133,12 @@ interface PCBKeepoutCircle {
   description?: string
   /** PCB components excluded from keepout DRC enforcement. */
   excluded_pcb_component_ids?: string[]
-  /** When true, this keepout is advisory: it does not block routing or component
-   * placement, and DRC reports prohibited overlaps as pcb_keepout_overlap_warning
-   * records. Copper pours still avoid the region.
-   * False or omitted preserves normal enforcement. Component exclusions still apply. */
-
+  /**
+   * When true, this keepout is advisory: it does not block routing or copper
+   * placement, and DRC reports overlaps as pcb_keepout_overlap_warning records.
+   * False or omitted preserves normal enforcement. Component exclusions still apply.
+   */
   warning_only?: boolean
-  /** Allow trace crossings without keepout diagnostics; copper pours remain excluded. */
-  allow_traces?: boolean
-  /** Allow components and their pads/plated holes without keepout diagnostics; copper pours remain excluded. */
-  allow_placements?: boolean
 }
 
 type PCBKeepout = PCBKeepoutRect | PCBKeepoutCircle | PcbKeepoutOutline

@@ -75,9 +75,8 @@ export interface PCBKeepoutRect {
   /** PCB components excluded from keepout DRC enforcement. */
   excluded_pcb_component_ids?: string[]
   /**
-   * When true, this keepout is advisory: it does not block routing or component
-   * placement, and DRC reports prohibited overlaps as pcb_keepout_overlap_warning
-   * records. Copper pours still avoid the region.
+   * When true, this keepout is advisory: it does not block routing or copper
+   * placement, and DRC reports overlaps as pcb_keepout_overlap_warning records.
    * False or omitted preserves normal enforcement. Component exclusions still apply.
    */
   warning_only?: boolean
@@ -100,9 +99,8 @@ export interface PCBKeepoutCircle {
   /** PCB components excluded from keepout DRC enforcement. */
   excluded_pcb_component_ids?: string[]
   /**
-   * When true, this keepout is advisory: it does not block routing or component
-   * placement, and DRC reports prohibited overlaps as pcb_keepout_overlap_warning
-   * records. Copper pours still avoid the region.
+   * When true, this keepout is advisory: it does not block routing or copper
+   * placement, and DRC reports overlaps as pcb_keepout_overlap_warning records.
    * False or omitted preserves normal enforcement. Component exclusions still apply.
    */
   warning_only?: boolean
@@ -125,9 +123,8 @@ export interface PcbKeepoutOutline {
   /** PCB components excluded from keepout DRC enforcement. */
   excluded_pcb_component_ids?: string[]
   /**
-   * When true, this keepout is advisory: it does not block routing or component
-   * placement, and DRC reports prohibited overlaps as pcb_keepout_overlap_warning
-   * records. Copper pours still avoid the region.
+   * When true, this keepout is advisory: it does not block routing or copper
+   * placement, and DRC reports overlaps as pcb_keepout_overlap_warning records.
    * False or omitted preserves normal enforcement. Component exclusions still apply.
    */
   warning_only?: boolean
