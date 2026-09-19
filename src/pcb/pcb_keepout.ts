@@ -15,6 +15,8 @@ export const pcb_keepout_outline = z.object({
   description: z.string().optional(),
   excluded_pcb_component_ids: z.array(z.string()).optional(),
   warning_only: z.boolean().optional(),
+  allow_traces: z.boolean().optional(),
+  allow_placements: z.boolean().optional(),
 })
 
 export type PcbKeepoutOutlineInput = z.input<typeof pcb_keepout_outline>
@@ -34,6 +36,8 @@ export const pcb_keepout = z
     description: z.string().optional(), // Optional description of the keepout
     excluded_pcb_component_ids: z.array(z.string()).optional(),
     warning_only: z.boolean().optional(),
+    allow_traces: z.boolean().optional(),
+    allow_placements: z.boolean().optional(),
   })
   .or(
     z.object({
@@ -48,6 +52,8 @@ export const pcb_keepout = z
       description: z.string().optional(), // Optional description of the keepout
       excluded_pcb_component_ids: z.array(z.string()).optional(),
       warning_only: z.boolean().optional(),
+      allow_traces: z.boolean().optional(),
+      allow_placements: z.boolean().optional(),
     }),
   )
   .or(pcb_keepout_outline)
@@ -74,6 +80,10 @@ export interface PCBKeepoutRect {
    * False or omitted preserves normal enforcement. Component exclusions still apply.
    */
   warning_only?: boolean
+  /** Allow trace crossings without keepout diagnostics; copper pours remain excluded. */
+  allow_traces?: boolean
+  /** Allow components and their pads/plated holes without keepout diagnostics; copper pours remain excluded. */
+  allow_placements?: boolean
 }
 
 export interface PCBKeepoutCircle {
@@ -94,6 +104,10 @@ export interface PCBKeepoutCircle {
    * False or omitted preserves normal enforcement. Component exclusions still apply.
    */
   warning_only?: boolean
+  /** Allow trace crossings without keepout diagnostics; copper pours remain excluded. */
+  allow_traces?: boolean
+  /** Allow components and their pads/plated holes without keepout diagnostics; copper pours remain excluded. */
+  allow_placements?: boolean
 }
 
 export interface PcbKeepoutOutline {
@@ -114,6 +128,10 @@ export interface PcbKeepoutOutline {
    * False or omitted preserves normal enforcement. Component exclusions still apply.
    */
   warning_only?: boolean
+  /** Allow trace crossings without keepout diagnostics; copper pours remain excluded. */
+  allow_traces?: boolean
+  /** Allow components and their pads/plated holes without keepout diagnostics; copper pours remain excluded. */
+  allow_placements?: boolean
 }
 
 expectTypesMatch<PcbKeepoutOutline, InferredPcbKeepoutOutline>(true)
