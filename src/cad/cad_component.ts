@@ -1,18 +1,23 @@
-import { z } from "zod"
-import { point3, asset, type Point3, type Asset } from "../common"
-import { rotation, length, type Rotation, type Length } from "../units"
-import { layer_ref, type LayerRef } from "src/pcb"
+import { type LayerRef, layer_ref } from "src/pcb"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { z } from "zod"
+import { type Asset, type Point3, asset, point3 } from "../common"
+import { type Length, type Rotation, length, rotation } from "../units"
 import {
-  cad_model_axis_directions,
   type CadModelAxisDirection,
+  cad_model_axis_directions,
 } from "./cad_model_conventions"
 
 export const cad_component = z
   .object({
     type: z.literal("cad_component"),
     cad_component_id: z.string(),
-    pcb_component_id: z.string(),
+    pcb_component_id: z
+      .string()
+      .optional()
+      .describe(
+        "Optional PCB component reference; omit for CAD geometry without a PCB component",
+      ),
     source_component_id: z.string(),
     position: point3,
     rotation: point3.optional(),
@@ -59,7 +64,7 @@ export const cad_component = z
       .optional()
       .default("center"),
   })
-  .describe("Defines a component on the PCB")
+  .describe("Defines CAD geometry, optionally associated with a PCB component")
 
 export type CadComponentInput = z.input<typeof cad_component>
 type InferredCadComponent = z.infer<typeof cad_component>
@@ -68,10 +73,12 @@ export type CadComponentAnchorAlignment = NonNullable<
   InferredCadComponent["anchor_alignment"]
 >
 
+/** CAD geometry, optionally associated with a PCB component. */
 export interface CadComponent {
   type: "cad_component"
   cad_component_id: string
-  pcb_component_id: string
+  /** Omit for CAD geometry that has no corresponding PCB component. */
+  pcb_component_id?: string
   source_component_id: string
   position: Point3
   rotation?: Point3
