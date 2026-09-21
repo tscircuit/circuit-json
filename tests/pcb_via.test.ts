@@ -2,14 +2,71 @@ import { expect, test } from "bun:test"
 import { pcb_via, type PcbVia, type PcbViaInput } from "../src/pcb/pcb_via"
 import { any_circuit_element } from "../src/any_circuit_element"
 
-const baseVia: PcbViaInput = {
+const baseVia = {
   type: "pcb_via",
   x: 1,
   y: 2,
   layers: ["top", "bottom"],
-}
+} satisfies PcbViaInput
 
 for (const schema of [pcb_via, any_circuit_element]) {
+  const schemaName = schema === pcb_via ? "pcb_via" : "any_circuit_element"
+
+  test(`${schemaName} preserves optional drill layers and through-hole status`, () => {
+    for (const top of [undefined, "top", "inner1"] as const) {
+      for (const bottom of [undefined, "inner2", "bottom"] as const) {
+        for (const throughHole of [undefined, false, true]) {
+          const input = {
+            ...baseVia,
+            ...(top !== undefined && { topmost_drill_layer: top }),
+            ...(bottom !== undefined && { bottommost_drill_layer: bottom }),
+            ...(throughHole !== undefined && { through_hole: throughHole }),
+          } satisfies PcbViaInput
+          const via = schema.parse(input) as PcbVia
+
+          for (const field of [
+            "topmost_drill_layer",
+            "bottommost_drill_layer",
+            "through_hole",
+          ] as const) {
+            if (input[field] === undefined) {
+              expect(via).not.toHaveProperty(field)
+            } else {
+              expect(via[field]).toBe(input[field])
+            }
+          }
+          expect(schema.parse(via)).toEqual(via)
+        }
+      }
+    }
+  })
+
+  test(`${schemaName} normalizes drill layer references`, () => {
+    const via = schema.parse({
+      ...baseVia,
+      topmost_drill_layer: { name: "inner1" },
+      bottommost_drill_layer: { name: "inner8" },
+    }) as PcbVia
+
+    expect(via.topmost_drill_layer).toBe("inner1")
+    expect(via.bottommost_drill_layer).toBe("inner8")
+  })
+
+  test(`${schemaName} rejects invalid drill layers and through-hole status`, () => {
+    for (const field of ["topmost_drill_layer", "bottommost_drill_layer"]) {
+      for (const value of ["inner9", "invalid", 1, null]) {
+        expect(schema.safeParse({ ...baseVia, [field]: value }).success).toBe(
+          false,
+        )
+      }
+    }
+    for (const value of ["true", 1, null]) {
+      expect(
+        schema.safeParse({ ...baseVia, through_hole: value }).success,
+      ).toBe(false)
+    }
+  })
+
   test(`${schema === pcb_via ? "pcb_via" : "any_circuit_element"} migrates legacy tenting and preserves per-side overrides`, () => {
     for (const legacy of [undefined, false, true]) {
       for (const top of [undefined, false, true]) {

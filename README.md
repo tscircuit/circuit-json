@@ -3168,6 +3168,9 @@ interface PcbVia {
   y: Distance
   outer_diameter: Distance
   hole_diameter: Distance
+  topmost_drill_layer?: LayerRef
+  bottommost_drill_layer?: LayerRef
+  through_hole?: boolean
   /** @deprecated */
   from_layer?: LayerRef
   /** @deprecated */
