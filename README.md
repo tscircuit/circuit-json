@@ -1330,11 +1330,14 @@ interface UnknownErrorFindingPart extends BaseCircuitJsonError {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_component.ts)
 
+CAD geometry, optionally associated with a PCB component.
+
 ```typescript
 interface CadComponent {
   type: "cad_component"
   cad_component_id: string
-  pcb_component_id: string
+  /** Omit for CAD geometry that has no corresponding PCB component. */
+  pcb_component_id?: string
   source_component_id: string
   position: Point3
   rotation?: Point3
@@ -1362,6 +1365,7 @@ interface CadComponent {
   model_jscad?: any
   show_as_translucent_model?: boolean
   show_as_bounding_box?: boolean
+  show_hidden_edges?: boolean
   anchor_alignment: CadComponentAnchorAlignment
 }
 ```
