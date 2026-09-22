@@ -111,6 +111,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
   - [PCB Elements](#pcb-elements)
     - [PcbFabricatorExtraChargeWarning](#pcbfabricatorextrachargewarning)
     - [PcbAutoroutingError](#pcbautoroutingerror)
+    - [PcbBend](#pcbbend)
     - [PcbBoard](#pcbboard)
     - [PcbBreakoutPoint](#pcbbreakoutpoint)
     - [PcbBusLengthSkewError](#pcbbuslengthskewerror)
@@ -169,6 +170,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbSilkscreenRect](#pcbsilkscreenrect)
     - [PcbSilkscreenText](#pcbsilkscreentext)
     - [PcbSolderPaste](#pcbsolderpaste)
+    - [PcbStiffener](#pcbstiffener)
     - [PcbText](#pcbtext)
     - [PcbThermalSpoke](#pcbthermalspoke)
     - [PcbTrace](#pcbtrace)
@@ -1419,6 +1421,36 @@ interface PcbAutoroutingErrorInterface extends BaseCircuitJsonError {
   subcircuit_id?: string
 }
 ```
+
+### PcbBend
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_bend.ts)
+
+Defines a bend without changing the flat PCB layout or stored CAD poses.
+
+```typescript
+/** Defines a bend without changing the flat PCB layout or stored CAD poses. */
+interface PcbBend {
+  type: "pcb_bend"
+  pcb_bend_id: string
+  pcb_board_id: string
+  /** Ownership only; group transforms are already resolved into board coordinates. */
+  pcb_group_id?: string
+  subcircuit_id?: string
+  name?: string
+  /** Bend-zone centerline endpoints, relative to the flat board center, in mm. */
+  start: Point
+  end: Point
+  /** Target angle in signed degrees; positive folds the moving side toward local top. Zero is flat. */
+  bend_angle: Rotation
+  /** Positive radius at the neutral surface, in mm. Zone width is radius times absolute angle in radians. */
+  bend_radius: Length
+  /** Moving side looking from start toward end in the flat top view. */
+  bend_side: "left" | "right"
+}
+```
+
+[Examples and coordinate/rendering semantics](docs/pcb-flex.md)
 
 ### PcbBoard
 
@@ -2923,6 +2955,56 @@ interface PcbSolderPasteCircle {
   pcb_smtpad_id?: string
 }
 ```
+
+### PcbStiffener
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_stiffener.ts)
+
+Defines bonded mechanical reinforcement with rectangular or polygon geometry.
+
+```typescript
+interface PcbStiffenerBase {
+  type: "pcb_stiffener"
+  pcb_stiffener_id: string
+  pcb_board_id: string
+  /** Ownership only; geometry is already resolved into board coordinates. */
+  pcb_group_id?: string
+  subcircuit_id?: string
+  name?: string
+  /** Attachment face, not an additional copper layer. */
+  layer: "top" | "bottom"
+  material: "fr4" | "polyimide" | "stainless_steel" | "aluminum"
+  /** Material thickness in mm, excluding the PCB and adhesive. */
+  thickness: Length
+  /** Adhesive thickness in mm; omission means unspecified, not zero. */
+  adhesive_thickness?: Length
+}
+
+interface PcbStiffenerRect extends PcbStiffenerBase {
+  shape: "rect"
+  /** Relative to the flat board center, in mm. */
+  center: Point
+  /** Degrees counterclockwise in the flat top view; omission means zero. */
+  rotation?: Rotation
+  width: Length
+  height: Length
+  outline?: never
+}
+
+interface PcbStiffenerPolygon extends PcbStiffenerBase {
+  shape: "polygon"
+  /** Implicitly closed vertices relative to the flat board center, in mm. All placement/rotation is baked in. */
+  outline: Point[]
+  center?: never
+  rotation?: never
+  width?: never
+  height?: never
+}
+
+type PcbStiffener = PcbStiffenerRect | PcbStiffenerPolygon
+```
+
+[Examples and coordinate/rendering semantics](docs/pcb-flex.md)
 
 ### PcbText
 
