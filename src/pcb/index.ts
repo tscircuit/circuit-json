@@ -28,6 +28,8 @@ export * from "./pcb_port_not_connected_error"
 export * from "./pcb_net"
 export * from "./pcb_via"
 export * from "./pcb_board"
+export * from "./pcb_bend"
+export * from "./pcb_stiffener"
 export * from "./pcb_panel"
 export * from "./pcb_placement_error"
 export * from "./pcb_packing_error"
@@ -106,6 +108,8 @@ import type { PcbPortNotMatchedError } from "./pcb_port_not_matched_error"
 import type { PcbPortNotConnectedError } from "./pcb_port_not_connected_error"
 import type { PcbVia } from "./pcb_via"
 import type { PcbNet } from "./pcb_net"
+import type { PcbBend } from "./pcb_bend"
+import type { PcbStiffener } from "./pcb_stiffener"
 import type { PcbBoard } from "./pcb_board"
 import type { PcbPanel } from "./pcb_panel"
 import type { PcbPlacementError } from "./pcb_placement_error"
@@ -189,6 +193,8 @@ export type PcbCircuitElement =
   | PcbVia
   | PcbNet
   | PcbBoard
+  | PcbBend
+  | PcbStiffener
   | PcbPanel
   | PcbPlacementError
   | PcbPackingError
