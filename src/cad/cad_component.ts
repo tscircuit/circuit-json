@@ -21,6 +21,12 @@ export const cad_component = z
     source_component_id: z.string(),
     position: point3,
     rotation: point3.optional(),
+    is_on_folded_board: z
+      .boolean()
+      .optional()
+      .describe(
+        "True when position and rotation describe the assembled folded board pose. False or omitted means the flat board pose. PCB records remain flat; pcb_component_id identifies the flat mount and owning board for reversible transforms.",
+      ),
     size: point3.optional(),
     layer: layer_ref.optional(),
     subcircuit_id: z.string().optional(),
@@ -82,6 +88,10 @@ export interface CadComponent {
   source_component_id: string
   position: Point3
   rotation?: Point3
+  /** True for assembled folded position/rotation; false or omitted for flat.
+   * PCB records stay flat. pcb_component_id identifies the mount/owning board.
+   */
+  is_on_folded_board?: boolean
   size?: Point3
   layer?: LayerRef
   subcircuit_id?: string
