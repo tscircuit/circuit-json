@@ -55,7 +55,7 @@ export const pcb_trace_route_point_teardrop = z
     end: finite_route_point,
     start_width: positive_width,
     end_width: positive_width,
-    width_interpolation_mode: z.enum(["linear", "smoothstep"]),
+    width_interpolation_mode: z.enum(["linear", "quadratic"]),
     layer: layer_ref,
     copper_pour_id: z.string().optional(),
     is_inside_copper_pour: z.boolean().optional(),
@@ -143,8 +143,8 @@ export interface PcbTraceRoutePointTeardrop {
   end: Point
   start_width: Distance
   end_width: Distance
-  /** linear: f(t)=t; smoothstep: f(t)=3t²−2t³, with t along the centerline. */
-  width_interpolation_mode: "linear" | "smoothstep"
+  /** Quadratic is concave toward the narrow end; see docs/pcb-trace-teardrops.md for profiles. */
+  width_interpolation_mode: "linear" | "quadratic"
   layer: LayerRef
   copper_pour_id?: string
   is_inside_copper_pour?: boolean

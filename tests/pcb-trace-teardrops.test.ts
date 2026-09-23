@@ -19,7 +19,7 @@ const taper = {
   end: { x: 0.8, y: 0 },
   start_width: 0.6,
   end_width: 0.2,
-  width_interpolation_mode: "smoothstep",
+  width_interpolation_mode: "quadratic",
   layer: "top",
 } satisfies PcbTraceRoutePointTeardrop
 
@@ -37,8 +37,8 @@ test("teardrop segments survive general circuit parsing and JSON round trips", (
   )
 })
 
-test("both profiles accept widening, narrowing and constant widths", () => {
-  for (const width_interpolation_mode of ["linear", "smoothstep"] as const) {
+test("all profiles accept widening, narrowing and constant widths", () => {
+  for (const width_interpolation_mode of ["linear", "quadratic"] as const) {
     for (const [start_width, end_width] of [
       [0.2, 0.6],
       [0.6, 0.2],
@@ -173,4 +173,13 @@ test("endpoints must describe a finite nonzero length", () => {
       end: { x: Number.MAX_VALUE, y: 0 },
     }).success,
   ).toBe(false)
+})
+
+test("removed smoothstep mode is rejected by trace and circuit schemas", () => {
+  const input = {
+    ...trace,
+    route: [{ ...taper, width_interpolation_mode: "smoothstep" }],
+  }
+  expect(pcb_trace.safeParse(input).success).toBe(false)
+  expect(any_circuit_element.safeParse(input).success).toBe(false)
 })

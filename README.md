@@ -3056,7 +3056,7 @@ interface PcbThermalSpoke {
 
 A `route_type: "teardrop"` entry represents an explicit straight segment with
 `start_width`, `end_width`, and `width_interpolation_mode` (`linear` or
-`smoothstep`). See the [geometry and route traversal contract](docs/pcb-trace-teardrops.md).
+`quadratic`). See the [geometry and route traversal contract](docs/pcb-trace-teardrops.md).
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_trace.ts)
 
@@ -3094,8 +3094,8 @@ interface PcbTraceRoutePointTeardrop {
   end: Point
   start_width: Distance
   end_width: Distance
-  /** linear: f(t)=t; smoothstep: f(t)=3t²−2t³, with t along the centerline. */
-  width_interpolation_mode: "linear" | "smoothstep"
+  /** Quadratic is concave toward the narrow end; see docs/pcb-trace-teardrops.md for profiles. */
+  width_interpolation_mode: "linear" | "quadratic"
   layer: LayerRef
   copper_pour_id?: string
   is_inside_copper_pour?: boolean
