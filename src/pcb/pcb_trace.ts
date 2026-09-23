@@ -134,12 +134,6 @@ export interface PcbTrace {
   route_thickness_mode?: "constant" | "interpolated"
   should_round_corners?: boolean
   trace_length?: number
-  /**
-   * True for radiating antenna copper whose open ends are intentional.
-   * Do not mark ordinary feed traces or other traces sharing the antenna's net.
-   * False or omitted means ordinary dangling-trace validation applies.
-   * This does not exempt the trace from other PCB checks.
-   */
   is_antenna_trace?: boolean
   highlight_color?: string
   route: Array<PcbTraceRoutePoint>
