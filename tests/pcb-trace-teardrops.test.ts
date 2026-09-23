@@ -19,7 +19,7 @@ const taper = {
   end: { x: 0.8, y: 0 },
   start_width: 0.6,
   end_width: 0.2,
-  width_interpolation_mode: "smoothstep",
+  width_interpolation_mode: "quadratic",
   layer: "top",
 } satisfies PcbTraceRoutePointTeardrop
 
@@ -37,8 +37,12 @@ test("teardrop segments survive general circuit parsing and JSON round trips", (
   )
 })
 
-test("both profiles accept widening, narrowing and constant widths", () => {
-  for (const width_interpolation_mode of ["linear", "smoothstep"] as const) {
+test("all profiles accept widening, narrowing and constant widths", () => {
+  for (const width_interpolation_mode of [
+    "linear",
+    "smoothstep",
+    "quadratic",
+  ] as const) {
     for (const [start_width, end_width] of [
       [0.2, 0.6],
       [0.6, 0.2],

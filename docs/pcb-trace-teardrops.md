@@ -12,7 +12,7 @@ attachment index, or trace-level teardrop array.
   "end": { "x": 0.8, "y": 0 },
   "start_width": 0.6,
   "end_width": 0.2,
-  "width_interpolation_mode": "smoothstep",
+  "width_interpolation_mode": "quadratic",
   "layer": "top"
 }
 ```
@@ -39,6 +39,8 @@ For normalized distance t along the segment, 0 ≤ t ≤ 1:
 ```
 f(t) = t                         // linear
 f(t) = 3*t*t - 2*t*t*t           // smoothstep
+f(t) = t*t                      // quadratic, start_width <= end_width
+f(t) = 2*t - t*t                // quadratic, start_width > end_width
 w(t) = start_width + (end_width - start_width) * f(t)
 C(t) = A + t * (B - A)
 left(t)  = C(t) + n * w(t)/2
@@ -49,6 +51,14 @@ The filled copper region lies between these boundaries, closed by straight caps
 at t=0 and t=1. The segment does not add round caps of its own. Adjacent trace,
 pad and via copper is unioned with it.
 
+- **quadratic** produces concave sides with zero width derivative at the
+  narrower end. With u measured from the wide end to the narrow end,
+  `w(u) = narrow_width + (wide_width - narrow_width) * (1-u)^2`.
+  It flattens into the thin trace without the inflection of smoothstep.
+  The orientation follows the widths, not route order: narrowing uses
+  `f(t)=2t-t²`, widening uses `f(t)=t²`. Equal widths give a constant-width
+  segment. At the wide end this profile does not automatically match a pad
+  boundary's tangent.
 - **linear** produces straight tapered sides (a trapezoid).
 - **smoothstep** produces cubic sides whose width derivative is zero at both
   ends, providing smooth shoulders into constant-width copper. This is an exact
@@ -60,7 +70,7 @@ Either width may be the larger one: the segment can narrow or widen in route
 order. Equal widths are valid and give a constant-width segment. Both widths
 must be positive and finite; endpoints must be finite and distinct. Length is
 implied by the endpoints rather than stored redundantly. Reversing a segment
-swaps `start`/`end`, widths, and any endpoint port IDs; both modes then describe
+swaps `start`/`end`, widths, and any endpoint port IDs; all three modes then describe
 the same copper. For curved traces, use a straight terminal taper adjoining the
 curved route; this proposal does not define a curved centerline.
 
@@ -109,8 +119,8 @@ exporters must support it or reject it, never silently discard a segment.
 Follow-up work is needed in core/autorouter generation, shared geometry helpers,
 PCB/SVG/3D viewers, trace-length calculations, DRC, copper-solver obstacle
 conversion, and fabrication exporters. Linear tapers can be exported directly;
-smoothstep boundaries can be emitted as curves or tessellated to an explicit
-fabrication tolerance. Neither mode is a new independently solved pour region.
+quadratic and smoothstep boundaries can be emitted as curves or tessellated to an explicit
+fabrication tolerance. None of these profiles is a new independently solved pour region.
 
 There is deliberately no generic polygon escape hatch. Importers may fit a source
 teardrop to these profiles within a declared tolerance. Shapes that cannot be
