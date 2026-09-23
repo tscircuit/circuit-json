@@ -1,133 +1,120 @@
-# Proposal: teardrops owned by PCB traces
+# Proposal: a teardrop route segment
 
-Add optional `pcb_trace.teardrops`, an array of resolved copper additions. This
-keeps a teardrop with the trace that owns it, instead of representing every small
-reinforcement as an independently solved `pcb_copper_pour`.
-
-```json
-{
-  "type": "pcb_trace",
-  "pcb_trace_id": "pcb_trace_1",
-  "source_trace_id": "source_trace_1",
-  "route": [
-    { "route_type": "wire", "x": 0, "y": 0, "width": 0.2, "layer": "top" },
-    { "route_type": "wire", "x": 4, "y": 0, "width": 0.2, "layer": "top" }
-  ],
-  "teardrops": [
-    { "route_segment_index": 0, "end": "start", "shape": "curved", "length": 0.8, "width": 0.6 },
-    { "route_segment_index": 0, "end": "end", "shape": "linear", "length": 0.5, "width": 0.5 }
-  ]
-}
-```
-
-Omission or an empty array means no teardrops. No dimensions or enablement are
-inferred from a pad, via, global design rule, or viewer default. Numeric distances
-and coordinates are mm; schema inputs also accept the usual distance strings.
-
-## Attachment and ownership
-
-`route_segment_index: i` refers to the segment **from `route[i]` to `route[i+1]`**.
-Both entries must be `wire`, on the same layer, at distinct finite coordinates.
-`end: "start"` places the wide end at `route[i]`; `"end"` places it at `route[i+1]`.
-The taper always extends inward along that segment. An internal bend or via can
-therefore have a teardrop on either adjacent wire segment, on different layers.
-A via entry is not itself a wire segment. For example, in
-`[wire, wire, via, wire, wire]`, indices 0 and 3 are eligible, but 1 and 2 are not.
-Producers must include coincident wire endpoints at a via when needed.
-
-The teardrop inherits layer, net/connectivity, group, subcircuit, solder-mask
-behavior, and copper thickness from its trace/segment. It adds copper to the
-union of the trace, pad and via; it does not change the centerline or trace length.
-There is no separate net reference or target-pad reference to become inconsistent.
-Removing a trace removes its teardrops. Editing, reversing, splitting, simplifying,
-or rerouting a trace requires regenerating/remapping the segment indices and
-end labels; the array must not be carried over blindly.
-
-## Deterministic parametric geometry
-
-`shape` is `linear` or `curved`. `length` and `width` are positive, finite,
-resolved dimensions, not percentages or router requests.
-
-Let A be the selected endpoint, u the unit vector pointing into the selected
-segment, and n its left perpendicular. Local (s,t) maps to A + s*u + t*n.
-Let L = `length`, W = `width`, and N be the trace's full width at distance L
-from A, using its `route_thickness_mode` (omission means constant). A constant
-segment uses `route[i].width`; an interpolated segment interpolates between its
-two endpoint widths, accounting for the selected end.
-
-- `linear`: the implicitly closed outline is `(0,-W/2)`, `(L,-N/2)`,
-  `(L,N/2)`, `(0,W/2)`.
-- `curved`: each side is a cubic Bezier from `(0,±W/2)` to `(L,±N/2)`,
-  with control points `(L/2,±W/2)` and `(L/2,±N/2)`. Close the outline with
-  straight wide and neck caps. This fixes the curve rather than leaving
-  renderers to choose different profiles. Polygon-only consumers tessellate
-  the curve to their declared fabrication/rendering tolerance.
-
-The producer must ensure L does not exceed the selected segment length and W
-is at least the maximum trace width over the taper span. No consumer should
-silently shorten, widen or otherwise repair invalid geometry. Two teardrops may
-overlap; their copper is unioned. Clearances must be checked against that union,
-not just the original trace width. These shapes do not imply electrical or
-manufacturing validity.
-
-## Imported outlines
-
-A `polygon` alternative preserves resolved asymmetric or imported polygon copper:
+Add `route_type: "teardrop"` to `pcb_trace.route`. A teardrop is an explicit
+straight wire segment whose full copper width varies along its centerline.
+It participates in the route directly, without a separate outline, copper pour,
+attachment index, or trace-level teardrop array.
 
 ```json
 {
-  "route_segment_index": 0,
-  "end": "start",
-  "shape": "polygon",
-  "outline": [
-    { "x": 0, "y": -0.3 },
-    { "x": 0.8, "y": -0.1 },
-    { "x": 0.8, "y": 0.1 },
-    { "x": 0, "y": 0.3 }
-  ]
+  "route_type": "teardrop",
+  "start": { "x": 0, "y": 0 },
+  "end": { "x": 0.8, "y": 0 },
+  "start_width": 0.6,
+  "end_width": 0.2,
+  "width_interpolation_mode": "smoothstep",
+  "layer": "top"
 }
 ```
 
-Coordinates are absolute PCB coordinates, like the route, not local offsets.
-The ring is implicitly closed; either winding is accepted. It must be simple,
-nonzero-area, and have no holes. `length`/`width` are forbidden for polygon shapes;
-`outline` is forbidden for parametric shapes. Importers preserve the polygon as
-supplied and tessellate source arcs to an explicit tolerance before creating it.
-The polygon must overlap the attached segment with positive area near the chosen
-endpoint. It is not an arbitrary disconnected island or a replacement for a
-plane/pour. The import classification must establish its connection to the trace;
-size alone does not establish that a source copper shape is a teardrop.
+## Names and conventions
 
-## Validation and compatibility
+Existing `wire` route entries use `width`, so `start_width` and `end_width`
+describe the in-plane copper size consistently. They are **full widths**, not
+radii or vertical copper thickness. `start` and `end` follow the existing
+`through_pad` convention for explicit segments. Distances and coordinates are
+millimeters; schema inputs also accept the usual unit strings.
 
-The schema checks integer nonnegative indices, finite positive dimensions,
-finite polygon coordinates and nonzero polygon area. As with other Circuit JSON
-references, route-relative geometry checks are producer/DRC responsibilities:
-index bounds, same-layer wire adjacency, duplicate attachment entries (at most
-one per segment/end), usable segment length, widths, simple outlines and overlap.
-`pcb_trace` remains a Zod object; the existing route union and wire/via/through-pad
-types are unchanged. Existing JSON remains valid without generated fields.
+`width_interpolation_mode` defines the local taper profile. The existing
+trace-level `route_thickness_mode: "constant" | "interpolated"` still controls
+ordinary wire entries. It does not override this segment's explicit widths or
+interpolation mode. All teardrop geometry fields are required: no pad dimensions,
+router defaults or global settings are consulted to reconstruct the shape.
 
-This is additive data compatibility, **not automatic renderer/exporter support**.
-Older parsers may discard unknown fields and older consumers will draw only the
-base trace. Manufacturing exporters must support teardrops or explicitly reject
-such a board, rather than silently omit copper. Flattening to a legacy format is
-a downstream conversion, not something this schema does automatically.
+## Geometry
 
-## Alternatives and follow-up
+Let A = `start`, B = `end`, L = |B−A|, u = (B−A)/L and n = (−u.y, u.x).
+For normalized distance t along the segment, 0 ≤ t ≤ 1:
 
-- Trace-wide `start_teardrop`/`end_teardrop` cannot describe internal via contacts
-  or separately reinforce opposite sides of a bend without splitting traces.
-- A new route type would require every route walker to understand how to continue
-  the centerline and change layers, despite a teardrop being additive copper.
-- Wire-point flags alone leave the incoming versus outgoing segment ambiguous.
-- A copper-pour element gives independent net/layer ownership and a solve lifecycle
-  to what is fixed trace geometry; it can also leave orphan shapes when traces
-  are removed.
+```
+f(t) = t                         // linear
+f(t) = 3*t*t - 2*t*t*t           // smoothstep
+w(t) = start_width + (end_width - start_width) * f(t)
+C(t) = A + t * (B - A)
+left(t)  = C(t) + n * w(t)/2
+right(t) = C(t) - n * w(t)/2
+```
 
-This PR proposes the storage/schema contract only. Core/autorouter generation,
-Altium/KiCad import classification, shared geometry generation, PCB/SVG/3D
-rendering, Gerber/export support, and DRC/copper-solver obstacle handling require
-follow-up changes. In particular, exporting this schema alone does not speed up
-pour solving: consumers must first union the teardrop into the trace obstacle
-instead of treating it as another region to solve.
+The filled copper region lies between these boundaries, closed by straight caps
+at t=0 and t=1. The segment does not add round caps of its own. Adjacent trace,
+pad and via copper is unioned with it.
+
+- **linear** produces straight tapered sides (a trapezoid).
+- **smoothstep** produces cubic sides whose width derivative is zero at both
+  ends, providing smooth shoulders into constant-width copper. This is an exact
+  profile, not a renderer-selected generic "curved" shape. Equivalently, each
+  side's Bezier controls are at longitudinal positions L/3 and 2L/3, with the
+  respective endpoint side offsets.
+
+Either width may be the larger one: the segment can narrow or widen in route
+order. Equal widths are valid and give a constant-width segment. Both widths
+must be positive and finite; endpoints must be finite and distinct. Length is
+implied by the endpoints rather than stored redundantly. Reversing a segment
+swaps `start`/`end`, widths, and any endpoint port IDs; both modes then describe
+the same copper. For curved traces, use a straight terminal taper adjoining the
+curved route; this proposal does not define a curved centerline.
+
+## Route traversal and connectivity
+
+Unlike an ordinary `wire` point, this entry consumes the entire explicit segment
+from `start` to `end`. It contributes L to centerline trace length. Route walkers
+enter it at `start` and leave it at `end`. Do not infer another connector through
+it or treat it as an additional vertex. Consecutive explicit segments share the
+preceding end and following start. Wire runs adjoining it include their endpoint
+at the same coordinate; duplicated boundary coordinates do not create another
+physical segment or additional length.
+
+For example, this route narrows away from a pad, continues to a via, changes
+layers, and narrows away from the via on its other side:
+
+```json
+[
+  { "route_type": "teardrop", "start": { "x": 0, "y": 0 }, "end": { "x": 0.8, "y": 0 }, "start_width": 0.6, "end_width": 0.2, "width_interpolation_mode": "smoothstep", "layer": "top" },
+  { "route_type": "wire", "x": 0.8, "y": 0, "width": 0.2, "layer": "top" },
+  { "route_type": "wire", "x": 4, "y": 0, "width": 0.2, "layer": "top" },
+  { "route_type": "via", "x": 4, "y": 0, "from_layer": "top", "to_layer": "bottom" },
+  { "route_type": "teardrop", "start": { "x": 4, "y": 0 }, "end": { "x": 4.8, "y": 0 }, "start_width": 0.6, "end_width": 0.2, "width_interpolation_mode": "linear", "layer": "bottom" },
+  { "route_type": "wire", "x": 4.8, "y": 0, "width": 0.2, "layer": "bottom" },
+  { "route_type": "wire", "x": 6, "y": 0, "width": 0.2, "layer": "bottom" }
+]
+```
+
+The teardrop's `layer` must agree with adjoining route geometry; only an actual
+via/through-pad transition changes layers. It inherits the trace's net, group,
+subcircuit and copper thickness. Optional `start_pcb_port_id`, `end_pcb_port_id`,
+`copper_pour_id`, and `is_inside_copper_pour` have the same ownership/annotation
+roles as on wire entries; they do not determine or replace the taper geometry.
+Clearance calculations must use the full tapered region. Connections, continuity,
+matching adjoining widths and pad overlap are producer/DRC responsibilities, not
+inferred by the schema from other records.
+
+## Scope and consumer compatibility
+
+This is a schema and geometry proposal, not a renderer or router implementation.
+The schema validates the new entry's fields and leaves all existing route entries
+unchanged. Old Circuit JSON remains valid, but **old consumers do not necessarily
+accept or render the new route type**. Consumers must add explicit route handling;
+exporters must support it or reject it, never silently discard a segment.
+
+Follow-up work is needed in core/autorouter generation, shared geometry helpers,
+PCB/SVG/3D viewers, trace-length calculations, DRC, copper-solver obstacle
+conversion, and fabrication exporters. Linear tapers can be exported directly;
+smoothstep boundaries can be emitted as curves or tessellated to an explicit
+fabrication tolerance. Neither mode is a new independently solved pour region.
+
+There is deliberately no generic polygon escape hatch. Importers may fit a source
+teardrop to these profiles within a declared tolerance. Shapes that cannot be
+represented sufficiently accurately should remain ordinary imported copper shapes,
+not be silently approximated or labeled as teardrop route segments. Storing these
+fields alone does not change performance; consumers must use the new segment as
+trace copper instead of submitting it as another pour to solve.
