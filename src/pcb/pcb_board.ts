@@ -25,6 +25,7 @@ export const pcb_board = z
     is_via_in_pad_allowed: z.boolean().optional(),
     default_via_tented_on_top: z.boolean().optional(),
     default_via_tented_on_bottom: z.boolean().optional(),
+    default_via_plugged: z.boolean().optional(),
     width: length.optional(),
     height: length.optional(),
     center: point,
@@ -74,6 +75,7 @@ export interface PcbBoard extends ManufacturingDrcProperties {
   is_via_in_pad_allowed?: boolean
   default_via_tented_on_top?: boolean
   default_via_tented_on_bottom?: boolean
+  default_via_plugged?: boolean
   width?: Length
   height?: Length
   display_offset_x?: string
