@@ -3054,6 +3054,10 @@ interface PcbThermalSpoke {
 
 ### PcbTrace
 
+A `route_type: "teardrop"` entry represents an explicit straight segment with
+`start_width`, `end_width`, and `width_interpolation_mode` (`linear` or
+`smoothstep`). See the [geometry and route traversal contract](docs/pcb-trace-teardrops.md).
+
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_trace.ts)
 
 ```typescript
@@ -3083,10 +3087,27 @@ interface PcbTraceRoutePointVia {
   to_layer: LayerRef
 }
 
+/** A straight tapered wire segment. Coordinates and full widths are in mm. */
+interface PcbTraceRoutePointTeardrop {
+  route_type: "teardrop"
+  start: Point
+  end: Point
+  start_width: Distance
+  end_width: Distance
+  /** linear: f(t)=t; smoothstep: f(t)=3t²−2t³, with t along the centerline. */
+  width_interpolation_mode: "linear" | "smoothstep"
+  layer: LayerRef
+  copper_pour_id?: string
+  is_inside_copper_pour?: boolean
+  start_pcb_port_id?: string
+  end_pcb_port_id?: string
+}
+
 type PcbTraceRoutePoint =
   | PcbTraceRoutePointWire
   | PcbTraceRoutePointVia
   | PcbTraceRoutePointThroughPad
+  | PcbTraceRoutePointTeardrop
 ```
 
 ### PcbTraceError

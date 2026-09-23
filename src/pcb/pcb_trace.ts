@@ -41,10 +41,37 @@ export const pcb_trace_route_point_through_pad = z.object({
   pcb_plated_hole_id: z.string().optional(),
 })
 
+const positive_width = distance.pipe(z.number().finite().positive())
+const finite_route_point = point.extend({
+  x: distance.pipe(z.number().finite()),
+  y: distance.pipe(z.number().finite()),
+})
+
+/** An explicit straight wire segment with a varying full copper width. */
+export const pcb_trace_route_point_teardrop = z
+  .object({
+    route_type: z.literal("teardrop"),
+    start: finite_route_point,
+    end: finite_route_point,
+    start_width: positive_width,
+    end_width: positive_width,
+    width_interpolation_mode: z.enum(["linear", "smoothstep"]),
+    layer: layer_ref,
+    copper_pour_id: z.string().optional(),
+    is_inside_copper_pour: z.boolean().optional(),
+    start_pcb_port_id: z.string().optional(),
+    end_pcb_port_id: z.string().optional(),
+  })
+  .refine(({ start, end }) => {
+    const length = Math.hypot(end.x - start.x, end.y - start.y)
+    return Number.isFinite(length) && length > 0
+  }, "Teardrop endpoints must define a finite, nonzero-length segment")
+
 export const pcb_trace_route_point = z.union([
   pcb_trace_route_point_wire,
   pcb_trace_route_point_via,
   pcb_trace_route_point_through_pad,
+  pcb_trace_route_point_teardrop,
 ])
 type InferredPcbTraceRoutePoint = z.infer<typeof pcb_trace_route_point>
 
@@ -108,10 +135,27 @@ export interface PcbTraceRoutePointThroughPad {
   pcb_plated_hole_id?: string
 }
 
+/** A straight tapered wire segment. Coordinates and full widths are in mm. */
+export interface PcbTraceRoutePointTeardrop {
+  route_type: "teardrop"
+  start: Point
+  end: Point
+  start_width: Distance
+  end_width: Distance
+  /** linear: f(t)=t; smoothstep: f(t)=3t²−2t³, with t along the centerline. */
+  width_interpolation_mode: "linear" | "smoothstep"
+  layer: LayerRef
+  copper_pour_id?: string
+  is_inside_copper_pour?: boolean
+  start_pcb_port_id?: string
+  end_pcb_port_id?: string
+}
+
 export type PcbTraceRoutePoint =
   | PcbTraceRoutePointWire
   | PcbTraceRoutePointVia
   | PcbTraceRoutePointThroughPad
+  | PcbTraceRoutePointTeardrop
 
 /**
  * Defines a trace on the PCB
