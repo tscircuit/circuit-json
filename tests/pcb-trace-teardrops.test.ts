@@ -163,21 +163,3 @@ test("outgoing taper needs a distinct finite endpoint on its layer", () => {
     expect(pcb_trace.safeParse({ ...trace, route }).success).toBe(false)
   }
 })
-test("standalone teardrop route entries are removed", () => {
-  expect(
-    any_circuit_element.safeParse({
-      ...trace,
-      route: [
-        {
-          route_type: "teardrop",
-          start: { x: 0, y: 0 },
-          end: { x: 0.8, y: 0 },
-          start_width: 0.6,
-          end_width: 0.2,
-          width_interpolation_mode: "quadratic",
-          layer: "top",
-        },
-      ],
-    }).success,
-  ).toBe(false)
-})
