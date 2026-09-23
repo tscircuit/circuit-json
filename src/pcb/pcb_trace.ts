@@ -63,12 +63,7 @@ export const pcb_trace = z
     route_order_index: z.number().optional(),
     should_round_corners: z.boolean().optional(),
     trace_length: z.number().optional(),
-    is_antenna_trace: z
-      .boolean()
-      .optional()
-      .describe(
-        "True for radiating antenna copper with intentional open ends, excluding feed traces. False or omitted means ordinary dangling-trace validation applies.",
-      ),
+    is_antenna_trace: z.boolean().optional(),
     highlight_color: z.string().optional(),
     route: z.array(pcb_trace_route_point),
   })
