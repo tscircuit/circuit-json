@@ -4,6 +4,11 @@ import { distance, type Distance } from "src/units"
 import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
+import {
+  pcb_trace_teardrop,
+  type PcbTraceTeardrop,
+} from "./properties/pcb_trace_teardrop"
+
 export const pcb_trace_route_point_wire = z.object({
   route_type: z.literal("wire"),
   x: distance,
@@ -65,6 +70,7 @@ export const pcb_trace = z
     trace_length: z.number().optional(),
     highlight_color: z.string().optional(),
     route: z.array(pcb_trace_route_point),
+    teardrops: z.array(pcb_trace_teardrop).optional(),
   })
   .describe("Defines a trace on the PCB")
 
@@ -134,6 +140,8 @@ export interface PcbTrace {
   should_round_corners?: boolean
   trace_length?: number
   highlight_color?: string
+  /** Additive copper owned by this trace, not independently solved copper pours. */
+  teardrops?: PcbTraceTeardrop[]
   route: Array<PcbTraceRoutePoint>
 }
 

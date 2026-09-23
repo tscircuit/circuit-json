@@ -177,6 +177,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbTraceError](#pcbtraceerror)
     - [PcbTraceHint](#pcbtracehint)
     - [PcbTraceMissingError](#pcbtracemissingerror)
+    - [PcbTraceTeardrop](#pcbtraceteardrop)
     - [PcbTraceTooLongError](#pcbtracetoolongerror)
     - [PcbTraceTooLongWarning](#pcbtracetoolongwarning)
     - [PcbTraceTooManyViasWarning](#pcbtracetoomanyviaswarning)
@@ -3054,6 +3055,10 @@ interface PcbThermalSpoke {
 
 ### PcbTrace
 
+`PcbTrace.teardrops?: PcbTraceTeardrop[]` stores optional additive copper at wire
+segment endpoints. See the [geometry proposal](docs/pcb-trace-teardrops.md) for
+attachment, taper geometry, import, and consumer compatibility rules.
+
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_trace.ts)
 
 ```typescript
@@ -3146,6 +3151,45 @@ interface PcbTraceMissingError extends BaseCircuitJsonError {
   pcb_port_ids: string[]
   subcircuit_id?: string
 }
+```
+
+### PcbTraceTeardrop
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/properties/pcb_trace_teardrop.ts)
+
+Nested geometry on `PcbTrace.teardrops`, not a standalone circuit element.
+See [geometry and compatibility](docs/pcb-trace-teardrops.md).
+
+```typescript
+interface PcbTraceTeardropEndpoint {
+  /** Segment from route[i] to route[i + 1]; both must be wires on the same layer. */
+  route_segment_index: number
+  /** The wide end is at the selected endpoint, tapering into this segment. */
+  end: "start" | "end"
+}
+
+/** A symmetric taper; dimensions are in mm. See docs/pcb-trace-teardrops.md. */
+interface PcbTraceTeardropParametric extends PcbTraceTeardropEndpoint {
+  shape: "linear" | "curved"
+  /** Distance from the selected endpoint to the neck, along the segment. */
+  length: Distance
+  /** Full copper width at the selected endpoint, perpendicular to the segment. */
+  width: Distance
+  outline?: never
+}
+
+/** Imported/resolved copper outline, implicitly closed, without holes. */
+interface PcbTraceTeardropPolygon extends PcbTraceTeardropEndpoint {
+  shape: "polygon"
+  /** Absolute PCB coordinates in mm, with all placement and rotation baked in. */
+  outline: Point[]
+  length?: never
+  width?: never
+}
+
+type PcbTraceTeardrop =
+  | PcbTraceTeardropParametric
+  | PcbTraceTeardropPolygon
 ```
 
 ### PcbTraceTooLongError

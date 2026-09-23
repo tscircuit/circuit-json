@@ -1,3 +1,4 @@
+export * from "./properties/pcb_trace_teardrop"
 export * from "./properties/brep"
 export * from "./properties/insertion_direction"
 export * from "./properties/layer_ref"
