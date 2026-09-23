@@ -3056,6 +3056,13 @@ interface PcbThermalSpoke {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_trace.ts)
 
+`pcb_trace.is_antenna_trace?: boolean` identifies radiating antenna copper whose
+open ends are intentional. Producers set it to `true` only on the radiating
+trace, excluding ordinary feed traces and other traces on the same net. Consumers
+can exempt that trace from dangling-end validation; other PCB checks still apply.
+When the field is `false` or omitted, ordinary dangling-trace validation applies.
+Consumers must not infer this flag from a trace ID, component name, or net name.
+
 ```typescript
 interface PcbTraceRoutePointWire {
   route_type: "wire"

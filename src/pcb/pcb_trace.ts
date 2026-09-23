@@ -63,7 +63,12 @@ export const pcb_trace = z
     route_order_index: z.number().optional(),
     should_round_corners: z.boolean().optional(),
     trace_length: z.number().optional(),
-    is_antenna_trace: z.boolean().optional(),
+    is_antenna_trace: z
+      .boolean()
+      .optional()
+      .describe(
+        "True for radiating antenna copper with intentional open ends, excluding feed traces. False or omitted means ordinary dangling-trace validation applies.",
+      ),
     highlight_color: z.string().optional(),
     route: z.array(pcb_trace_route_point),
   })
@@ -134,7 +139,12 @@ export interface PcbTrace {
   route_thickness_mode?: "constant" | "interpolated"
   should_round_corners?: boolean
   trace_length?: number
-  /** Radiating antenna copper whose open ends are intentional, excluding feed traces. */
+  /**
+   * True for radiating antenna copper whose open ends are intentional.
+   * Do not mark ordinary feed traces or other traces sharing the antenna's net.
+   * False or omitted means ordinary dangling-trace validation applies.
+   * This does not exempt the trace from other PCB checks.
+   */
   is_antenna_trace?: boolean
   highlight_color?: string
   route: Array<PcbTraceRoutePoint>
