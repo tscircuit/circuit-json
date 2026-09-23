@@ -90,6 +90,7 @@ export const pcb_trace = z
     route_order_index: z.number().optional(),
     should_round_corners: z.boolean().optional(),
     trace_length: z.number().optional(),
+    is_antenna_trace: z.boolean().optional(),
     highlight_color: z.string().optional(),
     route: z.array(pcb_trace_route_point),
   })
@@ -177,6 +178,7 @@ export interface PcbTrace {
   route_thickness_mode?: "constant" | "interpolated"
   should_round_corners?: boolean
   trace_length?: number
+  is_antenna_trace?: boolean
   highlight_color?: string
   route: Array<PcbTraceRoutePoint>
 }
