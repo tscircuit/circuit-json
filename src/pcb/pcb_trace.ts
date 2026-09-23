@@ -4,17 +4,51 @@ import { distance, type Distance } from "src/units"
 import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-export const pcb_trace_route_point_wire = z.object({
-  route_type: z.literal("wire"),
-  x: distance,
-  y: distance,
-  width: distance,
-  copper_pour_id: z.string().optional(),
-  is_inside_copper_pour: z.boolean().optional(),
-  start_pcb_port_id: z.string().optional(),
-  end_pcb_port_id: z.string().optional(),
-  layer: layer_ref,
-})
+const positive_width = distance.pipe(z.number().finite().positive())
+
+export const pcb_trace_route_point_wire = z
+  .object({
+    route_type: z.literal("wire"),
+    x: distance,
+    y: distance,
+    width: distance,
+    start_width: positive_width.optional(),
+    end_width: positive_width.optional(),
+    width_interpolation_mode: z.enum(["linear", "quadratic"]).optional(),
+    copper_pour_id: z.string().optional(),
+    is_inside_copper_pour: z.boolean().optional(),
+    start_pcb_port_id: z.string().optional(),
+    end_pcb_port_id: z.string().optional(),
+    layer: layer_ref,
+  })
+  .superRefine((wire, ctx) => {
+    const present = [
+      wire.start_width,
+      wire.end_width,
+      wire.width_interpolation_mode,
+    ].filter((v) => v !== undefined).length
+    if (present === 0) return
+    if (present !== 3) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message:
+          "Wire taper requires start_width, end_width and width_interpolation_mode together",
+      })
+    }
+    if (wire.width !== wire.start_width) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["start_width"],
+        message: "start_width must equal width",
+      })
+    }
+    if (!Number.isFinite(wire.x) || !Number.isFinite(wire.y)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Tapered wire coordinates must be finite",
+      })
+    }
+  })
 
 export const pcb_trace_route_point_via = z.object({
   route_type: z.literal("via"),
@@ -41,37 +75,10 @@ export const pcb_trace_route_point_through_pad = z.object({
   pcb_plated_hole_id: z.string().optional(),
 })
 
-const positive_width = distance.pipe(z.number().finite().positive())
-const finite_route_point = point.extend({
-  x: distance.pipe(z.number().finite()),
-  y: distance.pipe(z.number().finite()),
-})
-
-/** An explicit straight wire segment with a varying full copper width. */
-export const pcb_trace_route_point_teardrop = z
-  .object({
-    route_type: z.literal("teardrop"),
-    start: finite_route_point,
-    end: finite_route_point,
-    start_width: positive_width,
-    end_width: positive_width,
-    width_interpolation_mode: z.enum(["linear", "quadratic"]),
-    layer: layer_ref,
-    copper_pour_id: z.string().optional(),
-    is_inside_copper_pour: z.boolean().optional(),
-    start_pcb_port_id: z.string().optional(),
-    end_pcb_port_id: z.string().optional(),
-  })
-  .refine(({ start, end }) => {
-    const length = Math.hypot(end.x - start.x, end.y - start.y)
-    return Number.isFinite(length) && length > 0
-  }, "Teardrop endpoints must define a finite, nonzero-length segment")
-
 export const pcb_trace_route_point = z.union([
   pcb_trace_route_point_wire,
   pcb_trace_route_point_via,
   pcb_trace_route_point_through_pad,
-  pcb_trace_route_point_teardrop,
 ])
 type InferredPcbTraceRoutePoint = z.infer<typeof pcb_trace_route_point>
 
@@ -92,7 +99,32 @@ export const pcb_trace = z
     trace_length: z.number().optional(),
     is_antenna_trace: z.boolean().optional(),
     highlight_color: z.string().optional(),
-    route: z.array(pcb_trace_route_point),
+    route: z.array(pcb_trace_route_point).superRefine((route, ctx) => {
+      for (const [i, wire] of route.entries()) {
+        if (
+          wire.route_type !== "wire" ||
+          wire.width_interpolation_mode === undefined
+        )
+          continue
+        const next = route[i + 1]
+        const end = next?.route_type === "through_pad" ? next.start : next
+        const layer =
+          next?.route_type === "wire"
+            ? next.layer
+            : next?.route_type === "via"
+              ? next.from_layer
+              : next?.start_layer
+        const length = end ? Math.hypot(end.x - wire.x, end.y - wire.y) : NaN
+        if (!Number.isFinite(length) || length <= 0 || layer !== wire.layer) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: [i],
+            message:
+              "Tapered wire must lead to a distinct finite next point on the same layer",
+          })
+        }
+      }
+    }),
   })
   .describe("Defines a trace on the PCB")
 
@@ -104,6 +136,10 @@ export interface PcbTraceRoutePointWire {
   x: Distance
   y: Distance
   width: Distance
+  /** Outgoing segment taper; all three fields must be specified together. */
+  start_width?: Distance
+  end_width?: Distance
+  width_interpolation_mode?: "linear" | "quadratic"
   copper_pour_id?: string
   is_inside_copper_pour?: boolean
   start_pcb_port_id?: string
@@ -136,27 +172,10 @@ export interface PcbTraceRoutePointThroughPad {
   pcb_plated_hole_id?: string
 }
 
-/** A straight tapered wire segment. Coordinates and full widths are in mm. */
-export interface PcbTraceRoutePointTeardrop {
-  route_type: "teardrop"
-  start: Point
-  end: Point
-  start_width: Distance
-  end_width: Distance
-  /** Quadratic is concave toward the narrow end; see docs/pcb-trace-teardrops.md for profiles. */
-  width_interpolation_mode: "linear" | "quadratic"
-  layer: LayerRef
-  copper_pour_id?: string
-  is_inside_copper_pour?: boolean
-  start_pcb_port_id?: string
-  end_pcb_port_id?: string
-}
-
 export type PcbTraceRoutePoint =
   | PcbTraceRoutePointWire
   | PcbTraceRoutePointVia
   | PcbTraceRoutePointThroughPad
-  | PcbTraceRoutePointTeardrop
 
 /**
  * Defines a trace on the PCB

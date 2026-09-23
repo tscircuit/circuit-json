@@ -1,124 +1,92 @@
-# Proposal: a teardrop route segment
+# Tapered wire segments (teardrops)
 
-Add `route_type: "teardrop"` to `pcb_trace.route`. A teardrop is an explicit
-straight wire segment whose full copper width varies along its centerline.
-It participates in the route directly, without a separate outline, copper pour,
-attachment index, or trace-level teardrop array.
+A teardrop is a `wire` segment with varying full copper width. `route_type`
+contains only `wire`, `via`, and `through_pad`; there is no separate `teardrop`
+entry, outline, or attachment array.
 
 ```json
-{
-  "route_type": "teardrop",
-  "start": { "x": 0, "y": 0 },
-  "end": { "x": 0.8, "y": 0 },
-  "start_width": 0.6,
-  "end_width": 0.2,
-  "width_interpolation_mode": "quadratic",
-  "layer": "top"
-}
+[
+  {
+    "route_type": "wire",
+    "x": 0, "y": 0,
+    "width": 0.6,
+    "start_width": 0.6,
+    "end_width": 0.2,
+    "width_interpolation_mode": "quadratic",
+    "layer": "top"
+  },
+  { "route_type": "wire", "x": 0.8, "y": 0, "width": 0.2, "layer": "top" },
+  { "route_type": "wire", "x": 4, "y": 0, "width": 0.2, "layer": "top" }
+]
 ```
 
-## Names and conventions
+The first point's fields describe the **outgoing segment** from (0,0) to
+(0.8,0). The remaining segment is an ordinary constant-width wire. No duplicate
+boundary point or separate `start`/`end` coordinates are needed.
 
-Existing `wire` route entries use `width`, so `start_width` and `end_width`
-describe the in-plane copper size consistently. They are **full widths**, not
-radii or vertical copper thickness. `start` and `end` follow the existing
-`through_pad` convention for explicit segments. Distances and coordinates are
-millimeters; schema inputs also accept the usual unit strings.
+## Fields and traversal
 
-`width_interpolation_mode` defines the local taper profile. The existing
-trace-level `route_thickness_mode: "constant" | "interpolated"` still controls
-ordinary wire entries. It does not override this segment's explicit widths or
-interpolation mode. All teardrop geometry fields are required: no pad dimensions,
-router defaults or global settings are consulted to reconstruct the shape.
+`start_width`, `end_width`, and `width_interpolation_mode` are optional as a
+set: either omit all three or supply all three. Widths must be finite and
+positive, and `start_width` must equal the existing required `width` field.
+This preserves the original wire shape and a starting-width fallback for old
+consumers, although old consumers cannot reproduce the taper itself.
+Coordinates and full widths use millimeters; schema inputs accept unit strings.
+
+A tapered point must have a distinct, finite next route point on the same
+copper layer. Its endpoint is the next wire's (x,y), the next via's (x,y) on
+`from_layer`, or the next through-pad's `start` on `start_layer`. The via or
+through-pad then performs its normal layer transition. A tapered final point,
+zero-length segment, or implicit cross-layer segment is invalid.
+
+The local profile overrides `route_thickness_mode` **only for this outgoing
+segment**. The incoming segment still uses its previous point's settings.
+A sequence of tapered wires can share endpoints normally. Consumers must not
+also draw a constant-width stroke over the tapered segment. Matching the next
+wire's width to `end_width` is the producer's responsibility.
 
 ## Geometry
 
-Let A = `start`, B = `end`, L = |B−A|, u = (B−A)/L and n = (−u.y, u.x).
-For normalized distance t along the segment, 0 ≤ t ≤ 1:
+Let A be the wire's (x,y), B its endpoint, L=|B-A|, u=(B-A)/L and
+n=(-u.y,u.x). With t measuring normalized distance along the segment:
 
 ```
-f(t) = t                         // linear
-f(t) = t*t                      // quadratic, start_width <= end_width
-f(t) = 2*t - t*t                // quadratic, start_width > end_width
+f(t) = t             // linear
+f(t) = t*t           // quadratic, start_width <= end_width
+f(t) = 2*t - t*t     // quadratic, start_width > end_width
 w(t) = start_width + (end_width - start_width) * f(t)
 C(t) = A + t * (B - A)
 left(t)  = C(t) + n * w(t)/2
 right(t) = C(t) - n * w(t)/2
 ```
 
-The filled copper region lies between these boundaries, closed by straight caps
-at t=0 and t=1. The segment does not add round caps of its own. Adjacent trace,
-pad and via copper is unioned with it.
+**Linear** produces straight tapered sides. **Quadratic** produces concave
+sides that flatten into the narrow trace. Equivalently, measuring q from wide
+to narrow: `w(q) = narrow + (wide - narrow) * (1-q)^2`. Equal widths form a
+constant-width rectangle. The wide end does not automatically match a pad's
+tangent. `smoothstep` is not supported.
 
-- **quadratic** produces concave sides with zero width derivative at the
-  narrower end. With u measured from the wide end to the narrow end,
-  `w(u) = narrow_width + (wide_width - narrow_width) * (1-u)^2`.
-  It flattens into the thin trace without an inflection.
-  The orientation follows the widths, not route order: narrowing uses
-  `f(t)=2t-t²`, widening uses `f(t)=t²`. Equal widths give a constant-width
-  segment. At the wide end this profile does not automatically match a pad
-  boundary's tangent.
-- **linear** produces straight tapered sides (a trapezoid).
+The filled region has straight end caps and no additional round caps. It is
+unioned with adjacent pad, via, and wire copper. Reversing a route moves the
+profile fields to the new outgoing point, swaps `start_width`/`end_width`, and
+sets `width` to the new start width; this preserves the same copper. The
+centerline length is L, counted once as an ordinary wire segment.
 
-Either width may be the larger one: the segment can narrow or widen in route
-order. Equal widths are valid and give a constant-width segment. Both widths
-must be positive and finite; endpoints must be finite and distinct. Length is
-implied by the endpoints rather than stored redundantly. Reversing a segment
-swaps `start`/`end`, widths, and any endpoint port IDs; both modes then describe
-the same copper. For curved traces, use a straight terminal taper adjoining the
-curved route; this proposal does not define a curved centerline.
+Tapers retain the wire's layer, port references and pour annotations and their
+parent trace's net/group/subcircuit ownership. Clearance calculations must use
+the full tapered region. Pad overlap and electrical connectivity remain
+producer/DRC responsibilities.
 
-## Route traversal and connectivity
+## Compatibility and consumers
 
-Unlike an ordinary `wire` point, this entry consumes the entire explicit segment
-from `start` to `end`. It contributes L to centerline trace length. Route walkers
-enter it at `start` and leave it at `end`. Do not infer another connector through
-it or treat it as an additional vertex. Consecutive explicit segments share the
-preceding end and following start. Wire runs adjoining it include their endpoint
-at the same coordinate; duplicated boundary coordinates do not create another
-physical segment or additional length.
+Ordinary wire documents are unchanged. Migrate an old standalone teardrop to
+an outgoing wire with its start coordinates, `width = start_width`, and taper
+fields, followed by a wire at its end with `width = end_width` (reuse an existing
+boundary wire if present). The removed `route_type: "teardrop"` is rejected.
 
-For example, this route narrows away from a pad, continues to a via, changes
-layers, and narrows away from the via on its other side:
-
-```json
-[
-  { "route_type": "teardrop", "start": { "x": 0, "y": 0 }, "end": { "x": 0.8, "y": 0 }, "start_width": 0.6, "end_width": 0.2, "width_interpolation_mode": "quadratic", "layer": "top" },
-  { "route_type": "wire", "x": 0.8, "y": 0, "width": 0.2, "layer": "top" },
-  { "route_type": "wire", "x": 4, "y": 0, "width": 0.2, "layer": "top" },
-  { "route_type": "via", "x": 4, "y": 0, "from_layer": "top", "to_layer": "bottom" },
-  { "route_type": "teardrop", "start": { "x": 4, "y": 0 }, "end": { "x": 4.8, "y": 0 }, "start_width": 0.6, "end_width": 0.2, "width_interpolation_mode": "linear", "layer": "bottom" },
-  { "route_type": "wire", "x": 4.8, "y": 0, "width": 0.2, "layer": "bottom" },
-  { "route_type": "wire", "x": 6, "y": 0, "width": 0.2, "layer": "bottom" }
-]
-```
-
-The teardrop's `layer` must agree with adjoining route geometry; only an actual
-via/through-pad transition changes layers. It inherits the trace's net, group,
-subcircuit and copper thickness. Optional `start_pcb_port_id`, `end_pcb_port_id`,
-`copper_pour_id`, and `is_inside_copper_pour` have the same ownership/annotation
-roles as on wire entries; they do not determine or replace the taper geometry.
-Clearance calculations must use the full tapered region. Connections, continuity,
-matching adjoining widths and pad overlap are producer/DRC responsibilities, not
-inferred by the schema from other records.
-
-## Scope and consumer compatibility
-
-This is a schema and geometry proposal, not a renderer or router implementation.
-The schema validates the new entry's fields and leaves all existing route entries
-unchanged. Old Circuit JSON remains valid, but **old consumers do not necessarily
-accept or render the new route type**. Consumers must add explicit route handling;
-exporters must support it or reject it, never silently discard a segment.
-
-Follow-up work is needed in core/autorouter generation, shared geometry helpers,
-PCB/SVG/3D viewers, trace-length calculations, DRC, copper-solver obstacle
-conversion, and fabrication exporters. Linear tapers can be exported directly;
-quadratic boundaries can be emitted as curves or tessellated to an explicit
-fabrication tolerance. None of these profiles is a new independently solved pour region.
-
-There is deliberately no generic polygon escape hatch. Importers may fit a source
-teardrop to these profiles within a declared tolerance. Shapes that cannot be
-represented sufficiently accurately should remain ordinary imported copper shapes,
-not be silently approximated or labeled as teardrop route segments. Storing these
-fields alone does not change performance; consumers must use the new segment as
-trace copper instead of submitting it as another pour to solve.
+Renderers, routers, exporters, DRC, and copper-solver obstacle conversion need
+explicit support for wire taper fields. Existing consumers may ignore these
+fields and draw a constant-width starting-width segment. Producers requiring
+accurate output must use a supporting consumer. Linear tapers can be exported
+directly; quadratic boundaries can be emitted as curves or tessellated to a
+stated tolerance. They are trace copper, not independently solved pours.

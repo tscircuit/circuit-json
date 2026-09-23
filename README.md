@@ -3054,9 +3054,9 @@ interface PcbThermalSpoke {
 
 ### PcbTrace
 
-A `route_type: "teardrop"` entry represents an explicit straight segment with
-`start_width`, `end_width`, and `width_interpolation_mode` (`linear` or
-`quadratic`). See the [geometry and route traversal contract](docs/pcb-trace-teardrops.md).
+A `wire` route point can taper its outgoing segment using `start_width`,
+`end_width`, and `width_interpolation_mode` (`linear` or `quadratic`).
+See the [wire taper geometry contract](docs/pcb-trace-teardrops.md).
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_trace.ts)
 
@@ -3066,6 +3066,9 @@ interface PcbTraceRoutePointWire {
   x: Distance
   y: Distance
   width: Distance
+  start_width?: Distance
+  end_width?: Distance
+  width_interpolation_mode?: "linear" | "quadratic"
   copper_pour_id?: string
   is_inside_copper_pour?: boolean
   start_pcb_port_id?: string
@@ -3087,27 +3090,10 @@ interface PcbTraceRoutePointVia {
   to_layer: LayerRef
 }
 
-/** A straight tapered wire segment. Coordinates and full widths are in mm. */
-interface PcbTraceRoutePointTeardrop {
-  route_type: "teardrop"
-  start: Point
-  end: Point
-  start_width: Distance
-  end_width: Distance
-  /** Quadratic is concave toward the narrow end; see docs/pcb-trace-teardrops.md for profiles. */
-  width_interpolation_mode: "linear" | "quadratic"
-  layer: LayerRef
-  copper_pour_id?: string
-  is_inside_copper_pour?: boolean
-  start_pcb_port_id?: string
-  end_pcb_port_id?: string
-}
-
 type PcbTraceRoutePoint =
   | PcbTraceRoutePointWire
   | PcbTraceRoutePointVia
   | PcbTraceRoutePointThroughPad
-  | PcbTraceRoutePointTeardrop
 ```
 
 ### PcbTraceError
