@@ -100,3 +100,28 @@ test("parses analysis-specific simulation results", () => {
   })
   expect(acSweep.complex_voltages[1]).toEqual({ re: 0.5, im: -0.5 })
 })
+
+test("parses multidimensional sweep coordinates on analysis results", () => {
+  const result = simulation_dc_operating_point_voltage.parse({
+    type: "simulation_dc_operating_point_voltage",
+    simulation_experiment_id: "simulation_experiment_0",
+    simulation_voltage_probe_id: "simulation_voltage_probe_0",
+    voltage: 3.3,
+    simulation_parameter_sweep_coordinates: [
+      {
+        simulation_parameter_sweep_id: "simulation_parameter_sweep_voltage",
+        sweep_index: 1,
+        parameter_value: 3.6,
+        parameter_unit: "V",
+      },
+      {
+        simulation_parameter_sweep_id: "simulation_parameter_sweep_current",
+        sweep_index: 4,
+        parameter_value: 1,
+        parameter_unit: "A",
+      },
+    ],
+  })
+
+  expect(result.simulation_parameter_sweep_coordinates).toHaveLength(2)
+})

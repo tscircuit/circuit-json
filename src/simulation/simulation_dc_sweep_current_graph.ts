@@ -15,6 +15,7 @@ export interface SimulationDcSweepCurrentGraph {
   simulation_dc_sweep_current_graph_id: string
   simulation_experiment_id: string
   simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_parameter_sweep_coordinates?: SimulationParameterSweepCoordinate[]
   simulation_current_probe_id: string
   sweep_values: number[]
   sweep_unit: SimulationDcSweepUnit
@@ -32,6 +33,10 @@ export const simulation_dc_sweep_current_graph = z
     simulation_experiment_id: z.string(),
     simulation_parameter_sweep_coordinate:
       simulation_parameter_sweep_coordinate.optional(),
+    simulation_parameter_sweep_coordinates: z
+      .array(simulation_parameter_sweep_coordinate)
+      .min(2)
+      .optional(),
     simulation_current_probe_id: z.string(),
     sweep_values: z.array(z.number()),
     sweep_unit: simulation_dc_sweep_unit,
