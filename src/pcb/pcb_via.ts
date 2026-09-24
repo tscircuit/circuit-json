@@ -18,9 +18,7 @@ export const pcb_via = z
     topmost_drill_layer: layer_ref.optional(),
     bottommost_drill_layer: layer_ref.optional(),
     through_hole: z.boolean().optional(),
-    /** @deprecated */
     from_layer: layer_ref.optional(),
-    /** @deprecated */
     to_layer: layer_ref.optional(),
     layers: z.array(layer_ref),
     /** PCB ports belonging to this via, including layer ports and aliases. */
@@ -63,9 +61,7 @@ export interface PcbVia {
   topmost_drill_layer?: LayerRef
   bottommost_drill_layer?: LayerRef
   through_hole?: boolean
-  /** @deprecated */
   from_layer?: LayerRef
-  /** @deprecated */
   to_layer?: LayerRef
   layers: LayerRef[]
   /** PCB ports belonging to this via, including layer ports and aliases. */
