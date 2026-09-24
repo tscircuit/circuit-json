@@ -1471,6 +1471,7 @@ interface PcbBoard extends ManufacturingDrcProperties {
   is_via_in_pad_allowed?: boolean
   default_via_tented_on_top?: boolean
   default_via_tented_on_bottom?: boolean
+  default_via_plugged?: boolean
   width?: Length
   height?: Length
   display_offset_x?: string
