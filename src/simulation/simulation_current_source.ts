@@ -1,11 +1,42 @@
 import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
-import { current, frequency, rotation } from "src/units"
+import { current, frequency, ms, rotation } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import {
   wave_shape,
   type WaveShape,
 } from "src/simulation/simulation_voltage_source"
+
+export interface SimulationCurrentWaveform {
+  timestamps_ms: number[]
+  current_values: number[]
+}
+
+export const simulation_current_waveform = z
+  .object({
+    timestamps_ms: z.array(ms.pipe(z.number().nonnegative())),
+    current_values: z.array(current),
+  })
+  .superRefine((waveform, context) => {
+    if (waveform.timestamps_ms.length !== waveform.current_values.length) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "timestamps_ms and current_values must have the same length",
+      })
+    }
+
+    for (let index = 1; index < waveform.timestamps_ms.length; index++) {
+      if (
+        waveform.timestamps_ms[index]! <= waveform.timestamps_ms[index - 1]!
+      ) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "timestamps_ms must be strictly increasing",
+          path: ["timestamps_ms", index],
+        })
+      }
+    }
+  })
 
 const percentage = z
   .union([z.string(), z.number()])
@@ -59,9 +90,14 @@ export const simulation_ac_current_source = z
     wave_shape: wave_shape.optional(),
     phase: rotation.optional(),
     duty_cycle: percentage.optional(),
+    current_waveform: simulation_current_waveform.optional(),
     ac_magnitude: current.optional(),
     ac_phase: rotation.optional(),
   })
+  .refine(
+    (source) => !(source.current_waveform && source.wave_shape),
+    "current_waveform and wave_shape cannot be used together",
+  )
   .describe("Defines an AC current source for simulation")
 
 export type SimulationAcCurrentSourceInput = z.input<
@@ -111,6 +147,7 @@ export interface SimulationAcCurrentSource {
   wave_shape?: WaveShape
   phase?: number
   duty_cycle?: number
+  current_waveform?: SimulationCurrentWaveform
   ac_magnitude?: number
   ac_phase?: number
 }
@@ -126,5 +163,9 @@ expectTypesMatch<
 expectTypesMatch<
   SimulationAcCurrentSource,
   z.infer<typeof simulation_ac_current_source>
+>(true)
+expectTypesMatch<
+  SimulationCurrentWaveform,
+  z.infer<typeof simulation_current_waveform>
 >(true)
 expectTypesMatch<SimulationCurrentSource, InferredSimulationCurrentSource>(true)
