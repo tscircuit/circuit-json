@@ -1149,6 +1149,8 @@ interface SourceSimpleResistor extends SourceComponentBase {
   ftype: "simple_resistor"
   resistance: number
   display_resistance?: string
+  /** Display-only tolerance string, e.g. "5%" for a resistor declared as tolerance="5%". */
+  display_tolerance?: string
 }
 ```
 
