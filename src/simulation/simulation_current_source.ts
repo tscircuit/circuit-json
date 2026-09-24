@@ -6,6 +6,10 @@ import {
   wave_shape,
   type WaveShape,
 } from "src/simulation/simulation_voltage_source"
+import {
+  simulation_current_waveform,
+  type SimulationCurrentWaveform,
+} from "./simulation_source_waveform"
 
 const percentage = z
   .union([z.string(), z.number()])
@@ -39,6 +43,7 @@ export const simulation_dc_current_source = z
     current: current,
     ac_magnitude: current.optional(),
     ac_phase: rotation.optional(),
+    current_waveform: simulation_current_waveform.optional(),
   })
   .describe("Defines a DC current source for simulation")
 
@@ -61,6 +66,7 @@ export const simulation_ac_current_source = z
     duty_cycle: percentage.optional(),
     ac_magnitude: current.optional(),
     ac_phase: rotation.optional(),
+    current_waveform: simulation_current_waveform.optional(),
   })
   .describe("Defines an AC current source for simulation")
 
@@ -92,6 +98,7 @@ export interface SimulationDcCurrentSource {
   current: number
   ac_magnitude?: number
   ac_phase?: number
+  current_waveform?: SimulationCurrentWaveform
 }
 
 /**
@@ -113,6 +120,7 @@ export interface SimulationAcCurrentSource {
   duty_cycle?: number
   ac_magnitude?: number
   ac_phase?: number
+  current_waveform?: SimulationCurrentWaveform
 }
 
 export type SimulationCurrentSource =
