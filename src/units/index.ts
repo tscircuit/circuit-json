@@ -57,28 +57,36 @@ export {
 //   | `${number} ${SIPrefix}${UnitOrAbbreviation}`
 
 // TODO lots of validation to make sure the unit is valid etc.
+const SIGNIFICANT_DIGITS = 12
+
+const roundToSignificantDigits = (value: number) =>
+  Number.isFinite(value)
+    ? Number.parseFloat(value.toPrecision(SIGNIFICANT_DIGITS))
+    : value
+
 export const resistance = z
   .string()
   .or(z.number())
   .transform((v) => parseAndConvertSiUnit(v, "Ω").value!)
+  .transform(roundToSignificantDigits)
 
 export const capacitance = z
   .string()
   .or(z.number())
   .transform((v) => parseAndConvertSiUnit(v, "F").value!)
-  .transform((value) => {
-    return Number.parseFloat(value.toPrecision(12)) // Round to 12 significant digits
-  })
+  .transform(roundToSignificantDigits)
 
 export const inductance = z
   .string()
   .or(z.number())
   .transform((v) => parseAndConvertSiUnit(v, "H").value!)
+  .transform(roundToSignificantDigits)
 
 export const voltage = z
   .string()
   .or(z.number())
   .transform((v) => parseAndConvertSiUnit(v, "V").value!)
+  .transform(roundToSignificantDigits)
 
 export const length = z
   .string()
@@ -89,6 +97,7 @@ export const frequency = z
   .string()
   .or(z.number())
   .transform((v) => parseAndConvertSiUnit(v, "Hz").value!)
+  .transform(roundToSignificantDigits)
 
 /**
  * Length in meters
