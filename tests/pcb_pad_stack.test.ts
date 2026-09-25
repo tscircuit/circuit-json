@@ -1,8 +1,9 @@
 import { expect, test } from "bun:test"
 import { pcb_plated_hole } from "../src/pcb/pcb_plated_hole"
+import type { PcbPadStack } from "../src/pcb/properties/pcb_pad_stack"
 import { pcb_via } from "../src/pcb/pcb_via"
 
-const padStack = [
+const padStack: PcbPadStack = [
   { layer: "top", shape: "circle", radius: 2.5 },
   {
     layer: "inner1",
@@ -18,7 +19,7 @@ const padStack = [
     height: 3,
     radius: 1.5,
   },
-] as const
+]
 
 test("pcb_plated_hole preserves layer-specific pad geometry", () => {
   const platedHole = pcb_plated_hole.parse({
