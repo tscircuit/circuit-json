@@ -36,6 +36,7 @@
   "scripts": {
     "prepublish": "npm run build",
     "build": "tsup-node ./src/index.ts --format esm --dts --sourcemap",
+    "prepare": "bun run scripts/prepare-git-dependency.ts",
     "format": "biome format . --write",
     "generate-docs": "bun scripts/generate-readme-docs.ts && prettier --no-semi -w README.md",
     "lint:zod": "bun run scripts/zod-lint.ts",
