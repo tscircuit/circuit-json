@@ -1454,12 +1454,6 @@ interface PcbBend {
 
 ### PcbBoard
 
-The optional `min_trace_to_hole_edge_clearance` manufacturing rule specifies the
-minimum distance from a trace's copper edge to the edge of a non-plated hole.
-Values are normalized to millimeters (`0.2` or `"0.2mm"` means 0.2 mm); an explicit
-zero is preserved and omission does not supply a default. The field is retained
-when a `pcb_board` is serialized and parsed again.
-
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_board.ts)
 
 Defines the board outline of the PCB
