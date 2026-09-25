@@ -3,6 +3,10 @@ import { distance, type Distance } from "src/units"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import {
+  pcb_pad_stack,
+  type PcbPadStack,
+} from "src/pcb/properties/pcb_pad_stack"
 
 export const pcb_via = z
   .object({
@@ -23,6 +27,7 @@ export const pcb_via = z
     /** @deprecated */
     to_layer: layer_ref.optional(),
     layers: z.array(layer_ref),
+    pad_stack: pcb_pad_stack.optional(),
     /** PCB ports belonging to this via, including layer ports and aliases. */
     pcb_port_ids: z.array(z.string()).optional(),
     pcb_trace_id: z.string().optional(),
@@ -68,6 +73,7 @@ export interface PcbVia {
   /** @deprecated */
   to_layer?: LayerRef
   layers: LayerRef[]
+  pad_stack?: PcbPadStack
   /** PCB ports belonging to this via, including layer ports and aliases. */
   pcb_port_ids?: string[]
   pcb_trace_id?: string
