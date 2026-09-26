@@ -169,6 +169,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbSilkscreenPill](#pcbsilkscreenpill)
     - [PcbSilkscreenRect](#pcbsilkscreenrect)
     - [PcbSilkscreenText](#pcbsilkscreentext)
+    - [PcbSoldermaskOpening](#pcbsoldermaskopening)
     - [PcbSolderPaste](#pcbsolderpaste)
     - [PcbStiffener](#pcbstiffener)
     - [PcbText](#pcbtext)
@@ -2932,6 +2933,97 @@ interface PcbSilkscreenText {
   anchor_position: Point
   anchor_alignment: NinePointAnchor
 }
+```
+
+### PcbSoldermaskOpening
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_soldermask_opening.ts)
+
+An explicit opening removes solder mask from the `top` or `bottom` of the PCB,
+exposing the substrate or any copper already underneath. It adds neither copper
+nor solder paste and does not create an electrical connection. Openings may be
+standalone or associated with a component, group, or subcircuit.
+
+Coordinates and dimensions are in millimeters. Circles and rectangles are centered
+at `(x, y)`; rotated rectangles rotate counterclockwise about that center in degrees.
+Polygon points are absolute PCB coordinates, with an implicit closing edge from
+the last point to the first. A polygon needs at least three points. Coordinates and
+rotations must be finite, and radii, widths, and heights must be positive.
+
+The parser accepts distance strings and degree/radian rotation strings, normalizing
+them to numbers. It also accepts `{ name: "top" }` and `{ name: "bottom" }` layer
+references and generates a `pcb_soldermask_opening_id` when omitted. Inner layers
+are not valid solder-mask surfaces.
+
+```typescript
+/** A circular solder-mask opening centered at (x, y). */
+interface PcbSoldermaskOpeningCircle {
+  type: "pcb_soldermask_opening"
+  pcb_soldermask_opening_id: string
+  shape: "circle"
+  layer: "top" | "bottom"
+  x: Distance
+  y: Distance
+  radius: Distance
+  pcb_component_id?: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+}
+
+/** A rectangular solder-mask opening centered at (x, y). */
+interface PcbSoldermaskOpeningRect {
+  type: "pcb_soldermask_opening"
+  pcb_soldermask_opening_id: string
+  shape: "rect"
+  layer: "top" | "bottom"
+  x: Distance
+  y: Distance
+  width: Distance
+  height: Distance
+  pcb_component_id?: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+}
+
+/** A rectangular opening rotated counterclockwise about (x, y), in degrees. */
+interface PcbSoldermaskOpeningRotatedRect {
+  type: "pcb_soldermask_opening"
+  pcb_soldermask_opening_id: string
+  shape: "rotated_rect"
+  layer: "top" | "bottom"
+  x: Distance
+  y: Distance
+  width: Distance
+  height: Distance
+  ccw_rotation: Rotation
+  pcb_component_id?: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+}
+
+/** An opening whose boundary joins at least three points and closes implicitly. */
+interface PcbSoldermaskOpeningPolygon {
+  type: "pcb_soldermask_opening"
+  pcb_soldermask_opening_id: string
+  shape: "polygon"
+  layer: "top" | "bottom"
+  points: Point[]
+  pcb_component_id?: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+}
+
+/**
+ * Explicit solder-mask removal, independent of pads, vias, and electrical nets.
+ * Numeric coordinates and dimensions use millimeters in the PCB coordinate system.
+ * Openings expose the underlying substrate or existing copper; they add no material.
+ */
+type PcbSoldermaskOpening =
+  | PcbSoldermaskOpeningCircle
+  | PcbSoldermaskOpeningRect
+  | PcbSoldermaskOpeningRotatedRect
+  | PcbSoldermaskOpeningPolygon
+
 ```
 
 ### PcbSolderPaste
