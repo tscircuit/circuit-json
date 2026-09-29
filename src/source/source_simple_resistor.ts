@@ -9,6 +9,7 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 export const source_simple_resistor = source_component_base.extend({
   ftype: z.literal("simple_resistor"),
   resistance,
+  tolerance: z.number().optional(),
   display_resistance: z.string().optional(),
 })
 
@@ -21,6 +22,7 @@ type InferredSourceSimpleResistor = z.infer<typeof source_simple_resistor>
 export interface SourceSimpleResistor extends SourceComponentBase {
   ftype: "simple_resistor"
   resistance: number
+  tolerance?: number
   display_resistance?: string
 }
 
