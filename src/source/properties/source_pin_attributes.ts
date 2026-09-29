@@ -33,6 +33,7 @@ export const source_pin_attributes = z.object({
   is_configured_for_spi_cs: z.boolean().optional(),
   is_configured_for_uart_tx: z.boolean().optional(),
   is_configured_for_uart_rx: z.boolean().optional(),
+  active_function: z.string().min(1).optional(),
   supports_i2c_sda: z.boolean().optional(),
   supports_i2c_scl: z.boolean().optional(),
   supports_spi_mosi: z.boolean().optional(),
@@ -75,6 +76,7 @@ export interface SourcePinAttributes {
   is_configured_for_spi_cs?: boolean
   is_configured_for_uart_tx?: boolean
   is_configured_for_uart_rx?: boolean
+  active_function?: string
   supports_i2c_sda?: boolean
   supports_i2c_scl?: boolean
   supports_spi_mosi?: boolean
