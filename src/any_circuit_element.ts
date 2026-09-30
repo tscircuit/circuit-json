@@ -10,6 +10,7 @@ import {
 } from "./utils/expect-types-match"
 
 export const any_circuit_element = z.union([
+  src.source_runtime_error,
   // TODO source_config
   // TODO pcb_config
   // TODO schematic_config
