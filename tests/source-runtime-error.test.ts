@@ -3,7 +3,7 @@ import { any_circuit_element, source_runtime_error } from "../src"
 
 test("runtime failures serialize message and phase_name", () => {
   const input = {
-    type: "source_runtime_error",
+    type: "source_runtime_error" as const,
     phase_name: "PcbDesignRuleChecks",
     message:
       "DRC could not complete (routing): Unresolved boundary conflict in boolean operation",
