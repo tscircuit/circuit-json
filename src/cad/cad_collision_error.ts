@@ -11,11 +11,9 @@ export const cad_collision_error = base_circuit_json_error
     type: z.literal("cad_collision_error"),
     cad_collision_error_id: getZodPrefixedIdWithDefault("cad_collision_error"),
     error_type: z.literal("cad_collision_error").default("cad_collision_error"),
-    cad_component_id: z.string(),
-    enclosure_cad_component_ids: z.array(z.string()).min(1),
-    pcb_component_id: z.string().optional(),
-    source_component_id: z.string().optional(),
-    face: z.enum(["x_pos", "x_neg", "y_pos", "y_neg", "z_pos", "z_neg"]),
+    cad_component_ids: z.array(z.string()).min(1),
+    pcb_component_ids: z.array(z.string()).optional(),
+    source_component_ids: z.array(z.string()).min(1),
     intersection_area_mm2: z.number().finite().nonnegative(),
     threshold_area_mm2: z.number().finite().nonnegative(),
   })
@@ -28,11 +26,9 @@ export interface CadCollisionError extends BaseCircuitJsonError {
   type: "cad_collision_error"
   cad_collision_error_id: string
   error_type: "cad_collision_error"
-  cad_component_id: string
-  enclosure_cad_component_ids: string[]
-  pcb_component_id?: string
-  source_component_id?: string
-  face: "x_pos" | "x_neg" | "y_pos" | "y_neg" | "z_pos" | "z_neg"
+  cad_component_ids: string[]
+  pcb_component_ids?: string[]
+  source_component_ids: string[]
   /** Union silhouette of solid intersection, projected along face normal (mm²). */
   intersection_area_mm2: number
   threshold_area_mm2: number
