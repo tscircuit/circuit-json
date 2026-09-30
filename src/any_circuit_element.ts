@@ -1,5 +1,4 @@
 import { z } from "zod"
-import { drc_check_error } from "./drc_check_error"
 import * as cad from "./cad"
 import * as pcb from "./pcb"
 import * as sch from "./schematic"
@@ -11,7 +10,7 @@ import {
 } from "./utils/expect-types-match"
 
 export const any_circuit_element = z.union([
-  drc_check_error,
+  src.source_runtime_error,
   // TODO source_config
   // TODO pcb_config
   // TODO schematic_config

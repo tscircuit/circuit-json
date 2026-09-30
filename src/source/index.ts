@@ -58,3 +58,5 @@ export * from "./source_i2c_misconfigured_error"
 export * from "./source_component_misconfigured_error"
 export * from "./source_confusing_net_name_warning"
 export * from "./source_bus"
+
+export * from "./source_runtime_error"
