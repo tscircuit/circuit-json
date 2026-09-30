@@ -26,6 +26,15 @@ export const pcb_board = z
     default_via_tented_on_top: z.boolean().optional(),
     default_via_tented_on_bottom: z.boolean().optional(),
     default_via_plugged: z.boolean().optional(),
+    via_covering: z
+      .enum([
+        "untented",
+        "tented",
+        "plugged",
+        "epoxy_filled_and_capped",
+        "copper_paste_filled_and_capped",
+      ])
+      .optional(),
     width: length.optional(),
     height: length.optional(),
     center: point,
@@ -76,6 +85,12 @@ export interface PcbBoard extends ManufacturingDrcProperties {
   default_via_tented_on_top?: boolean
   default_via_tented_on_bottom?: boolean
   default_via_plugged?: boolean
+  via_covering?:
+    | "untented"
+    | "tented"
+    | "plugged"
+    | "epoxy_filled_and_capped"
+    | "copper_paste_filled_and_capped"
   width?: Length
   height?: Length
   display_offset_x?: string
