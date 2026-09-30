@@ -17,7 +17,7 @@ export const source_runtime_error = base_circuit_json_error
     error_type: z
       .literal("source_runtime_error")
       .default("source_runtime_error"),
-    phase_name: z.string(),
+    phase_name: z.string().optional(),
   })
   .describe(
     "An unexpected runtime failure while generating or validating a circuit",
@@ -29,6 +29,6 @@ export interface SourceRuntimeError
   type: "source_runtime_error"
   source_runtime_error_id: string
   error_type: "source_runtime_error"
-  phase_name: string
+  phase_name?: string
 }
 expectTypesMatch<SourceRuntimeError, z.infer<typeof source_runtime_error>>(true)

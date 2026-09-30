@@ -20,7 +20,7 @@ test("runtime failures serialize message and phase_name", () => {
   )
   expect(
     source_runtime_error.safeParse({ ...input, phase_name: undefined }).success,
-  ).toBe(false)
+  ).toBe(true)
   expect(
     source_runtime_error.safeParse({ ...input, message: undefined }).success,
   ).toBe(false)
