@@ -1,5 +1,6 @@
 import { parseAndConvertSiUnit } from "format-si-unit"
 import { z } from "zod"
+export { bit_rate } from "./bit-rate"
 export {
   parseAndConvertSiUnit,
   type BaseTscircuitUnit,
