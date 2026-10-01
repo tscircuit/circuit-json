@@ -2,6 +2,27 @@ import { z } from "zod"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const source_pin_attributes = z.object({
+  is_reset_input: z.boolean().optional(),
+  is_usb_data_positive: z.boolean().optional(),
+  is_usb_data_negative: z.boolean().optional(),
+  is_current_sense_positive_input: z.boolean().optional(),
+  is_current_sense_negative_input: z.boolean().optional(),
+  is_mosfet_gate: z.boolean().optional(),
+  is_mosfet_source: z.boolean().optional(),
+  is_mosfet_drain: z.boolean().optional(),
+  is_transistor_base: z.boolean().optional(),
+  is_transistor_collector: z.boolean().optional(),
+  is_transistor_emitter: z.boolean().optional(),
+  is_diode_anode: z.boolean().optional(),
+  is_diode_cathode: z.boolean().optional(),
+  is_op_amp_inverting_input: z.boolean().optional(),
+  is_op_amp_non_inverting_input: z.boolean().optional(),
+  is_op_amp_output: z.boolean().optional(),
+  is_relay_coil: z.boolean().optional(),
+  is_relay_common_contact: z.boolean().optional(),
+  is_relay_normally_open_contact: z.boolean().optional(),
+  is_relay_normally_closed_contact: z.boolean().optional(),
+
   is_input: z.boolean().optional(),
   is_output: z.boolean().optional(),
   is_bidirectional: z.boolean().optional(),
@@ -58,6 +79,48 @@ export const source_pin_attributes = z.object({
 type InferredSourcePinAttributes = z.infer<typeof source_pin_attributes>
 
 export interface SourcePinAttributes {
+  /** Explicit electrical roles. Omitted flags are unknown; names and hints do not establish roles. */
+  /** The pin resets its device when asserted; not a reset output. */
+  is_reset_input?: boolean
+  /** The pin is configured as the USB D+ signal. */
+  is_usb_data_positive?: boolean
+  /** The pin is configured as the USB D- signal. */
+  is_usb_data_negative?: boolean
+  /** The positive differential input of a current-sense amplifier. */
+  is_current_sense_positive_input?: boolean
+  /** The negative differential input of a current-sense amplifier. */
+  is_current_sense_negative_input?: boolean
+  /** The gate terminal of a MOSFET. */
+  is_mosfet_gate?: boolean
+  /** A source terminal of a MOSFET. */
+  is_mosfet_source?: boolean
+  /** A drain terminal of a MOSFET. */
+  is_mosfet_drain?: boolean
+  /** The base terminal of a bipolar transistor. */
+  is_transistor_base?: boolean
+  /** The collector terminal of a bipolar transistor. */
+  is_transistor_collector?: boolean
+  /** The emitter terminal of a bipolar transistor. */
+  is_transistor_emitter?: boolean
+  /** The anode terminal of a diode. */
+  is_diode_anode?: boolean
+  /** The cathode terminal of a diode. */
+  is_diode_cathode?: boolean
+  /** The inverting signal input of an operational amplifier. */
+  is_op_amp_inverting_input?: boolean
+  /** The non-inverting signal input of an operational amplifier. */
+  is_op_amp_non_inverting_input?: boolean
+  /** The signal output of an operational amplifier. */
+  is_op_amp_output?: boolean
+  /** One of the two terminals of a relay coil. */
+  is_relay_coil?: boolean
+  /** The common terminal of a relay contact set. */
+  is_relay_common_contact?: boolean
+  /** A relay contact open when the coil is not energized. */
+  is_relay_normally_open_contact?: boolean
+  /** A relay contact closed when the coil is not energized. */
+  is_relay_normally_closed_contact?: boolean
+
   is_input?: boolean
   is_output?: boolean
   is_bidirectional?: boolean
