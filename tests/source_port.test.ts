@@ -113,3 +113,30 @@ test("source_port parses pin attributes", () => {
   expect(parsed.should_have_decoupling_capacitor).toBe(true)
   expect(parsed.recommended_decoupling_capacitor_capacitance).toBe("100nF")
 })
+
+test("source_port preserves device direction, GPIO, and output-mode attributes", () => {
+  const port = {
+    type: "source_port",
+    name: "PD0",
+    source_port_id: "f1c100s_pin6",
+    is_input: false,
+    is_output: false,
+    is_bidirectional: true,
+    is_passive: false,
+    can_use_tri_state: true,
+    is_using_tri_state: false,
+    can_use_open_collector: false,
+    is_using_open_collector: false,
+    can_use_open_emitter: false,
+    is_using_open_emitter: false,
+    is_gpio: true,
+    highlight_color: "#336699",
+  } as const
+  expect(source_port.parse(port)).toEqual(port)
+  expect(source_port.safeParse({ ...port, is_input: "true" }).success).toBe(
+    false,
+  )
+  expect(source_port.safeParse({ ...port, highlight_color: 42 }).success).toBe(
+    false,
+  )
+})

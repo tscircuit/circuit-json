@@ -702,6 +702,18 @@ interface SourcePcbGroundPlane {
 
 ```typescript
 interface SourcePinAttributes {
+  is_input?: boolean
+  is_output?: boolean
+  is_bidirectional?: boolean
+  is_passive?: boolean
+  can_use_tri_state?: boolean
+  is_using_tri_state?: boolean
+  can_use_open_collector?: boolean
+  is_using_open_collector?: boolean
+  can_use_open_emitter?: boolean
+  is_using_open_emitter?: boolean
+  is_gpio?: boolean
+  highlight_color?: string
   must_be_connected?: boolean
   provides_power?: boolean
   requires_power?: boolean

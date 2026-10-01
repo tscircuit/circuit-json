@@ -2,6 +2,18 @@ import { z } from "zod"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const source_pin_attributes = z.object({
+  is_input: z.boolean().optional(),
+  is_output: z.boolean().optional(),
+  is_bidirectional: z.boolean().optional(),
+  is_passive: z.boolean().optional(),
+  can_use_tri_state: z.boolean().optional(),
+  is_using_tri_state: z.boolean().optional(),
+  can_use_open_collector: z.boolean().optional(),
+  is_using_open_collector: z.boolean().optional(),
+  can_use_open_emitter: z.boolean().optional(),
+  is_using_open_emitter: z.boolean().optional(),
+  is_gpio: z.boolean().optional(),
+  highlight_color: z.string().optional(),
   must_be_connected: z.boolean().optional(),
   provides_power: z.boolean().optional(),
   requires_power: z.boolean().optional(),
@@ -46,6 +58,18 @@ export const source_pin_attributes = z.object({
 type InferredSourcePinAttributes = z.infer<typeof source_pin_attributes>
 
 export interface SourcePinAttributes {
+  is_input?: boolean
+  is_output?: boolean
+  is_bidirectional?: boolean
+  is_passive?: boolean
+  can_use_tri_state?: boolean
+  is_using_tri_state?: boolean
+  can_use_open_collector?: boolean
+  is_using_open_collector?: boolean
+  can_use_open_emitter?: boolean
+  is_using_open_emitter?: boolean
+  is_gpio?: boolean
+  highlight_color?: string
   must_be_connected?: boolean
   provides_power?: boolean
   requires_power?: boolean
