@@ -8,15 +8,13 @@ const board: PcbBoardInput = {
   center: { x: 0, y: 0 },
 }
 
-test("pcb_board preserves each manufacturing via covering choice", () => {
-  for (const via_covering of [
-    "untented",
-    "tented",
-    "plugged",
+test("pcb_board preserves each manufacturing via plugging choice", () => {
+  for (const via_plugging of [
+    "solder_mask_ink",
     "epoxy_filled_and_capped",
     "copper_paste_filled_and_capped",
   ] as const) {
-    const input: PcbBoardInput = { ...board, via_covering }
+    const input: PcbBoardInput = { ...board, via_plugging }
     const parsed = any_circuit_element.parse(input)
     expect(parsed).toMatchObject(input)
     expect(parsed).not.toHaveProperty("default_via_plugged")
@@ -25,15 +23,22 @@ test("pcb_board preserves each manufacturing via covering choice", () => {
   }
 })
 
-test("via covering is optional and does not reinterpret legacy plugging", () => {
-  expect(pcb_board.parse(board)).not.toHaveProperty("via_covering")
+test("via plugging is optional and does not reinterpret legacy plugging", () => {
+  expect(pcb_board.parse(board)).not.toHaveProperty("via_plugging")
   for (const default_via_plugged of [true, false]) {
     const input = { ...board, default_via_plugged }
     const parsed = pcb_board.parse(input)
     expect(parsed).toMatchObject(input)
-    expect(parsed).not.toHaveProperty("via_covering")
+    expect(parsed).not.toHaveProperty("via_plugging")
   }
-  for (const via_covering of [true, false, "epoxy", null]) {
-    expect(pcb_board.safeParse({ ...board, via_covering }).success).toBe(false)
+  for (const via_plugging of [
+    true,
+    false,
+    "tented",
+    "untented",
+    "epoxy",
+    null,
+  ]) {
+    expect(pcb_board.safeParse({ ...board, via_plugging }).success).toBe(false)
   }
 })
