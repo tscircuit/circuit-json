@@ -22,6 +22,17 @@ export const pcb_keepout_outline = z.object({
 export type PcbKeepoutOutlineInput = z.input<typeof pcb_keepout_outline>
 type InferredPcbKeepoutOutline = z.infer<typeof pcb_keepout_outline>
 
+/** A filled, implicitly closed polygon, unlike a stroked keepout outline. */
+export const pcb_keepout_polygon = pcb_keepout_outline
+  .omit({ outline: true, stroke_width: true })
+  .extend({
+    shape: z.literal("polygon"),
+    points: z.array(point).min(3),
+  })
+
+export type PcbKeepoutPolygonInput = z.input<typeof pcb_keepout_polygon>
+type InferredPcbKeepoutPolygon = z.infer<typeof pcb_keepout_polygon>
+
 export const pcb_keepout = z
   .object({
     type: z.literal("pcb_keepout"),
@@ -57,6 +68,7 @@ export const pcb_keepout = z
     }),
   )
   .or(pcb_keepout_outline)
+  .or(pcb_keepout_polygon)
 
 export type PCBKeepoutInput = z.input<typeof pcb_keepout>
 type InferredPCBKeepout = z.infer<typeof pcb_keepout>
@@ -136,6 +148,19 @@ export interface PcbKeepoutOutline {
 
 expectTypesMatch<PcbKeepoutOutline, InferredPcbKeepoutOutline>(true)
 
-export type PCBKeepout = PCBKeepoutRect | PCBKeepoutCircle | PcbKeepoutOutline
+/** Filled polygon. The last point is implicitly connected to the first. */
+export interface PcbKeepoutPolygon
+  extends Omit<PcbKeepoutOutline, "shape" | "outline" | "stroke_width"> {
+  shape: "polygon"
+  points: Point[]
+}
+
+expectTypesMatch<PcbKeepoutPolygon, InferredPcbKeepoutPolygon>(true)
+
+export type PCBKeepout =
+  | PCBKeepoutRect
+  | PCBKeepoutCircle
+  | PcbKeepoutOutline
+  | PcbKeepoutPolygon
 
 expectTypesMatch<PCBKeepout, InferredPCBKeepout>(true)

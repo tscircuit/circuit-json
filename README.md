@@ -2114,7 +2114,12 @@ interface PcbHoleCircle {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_keepout.ts)
 
-A keepout region on specified PCB layers, with rectangle, circle, or outline geometry.
+A keepout region on specified PCB layers, with rectangle, circle, polygon, or outline geometry.
+
+A `polygon` keepout is a filled area; its `points` are implicitly closed.
+Concave polygons are supported. An `outline` is a stroked path and does not
+exclude its interior, even when its endpoints coincide. Polygon holes are not
+represented by this shape.
 
 `warning_only: true` makes the region advisory: routing and copper placement may
 cross it, and overlap checks should emit `pcb_keepout_overlap_warning` records
@@ -2190,7 +2195,18 @@ interface PCBKeepoutCircle {
   warning_only?: boolean
 }
 
-type PCBKeepout = PCBKeepoutRect | PCBKeepoutCircle | PcbKeepoutOutline
+/** Filled polygon. The last point is implicitly connected to the first. */
+interface PcbKeepoutPolygon
+  extends Omit<PcbKeepoutOutline, "shape" | "outline" | "stroke_width"> {
+  shape: "polygon"
+  points: Point[]
+}
+
+type PCBKeepout =
+  | PCBKeepoutRect
+  | PCBKeepoutCircle
+  | PcbKeepoutOutline
+  | PcbKeepoutPolygon
 ```
 
 ### PcbKeepoutOverlapWarning
