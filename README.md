@@ -180,6 +180,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbTraceTooLongError](#pcbtracetoolongerror)
     - [PcbTraceTooLongWarning](#pcbtracetoolongwarning)
     - [PcbTraceTooManyViasWarning](#pcbtracetoomanyviaswarning)
+    - [PcbTraceUncoupledLengthError](#pcbtraceuncoupledlengtherror)
     - [PcbTraceWarning](#pcbtracewarning)
     - [PcbVia](#pcbvia)
     - [PcbViaClearanceError](#pcbviaclearanceerror)
@@ -1276,6 +1277,15 @@ interface SourceTrace {
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
   max_length?: number
+  /** Partner trace for a geometric coupling constraint. No name-based inference. */
+  coupled_source_trace_id?: string
+  /** Maximum centerline separation of parallel, overlapping same-layer segments, in mm. */
+  max_coupling_distance?: number
+  /** Maximum total uncoupled planar route length in mm. Requires both coupling fields.
+   * Configure each member separately to constrain both sides of a pair.
+   * Via barrel depth is excluded; through-pad travel is always uncoupled. */
+
+  max_uncoupled_length?: number
   max_via_count?: number
   name?: string
   display_name?: string
@@ -3230,6 +3240,27 @@ interface PcbTraceTooManyViasWarning {
   source_trace_id?: string
   actual_via_count: number
   maximum_via_count: number
+  subcircuit_id?: string
+}
+```
+
+### PcbTraceUncoupledLengthError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_trace_uncoupled_length_error.ts)
+
+A trace exceeds its allowed total uncoupled planar route length.
+
+```typescript
+/** A trace exceeds its allowed total uncoupled planar route length. */
+interface PcbTraceUncoupledLengthError extends BaseCircuitJsonError {
+  type: "pcb_trace_uncoupled_length_error"
+  pcb_trace_uncoupled_length_error_id: string
+  error_type: "pcb_trace_uncoupled_length_error"
+  source_trace_id: string
+  coupled_source_trace_id: string
+  pcb_trace_ids: string[]
+  actual_uncoupled_length: number
+  maximum_uncoupled_length: number
   subcircuit_id?: string
 }
 ```
