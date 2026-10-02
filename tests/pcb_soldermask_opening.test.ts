@@ -50,6 +50,27 @@ test("a TSX contact-row coverlay window survives Circuit JSON round trips", () =
   expect<unknown>(element).toEqual(window)
 })
 
+test("coordinate-based consumers can narrow generic centered elements", () => {
+  const getCenter = (
+    element: AnyCircuitElement,
+  ): { x: number; y: number } | undefined => {
+    if (!("x" in element) || !("y" in element)) return undefined
+    return { x: element.x, y: element.y }
+  }
+  const circle = any_circuit_element.parse({
+    type: "pcb_soldermask_opening",
+    layer: "top",
+    ...shapes[0],
+  })
+  const polygon = any_circuit_element.parse({
+    type: "pcb_soldermask_opening",
+    layer: "top",
+    ...shapes[3],
+  })
+  expect(getCenter(circle)).toEqual({ x: -1, y: 2 })
+  expect(getCenter(polygon)).toBeUndefined()
+})
+
 for (const layer of ["top", "bottom"] as const) {
   for (const shape of shapes) {
     test(`${layer} ${shape.shape} openings survive generic Circuit JSON parsing`, () => {

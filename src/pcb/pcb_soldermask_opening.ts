@@ -7,26 +7,24 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 const finite_distance = distance.pipe(z.number().finite())
 const positive_distance = distance.pipe(z.number().finite().positive())
 
-const opening_base = z.object({
-  type: z.literal("pcb_soldermask_opening"),
-  pcb_soldermask_opening_id: getZodPrefixedIdWithDefault(
-    "pcb_soldermask_opening",
-  ),
-  layer: layer_ref.pipe(visible_layer),
-  pcb_component_id: z.string().optional(),
-  pcb_group_id: z.string().optional(),
-  subcircuit_id: z.string().optional(),
-})
+const opening_base = z
+  .object({
+    type: z.literal("pcb_soldermask_opening"),
+    pcb_soldermask_opening_id: getZodPrefixedIdWithDefault(
+      "pcb_soldermask_opening",
+    ),
+    layer: layer_ref.pipe(visible_layer),
+    pcb_component_id: z.string().optional(),
+    pcb_group_id: z.string().optional(),
+    subcircuit_id: z.string().optional(),
+  })
+  .strict()
 
 const circle = opening_base.extend({
   shape: z.literal("circle"),
   x: finite_distance,
   y: finite_distance,
   radius: positive_distance,
-  width: z.never().optional(),
-  height: z.never().optional(),
-  ccw_rotation: z.never().optional(),
-  points: z.never().optional(),
 })
 
 const rect = opening_base.extend({
@@ -35,9 +33,6 @@ const rect = opening_base.extend({
   y: finite_distance,
   width: positive_distance,
   height: positive_distance,
-  radius: z.never().optional(),
-  ccw_rotation: z.never().optional(),
-  points: z.never().optional(),
 })
 
 const rotated_rect = rect.extend({
@@ -57,12 +52,6 @@ const polygon = opening_base.extend({
       }, 0)
       return Number.isFinite(twice_area) && twice_area !== 0
     }, "Solder-mask opening must enclose a nonzero area"),
-  x: z.never().optional(),
-  y: z.never().optional(),
-  width: z.never().optional(),
-  height: z.never().optional(),
-  radius: z.never().optional(),
-  ccw_rotation: z.never().optional(),
 })
 
 export const pcb_soldermask_opening = z
@@ -82,10 +71,6 @@ export interface PcbSoldermaskOpeningCircle {
   x: Distance
   y: Distance
   radius: Distance
-  width?: never
-  height?: never
-  ccw_rotation?: never
-  points?: never
   pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
@@ -101,9 +86,6 @@ export interface PcbSoldermaskOpeningRect {
   y: Distance
   width: Distance
   height: Distance
-  radius?: never
-  ccw_rotation?: never
-  points?: never
   pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
@@ -120,8 +102,6 @@ export interface PcbSoldermaskOpeningRotatedRect {
   width: Distance
   height: Distance
   ccw_rotation: Rotation
-  radius?: never
-  points?: never
   pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
@@ -134,12 +114,6 @@ export interface PcbSoldermaskOpeningPolygon {
   shape: "polygon"
   layer: "top" | "bottom"
   points: Point[]
-  x?: never
-  y?: never
-  width?: never
-  height?: never
-  radius?: never
-  ccw_rotation?: never
   pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
