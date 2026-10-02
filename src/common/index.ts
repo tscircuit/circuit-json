@@ -1,6 +1,7 @@
 export * from "./point"
 export * from "./point3"
 export * from "./size"
+export * from "./shape"
 export * from "./getZodPrefixedIdWithDefault"
 export * from "./CircuitJsonError"
 export * from "./NinePointAnchor"

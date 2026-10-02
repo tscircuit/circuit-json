@@ -1,123 +1,70 @@
 import { z } from "zod"
-import { getZodPrefixedIdWithDefault, point, type Point } from "src/common"
+import {
+  getZodPrefixedIdWithDefault,
+  circle_shape,
+  rect_shape,
+  rotated_rect_shape,
+  polygon_shape,
+  type CircleShape,
+  type RectShape,
+  type RotatedRectShape,
+  type PolygonShape,
+} from "src/common"
 import { layer_ref, visible_layer } from "src/pcb/properties/layer_ref"
-import { distance, type Distance, rotation, type Rotation } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-const finite_distance = distance.pipe(z.number().finite())
-const positive_distance = distance.pipe(z.number().finite().positive())
-
-const opening_base = z
-  .object({
-    type: z.literal("pcb_soldermask_opening"),
-    pcb_soldermask_opening_id: getZodPrefixedIdWithDefault(
-      "pcb_soldermask_opening",
-    ),
-    layer: layer_ref.pipe(visible_layer),
-    pcb_component_id: z.string().optional(),
-    pcb_group_id: z.string().optional(),
-    subcircuit_id: z.string().optional(),
-  })
-  .strict()
-
-const circle = opening_base.extend({
-  shape: z.literal("circle"),
-  x: finite_distance,
-  y: finite_distance,
-  radius: positive_distance,
-})
-
-const rect = opening_base.extend({
-  shape: z.literal("rect"),
-  x: finite_distance,
-  y: finite_distance,
-  width: positive_distance,
-  height: positive_distance,
-})
-
-const rotated_rect = rect.extend({
-  shape: z.literal("rotated_rect"),
-  ccw_rotation: rotation.pipe(z.number().finite()),
-})
-
-const polygon = opening_base.extend({
-  shape: z.literal("polygon"),
-  points: z
-    .array(point.extend({ x: finite_distance, y: finite_distance }))
-    .min(3)
-    .refine((points) => {
-      const twice_area = points.reduce((sum, point, index) => {
-        const next = points[(index + 1) % points.length]!
-        return sum + point.x * next.y - next.x * point.y
-      }, 0)
-      return Number.isFinite(twice_area) && twice_area !== 0
-    }, "Solder-mask opening must enclose a nonzero area"),
+const opening_base = z.object({
+  type: z.literal("pcb_soldermask_opening"),
+  pcb_soldermask_opening_id: getZodPrefixedIdWithDefault(
+    "pcb_soldermask_opening",
+  ),
+  layer: layer_ref.pipe(visible_layer),
+  pcb_component_id: z.string().optional(),
+  pcb_group_id: z.string().optional(),
+  subcircuit_id: z.string().optional(),
 })
 
 export const pcb_soldermask_opening = z
-  .discriminatedUnion("shape", [circle, rect, rotated_rect, polygon])
+  .discriminatedUnion("shape", [
+    circle_shape.extend(opening_base.shape),
+    rect_shape.extend(opening_base.shape),
+    rotated_rect_shape.extend(opening_base.shape),
+    polygon_shape.extend(opening_base.shape),
+  ])
   .describe(
     "An explicit opening in top or bottom solder mask or flex coverlay, independent of pads. Removes mask without adding copper or solder paste.",
   )
 
 export type PcbSoldermaskOpeningInput = z.input<typeof pcb_soldermask_opening>
 
-/** A circular solder-mask opening centered at (x, y). */
-export interface PcbSoldermaskOpeningCircle {
+export interface PcbSoldermaskOpeningBase {
   type: "pcb_soldermask_opening"
   pcb_soldermask_opening_id: string
-  shape: "circle"
   layer: "top" | "bottom"
-  x: Distance
-  y: Distance
-  radius: Distance
   pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
 }
+
+/** A circular solder-mask opening centered at (x, y). */
+export interface PcbSoldermaskOpeningCircle
+  extends PcbSoldermaskOpeningBase,
+    CircleShape {}
 
 /** A rectangular solder-mask opening centered at (x, y). */
-export interface PcbSoldermaskOpeningRect {
-  type: "pcb_soldermask_opening"
-  pcb_soldermask_opening_id: string
-  shape: "rect"
-  layer: "top" | "bottom"
-  x: Distance
-  y: Distance
-  width: Distance
-  height: Distance
-  pcb_component_id?: string
-  pcb_group_id?: string
-  subcircuit_id?: string
-}
+export interface PcbSoldermaskOpeningRect
+  extends PcbSoldermaskOpeningBase,
+    RectShape {}
 
 /** A rectangular opening rotated counterclockwise about (x, y), in degrees. */
-export interface PcbSoldermaskOpeningRotatedRect {
-  type: "pcb_soldermask_opening"
-  pcb_soldermask_opening_id: string
-  shape: "rotated_rect"
-  layer: "top" | "bottom"
-  x: Distance
-  y: Distance
-  width: Distance
-  height: Distance
-  ccw_rotation: Rotation
-  pcb_component_id?: string
-  pcb_group_id?: string
-  subcircuit_id?: string
-}
+export interface PcbSoldermaskOpeningRotatedRect
+  extends PcbSoldermaskOpeningBase,
+    RotatedRectShape {}
 
 /** An implicitly closed boundary of at least three points enclosing nonzero area. */
-export interface PcbSoldermaskOpeningPolygon {
-  type: "pcb_soldermask_opening"
-  pcb_soldermask_opening_id: string
-  shape: "polygon"
-  layer: "top" | "bottom"
-  points: Point[]
-  pcb_component_id?: string
-  pcb_group_id?: string
-  subcircuit_id?: string
-}
+export interface PcbSoldermaskOpeningPolygon
+  extends PcbSoldermaskOpeningBase,
+    PolygonShape {}
 
 /**
  * Solder-mask or flex-coverlay removal, independent of pads, vias, and electrical nets.
