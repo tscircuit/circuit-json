@@ -14,6 +14,7 @@ export * from "./pcb_plated_hole"
 export * from "./pcb_port"
 export * from "./pcb_smtpad"
 export * from "./pcb_solder_paste"
+export * from "./pcb_soldermask_opening"
 export * from "./pcb_text"
 export * from "./pcb_trace"
 export * from "./pcb_trace_warning"
@@ -94,6 +95,7 @@ import type { PcbPlatedHole } from "./pcb_plated_hole"
 import type { PcbPort } from "./pcb_port"
 import type { PcbSmtPad } from "./pcb_smtpad"
 import type { PcbSolderPaste } from "./pcb_solder_paste"
+import type { PcbSoldermaskOpening } from "./pcb_soldermask_opening"
 import type { PcbText } from "./pcb_text"
 import type { PcbTrace } from "./pcb_trace"
 import type { PcbKeepoutOverlapWarning } from "./pcb_keepout_overlap_warning"
@@ -170,6 +172,7 @@ export type PcbCircuitElement =
   | PcbPort
   | PcbSmtPad
   | PcbSolderPaste
+  | PcbSoldermaskOpening
   | PcbText
   | PcbTrace
   | PcbTraceWarning
