@@ -114,6 +114,8 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbBend](#pcbbend)
     - [PcbBoard](#pcbboard)
     - [PcbBreakoutPoint](#pcbbreakoutpoint)
+    - [PcbBusRoutingConstraintError](#pcbbusroutingconstrainterror)
+    - [PcbBusRoutingConstraintWarning](#pcbbusroutingconstraintwarning)
     - [PcbBusLengthSkewError](#pcbbuslengthskewerror)
     - [PcbComponent](#pcbcomponent)
     - [PcbComponentInvalidLayerError](#pcbcomponentinvalidlayererror)
@@ -357,8 +359,47 @@ interface SourceBus {
   source_trace_ids: string[]
   /** Maximum difference between the longest and shortest member, in millimeters. */
   max_length_skew?: number
+  /** Intended single-ended characteristic impedance, in ohms. */
+  target_impedance?: number
+  /** Intended differential characteristic impedance, in ohms. */
+  target_differential_impedance?: number
+  /** Ordered polarity for a resolved point-to-point differential pair. */
+  differential_pair?: {
+  positive_source_trace_id: string
+  negative_source_trace_id: string
+  trace_gap?: number
+  max_uncoupled_length?: number
+}
+  /** Additional traces for length comparison, without changing electrical membership. */
+  length_match_source_trace_ids?: string[]
+  min_length?: SourceBusRouteLength
+  max_length?: SourceBusRouteLength
+  target_length?: SourceBusRouteLength
+  length_tolerance?: number
+  /** Within this bus, excluding declared differential partners. */
+  pcb_trace_spacing?: SourceBusTraceSpacing
+  /** To all signals outside this bus or pair. */
+  pcb_spacing_to_other_signals?: SourceBusTraceSpacing
+  target_impedance_min?: number
+  target_impedance_max?: number
+  target_differential_impedance_min?: number
+  target_differential_impedance_max?: number
   subcircuit_id?: string
 }
+
+/** A routed length in mm, or an offset from the longest endpoint Manhattan distance.
+ * Explicit references are resolved source traces; omitted references use the bus
+ * members and length_match_source_trace_ids. */
+type SourceBusRouteLength =
+  | number
+  | {
+  reference: "longest_manhattan"
+  source_trace_ids?: string[]
+  offset?: number
+}
+
+/** Centerline separation in mm or a multiple of the larger local trace width. */
+type SourceBusTraceSpacing = number | { width_multiplier: number }
 ```
 
 ### SourceComponentBase
@@ -1525,6 +1566,35 @@ interface PcbBreakoutPoint {
   y: Distance
 }
 ```
+
+### PcbBusRoutingConstraintError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_bus_routing_constraint_error.ts)
+
+A discriminated union of bus/pair constraint violations. Every variant includes `source_bus_id`, `source_trace_ids`, `pcb_trace_ids`, `message`, and the error identity fields. Lengths and centerline spacing are mm; impedance is ohms. Spacing variants also require `other_pcb_trace_id` and may include `other_source_trace_id`.
+
+| `routing_rule` | Required measurements | Optional bounds |
+| --- | --- | --- |
+| `length_skew` | `actual_length_skew`, `maximum_length_skew` | — |
+| `min_length` | `actual_trace_length`, `minimum_trace_length` | — |
+| `max_length` | `actual_trace_length`, `maximum_trace_length` | — |
+| `target_length` | `actual_trace_length`, `target_trace_length`, `length_tolerance` | — |
+| `pcb_trace_spacing` | `actual_centerline_spacing`, `minimum_centerline_spacing` | — |
+| `pcb_spacing_to_other_signals` | `actual_centerline_spacing`, `minimum_centerline_spacing` | — |
+| `impedance_target` | `target_impedance` | `minimum_impedance`, `maximum_impedance` (at least one) |
+
+```typescript
+if (error.routing_rule === "max_length") {
+  // Narrowed to the maximum-length variant; these fields are required.
+  console.log(error.actual_trace_length, error.maximum_trace_length)
+}
+```
+
+### PcbBusRoutingConstraintWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_bus_routing_constraint_warning.ts)
+
+An unverified constraint, discriminated by `routing_rule`: `route_geometry`, `reference_geometry`, `spacing_geometry`, `target_length`, or `physical_impedance`. Every variant includes `source_bus_id`, `source_trace_ids`, `pcb_trace_ids`, `message`, and warning identity fields. Missing geometry uses an empty `pcb_trace_ids` array; these warnings contain no measurements and must not be interpreted as a pass.
 
 ### PcbBusLengthSkewError
 
