@@ -4,7 +4,7 @@ import { voltage } from "src/units"
 
 // Require a complete scalar before the shared unit parser can normalize it.
 // Ranges and prose cannot be represented by the scalar voltage fields.
-const pin_voltage = z
+const pin_voltage: z.ZodType<number, z.ZodTypeDef, number | string> = z
   .union([
     z.number(),
     z
