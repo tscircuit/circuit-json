@@ -95,7 +95,7 @@ test("source_port parses pin attributes", () => {
   expect(parsed.requires_power).toBe(true)
   expect(parsed.provides_ground).toBe(false)
   expect(parsed.requires_ground).toBe(true)
-  expect(parsed.provides_voltage).toBe("3.3V")
+  expect(parsed.provides_voltage).toBe(3.3)
   expect(parsed.requires_voltage).toBe(3.3)
   expect(parsed.do_not_connect).toBe(false)
   expect(parsed.include_in_board_pinout).toBe(true)

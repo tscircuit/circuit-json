@@ -1,5 +1,22 @@
 import { z } from "zod"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { voltage } from "src/units"
+
+// Require a complete scalar before the shared unit parser can normalize it.
+// Ranges and prose cannot be represented by the scalar voltage fields.
+const pin_voltage = z
+  .union([
+    z.number(),
+    z
+      .string()
+      .trim()
+      .regex(
+        /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?\s*(?:[fpnumkKMGTµμ]?V?|V)?$/,
+        "Expected a scalar voltage, optionally with SI units",
+      ),
+  ])
+  .pipe(voltage)
+  .pipe(z.number().finite())
 
 export const source_pin_attributes = z.object({
   is_input: z.boolean().optional(),
@@ -19,8 +36,8 @@ export const source_pin_attributes = z.object({
   requires_power: z.boolean().optional(),
   provides_ground: z.boolean().optional(),
   requires_ground: z.boolean().optional(),
-  provides_voltage: z.union([z.string(), z.number()]).optional(),
-  requires_voltage: z.union([z.string(), z.number()]).optional(),
+  provides_voltage: pin_voltage.optional(),
+  requires_voltage: pin_voltage.optional(),
   do_not_connect: z.boolean().optional(),
   include_in_board_pinout: z.boolean().optional(),
   can_use_internal_pullup: z.boolean().optional(),
@@ -56,6 +73,7 @@ export const source_pin_attributes = z.object({
 })
 
 type InferredSourcePinAttributes = z.infer<typeof source_pin_attributes>
+export type SourcePinAttributesInput = z.input<typeof source_pin_attributes>
 
 export interface SourcePinAttributes {
   is_input?: boolean
@@ -75,8 +93,8 @@ export interface SourcePinAttributes {
   requires_power?: boolean
   provides_ground?: boolean
   requires_ground?: boolean
-  provides_voltage?: string | number
-  requires_voltage?: string | number
+  provides_voltage?: number
+  requires_voltage?: number
   do_not_connect?: boolean
   include_in_board_pinout?: boolean
   can_use_internal_pullup?: boolean

@@ -719,8 +719,8 @@ interface SourcePinAttributes {
   requires_power?: boolean
   provides_ground?: boolean
   requires_ground?: boolean
-  provides_voltage?: string | number
-  requires_voltage?: string | number
+  provides_voltage?: number
+  requires_voltage?: number
   do_not_connect?: boolean
   include_in_board_pinout?: boolean
   can_use_internal_pullup?: boolean
