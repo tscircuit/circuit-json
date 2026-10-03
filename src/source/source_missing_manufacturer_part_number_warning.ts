@@ -14,11 +14,11 @@ export const source_missing_manufacturer_part_number_warning = z
       .default("source_missing_manufacturer_part_number_warning"),
     message: z.string(),
     source_component_id: z.string(),
-    standard: z.string(),
+    standard: z.string().optional(),
     subcircuit_id: z.string().optional(),
   })
   .describe(
-    "Warning emitted when a standard connector is missing manufacturer part number",
+    "Warning emitted when a source component is missing its manufacturer part number",
   )
 
 export type SourceMissingManufacturerPartNumberWarningInput = z.input<
@@ -29,7 +29,7 @@ type InferredSourceMissingManufacturerPartNumberWarning = z.infer<
 >
 
 /**
- * Warning emitted when a standard connector is missing manufacturer part number
+ * Warning emitted when a source component is missing its manufacturer part number
  */
 export interface SourceMissingManufacturerPartNumberWarning {
   type: "source_missing_manufacturer_part_number_warning"
@@ -37,7 +37,7 @@ export interface SourceMissingManufacturerPartNumberWarning {
   warning_type: "source_missing_manufacturer_part_number_warning"
   message: string
   source_component_id: string
-  standard: string
+  standard?: string
   subcircuit_id?: string
 }
 
