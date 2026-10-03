@@ -6,16 +6,14 @@ import {
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-/** A failed DDR rule or a rule whose physical inputs cannot be verified.
+/** A failed routing constraint or a rule whose physical inputs cannot be verified.
  * Unverified results must never be interpreted as an electrical pass. */
-export interface PcbDdrRoutingError extends BaseCircuitJsonError {
-  type: "pcb_ddr_routing_error"
-  pcb_ddr_routing_error_id: string
-  error_type: "pcb_ddr_routing_error"
+export interface PcbRoutingConstraintError extends BaseCircuitJsonError {
+  type: "pcb_routing_constraint_error"
+  pcb_routing_constraint_error_id: string
+  error_type: "pcb_routing_constraint_error"
   status: "violation" | "unverified"
   rule: string
-  specification: "SPRS717L"
-  specification_section: string
   source_bus_ids: string[]
   source_trace_ids: string[]
   pcb_trace_ids: string[]
@@ -25,18 +23,16 @@ export interface PcbDdrRoutingError extends BaseCircuitJsonError {
   units?: "mm" | "ohm" | "count"
   subcircuit_id?: string
 }
-export const pcb_ddr_routing_error = base_circuit_json_error.extend({
-  type: z.literal("pcb_ddr_routing_error"),
-  pcb_ddr_routing_error_id: getZodPrefixedIdWithDefault(
-    "pcb_ddr_routing_error",
+export const pcb_routing_constraint_error = base_circuit_json_error.extend({
+  type: z.literal("pcb_routing_constraint_error"),
+  pcb_routing_constraint_error_id: getZodPrefixedIdWithDefault(
+    "pcb_routing_constraint_error",
   ),
   error_type: z
-    .literal("pcb_ddr_routing_error")
-    .default("pcb_ddr_routing_error"),
+    .literal("pcb_routing_constraint_error")
+    .default("pcb_routing_constraint_error"),
   status: z.enum(["violation", "unverified"]),
   rule: z.string(),
-  specification: z.literal("SPRS717L"),
-  specification_section: z.string(),
   source_bus_ids: z.array(z.string()),
   source_trace_ids: z.array(z.string()),
   pcb_trace_ids: z.array(z.string()),
@@ -46,7 +42,10 @@ export const pcb_ddr_routing_error = base_circuit_json_error.extend({
   units: z.enum(["mm", "ohm", "count"]).optional(),
   subcircuit_id: z.string().optional(),
 })
-export type PcbDdrRoutingErrorInput = z.input<typeof pcb_ddr_routing_error>
-expectTypesMatch<PcbDdrRoutingError, z.infer<typeof pcb_ddr_routing_error>>(
-  true,
-)
+export type PcbRoutingConstraintErrorInput = z.input<
+  typeof pcb_routing_constraint_error
+>
+expectTypesMatch<
+  PcbRoutingConstraintError,
+  z.infer<typeof pcb_routing_constraint_error>
+>(true)

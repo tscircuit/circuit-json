@@ -1,8 +1,8 @@
 import { z } from "zod"
 import {
-  ddr_routing_constraints,
-  type DdrRoutingConstraints,
-} from "./ddr_routing_constraints"
+  routing_constraints,
+  type RoutingConstraints,
+} from "./routing_constraints"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 /** A group of resolved source traces with a maximum routed-length difference. */
@@ -24,7 +24,7 @@ export interface SourceBus {
     trace_gap?: number
     max_uncoupled_length?: number
   }
-  ddr_routing?: DdrRoutingConstraints
+  routing_constraints?: RoutingConstraints
   subcircuit_id?: string
 }
 
@@ -44,7 +44,7 @@ export const source_bus = z.object({
       max_uncoupled_length: z.number().nonnegative().finite().optional(),
     })
     .optional(),
-  ddr_routing: ddr_routing_constraints.optional(),
+  routing_constraints: routing_constraints.optional(),
   subcircuit_id: z.string().optional(),
 })
 
