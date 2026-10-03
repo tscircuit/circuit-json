@@ -1,4 +1,7 @@
-import { parseAndConvertSiUnit } from "format-si-unit"
+import {
+  type BaseTscircuitUnit,
+  parseAndConvertSiUnit,
+} from "format-si-unit"
 import { z } from "zod"
 export {
   parseAndConvertSiUnit,
@@ -57,15 +60,35 @@ export {
 //   | `${number} ${SIPrefix}${UnitOrAbbreviation}`
 
 // TODO lots of validation to make sure the unit is valid etc.
+const isFiniteNumber = (v: number | null | undefined): v is number =>
+  Number.isFinite(v)
+
+const parseSiUnit = (
+  v: string | number,
+  unit?: BaseTscircuitUnit,
+): number => {
+  try {
+    return parseAndConvertSiUnit(v, unit).value ?? NaN
+  } catch {
+    return NaN
+  }
+}
+
 export const resistance = z
   .string()
   .or(z.number())
-  .transform((v) => parseAndConvertSiUnit(v, "Ω").value!)
+  .transform((v) => parseSiUnit(v, "Ω"))
+  .refine(isFiniteNumber, {
+    message: "resistance must be a finite number",
+  })
 
 export const capacitance = z
   .string()
   .or(z.number())
-  .transform((v) => parseAndConvertSiUnit(v, "F").value!)
+  .transform((v) => parseSiUnit(v, "F"))
+  .refine(isFiniteNumber, {
+    message: "capacitance must be a finite number",
+  })
   .transform((value) => {
     return Number.parseFloat(value.toPrecision(12)) // Round to 12 significant digits
   })
@@ -73,22 +96,34 @@ export const capacitance = z
 export const inductance = z
   .string()
   .or(z.number())
-  .transform((v) => parseAndConvertSiUnit(v, "H").value!)
+  .transform((v) => parseSiUnit(v, "H"))
+  .refine(isFiniteNumber, {
+    message: "inductance must be a finite number",
+  })
 
 export const voltage = z
   .string()
   .or(z.number())
-  .transform((v) => parseAndConvertSiUnit(v, "V").value!)
+  .transform((v) => parseSiUnit(v, "V"))
+  .refine(isFiniteNumber, {
+    message: "voltage must be a finite number",
+  })
 
 export const length = z
   .string()
   .or(z.number())
-  .transform((v) => parseAndConvertSiUnit(v).value!)
+  .transform((v) => parseSiUnit(v))
+  .refine(isFiniteNumber, {
+    message: "length must be a finite number",
+  })
 
 export const frequency = z
   .string()
   .or(z.number())
-  .transform((v) => parseAndConvertSiUnit(v, "Hz").value!)
+  .transform((v) => parseSiUnit(v, "Hz"))
+  .refine(isFiniteNumber, {
+    message: "frequency must be a finite number",
+  })
 
 /**
  * Length in meters
@@ -101,12 +136,18 @@ export const distance = length
 export const current = z
   .string()
   .or(z.number())
-  .transform((v) => parseAndConvertSiUnit(v, "A").value!)
+  .transform((v) => parseSiUnit(v, "A"))
+  .refine(isFiniteNumber, {
+    message: "current must be a finite number",
+  })
 
 export const duration_ms = z
   .string()
   .or(z.number())
-  .transform((v) => parseAndConvertSiUnit(v).value!)
+  .transform((v) => parseSiUnit(v))
+  .refine(isFiniteNumber, {
+    message: "duration_ms must be a finite number",
+  })
 
 export const time = duration_ms
 
@@ -129,6 +170,9 @@ export const rotation = z
       return (Number.parseFloat(arg.split("rad")[0]!) * 180) / Math.PI
     }
     return Number.parseFloat(arg)
+  })
+  .refine(isFiniteNumber, {
+    message: "rotation must be a finite number",
   })
 
 export const battery_capacity = z
