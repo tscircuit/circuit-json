@@ -565,17 +565,17 @@ interface SourceManuallyPlacedVia {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_missing_manufacturer_part_number_warning.ts)
 
-Warning emitted when a standard connector is missing manufacturer part number
+Warning emitted when a source component is missing its manufacturer part number
 
 ```typescript
-/** Warning emitted when a standard connector is missing manufacturer part number */
+/** Warning emitted when a source component is missing its manufacturer part number */
 interface SourceMissingManufacturerPartNumberWarning {
   type: "source_missing_manufacturer_part_number_warning"
   source_missing_manufacturer_part_number_warning_id: string
   warning_type: "source_missing_manufacturer_part_number_warning"
   message: string
   source_component_id: string
-  standard: string
+  standard?: string
   subcircuit_id?: string
 }
 ```
