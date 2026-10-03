@@ -19,6 +19,14 @@ const pin_voltage: z.ZodType<number, z.ZodTypeDef, number | string> = z
   .pipe(z.number().finite())
 
 export const source_pin_attributes = z.object({
+  /** Requested GPIO startup level; absence does not imply low. */
+  initial_output_state: z.enum(["low", "high"]).optional(),
+  /** Explicit GPIO interrupt selection, including disabled interrupts. */
+  interrupt_trigger: z.enum(["none", "rising", "falling", "both"]).optional(),
+  /** Maximum I2C bit rate in bits/s, declared on the configured MCU SCL port. */
+  i2c_max_bit_rate: z.number().int().positive().finite().optional(),
+  /** Leave this pin under another owner's control during firmware generation. */
+  do_not_configure: z.boolean().optional(),
   is_input: z.boolean().optional(),
   is_output: z.boolean().optional(),
   is_bidirectional: z.boolean().optional(),
@@ -76,6 +84,10 @@ type InferredSourcePinAttributes = z.infer<typeof source_pin_attributes>
 export type SourcePinAttributesInput = z.input<typeof source_pin_attributes>
 
 export interface SourcePinAttributes {
+  initial_output_state?: "low" | "high"
+  interrupt_trigger?: "none" | "rising" | "falling" | "both"
+  i2c_max_bit_rate?: number
+  do_not_configure?: boolean
   is_input?: boolean
   is_output?: boolean
   is_bidirectional?: boolean
