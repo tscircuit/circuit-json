@@ -5,6 +5,7 @@ import {
   getZodPrefixedIdWithDefault,
   polygon_shape,
   type Point,
+  type PolygonShape,
 } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
@@ -99,13 +100,11 @@ const pcb_solder_paste_oval = z.object({
   pcb_smtpad_id: z.string().optional(),
 })
 
-const pcb_solder_paste_polygon = z.object({
+const pcb_solder_paste_polygon = polygon_shape.extend({
   type: z.literal("pcb_solder_paste"),
-  shape: z.literal("polygon"),
   pcb_solder_paste_id: getZodPrefixedIdWithDefault("pcb_solder_paste"),
   pcb_group_id: z.string().optional(),
   subcircuit_id: z.string().optional(),
-  points: polygon_shape.shape.points,
   holes: z.array(polygon_shape.shape.points).optional(),
   layer: layer_ref,
   pcb_component_id: z.string().optional(),
@@ -249,13 +248,12 @@ export interface PcbSolderPasteOval {
  * right-handed with +Z above the board. Points include placement translation;
  * top/bottom identifies the PCB layer, not the Y direction.
  */
-export interface PcbSolderPastePolygon {
+export interface PcbSolderPastePolygon extends PolygonShape {
   type: "pcb_solder_paste"
-  shape: "polygon"
   pcb_solder_paste_id: string
   pcb_group_id?: string
   subcircuit_id?: string
-  points: Point[]
+  /** Closed inner contours remove paste from this aperture. */
   holes?: Point[][]
   layer: LayerRef
   pcb_component_id?: string
