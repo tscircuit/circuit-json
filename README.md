@@ -47,7 +47,6 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
   - [Typescript Usage](#typescript-usage)
 
   - [Source Components](#source-components)
-    - [RoutingConstraints](#routingconstraints)
     - [SourceAmbiguousPortReference](#sourceambiguousportreference)
     - [SourceBoard](#sourceboard)
     - [SourceBus](#sourcebus)
@@ -130,7 +129,6 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbCourtyardPolygon](#pcbcourtyardpolygon)
     - [PcbCourtyardRect](#pcbcourtyardrect)
     - [PcbCutout](#pcbcutout)
-    - [PcbRoutingConstraintError](#pcbroutingconstrainterror)
     - [PcbDebugObject](#pcbdebugobject)
     - [PcbFabricationNoteDimension](#pcbfabricationnotedimension)
     - [PcbFabricationNotePath](#pcbfabricationnotepath)
@@ -312,31 +310,6 @@ There are 3 main element prefixes:
 
 ## Source Components
 
-### RoutingConstraints
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/routing_constraints.ts)
-
-```typescript
-/** Reusable constraints for a resolved bus. Distances are mm, impedances ohms.
- * Names refer to buses in the same subcircuit. No protocol or vendor defaults. */
-interface RoutingConstraints {
-  expected_trace_count?: number
-  length_bounds?: {
-  reference_bus?: string
-  reference_metric?: "longest_manhattan"
-  min?: number
-  max?: number
-}
-  spacing?: Array<{
-  other_bus: string
-  centerline_width_multiplier: number
-  reduced_centerline_width_multiplier?: number
-}>
-  max_reduced_spacing_length?: number
-  impedance_bounds?: { min?: number; max?: number }
-}
-```
-
 ### SourceAmbiguousPortReference
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_ambiguous_port_reference.ts)
@@ -395,9 +368,36 @@ interface SourceBus {
   trace_gap?: number
   max_uncoupled_length?: number
 }
-  routing_constraints?: RoutingConstraints
+  /** Additional traces for length comparison, without changing electrical membership. */
+  length_match_source_trace_ids?: string[]
+  min_length?: SourceBusRouteLength
+  max_length?: SourceBusRouteLength
+  target_length?: SourceBusRouteLength
+  length_tolerance?: number
+  /** Within this bus, excluding declared differential partners. */
+  pcb_trace_spacing?: SourceBusTraceSpacing
+  /** To all signals outside this bus or pair. */
+  pcb_spacing_to_other_signals?: SourceBusTraceSpacing
+  target_impedance_min?: number
+  target_impedance_max?: number
+  target_differential_impedance_min?: number
+  target_differential_impedance_max?: number
   subcircuit_id?: string
 }
+
+/** A routed length in mm, or an offset from the longest endpoint Manhattan distance.
+ * Explicit references are resolved source traces; omitted references use the bus
+ * members and length_match_source_trace_ids. */
+type SourceBusRouteLength =
+  | number
+  | {
+  reference: "longest_manhattan"
+  source_trace_ids?: string[]
+  offset?: number
+}
+
+/** Centerline separation in mm or a multiple of the larger local trace width. */
+type SourceBusTraceSpacing = number | { width_multiplier: number }
 ```
 
 ### SourceComponentBase
@@ -1887,30 +1887,6 @@ interface PcbCutoutRect {
 }
 ```
 
-### PcbRoutingConstraintError
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_routing_constraint_error.ts)
-
-```typescript
-/** A failed routing constraint or a rule whose physical inputs cannot be verified.
- * Unverified results must never be interpreted as an electrical pass. */
-interface PcbRoutingConstraintError extends BaseCircuitJsonError {
-  type: "pcb_routing_constraint_error"
-  pcb_routing_constraint_error_id: string
-  error_type: "pcb_routing_constraint_error"
-  status: "violation" | "unverified"
-  rule: string
-  source_bus_ids: string[]
-  source_trace_ids: string[]
-  pcb_trace_ids: string[]
-  actual_value?: number
-  expected_min?: number
-  expected_max?: number
-  units?: "mm" | "ohm" | "count"
-  subcircuit_id?: string
-}
-```
-
 ### PcbDebugObject
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_debug_object.ts)
@@ -3189,6 +3165,13 @@ interface PcbTraceError extends BaseCircuitJsonError {
   source_trace_id: string
   pcb_component_ids: string[]
   pcb_port_ids: string[]
+  /** Optional routing-rule context; references are not user-facing labels. */
+  source_bus_id?: string
+  routing_rule?: string
+  actual_value?: number
+  expected_min?: number
+  expected_max?: number
+  units?: "mm" | "ohm" | "count"
   subcircuit_id?: string
 }
 ```
@@ -3311,10 +3294,18 @@ interface PcbTraceWarning {
   warning_type: "pcb_trace_warning"
   message: string
   center?: Point
-  pcb_trace_id: string
+  /** May be absent when the source trace has no routed geometry to verify. */
+  pcb_trace_id?: string
   source_trace_id: string
   pcb_component_ids: string[]
   pcb_port_ids: string[]
+  /** Optional routing-rule context; references are not user-facing labels. */
+  source_bus_id?: string
+  routing_rule?: string
+  actual_value?: number
+  expected_min?: number
+  expected_max?: number
+  units?: "mm" | "ohm" | "count"
   subcircuit_id?: string
 }
 ```

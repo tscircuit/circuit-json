@@ -1,9 +1,32 @@
 import { z } from "zod"
-import {
-  routing_constraints,
-  type RoutingConstraints,
-} from "./routing_constraints"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+
+/** A routed length in mm, or an offset from the longest endpoint Manhattan distance.
+ * Explicit references are resolved source traces; omitted references use the bus
+ * members and length_match_source_trace_ids. */
+export type SourceBusRouteLength =
+  | number
+  | {
+      reference: "longest_manhattan"
+      source_trace_ids?: string[]
+      offset?: number
+    }
+
+/** Centerline separation in mm or a multiple of the larger local trace width. */
+export type SourceBusTraceSpacing = number | { width_multiplier: number }
+
+const route_length = z.union([
+  z.number().nonnegative().finite(),
+  z.object({
+    reference: z.literal("longest_manhattan"),
+    source_trace_ids: z.array(z.string()).min(1).optional(),
+    offset: z.number().finite().optional(),
+  }),
+])
+const trace_spacing = z.union([
+  z.number().positive().finite(),
+  z.object({ width_multiplier: z.number().positive().finite() }),
+])
 
 /** A group of resolved source traces with a maximum routed-length difference. */
 export interface SourceBus {
@@ -24,7 +47,20 @@ export interface SourceBus {
     trace_gap?: number
     max_uncoupled_length?: number
   }
-  routing_constraints?: RoutingConstraints
+  /** Additional traces for length comparison, without changing electrical membership. */
+  length_match_source_trace_ids?: string[]
+  min_length?: SourceBusRouteLength
+  max_length?: SourceBusRouteLength
+  target_length?: SourceBusRouteLength
+  length_tolerance?: number
+  /** Within this bus, excluding declared differential partners. */
+  pcb_trace_spacing?: SourceBusTraceSpacing
+  /** To all signals outside this bus or pair. */
+  pcb_spacing_to_other_signals?: SourceBusTraceSpacing
+  target_impedance_min?: number
+  target_impedance_max?: number
+  target_differential_impedance_min?: number
+  target_differential_impedance_max?: number
   subcircuit_id?: string
 }
 
@@ -44,7 +80,17 @@ export const source_bus = z.object({
       max_uncoupled_length: z.number().nonnegative().finite().optional(),
     })
     .optional(),
-  routing_constraints: routing_constraints.optional(),
+  length_match_source_trace_ids: z.array(z.string()).min(1).optional(),
+  min_length: route_length.optional(),
+  max_length: route_length.optional(),
+  target_length: route_length.optional(),
+  length_tolerance: z.number().nonnegative().finite().optional(),
+  pcb_trace_spacing: trace_spacing.optional(),
+  pcb_spacing_to_other_signals: trace_spacing.optional(),
+  target_impedance_min: z.number().positive().finite().optional(),
+  target_impedance_max: z.number().positive().finite().optional(),
+  target_differential_impedance_min: z.number().positive().finite().optional(),
+  target_differential_impedance_max: z.number().positive().finite().optional(),
   subcircuit_id: z.string().optional(),
 })
 
