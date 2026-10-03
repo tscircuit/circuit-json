@@ -64,13 +64,14 @@ test("routing violations use a dedicated bus constraint error with structured me
     source_trace_ids: ["data_0"],
     source_bus_id: "source_bus_1",
     routing_rule: "max_length",
-    actual_value: 22,
-    expected_max: 20,
-    units: "mm",
+    actual_trace_length: 22,
+    maximum_trace_length: 20,
   })
   expect(any_circuit_element.parse(error)).toEqual(error)
   expect(error.error_type).toBe("pcb_bus_routing_constraint_error")
-  expect(error.actual_value).toBe(22)
+  if (error.routing_rule !== "max_length")
+    throw new Error("Expected maximum length rule")
+  expect(error.actual_trace_length).toBe(22)
 })
 
 test("unverified rules use a dedicated warning without fabricating missing geometry", () => {
@@ -131,7 +132,6 @@ test("constraint diagnostics require typed rules and warning geometry remains op
       ...references,
       type: "pcb_bus_routing_constraint_error",
       routing_rule: "arbitrary_rule",
-      units: "mm",
     }).success,
   ).toBe(false)
   expect(
@@ -146,8 +146,8 @@ test("constraint diagnostics require typed rules and warning geometry remains op
       ...references,
       type: "pcb_bus_routing_constraint_error",
       routing_rule: "impedance_target",
-      units: "ohm",
-      actual_value: Infinity,
+      target_impedance: Infinity,
+      minimum_impedance: 50,
     }).success,
   ).toBe(false)
   expect(
@@ -157,4 +157,92 @@ test("constraint diagnostics require typed rules and warning geometry remains op
       routing_rule: "physical_impedance",
     }).pcb_trace_ids,
   ).toEqual([])
+})
+
+test("routing_rule discriminates required measurement fields and rejects mismatched shapes", () => {
+  const context = {
+    type: "pcb_bus_routing_constraint_error",
+    source_bus_id: "bus",
+    source_trace_ids: ["signal"],
+    pcb_trace_ids: ["pcb_signal"],
+    message: "Declared bus constraint is violated",
+  }
+  const violations = [
+    {
+      routing_rule: "length_skew",
+      actual_length_skew: 1,
+      maximum_length_skew: 0.5,
+    },
+    {
+      routing_rule: "min_length",
+      actual_trace_length: 9,
+      minimum_trace_length: 10,
+    },
+    {
+      routing_rule: "max_length",
+      actual_trace_length: 11,
+      maximum_trace_length: 10,
+    },
+    {
+      routing_rule: "target_length",
+      actual_trace_length: 11,
+      target_trace_length: 9,
+      length_tolerance: 1,
+    },
+    {
+      routing_rule: "pcb_trace_spacing",
+      other_pcb_trace_id: "pcb_other",
+      actual_centerline_spacing: 0.2,
+      minimum_centerline_spacing: 0.3,
+    },
+    {
+      routing_rule: "pcb_spacing_to_other_signals",
+      other_pcb_trace_id: "pcb_other",
+      actual_centerline_spacing: 0.2,
+      minimum_centerline_spacing: 0.4,
+    },
+    {
+      routing_rule: "impedance_target",
+      target_impedance: 80,
+      maximum_impedance: 75,
+    },
+  ] as const
+  for (const violation of violations) {
+    const error = pcb_bus_routing_constraint_error.parse({
+      ...context,
+      ...violation,
+    })
+    expect(error).toMatchObject(violation)
+    expect(any_circuit_element.parse(error)).toEqual(error)
+    expect(
+      pcb_bus_routing_constraint_error.safeParse({
+        ...context,
+        routing_rule: violation.routing_rule,
+      }).success,
+    ).toBe(false)
+  }
+  expect(
+    pcb_bus_routing_constraint_error.safeParse({
+      ...context,
+      routing_rule: "max_length",
+      actual_length_skew: 11,
+      maximum_length_skew: 10,
+    }).success,
+  ).toBe(false)
+  expect(
+    pcb_bus_routing_constraint_error.safeParse({
+      ...context,
+      routing_rule: "impedance_target",
+      target_impedance: 50,
+    }).success,
+  ).toBe(false)
+  expect(
+    pcb_bus_routing_constraint_error.safeParse({
+      ...context,
+      routing_rule: "impedance_target",
+      target_impedance: 50,
+      minimum_impedance: 75,
+      maximum_impedance: 25,
+    }).success,
+  ).toBe(false)
 })

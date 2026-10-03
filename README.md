@@ -1571,30 +1571,22 @@ interface PcbBreakoutPoint {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_bus_routing_constraint_error.ts)
 
-A declared bus or differential-pair routing constraint is violated.
+A discriminated union of bus/pair constraint violations. Every variant includes `source_bus_id`, `source_trace_ids`, `pcb_trace_ids`, `message`, and the error identity fields. Lengths and centerline spacing are mm; impedance is ohms. Spacing variants also require `other_pcb_trace_id` and may include `other_source_trace_id`.
+
+| `routing_rule` | Required measurements | Optional bounds |
+| --- | --- | --- |
+| `length_skew` | `actual_length_skew`, `maximum_length_skew` | — |
+| `min_length` | `actual_trace_length`, `minimum_trace_length` | — |
+| `max_length` | `actual_trace_length`, `maximum_trace_length` | — |
+| `target_length` | `actual_trace_length`, `target_trace_length`, `length_tolerance` | — |
+| `pcb_trace_spacing` | `actual_centerline_spacing`, `minimum_centerline_spacing` | — |
+| `pcb_spacing_to_other_signals` | `actual_centerline_spacing`, `minimum_centerline_spacing` | — |
+| `impedance_target` | `target_impedance` | `minimum_impedance`, `maximum_impedance` (at least one) |
 
 ```typescript
-/** A declared bus or differential-pair routing constraint is violated. */
-interface PcbBusRoutingConstraintError extends BaseCircuitJsonError {
-  type: "pcb_bus_routing_constraint_error"
-  pcb_bus_routing_constraint_error_id: string
-  error_type: "pcb_bus_routing_constraint_error"
-  source_bus_id: string
-  source_trace_ids: string[]
-  pcb_trace_ids: string[]
-  routing_rule: | "length_skew"
-  | "min_length"
-  | "max_length"
-  | "target_length"
-  | "pcb_trace_spacing"
-  | "pcb_spacing_to_other_signals"
-  | "impedance_target"
-  /** Measurements in the units required by the rule; not inferred electrical behavior. */
-  actual_value?: number
-  expected_min?: number
-  expected_max?: number
-  units: "mm" | "ohm"
-  subcircuit_id?: string
+if (error.routing_rule === "max_length") {
+  // Narrowed to the maximum-length variant; these fields are required.
+  console.log(error.actual_trace_length, error.maximum_trace_length)
 }
 ```
 
@@ -1602,26 +1594,7 @@ interface PcbBusRoutingConstraintError extends BaseCircuitJsonError {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_bus_routing_constraint_warning.ts)
 
-A declared bus or pair constraint could not be verified; this is not a pass.
-
-```typescript
-/** A declared bus or pair constraint could not be verified; this is not a pass. */
-interface PcbBusRoutingConstraintWarning {
-  type: "pcb_bus_routing_constraint_warning"
-  pcb_bus_routing_constraint_warning_id: string
-  warning_type: "pcb_bus_routing_constraint_warning"
-  source_bus_id: string
-  source_trace_ids: string[]
-  pcb_trace_ids: string[]
-  routing_rule: | "route_geometry"
-  | "reference_geometry"
-  | "spacing_geometry"
-  | "target_length"
-  | "physical_impedance"
-  message: string
-  subcircuit_id?: string
-}
-```
+An unverified constraint, discriminated by `routing_rule`: `route_geometry`, `reference_geometry`, `spacing_geometry`, `target_length`, or `physical_impedance`. Every variant includes `source_bus_id`, `source_trace_ids`, `pcb_trace_ids`, `message`, and warning identity fields. Missing geometry uses an empty `pcb_trace_ids` array; these warnings contain no measurements and must not be interpreted as a pass.
 
 ### PcbBusLengthSkewError
 
