@@ -1,7 +1,11 @@
 import { z } from "zod"
 import { distance, type Distance, rotation, type Rotation } from "src/units"
 import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
-import { getZodPrefixedIdWithDefault } from "src/common"
+import {
+  getZodPrefixedIdWithDefault,
+  polygon_shape,
+  type Point,
+} from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 const pcb_solder_paste_circle = z.object({
@@ -95,6 +99,19 @@ const pcb_solder_paste_oval = z.object({
   pcb_smtpad_id: z.string().optional(),
 })
 
+const pcb_solder_paste_polygon = z.object({
+  type: z.literal("pcb_solder_paste"),
+  shape: z.literal("polygon"),
+  pcb_solder_paste_id: getZodPrefixedIdWithDefault("pcb_solder_paste"),
+  pcb_group_id: z.string().optional(),
+  subcircuit_id: z.string().optional(),
+  points: polygon_shape.shape.points,
+  holes: z.array(polygon_shape.shape.points).optional(),
+  layer: layer_ref,
+  pcb_component_id: z.string().optional(),
+  pcb_smtpad_id: z.string().optional(),
+})
+
 export const pcb_solder_paste = z
   .union([
     pcb_solder_paste_circle,
@@ -103,6 +120,7 @@ export const pcb_solder_paste = z
     pcb_solder_paste_rotated_rect,
     pcb_solder_paste_rotated_pill,
     pcb_solder_paste_oval,
+    pcb_solder_paste_polygon,
   ])
   .describe("Defines solderpaste on the PCB")
 
@@ -116,6 +134,7 @@ type InferredPcbSolderPasteRotatedRect = z.infer<
 type InferredPcbSolderPasteRotatedPill = z.infer<
   typeof pcb_solder_paste_rotated_pill
 >
+type InferredPcbSolderPastePolygon = z.infer<typeof pcb_solder_paste_polygon>
 type InferredPcbSolderPasteOval = z.infer<typeof pcb_solder_paste_oval>
 
 /**
@@ -225,6 +244,24 @@ export interface PcbSolderPasteOval {
   pcb_smtpad_id?: string
 }
 
+/**
+ * A closed solder-paste contour in board-world mm: +X right, +Y up,
+ * right-handed with +Z above the board. Points include placement translation;
+ * top/bottom identifies the PCB layer, not the Y direction.
+ */
+export interface PcbSolderPastePolygon {
+  type: "pcb_solder_paste"
+  shape: "polygon"
+  pcb_solder_paste_id: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  points: Point[]
+  holes?: Point[][]
+  layer: LayerRef
+  pcb_component_id?: string
+  pcb_smtpad_id?: string
+}
+
 export type PcbSolderPaste =
   | PcbSolderPasteCircle
   | PcbSolderPasteRect
@@ -232,6 +269,7 @@ export type PcbSolderPaste =
   | PcbSolderPasteRotatedRect
   | PcbSolderPasteRotatedPill
   | PcbSolderPasteOval
+  | PcbSolderPastePolygon
 
 expectTypesMatch<PcbSolderPasteCircle, InferredPcbSolderPasteCircle>(true)
 expectTypesMatch<PcbSolderPasteRect, InferredPcbSolderPasteRect>(true)
@@ -243,3 +281,5 @@ expectTypesMatch<PcbSolderPasteRotatedPill, InferredPcbSolderPasteRotatedPill>(
   true,
 )
 expectTypesMatch<PcbSolderPasteOval, InferredPcbSolderPasteOval>(true)
+
+expectTypesMatch<PcbSolderPastePolygon, InferredPcbSolderPastePolygon>(true)
