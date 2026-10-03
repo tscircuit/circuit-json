@@ -40,7 +40,9 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
 ## Table of Contents
 
 <!-- toc:start -->
+
 - [Circuit JSON Specification `circuit-json`](#circuit-json-specification-circuit-json)
+
   - [Things You Can Do With Circuit JSON](#things-you-can-do-with-circuit-json)
   - [Typescript Usage](#typescript-usage)
 
@@ -74,7 +76,6 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceProjectMetadata](#sourceprojectmetadata)
     - [SourcePropertyIgnoredWarning](#sourcepropertyignoredwarning)
     - [SourceRefdesConventionWarning](#sourcerefdesconventionwarning)
-    - [SourceRuntimeError](#sourceruntimeerror)
     - [SourceSimpleAmmeter](#sourcesimpleammeter)
     - [SourceSimpleBattery](#sourcesimplebattery)
     - [SourceSimpleCapacitor](#sourcesimplecapacitor)
@@ -107,9 +108,9 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceUnnamedTraceWarning](#sourceunnamedtracewarning)
     - [UnknownErrorFindingPart](#unknownerrorfindingpart)
   - [CAD Components](#cad-components)
-    - [CadCollisionError](#cadcollisionerror)
     - [CadComponent](#cadcomponent)
   - [PCB Elements](#pcb-elements)
+    - [PcbFabricatorExtraChargeWarning](#pcbfabricatorextrachargewarning)
     - [PcbAutoroutingError](#pcbautoroutingerror)
     - [PcbBend](#pcbbend)
     - [PcbBoard](#pcbboard)
@@ -117,7 +118,6 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbBusLengthSkewError](#pcbbuslengthskewerror)
     - [PcbComponent](#pcbcomponent)
     - [PcbComponentInvalidLayerError](#pcbcomponentinvalidlayererror)
-    - [PcbComponentMissingCourtyardWarning](#pcbcomponentmissingcourtyardwarning)
     - [PcbComponentNotOnBoardEdgeError](#pcbcomponentnotonboardedgeerror)
     - [PcbComponentOutsideBoardError](#pcbcomponentoutsideboarderror)
     - [PcbConnectorNotInAccessibleOrientationWarning](#pcbconnectornotinaccessibleorientationwarning)
@@ -130,12 +130,12 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbCourtyardPolygon](#pcbcourtyardpolygon)
     - [PcbCourtyardRect](#pcbcourtyardrect)
     - [PcbCutout](#pcbcutout)
+    - [PcbRoutingConstraintError](#pcbroutingconstrainterror)
     - [PcbDebugObject](#pcbdebugobject)
     - [PcbFabricationNoteDimension](#pcbfabricationnotedimension)
     - [PcbFabricationNotePath](#pcbfabricationnotepath)
     - [PcbFabricationNoteRect](#pcbfabricationnoterect)
     - [PcbFabricationNoteText](#pcbfabricationnotetext)
-    - [PcbFabricatorExtraChargeWarning](#pcbfabricatorextrachargewarning)
     - [PcbFootprintOverlapError](#pcbfootprintoverlaperror)
     - [PcbGroundPlane](#pcbgroundplane)
     - [PcbGroundPlaneRegion](#pcbgroundplaneregion)
@@ -156,7 +156,6 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbPadTraceClearanceError](#pcbpadtraceclearanceerror)
     - [PcbPanel](#pcbpanel)
     - [PcbPanelizationPlacementError](#pcbpanelizationplacementerror)
-    - [PcbPin1Location](#pcbpin1location)
     - [PcbPlacementError](#pcbplacementerror)
     - [PcbPlatedHole](#pcbplatedhole)
     - [PcbPort](#pcbport)
@@ -164,7 +163,6 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbPortNotMatchedError](#pcbportnotmatchederror)
     - [PcbPreflightRoutingError](#pcbpreflightroutingerror)
     - [PcbRouteHints](#pcbroutehints)
-    - [PcbRoutingConstraintError](#pcbroutingconstrainterror)
     - [PcbSilkscreenCircle](#pcbsilkscreencircle)
     - [PcbSilkscreenGraphic](#pcbsilkscreengraphic)
     - [PcbSilkscreenLine](#pcbsilkscreenline)
@@ -173,7 +171,6 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbSilkscreenPill](#pcbsilkscreenpill)
     - [PcbSilkscreenRect](#pcbsilkscreenrect)
     - [PcbSilkscreenText](#pcbsilkscreentext)
-    - [PcbSoldermaskOpening](#pcbsoldermaskopening)
     - [PcbSolderPaste](#pcbsolderpaste)
     - [PcbStiffener](#pcbstiffener)
     - [PcbText](#pcbtext)
@@ -214,7 +211,6 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicTable](#schematictable)
     - [SchematicTableCell](#schematictablecell)
     - [SchematicText](#schematictext)
-    - [SchematicTextPart](#schematictextpart)
     - [SchematicTrace](#schematictrace)
     - [SchematicVoltageProbe](#schematicvoltageprobe)
   - [Simulation Elements](#simulation-elements)
@@ -313,6 +309,7 @@ There are 3 main element prefixes:
 - `schematic_` - e.g. `schematic_component`. Anything required to render the Schematic
 
 <!-- circuit-json-docs:start -->
+
 ## Source Components
 
 ### RoutingConstraints
@@ -446,8 +443,7 @@ Error emitted when one or more source components have an invalid or conflicting 
 
 ```typescript
 /** Error emitted when one or more source components have an invalid or conflicting configuration */
-interface SourceComponentMisconfiguredError
-  extends BaseCircuitJsonError {
+interface SourceComponentMisconfiguredError extends BaseCircuitJsonError {
   type: "source_component_misconfigured_error"
   source_component_misconfigured_error_id: string
   error_type: "source_component_misconfigured_error"
@@ -501,8 +497,7 @@ interface SourceConfusingNetNameWarning {
 ```typescript
 /** Error emitted when a component fails to be constructed.
  * Contains details about the failure and prevents the component from being rendered. */
-interface SourceFailedToCreateComponentError
-  extends BaseCircuitJsonError {
+interface SourceFailedToCreateComponentError extends BaseCircuitJsonError {
   type: "source_failed_to_create_component_error"
   source_failed_to_create_component_error_id: string
   error_type: "source_failed_to_create_component_error"
@@ -510,13 +505,13 @@ interface SourceFailedToCreateComponentError
   subcircuit_id?: string
   parent_source_component_id?: string
   pcb_center?: {
-  x?: number
-  y?: number
-}
+    x?: number
+    y?: number
+  }
   schematic_center?: {
-  x?: number
-  y?: number
-}
+    x?: number
+    y?: number
+  }
 }
 ```
 
@@ -575,8 +570,7 @@ The source component property is invalid
 
 ```typescript
 /** The source component property is invalid */
-interface SourceInvalidComponentPropertyError
-  extends BaseCircuitJsonError {
+interface SourceInvalidComponentPropertyError extends BaseCircuitJsonError {
   type: "source_invalid_component_property_error"
   source_invalid_component_property_error_id: string
   source_component_id: string
@@ -600,7 +594,7 @@ interface SourceManuallyPlacedVia {
   type: "source_manually_placed_via"
   source_manually_placed_via_id: string
   source_group_id: string
-  source_net_id?: string
+  source_net_id: string
   subcircuit_id?: string
   source_trace_id?: string
 }
@@ -914,20 +908,6 @@ interface SourceRefdesConventionWarning {
 }
 ```
 
-### SourceRuntimeError
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_runtime_error.ts)
-
-```typescript
-interface SourceRuntimeError
-  extends Pick<BaseCircuitJsonError, "message" | "error_type"> {
-  type: "source_runtime_error"
-  source_runtime_error_id: string
-  error_type: "source_runtime_error"
-  phase_name?: string
-}
-```
-
 ### SourceSimpleAmmeter
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_simple_ammeter.ts)
@@ -995,14 +975,8 @@ Defines a simple connector component
 /** Defines a simple connector component */
 interface SourceSimpleConnector extends SourceComponentBase {
   ftype: "simple_connector"
-  /** Connector interface or product family, such as usb_c, m2, or jst_ph */
-  standard?: SourceSimpleConnectorStandard
-  /** Number of electrical circuits in the connector */
-  pin_count?: number
+  standard?: "usb_c" | "m2"
 }
-
-type SourceSimpleConnectorStandard =
-  (typeof source_simple_connector_standards)[number]
 ```
 
 ### SourceSimpleCrystal
@@ -1405,26 +1379,6 @@ interface UnknownErrorFindingPart extends BaseCircuitJsonError {
 
 ## CAD Components
 
-### CadCollisionError
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_collision_error.ts)
-
-Union silhouette of solid intersection, projected along face normal (mm²
-
-```typescript
-interface CadCollisionError extends BaseCircuitJsonError {
-  type: "cad_collision_error"
-  cad_collision_error_id: string
-  error_type: "cad_collision_error"
-  cad_component_ids: string[]
-  pcb_component_ids?: string[]
-  source_component_ids: string[]
-  /** Union silhouette of solid intersection, projected along face normal (mm² */
-  intersection_area_mm2: number
-  threshold_area_mm2: number
-}
-```
-
 ### CadComponent
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_component.ts)
@@ -1432,7 +1386,6 @@ interface CadCollisionError extends BaseCircuitJsonError {
 CAD geometry, optionally associated with a PCB component.
 
 ```typescript
-/** CAD geometry, optionally associated with a PCB component. */
 interface CadComponent {
   type: "cad_component"
   cad_component_id: string
@@ -1441,10 +1394,6 @@ interface CadComponent {
   source_component_id: string
   position: Point3
   rotation?: Point3
-  /** True for assembled folded position/rotation; false or omitted for flat.
-  * PCB records stay flat. pcb_component_id identifies the mount/owning board. */
-  
-  is_on_folded_board?: boolean
   size?: Point3
   layer?: LayerRef
   subcircuit_id?: string
@@ -1460,10 +1409,11 @@ interface CadComponent {
   model_unit_to_mm_scale_factor?: number
   model_board_normal_direction?: CadModelAxisDirection
   model_origin_position?: Point3
-  model_origin_alignment?: | "unknown"
-  | "center"
-  | "center_of_component_on_board_surface"
-  | "bottom_center_of_component"
+  model_origin_alignment?:
+    | "unknown"
+    | "center"
+    | "center_of_component_on_board_surface"
+    | "bottom_center_of_component"
   model_object_fit: "contain_within_bounds" | "fill_bounds"
   model_jscad?: any
   show_as_translucent_model?: boolean
@@ -1474,6 +1424,41 @@ interface CadComponent {
 ```
 
 ## PCB Elements
+
+### PcbFabricatorExtraChargeWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_fabricator_extra_charge_warning.ts)
+
+Records an extra charge for the selected fabricator preset. An intended trigger
+is a via hole diameter strictly below 0.3 mm with `jlcpcb_economy`,
+`jlcpcb_standard`, `jlcpcb_economy_20260912`, or `jlcpcb_standard_20260912`.
+A diameter of exactly 0.3 mm does not meet this condition. The producer detects
+the condition and emits this record; parsing Circuit JSON does not run the check.
+
+```typescript
+interface PcbFabricatorExtraChargeWarning {
+  type: "pcb_fabricator_extra_charge_warning"
+  pcb_fabricator_extra_charge_warning_id: string
+  warning_type: "pcb_fabricator_extra_charge_warning"
+  message: string
+  fabricator_preset: string
+  pcb_board_id?: string
+  pcb_via_ids?: string[]
+  subcircuit_id?: string
+}
+```
+
+The ID and `warning_type` are generated when omitted from input. For example:
+
+```json
+{
+  "type": "pcb_fabricator_extra_charge_warning",
+  "fabricator_preset": "jlcpcb_economy",
+  "message": "Via hole diameter 0.25 mm is below 0.3 mm and incurs an extra charge",
+  "pcb_board_id": "pcb_board_0",
+  "pcb_via_ids": ["pcb_via_0"]
+}
+```
 
 ### PcbAutoroutingError
 
@@ -1516,6 +1501,8 @@ interface PcbBend {
 }
 ```
 
+[Examples and coordinate/rendering semantics](docs/pcb-flex.md)
+
 ### PcbBoard
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_board.ts)
@@ -1547,7 +1534,7 @@ interface PcbBoard extends ManufacturingDrcProperties {
   center: Point
   outline?: Point[]
   shape?: "rect" | "polygon"
-  material: "fr4" | "fr1" | "flex"
+  material: "fr4" | "fr1"
   solder_mask_color?: string
   silkscreen_color?: string
   anchor_position?: Point
@@ -1607,10 +1594,6 @@ interface PcbBusLengthSkewError extends BaseCircuitJsonError {
 interface PcbComponentMetadata {
   kicad_footprint?: KicadFootprintMetadata
 }
-
-type SupplierPin1LocationMap = Partial<
-  Record<SupplierName, PcbPin1Location>
->
 ```
 
 ### PcbComponentInvalidLayerError
@@ -1628,25 +1611,6 @@ interface PcbComponentInvalidLayerError extends BaseCircuitJsonError {
   pcb_component_id?: string
   source_component_id: string
   layer: LayerRef
-  subcircuit_id?: string
-}
-```
-
-### PcbComponentMissingCourtyardWarning
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_component_missing_courtyard_warning.ts)
-
-Warning emitted when a PCB component has no courtyard geometry
-
-```typescript
-/** Warning emitted when a PCB component has no courtyard geometry */
-interface PcbComponentMissingCourtyardWarning {
-  type: "pcb_component_missing_courtyard_warning"
-  pcb_component_missing_courtyard_warning_id: string
-  warning_type: "pcb_component_missing_courtyard_warning"
-  message: string
-  pcb_component_id: string
-  source_component_id?: string
   subcircuit_id?: string
 }
 ```
@@ -1688,11 +1652,11 @@ interface PcbComponentOutsideBoardError extends BaseCircuitJsonError {
   pcb_board_id: string
   component_center: Point
   component_bounds: {
-  min_x: number
-  max_x: number
-  min_y: number
-  max_y: number
-}
+    min_x: number
+    max_x: number
+    min_y: number
+    max_y: number
+  }
   subcircuit_id?: string
   source_component_id?: string
 }
@@ -1763,11 +1727,11 @@ interface PcbCopperText {
   text: string
   is_knockout?: boolean
   knockout_padding?: {
-  left: Length
-  top: Length
-  bottom: Length
-  right: Length
-}
+    left: Length
+    top: Length
+    bottom: Length
+    right: Length
+  }
   ccw_rotation?: number
   layer: LayerRef
   is_mirrored?: boolean
@@ -1923,6 +1887,30 @@ interface PcbCutoutRect {
 }
 ```
 
+### PcbRoutingConstraintError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_routing_constraint_error.ts)
+
+```typescript
+/** A failed routing constraint or a rule whose physical inputs cannot be verified.
+ * Unverified results must never be interpreted as an electrical pass. */
+interface PcbRoutingConstraintError extends BaseCircuitJsonError {
+  type: "pcb_routing_constraint_error"
+  pcb_routing_constraint_error_id: string
+  error_type: "pcb_routing_constraint_error"
+  status: "violation" | "unverified"
+  rule: string
+  source_bus_ids: string[]
+  source_trace_ids: string[]
+  pcb_trace_ids: string[]
+  actual_value?: number
+  expected_min?: number
+  expected_max?: number
+  units?: "mm" | "ohm" | "count"
+  subcircuit_id?: string
+}
+```
+
 ### PcbDebugObject
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_debug_object.ts)
@@ -1982,9 +1970,9 @@ interface PcbFabricationNoteDimension {
   offset?: Length
   offset_distance?: Length
   offset_direction?: {
-  x: number
-  y: number
-}
+    x: number
+    y: number
+  }
   font: "tscircuit2024"
   font_size: Length
   color?: string
@@ -2059,37 +2047,13 @@ interface PcbFabricationNoteText {
   ccw_rotation?: number
   layer: VisibleLayer
   anchor_position: Point
-  anchor_alignment: | "center"
-  | "top_left"
-  | "top_right"
-  | "bottom_left"
-  | "bottom_right"
+  anchor_alignment:
+    | "center"
+    | "top_left"
+    | "top_right"
+    | "bottom_left"
+    | "bottom_right"
   color?: string
-}
-```
-
-### PcbFabricatorExtraChargeWarning
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_fabricator_extra_charge_warning.ts)
-
-Selected preset, for example jlcpcb_economy or jlcpcb_standard_20260912.
-
-```typescript
-/** Warning that a design feature incurs an extra charge for the selected
- * fabricator preset. For JLCPCB economy or standard presets (including dated
- * variants), via hole diameters below 0.3 mm are an intended use case.
- * The producer detects the condition; this record describes the warning. */
-interface PcbFabricatorExtraChargeWarning {
-  type: "pcb_fabricator_extra_charge_warning"
-  pcb_fabricator_extra_charge_warning_id: string
-  warning_type: "pcb_fabricator_extra_charge_warning"
-  message: string
-  /** Selected preset, for example jlcpcb_economy or jlcpcb_standard_20260912. */
-  fabricator_preset: string
-  pcb_board_id?: string
-  /** Vias responsible for the extra charge, when the warning concerns vias. */
-  pcb_via_ids?: string[]
-  subcircuit_id?: string
 }
 ```
 
@@ -2180,8 +2144,8 @@ interface PcbGroup {
   description?: string
   layout_mode?: string
   autorouter_configuration?: {
-  trace_clearance: Length
-}
+    trace_clearance: Length
+  }
   autorouter_used_string?: string
 }
 ```
@@ -2213,7 +2177,19 @@ interface PcbHoleCircle {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_keepout.ts)
 
-PCB components excluded from keepout DRC enforcement.
+A keepout region on specified PCB layers, with rectangle, circle, or outline geometry.
+
+`warning_only: true` makes the region advisory: routing and copper placement may
+cross it, and overlap checks should emit `pcb_keepout_overlap_warning` records
+instead of errors for that keepout. Omitted or `false` retains normal enforcement.
+The parser preserves omission; it does not insert a default. Only boolean values
+are accepted. `excluded_pcb_component_ids` continues to exempt the listed
+components from keepout diagnostics, including warnings.
+
+This is a data contract: parsing a keepout does not run routing or DRC. Producers
+and consumers must implement the advisory behavior. Unrelated DRC violations and
+violations of other, enforcing keepouts remain errors. Existing documents require
+no migration; older consumers may ignore the flag and enforce the region normally.
 
 ```typescript
 interface PcbKeepoutOutline {
@@ -2228,15 +2204,12 @@ interface PcbKeepoutOutline {
   description?: string
   /** PCB components excluded from keepout DRC enforcement. */
   excluded_pcb_component_ids?: string[]
-  /** When true, this keepout is advisory: it does not block routing or copper
-  * placement, and DRC reports overlaps as pcb_keepout_overlap_warning records.
-  * False or omitted preserves normal enforcement. Component exclusions still apply. */
-  
+  /**
+   * When true, this keepout is advisory: it does not block routing or copper
+   * placement, and DRC reports overlaps as pcb_keepout_overlap_warning records.
+   * False or omitted preserves normal enforcement. Component exclusions still apply.
+   */
   warning_only?: boolean
-  /** Allow trace crossings without keepout diagnostics; copper pours remain excluded. */
-  allow_traces?: boolean
-  /** Allow components and their pads/plated holes without keepout diagnostics; copper pours remain excluded. */
-  allow_placements?: boolean
 }
 
 interface PCBKeepoutRect {
@@ -2252,15 +2225,12 @@ interface PCBKeepoutRect {
   description?: string
   /** PCB components excluded from keepout DRC enforcement. */
   excluded_pcb_component_ids?: string[]
-  /** When true, this keepout is advisory: it does not block routing or copper
-  * placement, and DRC reports overlaps as pcb_keepout_overlap_warning records.
-  * False or omitted preserves normal enforcement. Component exclusions still apply. */
-  
+  /**
+   * When true, this keepout is advisory: it does not block routing or copper
+   * placement, and DRC reports overlaps as pcb_keepout_overlap_warning records.
+   * False or omitted preserves normal enforcement. Component exclusions still apply.
+   */
   warning_only?: boolean
-  /** Allow trace crossings without keepout diagnostics; copper pours remain excluded. */
-  allow_traces?: boolean
-  /** Allow components and their pads/plated holes without keepout diagnostics; copper pours remain excluded. */
-  allow_placements?: boolean
 }
 
 interface PCBKeepoutCircle {
@@ -2275,15 +2245,12 @@ interface PCBKeepoutCircle {
   description?: string
   /** PCB components excluded from keepout DRC enforcement. */
   excluded_pcb_component_ids?: string[]
-  /** When true, this keepout is advisory: it does not block routing or copper
-  * placement, and DRC reports overlaps as pcb_keepout_overlap_warning records.
-  * False or omitted preserves normal enforcement. Component exclusions still apply. */
-  
+  /**
+   * When true, this keepout is advisory: it does not block routing or copper
+   * placement, and DRC reports overlaps as pcb_keepout_overlap_warning records.
+   * False or omitted preserves normal enforcement. Component exclusions still apply.
+   */
   warning_only?: boolean
-  /** Allow trace crossings without keepout diagnostics; copper pours remain excluded. */
-  allow_traces?: boolean
-  /** Allow components and their pads/plated holes without keepout diagnostics; copper pours remain excluded. */
-  allow_placements?: boolean
 }
 
 type PCBKeepout = PCBKeepoutRect | PCBKeepoutCircle | PcbKeepoutOutline
@@ -2391,9 +2358,9 @@ interface PcbNoteDimension {
   text_ccw_rotation?: number
   offset_distance?: Length
   offset_direction?: {
-  x: number
-  y: number
-}
+    x: number
+    y: number
+  }
   font: "tscircuit2024"
   font_size: Length
   layer: VisibleLayer
@@ -2500,11 +2467,12 @@ interface PcbNoteText {
   font_size: Length
   text?: string
   anchor_position: Point
-  anchor_alignment: | "center"
-  | "top_left"
-  | "top_right"
-  | "bottom_left"
-  | "bottom_right"
+  anchor_alignment:
+    | "center"
+    | "top_left"
+    | "top_right"
+    | "bottom_left"
+    | "bottom_right"
   layer: VisibleLayer
   is_mirrored_from_top_view?: boolean
   color?: string
@@ -2544,9 +2512,9 @@ interface PcbPadPadClearanceError extends BaseCircuitJsonError {
   minimum_clearance?: Distance
   actual_clearance?: Distance
   center?: {
-  x?: number
-  y?: number
-}
+    x?: number
+    y?: number
+  }
   subcircuit_id?: string
 }
 ```
@@ -2568,9 +2536,9 @@ interface PcbPadTraceClearanceError extends BaseCircuitJsonError {
   minimum_clearance?: Distance
   actual_clearance?: Distance
   center?: {
-  x?: number
-  y?: number
-}
+    x?: number
+    y?: number
+  }
   subcircuit_id?: string
 }
 ```
@@ -2610,24 +2578,6 @@ interface PcbPanelizationPlacementError extends BaseCircuitJsonError {
   pcb_board_id?: string
   subcircuit_id?: string
 }
-```
-
-### PcbPin1Location
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/properties/pcb_pin1_location.ts)
-
-```typescript
-type PcbPin1Location =
-  | "leftside_top"
-  | "leftside_bottom"
-  | "rightside_top"
-  | "rightside_bottom"
-  | "topside_left"
-  | "topside_right"
-  | "bottomside_left"
-  | "bottomside_right"
-
-type PcbPin1LocationRotation = 0 | 90 | 180 | 270
 ```
 
 ### PcbPlacementError
@@ -2854,6 +2804,7 @@ interface PcbPreflightRoutingError extends BaseCircuitJsonError {
 }
 ```
 
+
 ### PcbRouteHints
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/properties/pcb_route_hints.ts)
@@ -2866,30 +2817,6 @@ interface PcbRouteHint {
   y: number
   via?: boolean
   via_to_layer?: LayerRef
-}
-```
-
-### PcbRoutingConstraintError
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_routing_constraint_error.ts)
-
-```typescript
-/** A failed routing constraint or a rule whose physical inputs cannot be verified.
- * Unverified results must never be interpreted as an electrical pass. */
-interface PcbRoutingConstraintError extends BaseCircuitJsonError {
-  type: "pcb_routing_constraint_error"
-  pcb_routing_constraint_error_id: string
-  error_type: "pcb_routing_constraint_error"
-  status: "violation" | "unverified"
-  rule: string
-  source_bus_ids: string[]
-  source_trace_ids: string[]
-  pcb_trace_ids: string[]
-  actual_value?: number
-  expected_min?: number
-  expected_max?: number
-  units?: "mm" | "ohm" | "count"
-  subcircuit_id?: string
 }
 ```
 
@@ -3069,31 +2996,16 @@ interface PcbSilkscreenText {
   text: string
   is_knockout?: boolean
   knockout_padding?: {
-  left: Length
-  top: Length
-  bottom: Length
-  right: Length
-}
+    left: Length
+    top: Length
+    bottom: Length
+    right: Length
+  }
   ccw_rotation?: number
   layer: LayerRef
   is_mirrored?: boolean
   anchor_position: Point
   anchor_alignment: NinePointAnchor
-}
-```
-
-### PcbSoldermaskOpening
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_soldermask_opening.ts)
-
-```typescript
-interface PcbSoldermaskOpeningBase {
-  type: "pcb_soldermask_opening"
-  pcb_soldermask_opening_id: string
-  layer: "top" | "bottom"
-  pcb_component_id?: string
-  pcb_group_id?: string
-  subcircuit_id?: string
 }
 ```
 
@@ -3124,10 +3036,9 @@ interface PcbSolderPasteCircle {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_stiffener.ts)
 
-Common properties of bonded PCB reinforcement.
+Defines bonded mechanical reinforcement with rectangular or polygon geometry.
 
 ```typescript
-/** Common properties of bonded PCB reinforcement. */
 interface PcbStiffenerBase {
   type: "pcb_stiffener"
   pcb_stiffener_id: string
@@ -3144,7 +3055,32 @@ interface PcbStiffenerBase {
   /** Adhesive thickness in mm; omission means unspecified, not zero. */
   adhesive_thickness?: Length
 }
+
+interface PcbStiffenerRect extends PcbStiffenerBase {
+  shape: "rect"
+  /** Relative to the flat board center, in mm. */
+  center: Point
+  /** Degrees counterclockwise in the flat top view; omission means zero. */
+  rotation?: Rotation
+  width: Length
+  height: Length
+  outline?: never
+}
+
+interface PcbStiffenerPolygon extends PcbStiffenerBase {
+  shape: "polygon"
+  /** Implicitly closed vertices relative to the flat board center, in mm. All placement/rotation is baked in. */
+  outline: Point[]
+  center?: never
+  rotation?: never
+  width?: never
+  height?: never
+}
+
+type PcbStiffener = PcbStiffenerRect | PcbStiffenerPolygon
 ```
+
+[Examples and coordinate/rendering semantics](docs/pcb-flex.md)
 
 ### PcbText
 
@@ -3194,9 +3130,11 @@ interface PcbThermalSpoke {
 
 ### PcbTrace
 
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_trace.ts)
+A `wire` route point can taper its outgoing segment using `start_width`,
+`end_width`, and `width_interpolation_mode` (`linear` or `quadratic`).
+See the [wire taper geometry contract](docs/pcb-trace-teardrops.md).
 
-Outgoing segment taper; all three fields must be specified together.
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_trace.ts)
 
 ```typescript
 interface PcbTraceRoutePointWire {
@@ -3204,7 +3142,6 @@ interface PcbTraceRoutePointWire {
   x: Distance
   y: Distance
   width: Distance
-  /** Outgoing segment taper; all three fields must be specified together. */
   start_width?: Distance
   end_width?: Distance
   width_interpolation_mode?: "linear" | "quadratic"
@@ -3213,6 +3150,20 @@ interface PcbTraceRoutePointWire {
   start_pcb_port_id?: string
   end_pcb_port_id?: string
   layer: LayerRef
+}
+
+interface PcbTraceRoutePointVia {
+  route_type: "via"
+  x: Distance
+  y: Distance
+  copper_pour_id?: string
+  is_inside_copper_pour?: boolean
+  hole_diameter?: Distance
+  outer_diameter?: Distance
+  tented_on_top?: boolean
+  tented_on_bottom?: boolean
+  from_layer: LayerRef
+  to_layer: LayerRef
 }
 
 type PcbTraceRoutePoint =
@@ -3397,14 +3348,16 @@ interface PcbVia {
   /** PCB ports belonging to this via, including layer ports and aliases. */
   pcb_port_ids?: string[]
   pcb_trace_id?: string
-  source_trace_id?: string
-  source_net_id?: string
   net_is_assignable?: boolean
   net_assigned?: boolean
   tented_on_top?: boolean
   tented_on_bottom?: boolean
 }
 ```
+
+Legacy `is_tented` input is deprecated and transformed into `tented_on_top` and
+`tented_on_bottom`. Explicit per-side values take precedence. Parsed output omits
+`is_tented`; both per-side fields are optional.
 
 ### PcbViaClearanceError
 
@@ -3422,9 +3375,9 @@ interface PcbViaClearanceError extends BaseCircuitJsonError {
   minimum_clearance?: Distance
   actual_clearance?: Distance
   pcb_center?: {
-  x?: number
-  y?: number
-}
+    x?: number
+    y?: number
+  }
   subcircuit_id?: string
 }
 ```
@@ -3446,9 +3399,9 @@ interface PcbViaTraceClearanceError extends BaseCircuitJsonError {
   minimum_clearance?: Distance
   actual_clearance?: Distance
   center?: {
-  x?: number
-  y?: number
-}
+    x?: number
+    y?: number
+  }
   subcircuit_id?: string
 }
 ```
@@ -3540,13 +3493,13 @@ interface SchematicComponent {
   schematic_symbol_id?: string
   pin_spacing?: number
   pin_styles?: Record<
-  string,
-  {
-  left_margin?: number
-  right_margin?: number
-  top_margin?: number
-  bottom_margin?: number
-}
+    string,
+    {
+      left_margin?: number
+      right_margin?: number
+      top_margin?: number
+      bottom_margin?: number
+    }
   >
   box_width?: number
   symbol_name?: string
@@ -3572,9 +3525,9 @@ interface SchematicPortArrangementBySides {
   right_side?: { pins: number[]; direction?: "top-to-bottom" | "bottom-to-top" }
   top_side?: { pins: number[]; direction?: "left-to-right" | "right-to-left" }
   bottom_side?: {
-  pins: number[]
-  direction?: "left-to-right" | "right-to-left"
-}
+    pins: number[]
+    direction?: "left-to-right" | "right-to-left"
+  }
 }
 
 type SchematicPortArrangement =
@@ -3673,9 +3626,10 @@ interface SchematicElementOutsideSheetWarning {
   warning_type: "schematic_element_outside_sheet_warning"
   message: string
   schematic_sheet_id: string
-  schematic_element_type: | "schematic_component"
-  | "schematic_net_label"
-  | "schematic_trace"
+  schematic_element_type:
+    | "schematic_component"
+    | "schematic_net_label"
+    | "schematic_trace"
   schematic_element_id: string
 }
 ```
@@ -3697,7 +3651,7 @@ interface SchematicError extends BaseCircuitJsonError {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_graphic.ts)
 
-References a graphic asset or inline SVG content on a schematic sheet.
+References a graphic asset or inline SVG content with optional centered layout bounds on a schematic sheet. At least one graphic source is required.
 
 ```typescript
 /** References a graphic asset or inline SVG content on a schematic sheet. */
@@ -3823,8 +3777,6 @@ interface SchematicMissingSheetWarning {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_net_label.ts)
 
-Display-only superscript suffix, e.g. "1" in GND¹. Does not change net identity.
-
 ```typescript
 interface SchematicNetLabel {
   type: "schematic_net_label"
@@ -3841,8 +3793,8 @@ interface SchematicNetLabel {
   display_superscript?: string
   symbol_name?: string | undefined
   /** When true the net label can be repositioned. When false the label's
-  * position is fixed by the element it is attached to. */
-  
+   * position is fixed by the element it is attached to. */
+
   is_movable?: boolean
   subcircuit_id?: string
 }
@@ -3889,11 +3841,6 @@ interface SchematicPort {
   true_ccw_index?: number
   pin_number?: number
   display_pin_label?: string
-  /** Ordered parts of the pin label with per-part styling.
-   * For example, `A~{BC}D` is represented as `A`, overlined `BC`, then `D`.
-   * Consumers that do not support styled text can use `display_pin_label`. */
-
-  display_pin_label_text_parts?: SchematicTextPart[]
   display_pin_label_font_size?: number
   subcircuit_id?: string
   is_connected?: boolean
@@ -3945,7 +3892,7 @@ interface SchematicSheet {
   schematic_sheet_id: string
   name?: string
   sheet_index?: number
-  sheet_size?: SchematicSheetSize
+  sheet_size?: "a4" | "ansi_b"
   sheet_width?: number
   sheet_height?: number
   subcircuit_id?: string
@@ -4021,8 +3968,6 @@ interface SchematicTableCell {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_text.ts)
 
-Display-only superscript suffix, e.g. "1" in GND¹ for an inline net label.
-
 ```typescript
 interface SchematicText {
   type: "schematic_text"
@@ -4030,44 +3975,18 @@ interface SchematicText {
   schematic_component_id?: string
   schematic_symbol_id?: string
   schematic_text_id: string
-  /** Set when the text annotates a trace rather than a component, as an inline
-  * net label does - the net name drawn alongside a point-to-point wire instead
-  * of as an anchored `schematic_net_label`. Lets consumers tell such a label
-  * apart from free-standing text and resolve the net it belongs to. */
-  
-  source_trace_id?: string
   text: string
-  /** Ordered parts with per-part display options.
-  * Consumers that do not support styled text can use `text`. */
-  
-  text_parts?: SchematicTextPart[]
   /** Display-only superscript suffix, e.g. "1" in GND¹ for an inline net label. */
   display_superscript?: string
   font_size: number
   position: {
-  x: number
-  y: number
-}
+    x: number
+    y: number
+  }
   rotation: number
   anchor: NinePointAnchor | FivePointAnchor
   color: string
   subcircuit_id?: string
-}
-```
-
-### SchematicTextPart
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_text_part.ts)
-
-One part of schematic text with its display options.
-
-```typescript
-/** One part of schematic text with its display options. */
-interface SchematicTextPart {
-  /** The literal text displayed for this part. */
-  text: string
-  /** Draw a line above this part, typically indicating an active-low signal. */
-  is_overlined?: boolean
 }
 ```
 
@@ -4078,13 +3997,13 @@ interface SchematicTextPart {
 ```typescript
 interface SchematicTraceEdge {
   from: {
-  x: number
-  y: number
-}
+    x: number
+    y: number
+  }
   to: {
-  x: number
-  y: number
-}
+    x: number
+    y: number
+  }
   is_crossing?: boolean
   from_schematic_port_id?: string
   to_schematic_port_id?: string
@@ -4438,14 +4357,12 @@ interface SimulationInductanceParameterSweep
   inductor_source_component_id: string
 }
 
-interface SimulationVoltageParameterSweep
-  extends SimulationParameterSweepBase {
+interface SimulationVoltageParameterSweep extends SimulationParameterSweepBase {
   parameter_type: "voltage"
   source_net_id: string
 }
 
-interface SimulationCurrentParameterSweep
-  extends SimulationParameterSweepBase {
+interface SimulationCurrentParameterSweep extends SimulationParameterSweepBase {
   parameter_type: "current"
   current_source_component_id: string
 }
@@ -4476,13 +4393,13 @@ interface SimulationSpiceSubcircuit {
   type: "simulation_spice_subcircuit"
   simulation_spice_subcircuit_id: string
   /** Source component this SPICE subcircuit models. */
-  
+
   source_component_id: string
   /** Maps SPICE subcircuit pin names to source port ids. */
-  
+
   spice_pin_to_source_port_map: Record<string, string>
   /** Full SPICE subcircuit source text. */
-  
+
   subcircuit_source: string
 }
 ```
