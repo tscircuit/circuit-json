@@ -47,6 +47,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
   - [Typescript Usage](#typescript-usage)
 
   - [Source Components](#source-components)
+    - [DdrRoutingConstraints](#ddrroutingconstraints)
     - [SourceAmbiguousPortReference](#sourceambiguousportreference)
     - [SourceBoard](#sourceboard)
     - [SourceBus](#sourcebus)
@@ -129,6 +130,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbCourtyardPolygon](#pcbcourtyardpolygon)
     - [PcbCourtyardRect](#pcbcourtyardrect)
     - [PcbCutout](#pcbcutout)
+    - [PcbDdrRoutingError](#pcbddrroutingerror)
     - [PcbDebugObject](#pcbdebugobject)
     - [PcbFabricationNoteDimension](#pcbfabricationnotedimension)
     - [PcbFabricationNotePath](#pcbfabricationnotepath)
@@ -310,6 +312,26 @@ There are 3 main element prefixes:
 
 ## Source Components
 
+### DdrRoutingConstraints
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/ddr_routing_constraints.ts)
+
+```typescript
+/** Explicit DDR routing intent. Interface names are scoped by subcircuit.
+ * SPRS717L is revision L of the AM335x data manual. The first supported
+ * topology is one point-to-point x16 DDR3 device; no electrical defaults
+ * or physical stackup are implied by selecting this profile. */
+interface DdrRoutingConstraints {
+  profile: "ti_am335x_ddr3"
+  interface_name: string
+  signal_class: "dq" | "dqs" | "ck" | "addr_ctrl"
+  topology: "one_x16"
+  byte_index?: 0 | 1
+  ground_net_name?: string
+  power_net_name?: string
+}
+```
+
 ### SourceAmbiguousPortReference
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_ambiguous_port_reference.ts)
@@ -357,6 +379,18 @@ interface SourceBus {
   source_trace_ids: string[]
   /** Maximum difference between the longest and shortest member, in millimeters. */
   max_length_skew?: number
+  /** Intended single-ended characteristic impedance, in ohms. */
+  target_impedance?: number
+  /** Intended differential characteristic impedance, in ohms. */
+  target_differential_impedance?: number
+  /** Ordered polarity for a resolved point-to-point differential pair. */
+  differential_pair?: {
+    positive_source_trace_id: string
+    negative_source_trace_id: string
+    trace_gap?: number
+    max_uncoupled_length?: number
+  }
+  ddr_routing?: DdrRoutingConstraints
   subcircuit_id?: string
 }
 ```
@@ -1845,6 +1879,32 @@ interface PcbCutoutRect {
   height: Length
   rotation?: Rotation
   corner_radius?: Length
+}
+```
+
+### PcbDdrRoutingError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_ddr_routing_error.ts)
+
+```typescript
+/** A failed DDR rule or a rule whose physical inputs cannot be verified.
+ * Unverified results must never be interpreted as an electrical pass. */
+interface PcbDdrRoutingError extends BaseCircuitJsonError {
+  type: "pcb_ddr_routing_error"
+  pcb_ddr_routing_error_id: string
+  error_type: "pcb_ddr_routing_error"
+  status: "violation" | "unverified"
+  rule: string
+  specification: "SPRS717L"
+  specification_section: string
+  source_bus_ids: string[]
+  source_trace_ids: string[]
+  pcb_trace_ids: string[]
+  actual_value?: number
+  expected_min?: number
+  expected_max?: number
+  units?: "mm" | "ohm" | "count"
+  subcircuit_id?: string
 }
 ```
 

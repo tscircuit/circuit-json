@@ -20,6 +20,7 @@ export * from "./pcb_trace"
 export * from "./pcb_trace_warning"
 export * from "./pcb_trace_too_long_error"
 export * from "./pcb_bus_length_skew_error"
+export * from "./pcb_ddr_routing_error"
 export * from "./pcb_trace_too_long_warning"
 export * from "./pcb_trace_too_many_vias_warning"
 export * from "./pcb_trace_error"
@@ -101,6 +102,7 @@ import type { PcbTrace } from "./pcb_trace"
 import type { PcbKeepoutOverlapWarning } from "./pcb_keepout_overlap_warning"
 import type { PcbTraceWarning } from "./pcb_trace_warning"
 import type { PcbTraceTooLongError } from "./pcb_trace_too_long_error"
+import type { PcbDdrRoutingError } from "./pcb_ddr_routing_error"
 import type { PcbBusLengthSkewError } from "./pcb_bus_length_skew_error"
 import type { PcbTraceTooLongWarning } from "./pcb_trace_too_long_warning"
 import type { PcbTraceTooManyViasWarning } from "./pcb_trace_too_many_vias_warning"
@@ -179,6 +181,7 @@ export type PcbCircuitElement =
   | PcbKeepoutOverlapWarning
   | PcbTraceTooLongError
   | PcbBusLengthSkewError
+  | PcbDdrRoutingError
   | PcbTraceTooLongWarning
   | PcbTraceTooManyViasWarning
   | PcbTraceError
