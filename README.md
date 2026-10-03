@@ -114,6 +114,8 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbBend](#pcbbend)
     - [PcbBoard](#pcbboard)
     - [PcbBreakoutPoint](#pcbbreakoutpoint)
+    - [PcbBusRoutingConstraintError](#pcbbusroutingconstrainterror)
+    - [PcbBusRoutingConstraintWarning](#pcbbusroutingconstraintwarning)
     - [PcbBusLengthSkewError](#pcbbuslengthskewerror)
     - [PcbComponent](#pcbcomponent)
     - [PcbComponentInvalidLayerError](#pcbcomponentinvalidlayererror)
@@ -1562,6 +1564,62 @@ interface PcbBreakoutPoint {
   layer?: LayerRef
   x: Distance
   y: Distance
+}
+```
+
+### PcbBusRoutingConstraintError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_bus_routing_constraint_error.ts)
+
+A declared bus or differential-pair routing constraint is violated.
+
+```typescript
+/** A declared bus or differential-pair routing constraint is violated. */
+interface PcbBusRoutingConstraintError extends BaseCircuitJsonError {
+  type: "pcb_bus_routing_constraint_error"
+  pcb_bus_routing_constraint_error_id: string
+  error_type: "pcb_bus_routing_constraint_error"
+  source_bus_id: string
+  source_trace_ids: string[]
+  pcb_trace_ids: string[]
+  routing_rule: | "length_skew"
+  | "min_length"
+  | "max_length"
+  | "target_length"
+  | "pcb_trace_spacing"
+  | "pcb_spacing_to_other_signals"
+  | "impedance_target"
+  /** Measurements in the units required by the rule; not inferred electrical behavior. */
+  actual_value?: number
+  expected_min?: number
+  expected_max?: number
+  units: "mm" | "ohm"
+  subcircuit_id?: string
+}
+```
+
+### PcbBusRoutingConstraintWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_bus_routing_constraint_warning.ts)
+
+A declared bus or pair constraint could not be verified; this is not a pass.
+
+```typescript
+/** A declared bus or pair constraint could not be verified; this is not a pass. */
+interface PcbBusRoutingConstraintWarning {
+  type: "pcb_bus_routing_constraint_warning"
+  pcb_bus_routing_constraint_warning_id: string
+  warning_type: "pcb_bus_routing_constraint_warning"
+  source_bus_id: string
+  source_trace_ids: string[]
+  pcb_trace_ids: string[]
+  routing_rule: | "route_geometry"
+  | "reference_geometry"
+  | "spacing_geometry"
+  | "target_length"
+  | "physical_impedance"
+  message: string
+  subcircuit_id?: string
 }
 ```
 
@@ -3165,13 +3223,6 @@ interface PcbTraceError extends BaseCircuitJsonError {
   source_trace_id: string
   pcb_component_ids: string[]
   pcb_port_ids: string[]
-  /** Optional routing-rule context; references are not user-facing labels. */
-  source_bus_id?: string
-  routing_rule?: string
-  actual_value?: number
-  expected_min?: number
-  expected_max?: number
-  units?: "mm" | "ohm" | "count"
   subcircuit_id?: string
 }
 ```
@@ -3294,18 +3345,10 @@ interface PcbTraceWarning {
   warning_type: "pcb_trace_warning"
   message: string
   center?: Point
-  /** May be absent when the source trace has no routed geometry to verify. */
-  pcb_trace_id?: string
+  pcb_trace_id: string
   source_trace_id: string
   pcb_component_ids: string[]
   pcb_port_ids: string[]
-  /** Optional routing-rule context; references are not user-facing labels. */
-  source_bus_id?: string
-  routing_rule?: string
-  actual_value?: number
-  expected_min?: number
-  expected_max?: number
-  units?: "mm" | "ohm" | "count"
   subcircuit_id?: string
 }
 ```

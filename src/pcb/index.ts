@@ -22,6 +22,8 @@ export * from "./pcb_trace_too_long_error"
 export * from "./pcb_bus_length_skew_error"
 export * from "./pcb_trace_too_long_warning"
 export * from "./pcb_trace_too_many_vias_warning"
+export * from "./pcb_bus_routing_constraint_error"
+export * from "./pcb_bus_routing_constraint_warning"
 export * from "./pcb_trace_error"
 export * from "./pcb_trace_missing_error"
 export * from "./pcb_port_not_matched_error"
@@ -104,6 +106,8 @@ import type { PcbTraceTooLongError } from "./pcb_trace_too_long_error"
 import type { PcbBusLengthSkewError } from "./pcb_bus_length_skew_error"
 import type { PcbTraceTooLongWarning } from "./pcb_trace_too_long_warning"
 import type { PcbTraceTooManyViasWarning } from "./pcb_trace_too_many_vias_warning"
+import type { PcbBusRoutingConstraintError } from "./pcb_bus_routing_constraint_error"
+import type { PcbBusRoutingConstraintWarning } from "./pcb_bus_routing_constraint_warning"
 import type { PcbTraceError } from "./pcb_trace_error"
 import type { PcbTraceMissingError } from "./pcb_trace_missing_error"
 import type { PcbPortNotMatchedError } from "./pcb_port_not_matched_error"
@@ -181,6 +185,8 @@ export type PcbCircuitElement =
   | PcbBusLengthSkewError
   | PcbTraceTooLongWarning
   | PcbTraceTooManyViasWarning
+  | PcbBusRoutingConstraintError
+  | PcbBusRoutingConstraintWarning
   | PcbTraceError
   | PcbTraceMissingError
   | PcbMissingFootprintError

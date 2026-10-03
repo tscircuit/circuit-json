@@ -2,8 +2,8 @@ import { expect, test } from "bun:test"
 import {
   type SourceBus,
   source_bus,
-  pcb_trace_error,
-  pcb_trace_warning,
+  pcb_bus_routing_constraint_error,
+  pcb_bus_routing_constraint_warning,
   any_circuit_element,
 } from "../src"
 
@@ -56,14 +56,12 @@ test("pair polarity and explicit shared length references survive serialization"
   )
 })
 
-test("routing violations reuse existing trace errors with structured measurements", () => {
-  const error = pcb_trace_error.parse({
-    type: "pcb_trace_error",
+test("routing violations use a dedicated bus constraint error with structured measurements", () => {
+  const error = pcb_bus_routing_constraint_error.parse({
+    type: "pcb_bus_routing_constraint_error",
     message: "DATA exceeds its maximum routed length",
-    pcb_trace_id: "pcb_trace_1",
-    source_trace_id: "data_0",
-    pcb_component_ids: [],
-    pcb_port_ids: [],
+    pcb_trace_ids: ["pcb_trace_1"],
+    source_trace_ids: ["data_0"],
     source_bus_id: "source_bus_1",
     routing_rule: "max_length",
     actual_value: 22,
@@ -71,22 +69,21 @@ test("routing violations reuse existing trace errors with structured measurement
     units: "mm",
   })
   expect(any_circuit_element.parse(error)).toEqual(error)
-  expect(error.error_type).toBe("pcb_trace_error")
+  expect(error.error_type).toBe("pcb_bus_routing_constraint_error")
   expect(error.actual_value).toBe(22)
 })
 
-test("unverified rules use trace warnings without fabricating missing geometry", () => {
-  const warning = pcb_trace_warning.parse({
-    type: "pcb_trace_warning",
+test("unverified rules use a dedicated warning without fabricating missing geometry", () => {
+  const warning = pcb_bus_routing_constraint_warning.parse({
+    type: "pcb_bus_routing_constraint_warning",
     message: "Unverified DATA length: the signal is not routed",
-    source_trace_id: "data_0",
-    pcb_component_ids: [],
-    pcb_port_ids: [],
+    pcb_trace_ids: [],
+    source_trace_ids: ["data_0"],
     source_bus_id: "source_bus_1",
     routing_rule: "route_geometry",
   })
   expect(any_circuit_element.parse(warning)).toEqual(warning)
-  expect(warning.pcb_trace_id).toBeUndefined()
+  expect(warning.pcb_trace_ids).toEqual([])
 })
 
 test("canonical constraints reject invalid units, domains and unresolved selectors", () => {
@@ -120,4 +117,44 @@ test("canonical constraints reject invalid units, domains and unresolved selecto
       length_tolerance: 0,
     }).success,
   ).toBe(true)
+})
+
+test("constraint diagnostics require typed rules and warning geometry remains optional", () => {
+  const references = {
+    source_bus_id: "bus",
+    source_trace_ids: ["trace"],
+    pcb_trace_ids: [],
+    message: "Named bus constraint",
+  }
+  expect(
+    pcb_bus_routing_constraint_error.safeParse({
+      ...references,
+      type: "pcb_bus_routing_constraint_error",
+      routing_rule: "arbitrary_rule",
+      units: "mm",
+    }).success,
+  ).toBe(false)
+  expect(
+    pcb_bus_routing_constraint_warning.safeParse({
+      ...references,
+      type: "pcb_bus_routing_constraint_warning",
+      routing_rule: "min_length",
+    }).success,
+  ).toBe(false)
+  expect(
+    pcb_bus_routing_constraint_error.safeParse({
+      ...references,
+      type: "pcb_bus_routing_constraint_error",
+      routing_rule: "impedance_target",
+      units: "ohm",
+      actual_value: Infinity,
+    }).success,
+  ).toBe(false)
+  expect(
+    pcb_bus_routing_constraint_warning.parse({
+      ...references,
+      type: "pcb_bus_routing_constraint_warning",
+      routing_rule: "physical_impedance",
+    }).pcb_trace_ids,
+  ).toEqual([])
 })
