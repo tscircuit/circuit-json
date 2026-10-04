@@ -110,6 +110,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceUnnamedTraceWarning](#sourceunnamedtracewarning)
     - [UnknownErrorFindingPart](#unknownerrorfindingpart)
   - [CAD Components](#cad-components)
+    - [CadCable](#cadcable)
     - [CadComponent](#cadcomponent)
   - [PCB Elements](#pcb-elements)
     - [PcbFabricatorExtraChargeWarning](#pcbfabricatorextrachargewarning)
@@ -1422,6 +1423,25 @@ interface UnknownErrorFindingPart extends BaseCircuitJsonError {
 ```
 
 ## CAD Components
+
+### CadCable
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_cable.ts)
+
+```typescript
+/** Resolved cable geometry in circuit-world XYZ, mm, +Z up. Path samples are
+ * points; first and last are wire exits. Connector poses follow path tangents.
+ * Rendering consumes this path without rerouting or adding sag. */
+interface CadCable {
+  type: "cad_cable"
+  cad_cable_id: string
+  name: string
+  from_source_component_id: string
+  to_source_component_id: string
+  cableprinter_string: string
+  path: Point3[]
+}
+```
 
 ### CadComponent
 
