@@ -63,6 +63,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceManuallyPlacedVia](#sourcemanuallyplacedvia)
     - [SourceMissingManufacturerPartNumberWarning](#sourcemissingmanufacturerpartnumberwarning)
     - [SourceMissingPropertyError](#sourcemissingpropertyerror)
+    - [SourceMotor](#sourcemotor)
     - [SourceNet](#sourcenet)
     - [SourceNoGroundPinDefinedWarning](#sourcenogroundpindefinedwarning)
     - [SourceNoPowerPinDefinedWarning](#sourcenopowerpindefinedwarning)
@@ -72,6 +73,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourcePinMissingTraceWarning](#sourcepinmissingtracewarning)
     - [SourcePinMustBeConnectedError](#sourcepinmustbeconnectederror)
     - [SourcePort](#sourceport)
+    - [SourcePrintedPart](#sourceprintedpart)
     - [SourceProjectMetadata](#sourceprojectmetadata)
     - [SourcePropertyIgnoredWarning](#sourcepropertyignoredwarning)
     - [SourceRefdesConventionWarning](#sourcerefdesconventionwarning)
@@ -102,6 +104,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceSimpleTransistor](#sourcesimpletransistor)
     - [SourceSimpleVoltageProbe](#sourcesimplevoltageprobe)
     - [SourceSimpleVoltageSource](#sourcesimplevoltagesource)
+    - [SourceSubassembly](#sourcesubassembly)
     - [SourceTrace](#sourcetrace)
     - [SourceTraceNotConnectedError](#sourcetracenotconnectederror)
     - [SourceUnnamedTraceWarning](#sourceunnamedtracewarning)
@@ -639,6 +642,19 @@ interface SourceMissingPropertyError extends BaseCircuitJsonError {
 }
 ```
 
+### SourceMotor
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_motor.ts)
+
+Defines a motor component.
+
+```typescript
+/** Defines a motor component. */
+interface SourceMotor extends SourceComponentBase {
+  ftype: "motor"
+}
+```
+
 ### SourceNet
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_net.ts)
@@ -851,6 +867,19 @@ interface SourcePort extends SourcePinAttributes {
   most_frequently_referenced_by_name?: string
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
+}
+```
+
+### SourcePrintedPart
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_printed_part.ts)
+
+Defines a 3D-printed part in an assembly.
+
+```typescript
+/** Defines a 3D-printed part in an assembly. */
+interface SourcePrintedPart extends SourceComponentBase {
+  ftype: "printedpart"
 }
 ```
 
@@ -1301,6 +1330,19 @@ interface SourceSimpleVoltageSource extends SourceComponentBase {
   fall_time?: number // ms
   pulse_width?: number // ms
   period?: number // ms
+}
+```
+
+### SourceSubassembly
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_subassembly.ts)
+
+Defines a subassembly component.
+
+```typescript
+/** Defines a subassembly component. */
+interface SourceSubassembly extends SourceComponentBase {
+  ftype: "subassembly"
 }
 ```
 

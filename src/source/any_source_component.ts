@@ -24,6 +24,15 @@ import {
 } from "./source_simple_ground"
 import { source_simple_chip, type SourceSimpleChip } from "./source_simple_chip"
 import {
+  source_printed_part,
+  type SourcePrintedPart,
+} from "./source_printed_part"
+import {
+  source_subassembly,
+  type SourceSubassembly,
+} from "./source_subassembly"
+import { source_motor, type SourceMotor } from "./source_motor"
+import {
   source_simple_power_source,
   type SourceSimplePowerSource,
 } from "./source_simple_power_source"
@@ -156,6 +165,9 @@ export const any_source_component = z.union([
   source_simple_led,
   source_simple_ground,
   source_simple_chip,
+  source_printed_part,
+  source_subassembly,
+  source_motor,
   source_simple_power_source,
   source_simple_current_source,
   source_simple_ammeter,
@@ -203,6 +215,9 @@ export type AnySourceElement =
   | SourceSimpleLed
   | SourceSimpleGround
   | SourceSimpleChip
+  | SourcePrintedPart
+  | SourceSubassembly
+  | SourceMotor
   | SourceSimplePowerSource
   | SourceSimpleCurrentSource
   | SourceSimpleAmmeter
