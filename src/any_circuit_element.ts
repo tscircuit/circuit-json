@@ -173,6 +173,7 @@ export const any_circuit_element = z.union([
   cad.cad_collision_error,
   sim.simulation_voltage_source,
   sim.simulation_current_source,
+  sim.simulation_return_current_excitation,
   sim.simulation_experiment,
   sim.simulation_transient_voltage_graph,
   sim.simulation_transient_current_graph,

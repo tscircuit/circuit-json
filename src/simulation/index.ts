@@ -1,5 +1,6 @@
 export * from "./simulation_voltage_source"
 export * from "./simulation_current_source"
+export * from "./simulation_return_current_excitation"
 export * from "./simulation_experiment"
 export * from "./simulation_transient_voltage_graph"
 export * from "./simulation_transient_current_graph"
