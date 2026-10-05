@@ -233,6 +233,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationOscilloscopeTrace](#simulationoscilloscopetrace)
     - [SimulationParameterSweep](#simulationparametersweep)
     - [SimulationParameterSweepCoordinate](#simulationparametersweepcoordinate)
+    - [SimulationReturnCurrentExcitation](#simulationreturncurrentexcitation)
     - [SimulationSpiceSubcircuit](#simulationspicesubcircuit)
     - [SimulationSwitch](#simulationswitch)
     - [SimulationTransientCurrentGraph](#simulationtransientcurrentgraph)
@@ -4449,6 +4450,28 @@ interface SimulationParameterSweepCoordinate {
   sweep_index: number
   parameter_value: number
   parameter_unit: SimulationParameterUnit
+}
+```
+
+### SimulationReturnCurrentExcitation
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_return_current_excitation.ts)
+
+```typescript
+/** PCB trace excitation and ground contacts for spatial return-current simulation.
+ * Current is a signed instantaneous or in-phase amplitude in amperes, not an
+ * inferred operating-point current. Positive follows the ordered signal route.
+ * Contact positions are circuit world points in mm, +X right and +Y up.
+ * return_source injects current into ground at the load; return_sink removes it
+ * at the driver. They need not coincide with the signal route endpoints. */
+interface SimulationReturnCurrentExcitation {
+  type: "simulation_return_current_excitation"
+  simulation_return_current_excitation_id: string
+  pcb_trace_id: string
+  ground_source_net_id: string
+  current: number
+  return_source: Point
+  return_sink: Point
 }
 ```
 
