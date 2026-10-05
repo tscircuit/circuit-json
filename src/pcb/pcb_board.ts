@@ -9,6 +9,7 @@ import {
   type ManufacturingDrcProperties,
   manufacturing_drc_properties,
 } from "src/pcb/properties/manufacturing_drc_properties"
+import { type PcbStackup, pcb_stackup } from "src/pcb/properties/pcb_stackup"
 import { type Length, length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import { z } from "zod"
@@ -43,6 +44,7 @@ export const pcb_board = z
       ),
     thickness: length.optional().default(1.4),
     num_layers: z.number().optional().default(4),
+    stackup: pcb_stackup.optional(),
     allow_blind_and_buried_vias: z
       .boolean()
       .optional()
@@ -82,6 +84,8 @@ export interface PcbBoard extends ManufacturingDrcProperties {
   display_offset_y?: string
   thickness: Length
   num_layers: number
+  /** Optional physical layer sequence. Call validatePcbBoardStackup to check num_layers agreement. */
+  stackup?: PcbStackup
   /** Whether autorouters may generate blind and buried vias. */
   allow_blind_and_buried_vias?: boolean
   center: Point
