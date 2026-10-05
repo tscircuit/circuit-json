@@ -779,6 +779,8 @@ interface SourcePinAttributes {
   requires_ground?: boolean
   provides_voltage?: number
   requires_voltage?: number
+  /** Allowed relative deviation from requires_voltage, e.g. 0.05 for ±5%. */
+  required_voltage_tolerance?: number
   do_not_connect?: boolean
   include_in_board_pinout?: boolean
   can_use_internal_pullup?: boolean

@@ -38,6 +38,7 @@ export const source_pin_attributes = z.object({
   requires_ground: z.boolean().optional(),
   provides_voltage: pin_voltage.optional(),
   requires_voltage: pin_voltage.optional(),
+  required_voltage_tolerance: z.number().finite().min(0).max(1).optional(),
   do_not_connect: z.boolean().optional(),
   include_in_board_pinout: z.boolean().optional(),
   can_use_internal_pullup: z.boolean().optional(),
@@ -95,6 +96,8 @@ export interface SourcePinAttributes {
   requires_ground?: boolean
   provides_voltage?: number
   requires_voltage?: number
+  /** Allowed relative deviation from requires_voltage, e.g. 0.05 for ±5%. */
+  required_voltage_tolerance?: number
   do_not_connect?: boolean
   include_in_board_pinout?: boolean
   can_use_internal_pullup?: boolean
