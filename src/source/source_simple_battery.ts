@@ -3,12 +3,13 @@ import {
   source_component_base,
   type SourceComponentBase,
 } from "src/source/base/source_component_base"
-import { battery_capacity } from "src/units"
+import { battery_capacity, voltage } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const source_simple_battery = source_component_base.extend({
   ftype: z.literal("simple_battery"),
   capacity: battery_capacity,
+  voltage: voltage.optional(),
 })
 
 export type SourceSimpleBatteryInput = z.input<typeof source_simple_battery>
@@ -20,6 +21,7 @@ type InferredSourceSimpleBattery = z.infer<typeof source_simple_battery>
 export interface SourceSimpleBattery extends SourceComponentBase {
   ftype: "simple_battery"
   capacity: number
+  voltage?: number
 }
 
 expectTypesMatch<SourceSimpleBattery, InferredSourceSimpleBattery>(true)
