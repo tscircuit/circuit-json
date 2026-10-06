@@ -2068,6 +2068,10 @@ interface PcbFabricationNotePath {
   route: Point[]
   stroke_width: Length
   color?: string
+  /** Fill the route as a closed polygon using color. Defaults to false. */
+  is_filled?: boolean
+  /** Draw the outline using stroke_width and color. Defaults to true. */
+  has_stroke?: boolean
 }
 ```
 

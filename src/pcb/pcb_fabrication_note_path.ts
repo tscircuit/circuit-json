@@ -21,6 +21,8 @@ export const pcb_fabrication_note_path = z
     route: z.array(point),
     stroke_width: length,
     color: z.string().optional(),
+    is_filled: z.boolean().optional(),
+    has_stroke: z.boolean().optional(),
   })
   .describe(
     "Defines a fabrication path on the PCB for fabricators or assemblers",
@@ -43,6 +45,10 @@ export interface PcbFabricationNotePath {
   route: Point[]
   stroke_width: Length
   color?: string
+  /** Fill the route as a closed polygon using color. Defaults to false. */
+  is_filled?: boolean
+  /** Draw the outline using stroke_width and color. Defaults to true. */
+  has_stroke?: boolean
 }
 
 /**
