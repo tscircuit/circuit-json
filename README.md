@@ -1432,7 +1432,10 @@ interface UnknownErrorFindingPart extends BaseCircuitJsonError {
 
 ```typescript
 /** Resolved cable geometry in circuit-world XYZ, mm, +Z up. Path samples are
- * points; first and last are wire exits. Connector poses follow path tangents.
+ * points; first and last are wire exits. Optional pin 1 positions are absolute
+ * points at the connector mating faces, resolved by the circuit producer.
+ * Their transverse offsets from the endpoint centerlines fix connector roll.
+ * Omitted positions preserve legacy parallel-transport orientation.
  * Rendering consumes this path without rerouting or adding sag. */
 interface CadCable {
   type: "cad_cable"
@@ -1440,6 +1443,8 @@ interface CadCable {
   name: string
   from_source_component_id: string
   to_source_component_id: string
+  from_connector_pin1_position?: Point3
+  to_connector_pin1_position?: Point3
   cableprinter_string: string
   path: Point3[]
 }
@@ -2068,6 +2073,10 @@ interface PcbFabricationNotePath {
   route: Point[]
   stroke_width: Length
   color?: string
+  /** Fill the route as a closed polygon using color. Defaults to false. */
+  is_filled?: boolean
+  /** Draw the outline using stroke_width and color. Defaults to true. */
+  has_stroke?: boolean
 }
 ```
 
