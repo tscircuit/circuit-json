@@ -1589,6 +1589,10 @@ interface PcbBoard extends ManufacturingDrcProperties {
   default_via_tented_on_top?: boolean
   default_via_tented_on_bottom?: boolean
   default_via_plugged?: boolean
+  via_plugging?:
+    | "solder_mask_ink"
+    | "epoxy_filled_and_capped"
+    | "copper_paste_filled_and_capped"
   width?: Length
   height?: Length
   display_offset_x?: string
