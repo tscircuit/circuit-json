@@ -124,6 +124,127 @@ test("multiple prepreg sublayers and a frequency-qualified Er are supported", ()
   expect(pcb_stackup.parse(stackup)).toEqual(stackup)
 })
 
+test("supplied conductivity and loss data survive generic board parsing", () => {
+  const stackup: PcbStackup = {
+    source: "specified",
+    layers: [
+      {
+        type: "copper",
+        layer: "top",
+        thickness_mm: 0.035,
+        conductivity_s_per_m: 5.8e7,
+      },
+      {
+        type: "dielectric",
+        thickness_mm: 0.2,
+        dielectric_constant: 4.1,
+        dielectric_constant_frequency_hz: 1e9,
+        dielectric_loss_tangent: 0.017,
+        dielectric_loss_tangent_frequency_hz: 1e9,
+      },
+      { type: "copper", layer: "bottom" },
+    ],
+  }
+  const board = any_circuit_element.parse({
+    type: "pcb_board",
+    center: { x: 0, y: 0 },
+    num_layers: 2,
+    stackup,
+  })
+  expect(board.type === "pcb_board" && board.stackup).toEqual(stackup)
+})
+
+test("zero loss and independently supplied reference frequencies remain explicit", () => {
+  for (const dielectric of [
+    {
+      type: "dielectric",
+      dielectric_loss_tangent: 0,
+      dielectric_loss_tangent_frequency_hz: 1e9,
+    },
+    {
+      type: "dielectric",
+      dielectric_constant: 4.1,
+      dielectric_constant_frequency_hz: 1e6,
+      dielectric_loss_tangent: 0.017,
+      dielectric_loss_tangent_frequency_hz: 1e9,
+    },
+  ] as const) {
+    const stackup: PcbStackup = {
+      source: "specified",
+      layers: [
+        { type: "copper", layer: "top" },
+        dielectric,
+        { type: "copper", layer: "bottom" },
+      ],
+    }
+    expect(pcb_stackup.parse(stackup)).toEqual(stackup)
+  }
+})
+
+test("loss tangent and its reference frequency must be supplied together", () => {
+  for (const [dielectric, missing_property] of [
+    [{ dielectric_loss_tangent: 0 }, "dielectric_loss_tangent_frequency_hz"],
+    [{ dielectric_loss_tangent_frequency_hz: 1e9 }, "dielectric_loss_tangent"],
+  ] as const) {
+    const result = pcb_stackup.safeParse({
+      source: "specified",
+      layers: [
+        { type: "copper", layer: "top" },
+        { type: "dielectric", ...dielectric },
+        { type: "copper", layer: "bottom" },
+      ],
+    })
+    expect(result.success).toBe(false)
+    if (!result.success) {
+      expect(result.error.issues[0]?.path).toEqual([
+        "layers",
+        1,
+        missing_property,
+      ])
+      expect(result.error.issues[0]?.message).toContain("required")
+    }
+  }
+})
+
+test("physical conductivity and loss fields reject invalid quantities", () => {
+  for (const [property, invalid_values] of [
+    ["conductivity_s_per_m", [0, -1, Number.NaN, Infinity, "58MS/m"]],
+    ["dielectric_loss_tangent", [-1, Number.NaN, Infinity, "0.017"]],
+    [
+      "dielectric_loss_tangent_frequency_hz",
+      [0, -1, Number.NaN, Infinity, "1GHz"],
+    ],
+  ] as const) {
+    for (const invalid_value of invalid_values) {
+      const result = pcb_stackup.safeParse({
+        source: "specified",
+        layers: [
+          {
+            type: "copper",
+            layer: "top",
+            ...(property === "conductivity_s_per_m"
+              ? { [property]: invalid_value }
+              : {}),
+          },
+          {
+            type: "dielectric",
+            dielectric_loss_tangent: 0.017,
+            dielectric_loss_tangent_frequency_hz: 1e9,
+            ...(property !== "conductivity_s_per_m"
+              ? { [property]: invalid_value }
+              : {}),
+          },
+          { type: "copper", layer: "bottom" },
+        ],
+      })
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.error.issues[0]?.path.at(-1)).toBe(property)
+      }
+    }
+  }
+})
+
 test("legacy boards keep their defaults and schema composition API", () => {
   const board = pcb_board.extend({}).parse({
     type: "pcb_board",

@@ -6,6 +6,7 @@ const copper_layer = z.object({
   type: z.literal("copper"),
   layer: layer_string,
   thickness_mm: z.number().finite().positive().optional(),
+  conductivity_s_per_m: z.number().finite().positive().optional(),
 })
 
 const dielectric_layer = z.object({
@@ -15,6 +16,12 @@ const dielectric_layer = z.object({
   thickness_mm: z.number().finite().positive().optional(),
   dielectric_constant: z.number().finite().positive().optional(),
   dielectric_constant_frequency_hz: z.number().finite().positive().optional(),
+  dielectric_loss_tangent: z.number().finite().nonnegative().optional(),
+  dielectric_loss_tangent_frequency_hz: z
+    .number()
+    .finite()
+    .positive()
+    .optional(),
 })
 
 export const pcb_stackup = z
@@ -69,6 +76,31 @@ export const pcb_stackup = z
               "dielectric_constant is required when its frequency is supplied",
           })
         }
+        if (
+          layer.dielectric_loss_tangent !== undefined &&
+          layer.dielectric_loss_tangent_frequency_hz === undefined
+        ) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: [
+              "layers",
+              layer_index,
+              "dielectric_loss_tangent_frequency_hz",
+            ],
+            message: "Frequency is required with dielectric_loss_tangent",
+          })
+        }
+        if (
+          layer.dielectric_loss_tangent_frequency_hz !== undefined &&
+          layer.dielectric_loss_tangent === undefined
+        ) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["layers", layer_index, "dielectric_loss_tangent"],
+            message:
+              "dielectric_loss_tangent is required when its frequency is supplied",
+          })
+        }
         continue
       }
 
@@ -102,7 +134,7 @@ export const pcb_stackup = z
  * Physical copper/laminate sequence belonging to one pcb_board, without electrical roles.
  * Layers run top to bottom: top, inner1, ..., bottom (a single copper layer is top).
  * Copper gaps contain one or more dielectric entries, even when their quantities are unknown.
- * Missing quantities are unknown. No material, thickness, or Er defaults are applied.
+ * Missing quantities are unknown. No material, thickness, Er, conductivity, or loss defaults are applied.
  * Exterior substrate, mask/finishes, and regional rigid-flex constructions are outside this model.
  * Call validatePcbBoardStackup on the parsed board before consuming this sequence.
  */
@@ -122,6 +154,8 @@ export interface PcbStackupCopperLayer {
   type: "copper"
   layer: LayerRef
   thickness_mm?: number
+  /** Finite electric conductivity in siemens per meter. Omission is unknown, not a perfect conductor. */
+  conductivity_s_per_m?: number
 }
 
 /** Dielectric thickness excludes copper and is the nominal thickness after pressing. */
@@ -135,6 +169,10 @@ export interface PcbStackupDielectricLayer {
   dielectric_constant?: number
   /** Frequency of the supplied Er in hertz. Omission means frequency is unknown. */
   dielectric_constant_frequency_hz?: number
+  /** Dimensionless loss tangent at the paired frequency, not a broadband model. Zero is an explicit lossless datum. */
+  dielectric_loss_tangent?: number
+  /** Required with loss tangent, in hertz. Er may be unknown or supplied at a different frequency. */
+  dielectric_loss_tangent_frequency_hz?: number
 }
 
 export type PcbStackupLayer = PcbStackupCopperLayer | PcbStackupDielectricLayer
