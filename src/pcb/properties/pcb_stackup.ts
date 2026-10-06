@@ -100,13 +100,19 @@ export const pcb_stackup = z
 
 /**
  * Physical copper/laminate sequence belonging to one pcb_board, without electrical roles.
+ * Layers run top to bottom: top, inner1, ..., bottom (a single copper layer is top).
+ * Copper gaps contain one or more dielectric entries, even when their quantities are unknown.
  * Missing quantities are unknown. No material, thickness, or Er defaults are applied.
+ * Exterior substrate, mask/finishes, and regional rigid-flex constructions are outside this model.
+ * Call validatePcbBoardStackup on the parsed board before consuming this sequence.
  */
 export interface PcbStackup {
   /** Supplied declarations are specified; any guessed field/order makes the whole model assumed. Neither means verified. */
   source: "specified" | "assumed"
   manufacturer?: string
+  /** Opaque ID scoped to the manufacturer. Requires manufacturer; no catalog lookup/defaults. */
   manufacturer_stackup_id?: string
+  /** Source construction URL; does not establish measured or verified manufacturing. */
   source_url?: string
   layers: PcbStackupLayer[]
 }

@@ -9,6 +9,7 @@ import {
   type LayerRef,
 } from "../src"
 
+// Nominal construction from https://jlcpcb.com/impedance; Er frequency/core product remain unspecified.
 const specified_stackup: PcbStackup = {
   source: "specified",
   manufacturer: "JLCPCB",

@@ -176,7 +176,6 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbSilkscreenRect](#pcbsilkscreenrect)
     - [PcbSilkscreenText](#pcbsilkscreentext)
     - [PcbSolderPaste](#pcbsolderpaste)
-    - [PcbStackup](#pcbstackup)
     - [PcbStiffener](#pcbstiffener)
     - [PcbText](#pcbtext)
     - [PcbThermalSpoke](#pcbthermalspoke)
@@ -1574,8 +1573,6 @@ interface PcbBend {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_board.ts)
 
-[Stackup format, provenance, and validation](docs/pcb-stackup.md)
-
 Defines the board outline of the PCB
 
 ```typescript
@@ -1598,8 +1595,6 @@ interface PcbBoard extends ManufacturingDrcProperties {
   display_offset_y?: string
   thickness: Length
   num_layers: number
-  /** Optional physical layer sequence. Call validatePcbBoardStackup to check num_layers agreement. */
-  stackup?: PcbStackup
   /** Whether autorouters may generate blind and buried vias. */
   allow_blind_and_buried_vias?: boolean
   center: Point
@@ -3106,46 +3101,6 @@ interface PcbSolderPasteCircle {
   pcb_component_id?: string
   pcb_smtpad_id?: string
 }
-```
-
-### PcbStackup
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/properties/pcb_stackup.ts)
-
-[Format, provenance, and validation](docs/pcb-stackup.md)
-
-Physical copper and dielectric layers in top-to-bottom order, belonging to one board.
-
-```typescript
-/** Physical copper/laminate sequence belonging to one pcb_board, without electrical roles.
- * Missing quantities are unknown. No material, thickness, or Er defaults are applied. */
-interface PcbStackup {
-  /** Supplied declarations are specified; any guessed field/order makes the whole model assumed. Neither means verified. */
-  source: "specified" | "assumed"
-  manufacturer?: string
-  manufacturer_stackup_id?: string
-  source_url?: string
-  layers: PcbStackupLayer[]
-}
-
-/** Copper thickness is the nominal finished conductor thickness in millimeters. */
-interface PcbStackupCopperLayer {
-  type: "copper"
-  layer: LayerRef
-  thickness_mm?: number
-}
-
-/** Dielectric thickness excludes copper and is the nominal thickness after pressing. */
-interface PcbStackupDielectricLayer {
-  type: "dielectric"
-  dielectric_type?: "core" | "prepreg"
-  material?: string
-  thickness_mm?: number
-  dielectric_constant?: number
-  dielectric_constant_frequency_hz?: number
-}
-
-type PcbStackupLayer = PcbStackupCopperLayer | PcbStackupDielectricLayer
 ```
 
 ### PcbStiffener
