@@ -137,6 +137,10 @@ import {
   type SourceRefdesConventionWarning,
 } from "./source_refdes_convention_warning"
 import {
+  source_component_availability_warning,
+  type SourceComponentAvailabilityWarning,
+} from "./source_component_availability_warning"
+import {
   source_simple_voltage_probe,
   type SourceSimpleVoltageProbe,
 } from "./source_simple_voltage_probe"
@@ -198,6 +202,7 @@ export const any_source_component = z.union([
   source_pin_missing_trace_warning,
   source_missing_manufacturer_part_number_warning,
   source_refdes_convention_warning,
+  source_component_availability_warning,
   source_i2c_misconfigured_error,
   source_component_misconfigured_error,
 ])
@@ -247,6 +252,7 @@ export type AnySourceElement =
   | SourcePropertyIgnoredWarning
   | SourcePinMissingTraceWarning
   | SourceMissingManufacturerPartNumberWarning
+  | SourceComponentAvailabilityWarning
   | SourceRefdesConventionWarning
   | SourceI2cMisconfiguredError
   | SourceComponentMisconfiguredError
