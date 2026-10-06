@@ -2,6 +2,21 @@ import { z } from "zod"
 import { point3, type Point3 } from "../common"
 import { expectTypesMatch } from "../utils/expect-types-match"
 
+const connectorWidthDirection = z
+  .object({
+    x: z.number().finite(),
+    y: z.number().finite(),
+    z: z.number().finite(),
+  })
+  .refine(
+    (direction) =>
+      Math.abs(Math.hypot(direction.x, direction.y, direction.z) - 1) < 1e-5,
+    "Connector width direction must be a unit vector",
+  )
+  .describe(
+    "Connector local +X (pin-row/width) unit direction in right-handed circuit world: +X right, +Y top, +Z above. No translation or units. Perpendicular to its endpoint path tangent; fixes roll about the insertion axis.",
+  )
+
 export const cad_cable = z
   .object({
     type: z.literal("cad_cable"),
@@ -15,6 +30,8 @@ export const cad_cable = z
       .describe(
         'Physical cable definition, e.g. "usb_c" or "jst_ph_pins6". Independent of the route.',
       ),
+    from_connector_width_direction: connectorWidthDirection.optional(),
+    to_connector_width_direction: connectorWidthDirection.optional(),
     path: z
       .array(point3)
       .min(2)
@@ -44,7 +61,9 @@ export type CadCableInput = z.input<typeof cad_cable>
 type InferredCadCable = z.infer<typeof cad_cable>
 
 /** Resolved cable geometry in circuit-world XYZ, mm, +Z up. Path samples are
- * points; first and last are wire exits. Connector poses follow path tangents.
+ * points; first and last are wire exits. Connector local +Z follows the outward
+ * insertion direction; optional local +X directions fix roll. Absent directions
+ * retain the renderer's legacy parallel-transport orientation.
  * Rendering consumes this path without rerouting or adding sag.
  */
 export interface CadCable {
@@ -54,6 +73,8 @@ export interface CadCable {
   from_source_component_id: string
   to_source_component_id: string
   cableprinter_string: string
+  from_connector_width_direction?: Point3
+  to_connector_width_direction?: Point3
   path: Point3[]
 }
 

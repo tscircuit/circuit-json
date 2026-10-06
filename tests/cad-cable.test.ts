@@ -55,3 +55,28 @@ test("cables reject incomplete, coincident and nonfinite paths or missing endpoi
       .success,
   ).toBe(false)
 })
+
+test("connector width directions survive parsing and reject non-unit or nonfinite vectors", () => {
+  const oriented = {
+    ...cable,
+    from_connector_width_direction: { x: 0, y: 1, z: 0 },
+    to_connector_width_direction: { x: 1, y: 0, z: 0 },
+  }
+  const parsed = any_circuit_element.parse(oriented)
+  expect(parsed).toMatchObject({
+    from_connector_width_direction: oriented.from_connector_width_direction,
+    to_connector_width_direction: oriented.to_connector_width_direction,
+  })
+  for (const direction of [
+    { x: 0, y: 0, z: 0 },
+    { x: 2, y: 0, z: 0 },
+    { x: NaN, y: 0, z: 1 },
+  ]) {
+    expect(
+      cad_cable.safeParse({
+        ...cable,
+        from_connector_width_direction: direction,
+      }).success,
+    ).toBe(false)
+  }
+})
