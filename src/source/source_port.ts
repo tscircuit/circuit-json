@@ -9,6 +9,7 @@ export const source_port = z
   .object({
     type: z.literal("source_port"),
     pin_number: z.number().optional(),
+    package_pin: z.string().min(1).optional(),
     port_hints: z.array(z.string()).optional(),
     name: z.string(),
     source_port_id: z.string(),
@@ -29,6 +30,7 @@ type InferredSourcePort = z.infer<typeof source_port>
 export interface SourcePort extends SourcePinAttributes {
   type: "source_port"
   pin_number?: number
+  package_pin?: string
   port_hints?: string[]
   name: string
   source_port_id: string
