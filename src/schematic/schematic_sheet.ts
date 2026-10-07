@@ -10,6 +10,7 @@ export const schematic_sheet = z
     type: z.literal("schematic_sheet"),
     schematic_sheet_id: getZodPrefixedIdWithDefault("schematic_sheet"),
     name: z.string().optional(),
+    display_name: z.string().optional(),
     sheet_index: z.number().optional(),
     sheet_size: schematic_sheet_size.optional(),
     sheet_width: z.number().positive().optional(),
@@ -32,6 +33,8 @@ export interface SchematicSheet {
   type: "schematic_sheet"
   schematic_sheet_id: string
   name?: string
+  /** Optional human-readable title shown for the sheet. */
+  display_name?: string
   sheet_index?: number
   sheet_size?: SchematicSheetSize
   sheet_width?: number
