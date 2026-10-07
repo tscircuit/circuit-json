@@ -50,6 +50,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceAmbiguousPortReference](#sourceambiguousportreference)
     - [SourceBoard](#sourceboard)
     - [SourceBus](#sourcebus)
+    - [SourceComponentAvailabilityWarning](#sourcecomponentavailabilitywarning)
     - [SourceComponentBase](#sourcecomponentbase)
     - [SourceComponentInternalConnection](#sourcecomponentinternalconnection)
     - [SourceComponentMisconfiguredError](#sourcecomponentmisconfigurederror)
@@ -405,6 +406,27 @@ type SourceBusRouteLength =
 /** Centerline separation in mm or a multiple of the larger local trace width. */
 type SourceBusTraceSpacing = number | { width_multiplier: number }
 ```
+
+### SourceComponentAvailabilityWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_component_availability_warning.ts)
+
+Warning emitted when no supplier alternative can be confirmed in stock.
+
+```typescript
+/** Warning emitted when no supplier alternative can be confirmed in stock. */
+interface SourceComponentAvailabilityWarning {
+  type: "source_component_availability_warning"
+  source_component_availability_warning_id: string
+  warning_type: "source_component_availability_warning"
+  message: string
+  source_component_id: string
+  subcircuit_id?: string
+  supplier_name: SupplierName
+  supplier_part_numbers: [string, ...string[]]
+}
+```
+
 
 ### SourceComponentBase
 
