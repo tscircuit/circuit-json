@@ -70,6 +70,7 @@ export const any_circuit_element = z.union([
   pcb.pcb_manual_edit_conflict_warning,
   pcb.pcb_connector_not_in_accessible_orientation_warning,
   pcb.pcb_component_missing_courtyard_warning,
+  pcb.pcb_component_suboptimal_rotation_warning,
   pcb.supplier_footprint_mismatch_warning,
   pcb.pcb_fabricator_extra_charge_warning,
   pcb.pcb_plated_hole,
