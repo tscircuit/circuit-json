@@ -10,6 +10,11 @@ export const source_simple_resistor = source_component_base.extend({
   ftype: z.literal("simple_resistor"),
   resistance,
   display_resistance: z.string().optional(),
+  tolerance: z
+    .number()
+    .min(0, "Tolerance must be non-negative")
+    .max(1, "Tolerance cannot be greater than 100%")
+    .optional(),
 })
 
 export type SourceSimpleResistorInput = z.input<typeof source_simple_resistor>
@@ -22,6 +27,7 @@ export interface SourceSimpleResistor extends SourceComponentBase {
   ftype: "simple_resistor"
   resistance: number
   display_resistance?: string
+  tolerance?: number
 }
 
 expectTypesMatch<SourceSimpleResistor, InferredSourceSimpleResistor>(true)
