@@ -10,6 +10,7 @@ test("schematic_sheet parse", () => {
     sheet_size: "ansi_b",
     sheet_width: 431.8,
     sheet_height: 279.4,
+    center: { x: 12, y: -7 },
   })
 
   expect(sheet.type).toBe("schematic_sheet")
@@ -19,6 +20,7 @@ test("schematic_sheet parse", () => {
   expect(sheet.sheet_size).toBe("ansi_b")
   expect(sheet.sheet_width).toBe(431.8)
   expect(sheet.sheet_height).toBe(279.4)
+  expect(sheet.center).toEqual({ x: 12, y: -7 })
 })
 
 test("schematic_sheet rejects unsupported sheet sizes", () => {
