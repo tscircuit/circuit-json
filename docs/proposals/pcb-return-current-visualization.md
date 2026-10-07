@@ -6,8 +6,9 @@ Represent a return-current result, its sampled current field or heatmap image,
 and terminal/via annotations so circuit-to-svg can draw PCB simulation overlays
 when `showSimulation` and `simulationId` are supplied.
 
-The initial numerical storage format is **gzipped JSON arrays**, referenced
-through circuit-json's existing `Asset` type or embedded as a base64 string.
+Numerical fields use circuit-json's existing `Asset` type for both external files
+and embedded data URLs. **Gzipped JSON arrays** are the recommended initial storage
+format; plain JSON is also supported. Asset MIME types determine decoding.
 No solver name/version, FEM order, per-result phasor convention, or color-scale
 limits are included. Presentation settings belong to the renderer.
 
@@ -79,7 +80,7 @@ export interface SimulationPcbReturnCurrentResult {
   frequency_hz?: number; // Positive; absent for frequency-independent results.
 }
 
-export interface ReturnCurrentFieldBase {
+export interface SimulationPcbReturnCurrentField {
   type: "simulation_pcb_return_current_field";
   simulation_pcb_return_current_field_id: string;
   simulation_pcb_return_current_result_id: string;
@@ -94,18 +95,8 @@ export interface ReturnCurrentFieldBase {
   cell_height: number;
   copper_thickness: number;
   data_format: "return_current_grid_json_v1";
+  field_asset: Asset; // application/json or application/gzip; external or data URL.
 }
-
-export type SimulationPcbReturnCurrentField =
-  | (ReturnCurrentFieldBase & {
-      storage_type: "asset";
-      field_asset: Asset; // Gzip file; mimetype: application/gzip.
-    })
-  | (ReturnCurrentFieldBase & {
-      storage_type: "embedded";
-      compression: "gzip";
-      base64_encoded_string: string; // Gzipped UTF-8 JSON, not a data URL.
-    });
 
 export type ReturnCurrentGridJson =
   | {
@@ -180,9 +171,12 @@ Migration from the temporary excitation requires adding experiment linkage and
 resolving contact metadata; bare points are not sufficient official contacts.
 Keep source_port/load_port semantics, including termination resistance.
 
-## Gzipped JSON field format
+## JSON field format
 
-After decompression, parse a UTF-8 JSON object of type ReturnCurrentGridJson.
+Resolve field_asset.url, decoding a data URL locally or fetching an external URL.
+For application/json, parse the bytes as UTF-8 JSON. For application/gzip,
+decompress the gzip bytes once, then parse UTF-8 JSON. The decoded object has
+type ReturnCurrentGridJson.
 Its field_type must match the parent element. Arrays contain exactly
 `columns * rows` entries. Index `row * columns + column` starts at the
 bottom-left cell. Its center is:
@@ -195,8 +189,9 @@ y = min_y + (row    + 0.5) * cell_height
 All components use sheet-current units A/mm. Each cell has either finite numbers
 in every channel or null in every channel. Null means outside the sampled
 conductor domain, not zero current. Real grids have two arrays; complex grids
-have four. Gzip compression avoids repeated coordinates and per-cell object keys
-while retaining ordinary JSON precision and straightforward decoding.
+have four. Component arrays avoid repeated coordinates and per-cell object keys;
+gzip further reduces size while retaining ordinary JSON precision and
+straightforward decoding.
 
 Complex values are always **peak phasors with exp(+jωt)**. This is a format
 definition, not repeated metadata. A 5 mA peak sinusoid has 5/√2 mA RMS.
@@ -223,6 +218,19 @@ Existing `src/common/asset.ts` defines Asset as a nested object with required
 `project_relative_path`, `url`, and `mimetype`. It is not a standalone element
 or an ID-based asset registry. Use it as existing model_asset/image_asset fields do.
 
+Every field uses field_asset; there is no separate embedded-storage variant.
+Asset.url may be an external URL or a data URL containing the same file bytes.
+Asset.mimetype selects decoding, while data_format specifies the decoded structure.
+A .json.gz suffix is a recommended filename convention, not a decoding rule.
+
+Supported field MIME types:
+
+- application/json: UTF-8 JSON.
+- application/gzip: gzipped UTF-8 JSON.
+
+For a data URL, its media type must agree with Asset.mimetype. project_relative_path
+remains required for both external and embedded assets.
+
 ```json
 {
   "field_asset": {
@@ -242,6 +250,22 @@ or an ID-based asset registry. Use it as existing model_asset/image_asset fields
   }
 }
 ```
+
+An embedded field uses the same Asset shape (the base64 below is a placeholder):
+
+```json
+{
+  "field_asset": {
+    "project_relative_path": "simulations/ddr-d12/bottom.json.gz",
+    "url": "data:application/gzip;base64,<gzipped-json-bytes>",
+    "mimetype": "application/gzip"
+  }
+}
+```
+
+A plain JSON asset can instead use bottom.json and application/json, externally
+or as a data:application/json;base64,... URL. For embedded files, base64 is URL
+encoding of the file bytes; it does not introduce a separate field schema.
 
 The URLs above are illustrative. An embedded image can use a
 `data:image/png;base64,...` URL in image_asset.url with the same required
@@ -266,15 +290,18 @@ reconstruction requires separate producer information or a numeric field.
   Numeric fields may still supply arrows. Image-only results have no derived arrows.
 - Highlight only markers applicable to the rendered layer. Apply the PCB transform
   to vectors and positions; compensate explicitly for image row orientation.
-- External fields need an async asset-resolution/decompression stage before the
-  synchronous SVG renderer. Gzip application files should be served without
+- Resolve external or data URLs through the same asset loader. Use Asset.mimetype
+  to select plain JSON parsing or gzip decompression followed by JSON parsing;
+  do not infer compression from URL suffixes. External fields need an async
+  asset-resolution stage before the synchronous SVG renderer. Gzip application files should be served without
   Content-Encoding:gzip so browsers do not transparently decompress them twice.
 - Limit decompressed bytes and validate dimensions/channel counts before allocation.
   Clip numeric cells to the selected net's conductor geometry and board cutouts.
 
 Producer: resolve excitation/contact IDs → solve → resample selected net/layer →
-fill masked component arrays → serialize compact JSON → gzip → emit an Asset
-or base64 payload → emit result/field/markers and optional heatmap image.
+fill masked component arrays → serialize compact JSON → optionally gzip → emit
+field_asset with an external or data URL → emit result/field/markers and optional
+heatmap image_asset. Gzip is the recommended default.
 The grid's sampling pitch is separate from FEM mesh resolution.
 
 Measured via-transfer currents are outside this initial proposal. A via marker
@@ -325,5 +352,5 @@ voltage/current graph unions. Validate scalar values, contact references,
 frequency requirements for complex fields, label coordinate pairs, unique IDs,
 cross-element board/experiment relationships, and decompressed field structure.
 Add meaningful schema/decoding tests and PCB SVG snapshots covering phase changes,
-asset/base64 paths, masking and image orientation. No production schemas or
+external/data URLs, plain/gzipped JSON, masking and image orientation. No production schemas or
 renderer behavior are changed by this proposal PR.
