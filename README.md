@@ -219,6 +219,8 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicTrace](#schematictrace)
     - [SchematicVoltageProbe](#schematicvoltageprobe)
   - [Simulation Elements](#simulation-elements)
+    - [ReturnCurrentContact](#returncurrentcontact)
+    - [ReturnCurrentGridJson](#returncurrentgridjson)
     - [SimulationAcSweepCurrentGraph](#simulationacsweepcurrentgraph)
     - [SimulationAcSweepVoltageGraph](#simulationacsweepvoltagegraph)
     - [SimulationAnalysisResult](#simulationanalysisresult)
@@ -234,8 +236,14 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationOscilloscopeTrace](#simulationoscilloscopetrace)
     - [SimulationParameterSweep](#simulationparametersweep)
     - [SimulationParameterSweepCoordinate](#simulationparametersweepcoordinate)
+    - [SimulationPcbReturnCurrentField](#simulationpcbreturncurrentfield)
+    - [SimulationPcbReturnCurrentHeatmap](#simulationpcbreturncurrentheatmap)
+    - [SimulationPcbReturnCurrentMarker](#simulationpcbreturncurrentmarker)
+    - [SimulationPcbReturnCurrentResult](#simulationpcbreturncurrentresult)
+    - [SimulationReturnCurrentExcitation](#simulationreturncurrentexcitation)
     - [SimulationSpiceSubcircuit](#simulationspicesubcircuit)
     - [SimulationSwitch](#simulationswitch)
+    - [SimulationTerminalPort](#simulationterminalport)
     - [SimulationTransientCurrentGraph](#simulationtransientcurrentgraph)
     - [SimulationTransientVoltageGraph](#simulationtransientvoltagegraph)
     - [SimulationUnknownExperimentError](#simulationunknownexperimenterror)
@@ -4134,6 +4142,53 @@ interface SchematicVoltageProbe {
 
 ## Simulation Elements
 
+### ReturnCurrentContact
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/return_current_contact.ts)
+
+```typescript
+interface ReturnCurrentContactBase {
+  x: number
+  y: number
+  layer: LayerRef
+}
+
+interface ReturnCurrentPortContact extends ReturnCurrentContactBase {
+  contact_type: "pcb_port"
+  pcb_port_id: string
+}
+
+interface ReturnCurrentViaContact extends ReturnCurrentContactBase {
+  contact_type: "pcb_via"
+  pcb_via_id: string
+}
+
+interface ReturnCurrentCopperPourContact extends ReturnCurrentContactBase {
+  contact_type: "pcb_copper_pour"
+  pcb_copper_pour_id: string
+}
+```
+
+### ReturnCurrentGridJson
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/return_current_grid_json.ts)
+
+```typescript
+type ReturnCurrentGridJson =
+  | {
+      field_type: "real"
+      sheet_current_x: (number | null)[]
+      sheet_current_y: (number | null)[]
+    }
+  | {
+      field_type: "complex_phasor"
+      sheet_current_x_real: (number | null)[]
+      sheet_current_x_imag: (number | null)[]
+      sheet_current_y_real: (number | null)[]
+      sheet_current_y_imag: (number | null)[]
+    }
+```
+
 ### SimulationAcSweepCurrentGraph
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_ac_sweep_current_graph.ts)
@@ -4483,6 +4538,122 @@ interface SimulationParameterSweepCoordinate {
 }
 ```
 
+### SimulationPcbReturnCurrentField
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_pcb_return_current_field.ts)
+
+```typescript
+interface SimulationPcbReturnCurrentField {
+  type: "simulation_pcb_return_current_field"
+  simulation_pcb_return_current_field_id: string
+  simulation_pcb_return_current_result_id: string
+  layer: LayerRef
+  source_net_id: string
+  field_type: "real" | "complex_phasor"
+  min_x: number
+  min_y: number
+  columns: number
+  rows: number
+  cell_width: number
+  cell_height: number
+  copper_thickness: number
+  data_format: "return_current_grid_json_v1"
+  field_asset: Asset
+}
+```
+
+### SimulationPcbReturnCurrentHeatmap
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_pcb_return_current_heatmap.ts)
+
+```typescript
+interface SimulationPcbReturnCurrentHeatmap {
+  type: "simulation_pcb_return_current_heatmap"
+  simulation_pcb_return_current_heatmap_id: string
+  simulation_pcb_return_current_result_id: string
+  layer: LayerRef
+  source_net_id: string
+  min_x: number
+  min_y: number
+  max_x: number
+  max_y: number
+  image_asset: Asset
+}
+```
+
+### SimulationPcbReturnCurrentMarker
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_pcb_return_current_marker.ts)
+
+```typescript
+type SimulationPcbReturnCurrentMarker =
+  | SimulationPcbReturnCurrentPortMarker
+  | SimulationPcbReturnCurrentViaMarker
+
+interface ReturnCurrentMarkerBase {
+  type: "simulation_pcb_return_current_marker"
+  simulation_pcb_return_current_marker_id: string
+  simulation_pcb_return_current_result_id: string
+  role:
+    | "signal_source"
+    | "signal_load"
+    | "return_source"
+    | "return_sink"
+    | "signal_transition"
+    | "return_transition"
+  label?: string
+  label_x?: number
+  label_y?: number
+}
+
+interface SimulationPcbReturnCurrentPortMarker extends ReturnCurrentMarkerBase {
+  target_type: "pcb_port"
+  pcb_port_id: string
+  layer: LayerRef
+}
+
+interface SimulationPcbReturnCurrentViaMarker extends ReturnCurrentMarkerBase {
+  target_type: "pcb_via"
+  pcb_via_id: string
+  from_layer: LayerRef
+  to_layer: LayerRef
+}
+```
+
+### SimulationPcbReturnCurrentResult
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_pcb_return_current_result.ts)
+
+```typescript
+interface SimulationPcbReturnCurrentResult {
+  type: "simulation_pcb_return_current_result"
+  simulation_pcb_return_current_result_id: string
+  simulation_experiment_id: string
+  pcb_board_id: string
+  simulation_return_current_excitation_ids: string[]
+  frequency_hz?: number
+}
+```
+
+### SimulationReturnCurrentExcitation
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_return_current_excitation.ts)
+
+```typescript
+interface SimulationReturnCurrentExcitation {
+  type: "simulation_return_current_excitation"
+  simulation_return_current_excitation_id: string
+  simulation_experiment_id: string
+  pcb_trace_id: string
+  ground_source_net_id: string
+  current: number
+  return_source: ReturnCurrentContact
+  return_sink: ReturnCurrentContact
+  source_port?: SimulationTerminalPort
+  load_port?: SimulationTerminalPort
+}
+```
+
 ### SimulationSpiceSubcircuit
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_spice_subcircuit.ts)
@@ -4519,6 +4690,19 @@ interface SimulationSwitch {
   opens_at?: number
   starts_closed?: boolean
   switching_frequency?: number
+}
+```
+
+### SimulationTerminalPort
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_terminal_port.ts)
+
+```typescript
+interface SimulationTerminalPort {
+  signal_pcb_port_id: string
+  reference_pcb_port_id?: string
+  reference_layer: LayerRef
+  resistance: number
 }
 ```
 
