@@ -3412,10 +3412,10 @@ interface PcbTraceTooManyViasWarning {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_trace_style_warning.ts)
 
-A long segment at an odd angle, with original route indices and copper bounds.
+A long segment at an odd angle, identified by its trace and route endpoints.
 
 ```typescript
-/** A long segment at an odd angle, with original route indices and copper bounds. */
+/** A long segment at an odd angle, identified by its trace and route endpoints. */
 interface PcbTraceStyleWarning {
   type: "pcb_trace_style_warning"
   pcb_trace_style_warning_id: string
@@ -3426,13 +3426,11 @@ interface PcbTraceStyleWarning {
   source_trace_id?: string
   subcircuit_id?: string
   layer: LayerRef
-  circuit_json_index: number
   start_route_index: number
   end_route_index: number
-  start: Point
-  end: Point
+  segment_start: Point
+  segment_end: Point
   center: Point
-  bounds: { min_x: Distance; min_y: Distance; max_x: Distance; max_y: Distance }
   segment_length: Distance
   minimum_segment_length: Distance
   angle_degrees: number

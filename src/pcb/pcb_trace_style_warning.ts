@@ -19,18 +19,11 @@ export const pcb_trace_style_warning = z
     source_trace_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     layer: layer_ref,
-    circuit_json_index: z.number().int().nonnegative(),
     start_route_index: z.number().int().nonnegative(),
     end_route_index: z.number().int().nonnegative(),
-    start: point,
-    end: point,
+    segment_start: point,
+    segment_end: point,
     center: point,
-    bounds: z.object({
-      min_x: distance,
-      min_y: distance,
-      max_x: distance,
-      max_y: distance,
-    }),
     segment_length: distance,
     minimum_segment_length: distance,
     angle_degrees: z.number().min(0).lt(360),
@@ -45,7 +38,7 @@ export const pcb_trace_style_warning = z
 export type PcbTraceStyleWarningInput = z.input<typeof pcb_trace_style_warning>
 type InferredPcbTraceStyleWarning = z.infer<typeof pcb_trace_style_warning>
 
-/** A long segment at an odd angle, with original route indices and copper bounds. */
+/** A long segment at an odd angle, identified by its trace and route endpoints. */
 export interface PcbTraceStyleWarning {
   type: "pcb_trace_style_warning"
   pcb_trace_style_warning_id: string
@@ -56,13 +49,11 @@ export interface PcbTraceStyleWarning {
   source_trace_id?: string
   subcircuit_id?: string
   layer: LayerRef
-  circuit_json_index: number
   start_route_index: number
   end_route_index: number
-  start: Point
-  end: Point
+  segment_start: Point
+  segment_end: Point
   center: Point
-  bounds: { min_x: Distance; min_y: Distance; max_x: Distance; max_y: Distance }
   segment_length: Distance
   minimum_segment_length: Distance
   angle_degrees: number
