@@ -5,11 +5,11 @@ import type { SimulationPcbReturnCurrentField } from "./simulation_pcb_return_cu
 const channel = z.array(z.number().finite().nullable()).min(1)
 
 /**
- * Decoded return_current_grid_json_v1. Channels are row-major from bottom-left,
+ * Decoded simulation_return_current_grid_json_v1. Channels are row-major from bottom-left,
  * in A/mm. Complex channels are peak phasors using exp(+jωt).
  * This validates decoded JSON; it does not fetch assets or decompress gzip.
  */
-export const return_current_grid_json = z
+export const simulation_return_current_grid_json = z
   .discriminatedUnion("field_type", [
     z.object({
       field_type: z.literal("real"),
@@ -57,7 +57,7 @@ export const return_current_grid_json = z
     "Decoded real or complex sheet-current arrays with a shared conductor mask",
   )
 
-export type ReturnCurrentGridJson =
+export type SimulationReturnCurrentGridJson =
   | {
       field_type: "real"
       sheet_current_x: (number | null)[]
@@ -71,16 +71,16 @@ export type ReturnCurrentGridJson =
       sheet_current_y_imag: (number | null)[]
     }
 
-export type ReturnCurrentGridJsonInput = z.input<
-  typeof return_current_grid_json
+export type SimulationReturnCurrentGridJsonInput = z.input<
+  typeof simulation_return_current_grid_json
 >
 expectTypesMatch<
-  ReturnCurrentGridJson,
-  z.infer<typeof return_current_grid_json>
+  SimulationReturnCurrentGridJson,
+  z.infer<typeof simulation_return_current_grid_json>
 >(true)
 
 /** Validate decoded channels against their parent field's dimensions and kind. */
-export function getReturnCurrentGridJsonSchema(
+export function getSimulationReturnCurrentGridJsonSchema(
   field: Pick<
     SimulationPcbReturnCurrentField,
     "columns" | "rows" | "field_type"
@@ -95,7 +95,7 @@ export function getReturnCurrentGridJsonSchema(
     !Number.isSafeInteger(count)
   )
     throw new Error("Grid dimensions must be positive safe integers")
-  return return_current_grid_json.superRefine((grid, context) => {
+  return simulation_return_current_grid_json.superRefine((grid, context) => {
     if (grid.field_type !== field.field_type) {
       context.addIssue({
         code: z.ZodIssueCode.custom,

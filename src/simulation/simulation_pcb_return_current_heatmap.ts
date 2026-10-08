@@ -2,7 +2,7 @@ import { z } from "zod"
 import { getZodPrefixedIdWithDefault, type Asset } from "../common"
 import { layer_ref, type LayerRef } from "../pcb/properties/layer_ref"
 import { expectTypesMatch } from "../utils/expect-types-match"
-import { return_current_image_asset } from "./return_current_asset"
+import { simulation_return_current_image_asset } from "./simulation_return_current_asset"
 
 export const simulation_pcb_return_current_heatmap = z
   .object({
@@ -17,7 +17,7 @@ export const simulation_pcb_return_current_heatmap = z
     min_y: z.number().finite(),
     max_x: z.number().finite(),
     max_y: z.number().finite(),
-    image_asset: return_current_image_asset,
+    image_asset: simulation_return_current_image_asset,
   })
   .superRefine((heatmap, context) => {
     for (const axis of ["x", "y"] as const) {

@@ -2,7 +2,7 @@ import { z } from "zod"
 import { getZodPrefixedIdWithDefault, type Asset } from "../common"
 import { layer_ref, type LayerRef } from "../pcb/properties/layer_ref"
 import { expectTypesMatch } from "../utils/expect-types-match"
-import { return_current_field_asset } from "./return_current_asset"
+import { simulation_return_current_field_asset } from "./simulation_return_current_asset"
 
 export const simulation_pcb_return_current_field = z
   .object({
@@ -21,8 +21,8 @@ export const simulation_pcb_return_current_field = z
     cell_width: z.number().finite().positive(),
     cell_height: z.number().finite().positive(),
     copper_thickness: z.number().finite().positive(),
-    data_format: z.literal("return_current_grid_json_v1"),
-    field_asset: return_current_field_asset,
+    data_format: z.literal("simulation_return_current_grid_json_v1"),
+    field_asset: simulation_return_current_field_asset,
   })
   .superRefine((field, context) => {
     if (!Number.isSafeInteger(field.columns * field.rows)) {
@@ -51,7 +51,7 @@ export interface SimulationPcbReturnCurrentField {
   cell_width: number
   cell_height: number
   copper_thickness: number
-  data_format: "return_current_grid_json_v1"
+  data_format: "simulation_return_current_grid_json_v1"
   field_asset: Asset
 }
 

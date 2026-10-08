@@ -59,7 +59,7 @@ export const simulation_pcb_return_current_marker = z
     "A signal/return port or via highlight; markers do not assert measured via-transfer currents",
   )
 
-export interface ReturnCurrentMarkerBase {
+export interface SimulationReturnCurrentMarkerBase {
   type: "simulation_pcb_return_current_marker"
   simulation_pcb_return_current_marker_id: string
   simulation_pcb_return_current_result_id: string
@@ -76,14 +76,14 @@ export interface ReturnCurrentMarkerBase {
 }
 
 export interface SimulationPcbReturnCurrentPortMarker
-  extends ReturnCurrentMarkerBase {
+  extends SimulationReturnCurrentMarkerBase {
   target_type: "pcb_port"
   pcb_port_id: string
   layer: LayerRef
 }
 
 export interface SimulationPcbReturnCurrentViaMarker
-  extends ReturnCurrentMarkerBase {
+  extends SimulationReturnCurrentMarkerBase {
   target_type: "pcb_via"
   pcb_via_id: string
   from_layer: LayerRef

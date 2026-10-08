@@ -31,18 +31,18 @@ the URL and decoding its bytes according to the MIME type, validate the JSON:
 
 ```ts
 import {
-  getReturnCurrentGridJsonSchema,
+  getSimulationReturnCurrentGridJsonSchema,
   simulation_pcb_return_current_field,
 } from "circuit-json"
 
 const field = simulation_pcb_return_current_field.parse(fieldElement)
 // decodedJson comes from UTF-8 JSON, after gunzip for application/gzip assets.
-const grid = getReturnCurrentGridJsonSchema(field).parse(decodedJson)
+const grid = getSimulationReturnCurrentGridJsonSchema(field).parse(decodedJson)
 ```
 
-`return_current_grid_json` can validate a decoded payload without a parent.
+`simulation_return_current_grid_json` can validate a decoded payload without a parent.
 It requires equal-length finite/null channels with identical null masks.
-`getReturnCurrentGridJsonSchema(field)` additionally checks the field type
+`getSimulationReturnCurrentGridJsonSchema(field)` additionally checks the field type
 and `columns * rows` channel length. Null means absent conductor, whereas
 zero means present conductor carrying no current.
 

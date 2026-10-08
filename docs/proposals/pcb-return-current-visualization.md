@@ -39,7 +39,7 @@ elements; exporters must resolve real IDs rather than persist pin-name placehold
 ```ts
 import type { Asset, LayerRef } from "circuit-json";
 
-export type ReturnCurrentContact = {
+export type SimulationReturnCurrentContact = {
   x: number;
   y: number;
   layer: LayerRef;
@@ -58,8 +58,8 @@ export interface SimulationReturnCurrentExcitation {
   pcb_trace_id: string;
   ground_source_net_id: string;
   current: number; // Signed amperes; peak for AC.
-  return_source: ReturnCurrentContact;
-  return_sink: ReturnCurrentContact;
+  return_source: SimulationReturnCurrentContact;
+  return_sink: SimulationReturnCurrentContact;
   source_port?: SimulationTerminalPort;
   load_port?: SimulationTerminalPort;
 }
@@ -94,11 +94,11 @@ export interface SimulationPcbReturnCurrentField {
   cell_width: number;
   cell_height: number;
   copper_thickness: number;
-  data_format: "return_current_grid_json_v1";
+  data_format: "simulation_return_current_grid_json_v1";
   field_asset: Asset; // application/json or application/gzip; external or data URL.
 }
 
-export type ReturnCurrentGridJson =
+export type SimulationReturnCurrentGridJson =
   | {
       field_type: "real";
       sheet_current_x: (number | null)[];
@@ -125,7 +125,7 @@ export interface SimulationPcbReturnCurrentHeatmap {
   image_asset: Asset;
 }
 
-export interface ReturnCurrentMarkerBase {
+export interface SimulationReturnCurrentMarkerBase {
   type: "simulation_pcb_return_current_marker";
   simulation_pcb_return_current_marker_id: string;
   simulation_pcb_return_current_result_id: string;
@@ -142,12 +142,12 @@ export interface ReturnCurrentMarkerBase {
 }
 
 export type SimulationPcbReturnCurrentMarker =
-  | (ReturnCurrentMarkerBase & {
+  | (SimulationReturnCurrentMarkerBase & {
       target_type: "pcb_port";
       pcb_port_id: string;
       layer: LayerRef;
     })
-  | (ReturnCurrentMarkerBase & {
+  | (SimulationReturnCurrentMarkerBase & {
       target_type: "pcb_via";
       pcb_via_id: string;
       from_layer: LayerRef;
@@ -176,7 +176,7 @@ Keep source_port/load_port semantics, including termination resistance.
 Resolve field_asset.url, decoding a data URL locally or fetching an external URL.
 For application/json, parse the bytes as UTF-8 JSON. For application/gzip,
 decompress the gzip bytes once, then parse UTF-8 JSON. The decoded object has
-type ReturnCurrentGridJson.
+type SimulationReturnCurrentGridJson.
 Its field_type must match the parent element. Arrays contain exactly
 `columns * rows` entries. Index `row * columns + column` starts at the
 bottom-left cell. Its center is:
@@ -354,3 +354,4 @@ cross-element board/experiment relationships, and decompressed field structure.
 Add meaningful schema/decoding tests and PCB SVG snapshots covering phase changes,
 external/data URLs, plain/gzipped JSON, masking and image orientation. No production schemas or
 renderer behavior are changed by this proposal PR.
+

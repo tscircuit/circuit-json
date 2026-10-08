@@ -219,8 +219,8 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SchematicTrace](#schematictrace)
     - [SchematicVoltageProbe](#schematicvoltageprobe)
   - [Simulation Elements](#simulation-elements)
-    - [ReturnCurrentContact](#returncurrentcontact)
-    - [ReturnCurrentGridJson](#returncurrentgridjson)
+    - [SimulationReturnCurrentContact](#simulationreturncurrentcontact)
+    - [SimulationReturnCurrentGridJson](#simulationreturncurrentgridjson)
     - [SimulationAcSweepCurrentGraph](#simulationacsweepcurrentgraph)
     - [SimulationAcSweepVoltageGraph](#simulationacsweepvoltagegraph)
     - [SimulationAnalysisResult](#simulationanalysisresult)
@@ -4142,39 +4142,39 @@ interface SchematicVoltageProbe {
 
 ## Simulation Elements
 
-### ReturnCurrentContact
+### SimulationReturnCurrentContact
 
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/return_current_contact.ts)
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_return_current_contact.ts)
 
 ```typescript
-interface ReturnCurrentContactBase {
+interface SimulationReturnCurrentContactBase {
   x: number
   y: number
   layer: LayerRef
 }
 
-interface ReturnCurrentPortContact extends ReturnCurrentContactBase {
+interface SimulationReturnCurrentPortContact extends SimulationReturnCurrentContactBase {
   contact_type: "pcb_port"
   pcb_port_id: string
 }
 
-interface ReturnCurrentViaContact extends ReturnCurrentContactBase {
+interface SimulationReturnCurrentViaContact extends SimulationReturnCurrentContactBase {
   contact_type: "pcb_via"
   pcb_via_id: string
 }
 
-interface ReturnCurrentCopperPourContact extends ReturnCurrentContactBase {
+interface SimulationReturnCurrentCopperPourContact extends SimulationReturnCurrentContactBase {
   contact_type: "pcb_copper_pour"
   pcb_copper_pour_id: string
 }
 ```
 
-### ReturnCurrentGridJson
+### SimulationReturnCurrentGridJson
 
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/return_current_grid_json.ts)
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_return_current_grid_json.ts)
 
 ```typescript
-type ReturnCurrentGridJson =
+type SimulationReturnCurrentGridJson =
   | {
       field_type: "real"
       sheet_current_x: (number | null)[]
@@ -4557,7 +4557,7 @@ interface SimulationPcbReturnCurrentField {
   cell_width: number
   cell_height: number
   copper_thickness: number
-  data_format: "return_current_grid_json_v1"
+  data_format: "simulation_return_current_grid_json_v1"
   field_asset: Asset
 }
 ```
@@ -4590,7 +4590,7 @@ type SimulationPcbReturnCurrentMarker =
   | SimulationPcbReturnCurrentPortMarker
   | SimulationPcbReturnCurrentViaMarker
 
-interface ReturnCurrentMarkerBase {
+interface SimulationReturnCurrentMarkerBase {
   type: "simulation_pcb_return_current_marker"
   simulation_pcb_return_current_marker_id: string
   simulation_pcb_return_current_result_id: string
@@ -4606,13 +4606,13 @@ interface ReturnCurrentMarkerBase {
   label_y?: number
 }
 
-interface SimulationPcbReturnCurrentPortMarker extends ReturnCurrentMarkerBase {
+interface SimulationPcbReturnCurrentPortMarker extends SimulationReturnCurrentMarkerBase {
   target_type: "pcb_port"
   pcb_port_id: string
   layer: LayerRef
 }
 
-interface SimulationPcbReturnCurrentViaMarker extends ReturnCurrentMarkerBase {
+interface SimulationPcbReturnCurrentViaMarker extends SimulationReturnCurrentMarkerBase {
   target_type: "pcb_via"
   pcb_via_id: string
   from_layer: LayerRef
@@ -4647,8 +4647,8 @@ interface SimulationReturnCurrentExcitation {
   pcb_trace_id: string
   ground_source_net_id: string
   current: number
-  return_source: ReturnCurrentContact
-  return_sink: ReturnCurrentContact
+  return_source: SimulationReturnCurrentContact
+  return_sink: SimulationReturnCurrentContact
   source_port?: SimulationTerminalPort
   load_port?: SimulationTerminalPort
 }

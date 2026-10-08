@@ -3,9 +3,9 @@ import assert from "node:assert/strict"
 import { gzipSync, gunzipSync } from "node:zlib"
 import {
   any_circuit_element,
-  getReturnCurrentGridJsonSchema,
-  return_current_contact,
-  return_current_grid_json,
+  getSimulationReturnCurrentGridJsonSchema,
+  simulation_return_current_contact,
+  simulation_return_current_grid_json,
   simulation_experiment,
   simulation_pcb_return_current_field,
   simulation_pcb_return_current_heatmap,
@@ -30,7 +30,7 @@ const field = {
   cell_width: 0.2,
   cell_height: 0.2,
   copper_thickness: 0.035,
-  data_format: "return_current_grid_json_v1",
+  data_format: "simulation_return_current_grid_json_v1",
   field_asset: {
     project_relative_path: "simulations/ddr-d12/bottom.json.gz",
     url: "https://example.com/bottom.json.gz",
@@ -149,22 +149,22 @@ test("contacts require the reference ID selected by contact_type", () => {
       pcb_via_id: "via_1",
     },
   ])
-    assert.ok(return_current_contact.safeParse(contact).success)
+    assert.ok(simulation_return_current_contact.safeParse(contact).success)
   assert.ok(
-    !return_current_contact.safeParse({
+    !simulation_return_current_contact.safeParse({
       ...excitation.return_source,
       contact_type: "pcb_via",
     }).success,
   )
   assert.ok(
-    !return_current_contact.safeParse({
+    !simulation_return_current_contact.safeParse({
       x: 0,
       y: 0,
       layer: "bottom",
     }).success,
   )
   assert.ok(
-    !return_current_contact.safeParse({
+    !simulation_return_current_contact.safeParse({
       ...excitation.return_sink,
       x: Infinity,
     }).success,
@@ -274,9 +274,9 @@ test("field dimensions reject unsafe, fractional and nonpositive values", () => 
 })
 
 test("decoded grids preserve null conductor masks and zero current cells", () => {
-  assert.deepEqual(return_current_grid_json.parse(grid), grid)
+  assert.deepEqual(simulation_return_current_grid_json.parse(grid), grid)
   assert.deepEqual(
-    return_current_grid_json.parse({
+    simulation_return_current_grid_json.parse({
       field_type: "real",
       sheet_current_x: [0, null, -0.005],
       sheet_current_y: [0, null, 0.005],
@@ -294,12 +294,13 @@ test("decoded grids reject unequal lengths, inconsistent masks and nonfinite val
     { field_type: "real" },
   ])
     assert.ok(
-      !return_current_grid_json.safeParse({ ...grid, ...change }).success,
+      !simulation_return_current_grid_json.safeParse({ ...grid, ...change })
+        .success,
     )
 })
 
 test("parent field validation checks grid count and field_type", () => {
-  const schema = getReturnCurrentGridJsonSchema(
+  const schema = getSimulationReturnCurrentGridJsonSchema(
     simulation_pcb_return_current_field.parse(field),
   )
   assert.ok(schema.safeParse(grid).success)
@@ -311,10 +312,14 @@ test("parent field validation checks grid count and field_type", () => {
     }).success,
   )
   assert.ok(
-    !getReturnCurrentGridJsonSchema({ ...field, columns: 3 }).safeParse(grid)
-      .success,
+    !getSimulationReturnCurrentGridJsonSchema({
+      ...field,
+      columns: 3,
+    }).safeParse(grid).success,
   )
-  assert.throws(() => getReturnCurrentGridJsonSchema({ ...field, rows: 0 }))
+  assert.throws(() =>
+    getSimulationReturnCurrentGridJsonSchema({ ...field, rows: 0 }),
+  )
 })
 
 test("embedded gzip field survives asset validation and consumer decoding", () => {
@@ -328,7 +333,10 @@ test("embedded gzip field survives asset validation and consumer decoding", () =
   })
   const bytes = Buffer.from(parsed.field_asset.url.split(",")[1]!, "base64")
   const decoded = JSON.parse(gunzipSync(bytes).toString("utf8"))
-  assert.deepEqual(getReturnCurrentGridJsonSchema(parsed).parse(decoded), grid)
+  assert.deepEqual(
+    getSimulationReturnCurrentGridJsonSchema(parsed).parse(decoded),
+    grid,
+  )
 })
 
 test("heatmaps validate bounds and support PNG/WebP assets and data URLs", () => {

@@ -2,9 +2,9 @@ import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "../common"
 import { expectTypesMatch } from "../utils/expect-types-match"
 import {
-  return_current_contact,
-  type ReturnCurrentContact,
-} from "./return_current_contact"
+  simulation_return_current_contact,
+  type SimulationReturnCurrentContact,
+} from "./simulation_return_current_contact"
 import {
   simulation_terminal_port,
   type SimulationTerminalPort,
@@ -20,8 +20,8 @@ export const simulation_return_current_excitation = z
     pcb_trace_id: z.string().min(1),
     ground_source_net_id: z.string().min(1),
     current: z.number().finite(),
-    return_source: return_current_contact,
-    return_sink: return_current_contact,
+    return_source: simulation_return_current_contact,
+    return_sink: simulation_return_current_contact,
     source_port: simulation_terminal_port.optional(),
     load_port: simulation_terminal_port.optional(),
   })
@@ -36,8 +36,8 @@ export interface SimulationReturnCurrentExcitation {
   pcb_trace_id: string
   ground_source_net_id: string
   current: number
-  return_source: ReturnCurrentContact
-  return_sink: ReturnCurrentContact
+  return_source: SimulationReturnCurrentContact
+  return_sink: SimulationReturnCurrentContact
   source_port?: SimulationTerminalPort
   load_port?: SimulationTerminalPort
 }

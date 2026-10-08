@@ -9,7 +9,7 @@ const contact_position = z.object({
 })
 
 /** Reference conductor at a return-current terminal, in PCB millimeters. */
-export const return_current_contact = z
+export const simulation_return_current_contact = z
   .discriminatedUnion("contact_type", [
     contact_position.extend({
       contact_type: z.literal("pcb_port"),
@@ -26,34 +26,39 @@ export const return_current_contact = z
   ])
   .describe("Identifies the reference conductor at a return-current contact")
 
-export interface ReturnCurrentContactBase {
+export interface SimulationReturnCurrentContactBase {
   x: number
   y: number
   layer: LayerRef
 }
 
-export interface ReturnCurrentPortContact extends ReturnCurrentContactBase {
+export interface SimulationReturnCurrentPortContact
+  extends SimulationReturnCurrentContactBase {
   contact_type: "pcb_port"
   pcb_port_id: string
 }
 
-export interface ReturnCurrentViaContact extends ReturnCurrentContactBase {
+export interface SimulationReturnCurrentViaContact
+  extends SimulationReturnCurrentContactBase {
   contact_type: "pcb_via"
   pcb_via_id: string
 }
 
-export interface ReturnCurrentCopperPourContact
-  extends ReturnCurrentContactBase {
+export interface SimulationReturnCurrentCopperPourContact
+  extends SimulationReturnCurrentContactBase {
   contact_type: "pcb_copper_pour"
   pcb_copper_pour_id: string
 }
 
-export type ReturnCurrentContact =
-  | ReturnCurrentPortContact
-  | ReturnCurrentViaContact
-  | ReturnCurrentCopperPourContact
+export type SimulationReturnCurrentContact =
+  | SimulationReturnCurrentPortContact
+  | SimulationReturnCurrentViaContact
+  | SimulationReturnCurrentCopperPourContact
 
-export type ReturnCurrentContactInput = z.input<typeof return_current_contact>
-expectTypesMatch<ReturnCurrentContact, z.infer<typeof return_current_contact>>(
-  true,
-)
+export type SimulationReturnCurrentContactInput = z.input<
+  typeof simulation_return_current_contact
+>
+expectTypesMatch<
+  SimulationReturnCurrentContact,
+  z.infer<typeof simulation_return_current_contact>
+>(true)

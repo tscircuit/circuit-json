@@ -1,7 +1,9 @@
 import { z } from "zod"
 import { asset } from "../common"
 
-function createReturnCurrentAssetSchema(mimetypes: readonly string[]) {
+function createSimulationReturnCurrentAssetSchema(
+  mimetypes: readonly string[],
+) {
   return asset
     .extend({
       project_relative_path: z.string().min(1),
@@ -29,12 +31,11 @@ function createReturnCurrentAssetSchema(mimetypes: readonly string[]) {
 }
 
 /** MIME type selects decoding; filename extensions are only a convention. */
-export const return_current_field_asset = createReturnCurrentAssetSchema([
-  "application/json",
-  "application/gzip",
-])
+export const simulation_return_current_field_asset =
+  createSimulationReturnCurrentAssetSchema([
+    "application/json",
+    "application/gzip",
+  ])
 
-export const return_current_image_asset = createReturnCurrentAssetSchema([
-  "image/png",
-  "image/webp",
-])
+export const simulation_return_current_image_asset =
+  createSimulationReturnCurrentAssetSchema(["image/png", "image/webp"])
