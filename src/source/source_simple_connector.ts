@@ -23,6 +23,7 @@ export const source_simple_connector = source_component_base.extend({
   ftype: z.literal("simple_connector"),
   standard: z.enum(source_simple_connector_standards).optional(),
   pin_count: z.number().int().positive().optional(),
+  modelprinter_string: z.string().optional(),
 })
 
 export type SourceSimpleConnectorInput = z.input<typeof source_simple_connector>
@@ -37,6 +38,8 @@ export interface SourceSimpleConnector extends SourceComponentBase {
   standard?: SourceSimpleConnectorStandard
   /** Number of electrical circuits in the connector */
   pin_count?: number
+  /** Modelprinter specification of the physical connector, including its mating interface. */
+  modelprinter_string?: string
 }
 
 expectTypesMatch<SourceSimpleConnector, InferredSourceSimpleConnector>(true)
