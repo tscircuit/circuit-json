@@ -126,6 +126,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbComponentInvalidLayerError](#pcbcomponentinvalidlayererror)
     - [PcbComponentNotOnBoardEdgeError](#pcbcomponentnotonboardedgeerror)
     - [PcbComponentOutsideBoardError](#pcbcomponentoutsideboarderror)
+    - [PcbComponentSuboptimalRotationWarning](#pcbcomponentsuboptimalrotationwarning)
     - [PcbConnectorNotInAccessibleOrientationWarning](#pcbconnectornotinaccessibleorientationwarning)
     - [PcbCopperPour](#pcbcopperpour)
     - [PcbCopperText](#pcbcoppertext)
@@ -1789,6 +1790,42 @@ interface PcbComponentOutsideBoardError extends BaseCircuitJsonError {
   }
   subcircuit_id?: string
   source_component_id?: string
+}
+```
+
+### PcbComponentSuboptimalRotationWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_component_suboptimal_rotation_warning.ts)
+
+```typescript
+/** Advisory warning that rotating a PCB component could reduce pairwise airwire
+ * crossings. Absolute rotations are degrees CCW about +Z in the board-world
+ * frame (+X right, +Y up, +Z above; right-handed), holding its placed center
+ * fixed. Counts describe the evaluated airwires, not routed copper. Emission
+ * thresholds and routing/placement feasibility belong to the producer. */
+interface PcbComponentSuboptimalRotationWarning {
+  type: "pcb_component_suboptimal_rotation_warning"
+  pcb_component_suboptimal_rotation_warning_id: string
+  warning_type: "pcb_component_suboptimal_rotation_warning"
+  message: string
+  pcb_component_id: string
+  source_component_id?: string
+  pcb_board_id?: string
+  subcircuit_id?: string
+  evaluation_method: "airwire_crossings"
+  current_rotation: Rotation
+  recommended_rotation: Rotation
+  current_crossing_count: number
+  recommended_crossing_count: number
+  rotation_candidates?: PcbComponentRotationCandidate[]
+}
+
+/** A candidate absolute PCB rotation and its pairwise airwire crossing count.
+ * Rotation is in degrees, CCW about +Z in the board-world frame (+X right,
+ * +Y up, +Z above; right-handed), holding the placed component center fixed. */
+interface PcbComponentRotationCandidate {
+  rotation: Rotation
+  crossing_count: number
 }
 ```
 
