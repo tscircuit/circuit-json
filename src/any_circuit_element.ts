@@ -172,6 +172,7 @@ export const any_circuit_element = z.union([
   sch.schematic_table_cell,
   cad.cad_component,
   cad.cad_cable,
+  cad.cad_reference_surface,
   cad.cad_collision_error,
   sim.simulation_voltage_source,
   sim.simulation_current_source,
