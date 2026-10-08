@@ -62,6 +62,14 @@ export const cad_component = z
       .optional()
       .default("contain_within_bounds"),
     model_jscad: z.any().optional(),
+    color: z
+      .string()
+      .trim()
+      .min(1)
+      .optional()
+      .describe(
+        "Explicit color override for CAD geometry, including authored JSCAD material colors. Omit to preserve model materials.",
+      ),
     show_as_translucent_model: z.boolean().optional(),
     show_as_bounding_box: z.boolean().optional(),
     show_hidden_edges: z.boolean().optional(),
@@ -114,6 +122,8 @@ export interface CadComponent {
     | "bottom_center_of_component"
   model_object_fit: "contain_within_bounds" | "fill_bounds"
   model_jscad?: any
+  /** Explicit CAD color override; omission preserves authored model materials. */
+  color?: string
   show_as_translucent_model?: boolean
   show_as_bounding_box?: boolean
   show_hidden_edges?: boolean

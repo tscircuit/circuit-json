@@ -914,6 +914,10 @@ Defines a 3D-printed part in an assembly.
 /** Defines a 3D-printed part in an assembly. */
 interface SourcePrintedPart extends SourceComponentBase {
   ftype: "printedpart"
+  /** Printable material, when specified by the author. */
+  material?: "pla" | "petg" | "nylon"
+  /** Author-specified print color; also carried on the CAD geometry. */
+  color?: string
 }
 ```
 
@@ -1488,6 +1492,7 @@ interface CadCable {
 CAD geometry, optionally associated with a PCB component.
 
 ```typescript
+/** CAD geometry, optionally associated with a PCB component. */
 interface CadComponent {
   type: "cad_component"
   cad_component_id: string
@@ -1496,6 +1501,10 @@ interface CadComponent {
   source_component_id: string
   position: Point3
   rotation?: Point3
+  /** True for assembled folded position/rotation; false or omitted for flat.
+   * PCB records stay flat. pcb_component_id identifies the mount/owning board. */
+
+  is_on_folded_board?: boolean
   size?: Point3
   layer?: LayerRef
   subcircuit_id?: string
@@ -1518,6 +1527,8 @@ interface CadComponent {
     | "bottom_center_of_component"
   model_object_fit: "contain_within_bounds" | "fill_bounds"
   model_jscad?: any
+  /** Explicit CAD color override; omission preserves authored model materials. */
+  color?: string
   show_as_translucent_model?: boolean
   show_as_bounding_box?: boolean
   show_hidden_edges?: boolean
