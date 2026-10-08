@@ -113,6 +113,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
   - [CAD Components](#cad-components)
     - [CadCable](#cadcable)
     - [CadComponent](#cadcomponent)
+    - [CadReferenceSurface](#cadreferencesurface)
   - [PCB Elements](#pcb-elements)
     - [PcbFabricatorExtraChargeWarning](#pcbfabricatorextrachargewarning)
     - [PcbAutoroutingError](#pcbautoroutingerror)
@@ -1521,6 +1522,32 @@ interface CadComponent {
   show_as_bounding_box?: boolean
   show_hidden_edges?: boolean
   anchor_alignment: CadComponentAnchorAlignment
+}
+```
+
+### CadReferenceSurface
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_reference_surface.ts)
+
+```typescript
+/** Resolved reference frame in right-handed circuit world: +X right, +Y top,
+ * +Z above. Center and extents are mm; normal and x_axis are dimensionless,
+ * perpendicular unit directions, within 1e-6 numerical tolerance. The frame's
+ * Y direction is normal cross x_axis. Names are unique within source_component_id.
+ * Width and height are both present or both omitted; omission adds no default.
+ * This record describes mounting reference geometry for optional visualization. */
+interface CadReferenceSurface {
+  type: "cad_reference_surface"
+  cad_reference_surface_id: string
+  source_component_id: string
+  name: string
+  shape: "rect"
+  center: Point3
+  normal: Point3
+  x_axis: Point3
+  width?: number
+  height?: number
+  subcircuit_id?: string
 }
 ```
 
