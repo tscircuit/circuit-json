@@ -178,6 +178,8 @@ export const any_circuit_element = z.union([
   sim.simulation_voltage_source,
   sim.simulation_current_source,
   sim.simulation_experiment,
+  sim.simulation_pcb_noise_configuration,
+  sim.simulation_pcb_noise_result,
   sim.simulation_return_current_excitation,
   sim.simulation_pcb_return_current_result,
   sim.simulation_pcb_return_current_field,
