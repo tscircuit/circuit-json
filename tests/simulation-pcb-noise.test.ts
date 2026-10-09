@@ -441,7 +441,52 @@ test("cross-record ownership rejects dangling contacts, duplicate configs and st
     ),
     document().map((r) => (r.type === "pcb_port" ? { ...r, x: 10 } : r)),
   ])
-    expect(() => validatePcbNoiseCircuitJson(bad)).toThrow()
+    expect(() => validatePcbNoiseCircuitJson<unknown>(bad)).toThrow()
+})
+
+test("noise validation preserves legacy numeric display metadata and raw board stackup", () => {
+  const stackup = {
+    dielectric_thickness_mm: 0.8,
+    dielectric_permittivity: 4.2,
+    copper_thickness_mm: 0.035,
+  }
+  const legacy = {
+    type: "pcb_component",
+    pcb_component_id: "legacy_component",
+    source_component_id: "legacy_source",
+    center: { x: 0, y: 0 },
+    width: 1,
+    height: 1,
+    rotation: 0,
+    layer: "top",
+    display_offset_x: 0,
+    display_offset_y: 0,
+    extension_metadata: { preserved: true },
+  }
+  const raw = [
+    ...document().map((r) => (r.type === "pcb_board" ? { ...r, stackup } : r)),
+    legacy,
+  ]
+  const before = JSON.stringify(raw)
+  const validated = validatePcbNoiseCircuitJson(raw)
+  expect(validated.circuitJson).toBe(raw)
+  expect(validated.circuitJson.at(-1)).toBe(legacy)
+  expect(JSON.stringify(validated.circuitJson)).toBe(before)
+  expect(validated.configurations).toHaveLength(1)
+  expect(validated.results).toHaveLength(1)
+  for (const invalid of [
+    raw.map((r) =>
+      r.type === "simulation_experiment" ? { ...r, extra_noise_field: 1 } : r,
+    ),
+    raw.map((r) => (r.type === "pcb_port" ? { ...r, layers: [] } : r)),
+    [...raw, raw.find((r) => r.type === "pcb_port")],
+    raw.map((r) =>
+      r.type === "simulation_pcb_noise_configuration"
+        ? { ...r, extra_noise_field: 1 }
+        : r,
+    ),
+  ])
+    expect(() => validatePcbNoiseCircuitJson<unknown>(invalid)).toThrow()
 })
 
 test("full ordered networks reject malformed matrices, units, DC and port ordering", () => {

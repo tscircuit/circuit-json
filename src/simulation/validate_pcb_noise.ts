@@ -1,5 +1,9 @@
 import { z } from "zod"
-import { any_circuit_element } from "../any_circuit_element"
+import { pcb_board } from "../pcb/pcb_board"
+import { pcb_port } from "../pcb/pcb_port"
+import { pcb_via } from "../pcb/pcb_via"
+import { pcb_copper_pour } from "../pcb/pcb_copper_pour"
+import { simulation_experiment } from "./simulation_experiment"
 import {
   simulation_pcb_noise_configuration,
   type SimulationPcbNoiseConfiguration,
@@ -39,49 +43,85 @@ const equalContact = (
   a.y === b.y &&
   a.layer === b.layer
 
-/** Validate ownership across a complete document; never fetches assets or runs a solver.
- * Keep original input separately: legacy element schemas can strip extension metadata.
+const noise_experiment = simulation_experiment
+  .innerType()
+  .pick({
+    type: true,
+    simulation_experiment_id: true,
+    name: true,
+    experiment_type: true,
+  })
+  .extend({ experiment_type: z.literal("pcb_noise") })
+  .strict()
+
+/** Validate noise definitions and referenced physical records only.
+ * Return the original document unchanged, including legacy and extension metadata.
+ * Never fetches assets, parses unrelated legacy records, or runs a solver.
  */
-export function validatePcbNoiseCircuitJson(circuitJson: readonly unknown[]) {
-  const elements = circuitJson.map((element) =>
-    any_circuit_element.parse(element),
+export function validatePcbNoiseCircuitJson<T>(circuitJson: readonly T[]) {
+  const elements = circuitJson.filter(
+    (e): e is T & Record<string, unknown> =>
+      typeof e === "object" && e !== null && !Array.isArray(e),
   )
-  const records = new Map<string, Record<string, unknown>>()
-  for (const element of elements) {
-    const record = element as unknown as Record<string, unknown>
-    const id = record[`${element.type}_id`]
-    if (typeof id !== "string") continue
-    if (records.has(id)) fail(`Duplicate Circuit JSON ID ${id}`)
-    records.set(id, record)
+  const records = new Map<string, Record<string, unknown>[]>()
+  for (const record of elements) {
+    const type = record.type
+    const id = record[`${type}_id`]
+    if (typeof type !== "string" || typeof id !== "string") continue
+    const key = `${type}:${id}`
+    records.set(key, [...(records.get(key) ?? []), record])
   }
-  const configurations = elements.filter(
-    (e): e is SimulationPcbNoiseConfiguration =>
-      e.type === "simulation_pcb_noise_configuration",
-  )
-  const results = elements.filter(
-    (e): e is SimulationPcbNoiseResult =>
-      e.type === "simulation_pcb_noise_result",
-  )
+  const referenced = (type: string, id: string) => {
+    const matches = records.get(`${type}:${id}`) ?? []
+    if (matches.length > 1) fail(`Duplicate referenced ${type} ID ${id}`)
+    return matches[0]
+  }
+  const requireId = (record: Record<string, unknown>) => {
+    const id = record[`${record.type}_id`]
+    if (typeof id !== "string" || !id.length)
+      fail("Noise document records require explicit IDs")
+    referenced(record.type as string, id)
+    return record
+  }
+  const experiments = elements
+    .filter(
+      (e) =>
+        e.type === "simulation_experiment" && e.experiment_type === "pcb_noise",
+    )
+    .map((e) => noise_experiment.parse(requireId(e)))
+  const configurations: SimulationPcbNoiseConfiguration[] = elements
+    .filter((e) => e.type === "simulation_pcb_noise_configuration")
+    .map((e) => simulation_pcb_noise_configuration.parse(requireId(e)))
+  const results: SimulationPcbNoiseResult[] = elements
+    .filter((e) => e.type === "simulation_pcb_noise_result")
+    .map((e) => simulation_pcb_noise_result.parse(requireId(e)))
   const owned = new Set<string>()
   for (const config of configurations) {
     if (owned.has(config.simulation_experiment_id))
       fail("A pcb_noise experiment requires exactly one configuration")
     owned.add(config.simulation_experiment_id)
-    const experiment = records.get(config.simulation_experiment_id)
     if (
-      experiment?.type !== "simulation_experiment" ||
-      experiment.experiment_type !== "pcb_noise"
+      !experiments.some(
+        (e) => e.simulation_experiment_id === config.simulation_experiment_id,
+      )
     )
       fail("Noise configuration must belong to a pcb_noise experiment")
-    if (records.get(config.pcb_board_id)?.type !== "pcb_board")
-      fail("Noise configuration board does not exist")
+    const board = referenced("pcb_board", config.pcb_board_id)
+    if (!board) fail("Noise configuration board does not exist")
+    pcb_board.parse(board)
     for (const port of config.ports)
       for (const contact of [port.signal_contact, port.reference_contact]) {
-        const target = records.get(contactId(contact))
-        if (target?.type !== contact.contact_type)
+        const rawTarget = referenced(contact.contact_type, contactId(contact))
+        if (!rawTarget)
           fail(
             `Missing physical ${contact.contact_type} contact ${contactId(contact)}`,
           )
+        const target = (contact.contact_type === "pcb_port"
+          ? pcb_port
+          : contact.contact_type === "pcb_via"
+            ? pcb_via
+            : pcb_copper_pour
+        ).parse(rawTarget) as unknown as Record<string, unknown>
         if (
           Array.isArray(target.layers) &&
           !target.layers.includes(contact.layer)
@@ -96,12 +136,8 @@ export function validatePcbNoiseCircuitJson(circuitJson: readonly unknown[]) {
           fail("Contact coordinates differ from the physical port or via")
       }
   }
-  for (const element of elements)
-    if (
-      element.type === "simulation_experiment" &&
-      element.experiment_type === "pcb_noise" &&
-      !owned.has(element.simulation_experiment_id)
-    )
+  for (const element of experiments)
+    if (!owned.has(element.simulation_experiment_id))
       fail("A pcb_noise experiment requires exactly one configuration")
   const runIds = new Set<string>()
   for (const result of results) {
@@ -138,7 +174,7 @@ export function validatePcbNoiseCircuitJson(circuitJson: readonly unknown[]) {
         fail("Baseline and difference assets require authored baseline policy")
     }
   }
-  return { circuitJson: elements, configurations, results }
+  return { circuitJson, configurations, results }
 }
 
 export interface PcbNoiseDecodedAssets {
