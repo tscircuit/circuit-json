@@ -188,6 +188,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbTraceTooLongError](#pcbtracetoolongerror)
     - [PcbTraceTooLongWarning](#pcbtracetoolongwarning)
     - [PcbTraceTooManyViasWarning](#pcbtracetoomanyviaswarning)
+    - [PcbTraceStyleWarning](#pcbtracestylewarning)
     - [PcbTraceWarning](#pcbtracewarning)
     - [PcbVia](#pcbvia)
     - [PcbViaClearanceError](#pcbviaclearanceerror)
@@ -3431,6 +3432,38 @@ interface PcbTraceTooManyViasWarning {
   actual_via_count: number
   maximum_via_count: number
   subcircuit_id?: string
+}
+```
+
+### PcbTraceStyleWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_trace_style_warning.ts)
+
+A long segment at an odd angle, identified by its trace and route endpoints.
+
+```typescript
+/** A long segment at an odd angle, identified by its trace and route endpoints. */
+interface PcbTraceStyleWarning {
+  type: "pcb_trace_style_warning"
+  pcb_trace_style_warning_id: string
+  warning_type: "pcb_trace_style_warning"
+  message: string
+  styling_issue_type: "long_segment_at_odd_angle"
+  pcb_trace_id: string
+  source_trace_id?: string
+  subcircuit_id?: string
+  layer: LayerRef
+  start_route_index: number
+  end_route_index: number
+  segment_start: Point
+  segment_end: Point
+  center: Point
+  segment_length: Distance
+  minimum_segment_length: Distance
+  angle_degrees: number
+  nearest_allowed_angle_degrees: number
+  angle_deviation_degrees: number
+  angle_tolerance_degrees: number
 }
 ```
 
