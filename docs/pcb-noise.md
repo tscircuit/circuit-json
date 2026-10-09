@@ -1,0 +1,19 @@
+# Physical PCB noise experiments
+
+A `simulation_experiment` with `experiment_type: "pcb_noise"` owns exactly one `simulation_pcb_noise_configuration`. The configuration names physical signal/reference contact pairs, explicit source and load models, observations, a baseline policy, and optional NRZ timing analyses. Port names are local to the configuration. Physical reference contacts may be shared across different ports.
+
+Electrical values use SI: volts, amperes, ohms, farads, hertz, and seconds. PCB contact coordinates retain millimeters. No source amplitude, impedance, bias, PRBS seed, edge timing, clock, or material is inferred by these schemas. Existing SPICE graph times remain milliseconds; consumers must convert only at the legacy graph boundary.
+
+The initial source contract supports explicitly seeded PRBS, DC, finite pulses, sine with an amplitude convention, and finite linear PWL samples. A source model is independent of the positive real extraction reference impedance. PRBS full edge ramps are the authored 10–90 time divided by 0.8 and must fit inside a symbol.
+
+Known-UI eyes persist an authored epoch or declared training interval. Explicit-clock eyes identify an independent voltage observation or authored digital edge source. Authored edges support nominal-reference timing; an observation cannot time-align itself. Unknown-rate recovery is not part of this version. A successful eye has at least 64 complete windows and stores physical two-UI axes, finite-record density, and resolved timing. Histogram counts are not BER probabilities.
+
+Completed `simulation_pcb_noise_result` records link immutable run, experiment, configuration, and board identities to versioned network, full-resolution waveform, manifest, and optional eye/spectrum assets. Failed or unsupported runs contain diagnostics and cannot carry completed assets. A validated result requires measured residuals within explicit limits. This validation flag records declared numerical evidence; schema parsing alone does not establish physical model accuracy.
+
+Each asset descriptor extends the existing `Asset` location with format, encoded/decoded byte lengths, and exact decoded, exact encoded, and canonical JSON SHA-256 digests. MIME controls plain JSON or gzip decoding. Data URL MIME must agree. The canonical manifest identifies `sorted-json-significant-12-v1` and preserves original-byte hashes separately. No schema fetches URLs, accesses the filesystem, decompresses, or computes hashes; a consumer must perform bounded decoding and recompute all digests before using the decoded-data validators.
+
+`validatePcbNoiseCircuitJson` checks experiment/configuration ownership, actual contact IDs, coordinates/layers, board and result references, and unique run identities. `validatePcbNoiseDecodedAssets` checks selected run ownership, ordered physical network ports, waveform units and variants, manifest digest attestations, and analysis-to-waveform identities. Call it with assets decoded in result descriptor order. Network matrices are frequency/output-port/input-port, full complex peak phasors with `exp(+j omega t)`, and currents positive into the PCB.
+
+Keep the original Circuit JSON input when preparing geometry or preserving other records: legacy element parsers may strip extension metadata. The validator's parsed records establish schema ownership and are not a replacement for original physical input bytes.
+
+The contract can represent different model tiers. Backend capability checks must reject unsupported geometry, sources, or finite-ground requests with readable diagnostics. The coupled-line tier does not establish a general electromagnetic or PDN solver.
