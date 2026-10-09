@@ -10,6 +10,8 @@ export interface SourceComponentBase {
   ftype?: string
   source_component_id: string
   name: string
+  // Opaque, JSON-serializable tool metadata. Prefer namespaced keys.
+  metadata?: Record<string, unknown>
   manufacturer_part_number?: string
   supplier_part_numbers?: Partial<Record<SupplierName, string[]>>
   display_value?: string
@@ -25,6 +27,7 @@ export const source_component_base = z.object({
   ftype: z.string().optional(),
   source_component_id: z.string(),
   name: z.string(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
   manufacturer_part_number: z.string().optional(),
   supplier_part_numbers: z
     .record(supplier_name, z.array(z.string()))
