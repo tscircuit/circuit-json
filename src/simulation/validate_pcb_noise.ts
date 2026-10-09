@@ -19,9 +19,11 @@ import {
   simulation_pcb_noise_spectrum_json,
 } from "./simulation_pcb_noise_analysis_json"
 import { simulation_pcb_noise_manifest_json } from "./simulation_pcb_noise_manifest_json"
-import type {
-  SimulationPcbNoiseAsset,
-  SimulationPcbNoiseContact,
+import {
+  canonicalPcbNoiseJson,
+  pcbNoiseSha256,
+  type SimulationPcbNoiseAsset,
+  type SimulationPcbNoiseContact,
 } from "./simulation_pcb_noise_shared"
 
 function fail(message: string, path: (string | number)[] = []): never {
@@ -42,6 +44,22 @@ const equalContact = (
   a.x === b.x &&
   a.y === b.y &&
   a.layer === b.layer
+
+const equalJson = (a: unknown, b: unknown): boolean => {
+  if (a === b) return true
+  if (!a || !b || typeof a !== "object" || typeof b !== "object") return false
+  if (Array.isArray(a) !== Array.isArray(b)) return false
+  const left = Object.entries(a),
+    right = Object.keys(b)
+  return (
+    left.length === right.length &&
+    left.every(
+      ([key, value]) =>
+        Object.hasOwn(b, key) &&
+        equalJson(value, (b as Record<string, unknown>)[key]),
+    )
+  )
+}
 
 const noise_experiment = simulation_experiment
   .innerType()
@@ -185,8 +203,10 @@ export interface PcbNoiseDecodedAssets {
   spectra?: unknown[]
 }
 
-/** Cross-check already decoded/hash-verified assets against selected config and result. */
-export function validatePcbNoiseDecodedAssets(
+/** Verify decoded asset provenance against selected config and result.
+ * Callers must first bound decoding and verify encoded/decoded byte hashes.
+ */
+export async function validatePcbNoiseDecodedAssets(
   configuration: unknown,
   resultInput: unknown,
   assets: PcbNoiseDecodedAssets,
@@ -202,6 +222,13 @@ export function validatePcbNoiseDecodedAssets(
     config.pcb_board_id !== result.pcb_board_id
   )
     fail("Selected result ownership does not match configuration")
+  if (
+    result.observation_names.length !== config.observations.length ||
+    result.observation_names.some(
+      (name) => !config.observations.some((o) => o.name === name),
+    )
+  )
+    fail("Selected result must cover exactly the configured observations")
   const manifest = simulation_pcb_noise_manifest_json.parse(assets.manifest)
   const network = simulation_pcb_noise_network_json.parse(assets.network)
   const waveforms = assets.waveforms.map((w) =>
@@ -221,6 +248,23 @@ export function validatePcbNoiseDecodedAssets(
     manifest.board_id !== result.pcb_board_id
   )
     fail("Manifest run and definition identities must match result")
+  for (const name of ["geometry", "configuration", "sources", "loads"] as const)
+    if (
+      (await pcbNoiseSha256(
+        canonicalPcbNoiseJson(manifest.resolved_inputs[name]),
+      )) !== manifest.inputs[name].canonical_sha256
+    )
+      fail(`Manifest ${name} canonical hash differs from resolved inputs`)
+  if (
+    !equalJson(manifest.resolved_inputs.configuration, config) ||
+    !equalJson(manifest.resolved_inputs.sources, { sources: config.sources }) ||
+    !equalJson(manifest.resolved_inputs.loads, {
+      terminations: config.terminations,
+    })
+  )
+    fail(
+      "Manifest resolved configuration, sources or loads differ from selected definition",
+    )
   if (
     network.run_id !== result.run_id ||
     network.input_sha256 !== manifest.inputs.geometry.sha256
@@ -261,6 +305,56 @@ export function validatePcbNoiseDecodedAssets(
     spectra.length !== (result.spectrum_assets?.length ?? 0)
   )
     fail("Decoded asset count must match selected result")
+  const payloads = [
+    [manifest, result.manifest_asset],
+    [network, result.network_asset],
+    ...waveforms.map(
+      (value, i) => [value, result.waveform_assets[i]!.asset] as const,
+    ),
+    ...eyes.map((value, i) => [value, result.eye_assets![i]!.asset] as const),
+    ...spectra.map(
+      (value, i) => [value, result.spectrum_assets![i]!.asset] as const,
+    ),
+  ] as const
+  for (const [payload, descriptor] of payloads)
+    if (
+      (await pcbNoiseSha256(canonicalPcbNoiseJson(payload))) !==
+      descriptor.canonical_sha256
+    )
+      fail("Decoded asset canonical hash differs from selected descriptor")
+  const baselineSources = config.sources.map((source) =>
+    config.baseline?.source_names.includes(source.name)
+      ? {
+          ...source,
+          waveform: { kind: "dc", voltage_v: config.baseline.voltage_v },
+        }
+      : source,
+  )
+  const baselineSourceHash = await pcbNoiseSha256(
+    JSON.stringify({ sources: baselineSources }),
+  )
+  const comparisonIdentity = config.baseline
+    ? await pcbNoiseSha256(
+        canonicalPcbNoiseJson({
+          victim_source_sha256: await pcbNoiseSha256(
+            canonicalPcbNoiseJson(
+              config.sources.filter((s) => s.role === "victim"),
+            ),
+          ),
+          loads_sha256: manifest.inputs.loads.sha256,
+          timing_sha256: await pcbNoiseSha256(
+            canonicalPcbNoiseJson(config.eyes ?? []),
+          ),
+          seed: canonicalPcbNoiseJson(
+            config.sources
+              .filter((s) => s.role === "victim")
+              .map((s) =>
+                s.waveform.kind === "prbs" ? s.waveform.seed : null,
+              ),
+          ),
+        }),
+      )
+    : undefined
   waveforms.forEach((waveform, i) => {
     const ref = result.waveform_assets[i]!
     const observation = config.observations.find(
@@ -271,11 +365,18 @@ export function validatePcbNoiseDecodedAssets(
       waveform.observation_name !== ref.observation_name ||
       waveform.variant !== ref.variant ||
       waveform.input_sha256 !== network.input_sha256 ||
+      waveform.source_sha256 !==
+        (waveform.variant === "baseline"
+          ? baselineSourceHash
+          : manifest.inputs.sources.sha256) ||
+      (waveform.variant !== "total" && !config.baseline) ||
+      (config.baseline &&
+        waveform.comparison_identity !== comparisonIdentity) ||
       !observation ||
       waveform.unit !== (observation.quantity === "voltage" ? "V" : "A")
     )
       fail(
-        "Waveform ownership, input hash, variant or units differ from selected observation",
+        "Waveform ownership, input/source hash, variant or units differ from selected observation",
       )
     attest(ref.asset)
   })
@@ -283,7 +384,7 @@ export function validatePcbNoiseDecodedAssets(
     result.waveform_assets.find(
       (w) => w.observation_name === name && w.variant === "total",
     )
-  eyes.forEach((eye, i) => {
+  for (const [i, eye] of eyes.entries()) {
     const ref = result.eye_assets![i]!
     const authored = config.eyes?.find(
       (e) => e.observation_name === eye.observation_name,
@@ -293,7 +394,10 @@ export function validatePcbNoiseDecodedAssets(
       eye.observation_name !== ref.observation_name ||
       eye.waveform_sha256 !== totalRef(eye.observation_name)?.asset.sha256 ||
       !authored ||
-      authored.timing.kind !== eye.resolved_timing.kind
+      authored.timing.kind !== eye.resolved_timing.kind ||
+      authored.timing.sample_offset_s !== eye.resolved_timing.sample_offset_s ||
+      eye.timing_sha256 !==
+        (await pcbNoiseSha256(canonicalPcbNoiseJson(authored.timing)))
     )
       fail(
         "Eye waveform identity or authored timing mode differs from selected analysis",
@@ -340,7 +444,7 @@ export function validatePcbNoiseDecodedAssets(
         )
     }
     attest(ref.asset)
-  })
+  }
   spectra.forEach((spectrum, i) => {
     const ref = result.spectrum_assets![i]!
     const waveform = waveforms.find(

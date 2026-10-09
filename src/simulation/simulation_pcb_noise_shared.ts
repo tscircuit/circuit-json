@@ -8,6 +8,60 @@ export const pcb_noise_positive = pcb_noise_finite.positive()
 export const pcb_noise_count = z.number().int().positive().safe()
 export const pcb_noise_sha256 = z.string().regex(/^[a-f0-9]{64}$/)
 
+/** Browser-safe sorted-json-significant-12-v1; exact byte hashes remain separate. */
+export function canonicalPcbNoiseJson(value: unknown): string {
+  const ancestors = new Set<object>()
+  function visit(item: unknown, depth: number): unknown {
+    if (depth > 64) throw new Error("JSON nesting exceeds 64 levels")
+    if (item === null || typeof item === "string" || typeof item === "boolean")
+      return item
+    if (typeof item === "number") {
+      if (!Number.isFinite(item))
+        throw new Error("Canonical JSON requires finite numbers")
+      const rounded = item === 0 ? 0 : Number(item.toPrecision(12))
+      return Number.isFinite(rounded) ? rounded : item
+    }
+    if (typeof item !== "object")
+      throw new Error("Canonical JSON requires JSON values")
+    if (ancestors.has(item))
+      throw new Error("Canonical JSON cannot contain cycles")
+    ancestors.add(item)
+    let result: unknown
+    if (Array.isArray(item))
+      result = Array.from(item, (entry) => visit(entry, depth + 1))
+    else {
+      const prototype = Object.getPrototypeOf(item)
+      if (prototype !== Object.prototype && prototype !== null)
+        throw new Error("Canonical JSON requires plain objects")
+      result = Object.fromEntries(
+        Object.keys(item)
+          .sort()
+          .map((key) => [
+            key,
+            visit((item as Record<string, unknown>)[key], depth + 1),
+          ]),
+      )
+    }
+    ancestors.delete(item)
+    return result
+  }
+  return JSON.stringify(visit(value, 0))
+}
+
+export async function pcbNoiseSha256(
+  bytes: Uint8Array | string,
+): Promise<string> {
+  const data =
+    typeof bytes === "string" ? new TextEncoder().encode(bytes) : bytes
+  const digest = await globalThis.crypto.subtle.digest(
+    "SHA-256",
+    new Uint8Array(data).buffer,
+  )
+  return Array.from(new Uint8Array(digest), (byte) =>
+    byte.toString(16).padStart(2, "0"),
+  ).join("")
+}
+
 /** Positions remain PCB millimeters; electrical values and times use SI. */
 export const simulation_pcb_noise_contact = z.discriminatedUnion(
   "contact_type",

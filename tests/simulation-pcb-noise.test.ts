@@ -14,6 +14,8 @@ import {
   simulation_pcb_noise_manifest_json,
   validatePcbNoiseCircuitJson,
   validatePcbNoiseDecodedAssets,
+  canonicalPcbNoiseJson,
+  pcbNoiseSha256,
   type SimulationPcbNoiseConfigurationInput,
   type SimulationPcbNoiseAsset,
   type SimulationPcbNoiseWaveformJson,
@@ -246,8 +248,8 @@ const manifest = {
   resolved_inputs: {
     geometry: { stackup: { dielectric_m: 0.001 } },
     configuration: config,
-    sources: config.sources,
-    loads: config.terminations,
+    sources: { sources: config.sources },
+    loads: { terminations: config.terminations },
   },
   solver: {
     backend: "analytic",
@@ -635,7 +637,7 @@ test("asset MIME, version, full byte digests and lengths survive embedded gzip",
     ).toBe(false)
 })
 
-test("selected decoded assets reject stale hashes, changed physical maps and analysis identity", () => {
+async function decodedFixture() {
   const withAnalyses = {
     ...result,
     eye_assets: [{ observation_name: "receiver", asset: descriptor("eye") }],
@@ -643,15 +645,108 @@ test("selected decoded assets reject stale hashes, changed physical maps and ana
       { observation_name: "receiver", asset: descriptor("spectrum") },
     ],
   }
-  const assets = {
-    manifest,
-    network,
-    waveforms: [waveform],
-    eyes: [eye],
-    spectra: [spectrum],
+  const fixture = structuredClone({
+    config: structuredClone(config),
+    result: withAnalyses,
+    assets: {
+      manifest,
+      network,
+      waveforms: [waveform],
+      eyes: [eye],
+      spectra: [spectrum],
+    },
+  })
+  for (const name of [
+    "geometry",
+    "configuration",
+    "sources",
+    "loads",
+  ] as const) {
+    const input = fixture.assets.manifest.resolved_inputs[name]
+    fixture.assets.manifest.inputs[name] = {
+      sha256: await pcbNoiseSha256(JSON.stringify(input)),
+      canonical_sha256: await pcbNoiseSha256(canonicalPcbNoiseJson(input)),
+    }
   }
+  fixture.assets.network.input_sha256 =
+    fixture.assets.manifest.inputs.geometry.sha256
+  fixture.assets.waveforms[0]!.input_sha256 =
+    fixture.assets.network.input_sha256
+  fixture.assets.waveforms[0]!.source_sha256 =
+    fixture.assets.manifest.inputs.sources.sha256
+  const waveformHash = await pcbNoiseSha256(
+    JSON.stringify(fixture.assets.waveforms[0]),
+  )
+  fixture.assets.eyes[0]!.waveform_sha256 = waveformHash
+  fixture.assets.eyes[0]!.timing_sha256 = await pcbNoiseSha256(
+    canonicalPcbNoiseJson(fixture.config.eyes[0]!.timing),
+  )
+  fixture.assets.spectra[0]!.waveform_sha256 = waveformHash
+  await sealDecodedFixture(fixture)
+  return fixture
+}
+
+async function sealDecodedFixture(fixture: {
+  result: {
+    manifest_asset: SimulationPcbNoiseAsset
+    network_asset: SimulationPcbNoiseAsset
+    waveform_assets: { asset: SimulationPcbNoiseAsset }[]
+    eye_assets: { asset: SimulationPcbNoiseAsset }[]
+    spectrum_assets: { asset: SimulationPcbNoiseAsset }[]
+  }
+  assets: {
+    manifest: typeof manifest
+    network: unknown
+    waveforms: unknown[]
+    eyes: unknown[]
+    spectra: unknown[]
+  }
+}) {
+  const entries = [
+    [fixture.assets.network, fixture.result.network_asset],
+    ...fixture.assets.waveforms.map(
+      (payload, i) =>
+        [payload, fixture.result.waveform_assets[i]!.asset] as const,
+    ),
+    ...fixture.assets.eyes.map(
+      (payload, i) => [payload, fixture.result.eye_assets[i]!.asset] as const,
+    ),
+    ...fixture.assets.spectra.map(
+      (payload, i) =>
+        [payload, fixture.result.spectrum_assets[i]!.asset] as const,
+    ),
+  ] as const
+  const seal = async (payload: unknown, asset: SimulationPcbNoiseAsset) => {
+    const text = JSON.stringify(payload)
+    asset.sha256 = asset.encoded_sha256 = await pcbNoiseSha256(text)
+    asset.canonical_sha256 = await pcbNoiseSha256(
+      canonicalPcbNoiseJson(payload),
+    )
+    asset.byte_length = asset.decoded_byte_length = new TextEncoder().encode(
+      text,
+    ).length
+  }
+  fixture.assets.manifest.artifacts = []
+  for (const [i, [payload, asset]] of entries.entries()) {
+    await seal(payload, asset)
+    const { asset: location, ...digests } = asset
+    fixture.assets.manifest.artifacts.push({
+      name: `artifact_${i}`,
+      ...digests,
+    })
+  }
+  await seal(fixture.assets.manifest, fixture.result.manifest_asset)
+}
+
+test("selected decoded assets reject stale hashes, changed physical maps and analysis identity", async () => {
+  const {
+    config: configuration,
+    result: selected,
+    assets,
+  } = await decodedFixture()
   expect(
-    validatePcbNoiseDecodedAssets(config, withAnalyses, assets).waveforms,
+    (await validatePcbNoiseDecodedAssets(configuration, selected, assets))
+      .waveforms,
   ).toHaveLength(1)
   for (const bad of [
     { network: { ...network, input_sha256: "b".repeat(64) } },
@@ -661,12 +756,225 @@ test("selected decoded assets reject stale hashes, changed physical maps and ana
     { eyes: [{ ...eye, waveform_sha256: "b".repeat(64) }] },
     { spectra: [{ ...spectrum, unit: "A^2/Hz" }] },
   ])
-    expect(() =>
-      validatePcbNoiseDecodedAssets(config, withAnalyses, {
+    await expect(
+      validatePcbNoiseDecodedAssets(configuration, selected, {
         ...assets,
         ...bad,
       }),
-    ).toThrow()
+    ).rejects.toThrow()
+})
+
+test("decoded provenance recomputes nested and asset canonical hashes and rejects same-ID definition edits", async () => {
+  for (const name of [
+    "geometry",
+    "configuration",
+    "sources",
+    "loads",
+  ] as const) {
+    const fixture = await decodedFixture()
+    fixture.assets.manifest.inputs[name].canonical_sha256 = "b".repeat(64)
+    await sealDecodedFixture(fixture)
+    await expect(
+      validatePcbNoiseDecodedAssets(
+        fixture.config,
+        fixture.result,
+        fixture.assets,
+      ),
+    ).rejects.toThrow(`Manifest ${name} canonical hash`)
+  }
+  for (const change of [
+    (fixture: Awaited<ReturnType<typeof decodedFixture>>) => {
+      fixture.config.sources[0]!.waveform.seed = 2
+    },
+    (fixture: Awaited<ReturnType<typeof decodedFixture>>) => {
+      fixture.config.sources[0]!.waveform.high_voltage_v += 1e-13
+    },
+    (fixture: Awaited<ReturnType<typeof decodedFixture>>) => {
+      fixture.config.terminations[0]!.model.resistance_ohms = 100
+    },
+  ]) {
+    const fixture = await decodedFixture()
+    change(fixture)
+    await expect(
+      validatePcbNoiseDecodedAssets(
+        fixture.config,
+        fixture.result,
+        fixture.assets,
+      ),
+    ).rejects.toThrow("resolved configuration")
+  }
+  const fixture = await decodedFixture()
+  fixture.assets.waveforms[0]!.values[0] = 0.25
+  await expect(
+    validatePcbNoiseDecodedAssets(
+      fixture.config,
+      fixture.result,
+      fixture.assets,
+    ),
+  ).rejects.toThrow("Decoded asset canonical hash")
+})
+
+test("hash-verified decoded payloads still reject source policy, authored timing and clock phase mismatches", async () => {
+  for (const change of [
+    (fixture: Awaited<ReturnType<typeof decodedFixture>>) => {
+      fixture.assets.waveforms[0]!.source_sha256 = "b".repeat(64)
+    },
+    (fixture: Awaited<ReturnType<typeof decodedFixture>>) => {
+      fixture.assets.eyes[0]!.timing_sha256 = "b".repeat(64)
+    },
+  ]) {
+    const fixture = await decodedFixture()
+    change(fixture)
+    await sealDecodedFixture(fixture)
+    await expect(
+      validatePcbNoiseDecodedAssets(
+        fixture.config,
+        fixture.result,
+        fixture.assets,
+      ),
+    ).rejects.toThrow()
+  }
+  const fixture = await decodedFixture()
+  const timing = {
+    kind: "explicit_clock",
+    clock: { kind: "authored_edges", source_name: "driver" },
+    edge: "rising",
+    threshold_v: 0.5,
+    ui_per_selected_edge: 1,
+    sample_offset_s: 1e-9,
+    interpretation: "nominal_reference",
+  } as const
+  const configuration = {
+    ...fixture.config,
+    eyes: [{ ...fixture.config.eyes[0], timing }],
+  }
+  fixture.assets.manifest.resolved_inputs.configuration =
+    configuration as unknown as typeof config
+  fixture.assets.manifest.inputs.configuration.canonical_sha256 =
+    await pcbNoiseSha256(canonicalPcbNoiseJson(configuration))
+  const explicitEye = {
+    ...fixture.assets.eyes[0],
+    timing_sha256: await pcbNoiseSha256(canonicalPcbNoiseJson(timing)),
+    resolved_timing: {
+      kind: "explicit_clock",
+      unit_interval_s: 2e-9,
+      sample_offset_s: 0.5e-9,
+      clock_edges_s: [0, 2e-9, 4e-9],
+      edge_polarity: "rising",
+      symbol_mapping: "one_edge_per_symbol",
+      interpretation: "nominal_reference",
+      clock_source: { kind: "authored_edges", source_name: "driver" },
+    },
+  }
+  const assets = { ...fixture.assets, eyes: [explicitEye] }
+  await sealDecodedFixture({ result: fixture.result, assets })
+  await expect(
+    validatePcbNoiseDecodedAssets(configuration, fixture.result, assets),
+  ).rejects.toThrow("authored timing")
+})
+
+test("paired decoded baseline and difference enforce quiet-source hashes and victim/load/timing identity", async () => {
+  const fixture = await decodedFixture()
+  const configuration = {
+    ...fixture.config,
+    baseline: { kind: "quiet_sources", source_names: ["driver"], voltage_v: 0 },
+  }
+  fixture.assets.manifest.resolved_inputs.configuration =
+    configuration as typeof config
+  fixture.assets.manifest.inputs.configuration.canonical_sha256 =
+    await pcbNoiseSha256(canonicalPcbNoiseJson(configuration))
+  const comparison_identity = await pcbNoiseSha256(
+    canonicalPcbNoiseJson({
+      victim_source_sha256: await pcbNoiseSha256(
+        canonicalPcbNoiseJson(configuration.sources),
+      ),
+      loads_sha256: fixture.assets.manifest.inputs.loads.sha256,
+      timing_sha256: await pcbNoiseSha256(
+        canonicalPcbNoiseJson(configuration.eyes),
+      ),
+      seed: canonicalPcbNoiseJson([configuration.sources[0]!.waveform.seed]),
+    }),
+  )
+  const total = { ...fixture.assets.waveforms[0]!, comparison_identity }
+  const baseline = {
+    ...total,
+    variant: "baseline",
+    source_sha256: await pcbNoiseSha256(
+      JSON.stringify({
+        sources: configuration.sources.map((source) => ({
+          ...source,
+          waveform: { kind: "dc", voltage_v: 0 },
+        })),
+      }),
+    ),
+  }
+  const difference = { ...total, variant: "difference" }
+  const assets = { ...fixture.assets, waveforms: [total, baseline, difference] }
+  const selected = {
+    ...fixture.result,
+    waveform_assets: [
+      fixture.result.waveform_assets[0]!,
+      {
+        observation_name: "receiver",
+        variant: "baseline",
+        asset: descriptor("waveform"),
+      },
+      {
+        observation_name: "receiver",
+        variant: "difference",
+        asset: descriptor("waveform"),
+      },
+    ],
+  }
+  const totalHash = await pcbNoiseSha256(JSON.stringify(total))
+  assets.eyes[0]!.waveform_sha256 = assets.spectra[0]!.waveform_sha256 =
+    totalHash
+  await sealDecodedFixture({ result: selected, assets })
+  expect(
+    (await validatePcbNoiseDecodedAssets(configuration, selected, assets))
+      .waveforms,
+  ).toHaveLength(3)
+  for (const change of [
+    (changed: typeof assets) => {
+      changed.waveforms[1]!.source_sha256 = total.source_sha256
+    },
+    (changed: typeof assets) => {
+      changed.waveforms[2]!.source_sha256 = baseline.source_sha256
+    },
+    (changed: typeof assets) => {
+      changed.waveforms[1]!.comparison_identity = "other_victim"
+    },
+  ]) {
+    const changed = structuredClone(assets),
+      changedResult = structuredClone(selected)
+    change(changed)
+    await sealDecodedFixture({ result: changedResult, assets: changed })
+    await expect(
+      validatePcbNoiseDecodedAssets(configuration, changedResult, changed),
+    ).rejects.toThrow("input/source hash")
+  }
+})
+
+test("shared browser canonicalization keeps exact byte hashes separate from rounded nested values", async () => {
+  const source = {
+    nested: { high_voltage_v: 1.0000000000001 },
+    zero: -0,
+    maximum: Number.MAX_VALUE,
+  }
+  expect(canonicalPcbNoiseJson(source)).toBe(
+    '{"maximum":1.79769313486e+308,"nested":{"high_voltage_v":1},"zero":0}',
+  )
+  expect(await pcbNoiseSha256("abc")).toBe(
+    "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+  )
+  expect(await pcbNoiseSha256(JSON.stringify(source))).not.toBe(
+    await pcbNoiseSha256(canonicalPcbNoiseJson(source)),
+  )
+  for (const invalid of [undefined, { x: Infinity }, new Date()])
+    expect(() => canonicalPcbNoiseJson(invalid)).toThrow()
+  const cycle: { child?: unknown } = {}
+  cycle.child = cycle
+  expect(() => canonicalPcbNoiseJson(cycle)).toThrow("cycles")
 })
 
 test("manifest keeps original and canonical input digests and excludes recursive self hashes", () => {
