@@ -21,6 +21,11 @@ export const cad_component = z
     source_component_id: z.string(),
     position: point3,
     rotation: point3.optional(),
+    explode_offset: point3
+      .optional()
+      .describe(
+        "Translation at a fully exploded view in right-handed circuit-world millimeters: +X right, +Y top, +Z above. This is a displacement vector, not an absolute point. Renderers interpolate from zero to this offset without changing the assembled position.",
+      ),
     is_on_folded_board: z
       .boolean()
       .optional()
@@ -96,6 +101,12 @@ export interface CadComponent {
   source_component_id: string
   position: Point3
   rotation?: Point3
+  /** Translation at a fully exploded view in right-handed circuit-world
+   * millimeters: +X right, +Y top, +Z above. This is a displacement vector,
+   * not an absolute point. Renderers interpolate from zero to this offset
+   * without changing the assembled position.
+   */
+  explode_offset?: Point3
   /** True for assembled folded position/rotation; false or omitted for flat.
    * PCB records stay flat. pcb_component_id identifies the mount/owning board.
    */
