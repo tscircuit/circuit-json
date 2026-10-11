@@ -64,3 +64,4 @@ export * from "./source_confusing_net_name_warning"
 export * from "./source_bus"
 
 export * from "./source_runtime_error"
+export * from "./source_datasheet"
