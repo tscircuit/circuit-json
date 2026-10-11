@@ -40,6 +40,14 @@ test("trace-length provenance and physical path survive Circuit JSON parsing", (
   })
   expect(error.path_pcb_trace_ids).toEqual(["pcb", "escape"])
   expect(error.path_pcb_via_ids).toEqual(["via"])
+  const lowerBoundError = pcb_trace_too_long_error.parse({
+    ...error,
+    actual_trace_length: 6,
+    actual_trace_length_is_lower_bound: true,
+    measurement_method: "copper_path_lower_bound",
+  })
+  expect(lowerBoundError.actual_trace_length_is_lower_bound).toBe(true)
+  expect(lowerBoundError.measurement_method).toBe("copper_path_lower_bound")
 })
 
 test("capacitor role and limit origin remain independent", () => {
