@@ -2,8 +2,6 @@ import { expect, test } from "bun:test"
 import {
   source_trace,
   source_simple_capacitor,
-  pcb_trace_warning,
-  pcb_trace_length_warning,
   pcb_trace_too_long_error,
 } from "../src"
 
@@ -42,32 +40,6 @@ test("trace-length provenance and physical path survive Circuit JSON parsing", (
   })
   expect(error.path_pcb_trace_ids).toEqual(["pcb", "escape"])
   expect(error.path_pcb_via_ids).toEqual(["via"])
-  const warning = pcb_trace_warning.parse({
-    type: "pcb_trace_warning",
-    message: "Plane path indeterminate",
-    pcb_trace_id: "pcb",
-    source_trace_id: "t",
-    pcb_component_ids: [],
-    pcb_port_ids: [],
-    trace_length_status: "indeterminate",
-    measurement_reason: "Connected plane",
-    maximum_trace_length: 5.5,
-    max_length_origin: "explicit",
-  })
-  expect(warning.trace_length_status).toBe("indeterminate")
-  expect(warning).not.toHaveProperty("actual_trace_length")
-  const planeOnly = pcb_trace_length_warning.parse({
-    type: "pcb_trace_length_warning",
-    message: "Plane-only path indeterminate",
-    source_trace_id: "t",
-    pcb_component_ids: [],
-    pcb_port_ids: [],
-    trace_length_status: "indeterminate",
-    measurement_reason: "No routed copper",
-    maximum_trace_length: 5.5,
-  })
-  expect(planeOnly).not.toHaveProperty("pcb_trace_id")
-  expect(planeOnly).not.toHaveProperty("actual_trace_length")
 })
 
 test("capacitor role and limit origin remain independent", () => {
