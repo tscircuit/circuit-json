@@ -2,6 +2,12 @@ import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { distance, type Distance } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import {
+  capacitor_connection,
+  trace_max_length_origin,
+  type CapacitorConnection,
+  type TraceMaxLengthOrigin,
+} from "../source/properties/trace_length_constraint"
 
 export const pcb_trace_too_long_error = z
   .object({
@@ -19,6 +25,13 @@ export const pcb_trace_too_long_error = z
     actual_trace_length: distance,
     maximum_trace_length: distance,
     subcircuit_id: z.string().optional(),
+    max_length_origin: trace_max_length_origin.optional(),
+    capacitor_connection: capacitor_connection.optional(),
+    path_pcb_trace_ids: z.array(z.string()).optional(),
+    path_pcb_via_ids: z.array(z.string()).optional(),
+    measurement_method: z
+      .enum(["shortest_copper_path", "authored_route_length"])
+      .optional(),
   })
   .describe(
     "Error emitted when a PCB trace is longer than its maximum allowed length",
@@ -39,6 +52,11 @@ export interface PcbTraceTooLongError {
   actual_trace_length: Distance
   maximum_trace_length: Distance
   subcircuit_id?: string
+  max_length_origin?: TraceMaxLengthOrigin
+  capacitor_connection?: CapacitorConnection
+  path_pcb_trace_ids?: string[]
+  path_pcb_via_ids?: string[]
+  measurement_method?: "shortest_copper_path" | "authored_route_length"
 }
 
 expectTypesMatch<PcbTraceTooLongError, InferredPcbTraceTooLongError>(true)

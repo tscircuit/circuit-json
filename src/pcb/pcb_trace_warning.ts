@@ -1,6 +1,12 @@
 import { z } from "zod"
 import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import {
+  capacitor_connection,
+  trace_max_length_origin,
+  type CapacitorConnection,
+  type TraceMaxLengthOrigin,
+} from "../source/properties/trace_length_constraint"
 
 export const pcb_trace_warning = z
   .object({
@@ -14,6 +20,14 @@ export const pcb_trace_warning = z
     pcb_component_ids: z.array(z.string()),
     pcb_port_ids: z.array(z.string()),
     subcircuit_id: z.string().optional(),
+    trace_length_status: z.literal("indeterminate").optional(),
+    maximum_trace_length: z.number().optional(),
+    max_length_origin: trace_max_length_origin.optional(),
+    capacitor_connection: capacitor_connection.optional(),
+    measurement_reason: z.string().optional(),
+    known_path_length_lower_bound: z.number().nonnegative().optional(),
+    path_pcb_trace_ids: z.array(z.string()).optional(),
+    path_pcb_via_ids: z.array(z.string()).optional(),
   })
   .describe("Defines a trace warning on the PCB")
 
@@ -34,6 +48,14 @@ export interface PcbTraceWarning {
   pcb_component_ids: string[]
   pcb_port_ids: string[]
   subcircuit_id?: string
+  trace_length_status?: "indeterminate"
+  maximum_trace_length?: number
+  max_length_origin?: TraceMaxLengthOrigin
+  capacitor_connection?: CapacitorConnection
+  measurement_reason?: string
+  known_path_length_lower_bound?: number
+  path_pcb_trace_ids?: string[]
+  path_pcb_via_ids?: string[]
 }
 
 expectTypesMatch<PcbTraceWarning, InferredPcbTraceWarning>(true)
