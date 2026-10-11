@@ -40,6 +40,6 @@
     "generate-docs": "bun scripts/generate-readme-docs.ts && prettier --no-semi -w README.md",
     "lint:zod": "bun run scripts/zod-lint.ts",
     "check-snake-case": "bun run scripts/check-snake-case.ts",
-    "prepare": "bun install --frozen-lockfile --ignore-scripts && bun run build"
+    "prepare": "bun scripts/prepare-git-dependency.ts"
   }
 }
