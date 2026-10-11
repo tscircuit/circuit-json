@@ -56,6 +56,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceComponentMisconfiguredError](#sourcecomponentmisconfigurederror)
     - [SourceComponentPinsUnderspecifiedWarning](#sourcecomponentpinsunderspecifiedwarning)
     - [SourceConfusingNetNameWarning](#sourceconfusingnetnamewarning)
+    - [SourceDatasheet](#sourcedatasheet)
     - [SourceFailedToCreateComponentError](#sourcefailedtocreatecomponenterror)
     - [SourceGroup](#sourcegroup)
     - [SourceI2cMisconfiguredError](#sourcei2cmisconfigurederror)
@@ -525,6 +526,22 @@ interface SourceConfusingNetNameWarning {
   source_net_ids: string[]
   net_name: string
   subcircuit_id?: string
+}
+```
+
+### SourceDatasheet
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_datasheet.ts)
+
+Datasheet information for a manufacturer part number, supplied with Circuit JSON.
+
+```typescript
+interface SourceDatasheet {
+  type: "source_datasheet"
+  source_datasheet_id: string
+  manufacturer_part_number: string
+  datasheet_pdf_urls: string[]
+  description?: string
 }
 ```
 

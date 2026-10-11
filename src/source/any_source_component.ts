@@ -161,7 +161,10 @@ import {
   type SourceSimpleVoltageSource,
 } from "./source_simple_voltage_source"
 
+import { source_datasheet, type SourceDatasheet } from "./source_datasheet"
+
 export const any_source_component = z.union([
+  source_datasheet,
   source_simple_resistor,
   source_simple_capacitor,
   source_simple_diode,
@@ -213,6 +216,7 @@ export const any_source_component = z.union([
 export type AnySourceComponent = z.infer<typeof any_source_component>
 
 export type AnySourceElement =
+  | SourceDatasheet
   | SourceSimpleResistor
   | SourceSimpleCapacitor
   | SourceSimpleDiode
