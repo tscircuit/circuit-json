@@ -39,6 +39,7 @@
     "format": "biome format . --write",
     "generate-docs": "bun scripts/generate-readme-docs.ts && prettier --no-semi -w README.md",
     "lint:zod": "bun run scripts/zod-lint.ts",
-    "check-snake-case": "bun run scripts/check-snake-case.ts"
+    "check-snake-case": "bun run scripts/check-snake-case.ts",
+    "prepare": "bun run build"
   }
 }

@@ -1,15 +1,15 @@
 import { expect, test } from "bun:test"
-import { source_trace } from "../src/source/source_trace"
+import { type SourceTrace, source_trace } from "../src/source/source_trace"
 
 test("trace length provenance and scoped endpoints survive schema parsing", () => {
-  const base = {
+  const base: SourceTrace = {
     type: "source_trace",
     source_trace_id: "t",
     connected_source_port_ids: ["cap"],
     connected_source_net_ids: ["ground"],
     max_length: 5,
   }
-  const scoped = {
+  const scoped: SourceTrace = {
     ...base,
     max_length_constraint: {
       origin: "decoupling",
