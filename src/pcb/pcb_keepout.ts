@@ -1,11 +1,12 @@
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import { z } from "zod"
 import { type Point, point } from "../common"
-import { distance, type Length, length } from "../units"
+import { type Length, distance, length } from "../units"
 
 export const pcb_keepout_outline = z.object({
   type: z.literal("pcb_keepout"),
   shape: z.literal("outline"),
+  pcb_component_id: z.string().optional(),
   pcb_group_id: z.string().optional(),
   subcircuit_id: z.string().optional(),
   outline: z.array(point).min(2),
@@ -26,6 +27,7 @@ export const pcb_keepout = z
   .object({
     type: z.literal("pcb_keepout"),
     shape: z.literal("rect"),
+    pcb_component_id: z.string().optional(),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     center: point,
@@ -43,6 +45,7 @@ export const pcb_keepout = z
     z.object({
       type: z.literal("pcb_keepout"),
       shape: z.literal("circle"),
+      pcb_component_id: z.string().optional(),
       pcb_group_id: z.string().optional(),
       subcircuit_id: z.string().optional(),
       center: point,
@@ -64,6 +67,7 @@ type InferredPCBKeepout = z.infer<typeof pcb_keepout>
 export interface PCBKeepoutRect {
   type: "pcb_keepout"
   shape: "rect"
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   center: Point
@@ -89,6 +93,7 @@ export interface PCBKeepoutRect {
 export interface PCBKeepoutCircle {
   type: "pcb_keepout"
   shape: "circle"
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   center: Point
@@ -113,6 +118,7 @@ export interface PCBKeepoutCircle {
 export interface PcbKeepoutOutline {
   type: "pcb_keepout"
   shape: "outline"
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   outline: Point[]
