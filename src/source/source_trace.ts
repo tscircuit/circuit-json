@@ -9,6 +9,11 @@ export interface SourceTrace {
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
   max_length?: number
+  /** Provenance and optional local endpoints; omission retains legacy length semantics. */
+  max_length_constraint?: {
+    origin: "explicit" | "decoupling"
+    source_port_ids?: [string, string]
+  }
   max_via_count?: number
   name?: string
   display_name?: string
@@ -23,6 +28,12 @@ export const source_trace = z.object({
   subcircuit_id: z.string().optional(),
   subcircuit_connectivity_map_key: z.string().optional(),
   max_length: z.number().optional(),
+  max_length_constraint: z
+    .object({
+      origin: z.enum(["explicit", "decoupling"]),
+      source_port_ids: z.tuple([z.string(), z.string()]).optional(),
+    })
+    .optional(),
   max_via_count: z.number().int().nonnegative().optional(),
   name: z.string().optional(),
   min_trace_thickness: z.number().optional(),
