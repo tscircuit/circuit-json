@@ -67,7 +67,6 @@ type InferredPCBKeepout = z.infer<typeof pcb_keepout>
 export interface PCBKeepoutRect {
   type: "pcb_keepout"
   shape: "rect"
-  /** PCB component that owns this keepout for layout transforms. */
   pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
@@ -94,7 +93,6 @@ export interface PCBKeepoutRect {
 export interface PCBKeepoutCircle {
   type: "pcb_keepout"
   shape: "circle"
-  /** PCB component that owns this keepout for layout transforms. */
   pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
@@ -120,7 +118,6 @@ export interface PCBKeepoutCircle {
 export interface PcbKeepoutOutline {
   type: "pcb_keepout"
   shape: "outline"
-  /** PCB component that owns this keepout for layout transforms. */
   pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
