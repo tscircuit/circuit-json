@@ -6,15 +6,15 @@ import {
   type SimulationComplexSample,
 } from "./simulation_complex_sample"
 import {
-  simulation_parameter_sweep_coordinate,
-  type SimulationParameterSweepCoordinate,
-} from "./simulation_parameter_sweep_coordinate"
+  simulation_parameter_sweep_result_fields,
+  type SimulationParameterSweepResultFields,
+} from "./simulation_parameter_sweep_result_fields"
 
-export interface SimulationAcSweepVoltageGraph {
+export interface SimulationAcSweepVoltageGraph
+  extends SimulationParameterSweepResultFields {
   type: "simulation_ac_sweep_voltage_graph"
   simulation_ac_sweep_voltage_graph_id: string
   simulation_experiment_id: string
-  simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
   simulation_voltage_probe_id: string
   frequencies_hz: number[]
   complex_voltages: SimulationComplexSample[]
@@ -29,14 +29,13 @@ export const simulation_ac_sweep_voltage_graph = z
       "simulation_ac_sweep_voltage_graph",
     ),
     simulation_experiment_id: z.string(),
-    simulation_parameter_sweep_coordinate:
-      simulation_parameter_sweep_coordinate.optional(),
     simulation_voltage_probe_id: z.string(),
     frequencies_hz: z.array(z.number()),
     complex_voltages: z.array(simulation_complex_sample),
     name: z.string().optional(),
     color: z.string().optional(),
   })
+  .extend(simulation_parameter_sweep_result_fields)
   .refine(
     (graph) => graph.frequencies_hz.length === graph.complex_voltages.length,
     {

@@ -78,6 +78,31 @@ test("parses analysis-specific simulation results", () => {
     operatingPoint.simulation_parameter_sweep_coordinate?.sweep_index,
   ).toBe(1)
 
+  const multidimensionalOperatingPoint =
+    simulation_dc_operating_point_voltage.parse({
+      type: "simulation_dc_operating_point_voltage",
+      simulation_experiment_id: "simulation_experiment_0",
+      simulation_voltage_probe_id: "simulation_voltage_probe_0",
+      voltage: 3.3,
+      simulation_parameter_sweep_coordinates: [
+        {
+          simulation_parameter_sweep_id: "simulation_parameter_sweep_vin",
+          sweep_index: 1,
+          parameter_value: 3.3,
+          parameter_unit: "V",
+        },
+        {
+          simulation_parameter_sweep_id: "simulation_parameter_sweep_load",
+          sweep_index: 2,
+          parameter_value: 1,
+          parameter_unit: "A",
+        },
+      ],
+    })
+  expect(
+    multidimensionalOperatingPoint.simulation_parameter_sweep_coordinates,
+  ).toHaveLength(2)
+
   const dcSweep = simulation_dc_sweep_current_graph.parse({
     type: "simulation_dc_sweep_current_graph",
     simulation_experiment_id: "simulation_experiment_1",
