@@ -1,6 +1,7 @@
 import { expect, test } from "bun:test"
 import {
   pcb_hole,
+  pcb_hole_circle_or_square,
   type PcbHolePill,
   type PcbHoleRotatedPill,
 } from "../src/pcb/pcb_hole"
@@ -41,4 +42,37 @@ test("parse rotated pill-shaped non-plated hole", () => {
   expect(hole.x).toBe(5)
   expect(hole.y).toBe(10)
   expect(hole.ccw_rotation).toBe(45)
+})
+
+test("pcb_hole_circle_or_square accepts 'circle' shape", () => {
+  const hole = pcb_hole_circle_or_square.parse({
+    type: "pcb_hole",
+    hole_shape: "circle",
+    hole_diameter: 1,
+    x: 0,
+    y: 0,
+  })
+  expect(hole.hole_shape).toBe("circle")
+})
+
+test("pcb_hole_circle_or_square accepts 'square' shape", () => {
+  const hole = pcb_hole_circle_or_square.parse({
+    type: "pcb_hole",
+    hole_shape: "square",
+    hole_diameter: 1,
+    x: 0,
+    y: 0,
+  })
+  expect(hole.hole_shape).toBe("square")
+})
+
+test("pcb_hole_circle_or_square transforms 'round' to 'circle'", () => {
+  const hole = pcb_hole_circle_or_square.parse({
+    type: "pcb_hole",
+    hole_shape: "round",
+    hole_diameter: 1,
+    x: 0,
+    y: 0,
+  })
+  expect(hole.hole_shape).toBe("circle")
 })

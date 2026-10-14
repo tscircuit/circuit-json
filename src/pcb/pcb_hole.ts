@@ -84,13 +84,19 @@ export interface PcbHoleRect {
 }
 expectTypesMatch<PcbHoleRect, InferredPcbHoleRect>(true)
 
-const pcb_hole_circle_or_square = z.object({
+export const pcb_hole_circle_or_square = z.object({
   type: z.literal("pcb_hole"),
   pcb_hole_id: getZodPrefixedIdWithDefault("pcb_hole"),
   pcb_group_id: z.string().optional(),
   subcircuit_id: z.string().optional(),
   pcb_component_id: z.string().optional(),
-  hole_shape: z.enum(["circle", "square"]),
+  hole_shape: z
+    .enum(["circle", "square", "round"])
+    .default("circle")
+    .transform((shape) => {
+      if (shape === "round") return "circle" as const
+      return shape as "circle" | "square"
+    }),
   hole_diameter: z.number(),
   x: distance,
   y: distance,
