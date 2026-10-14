@@ -1,4 +1,8 @@
 import { z } from "zod"
+import {
+  autorouting_phase,
+  type AutoroutingPhase,
+} from "src/base_circuit_json_error"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { distance, type Distance } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
@@ -13,6 +17,7 @@ export const pcb_trace_too_long_warning = z
       .literal("pcb_trace_too_long_warning")
       .default("pcb_trace_too_long_warning"),
     message: z.string(),
+    autorouting_phase: autorouting_phase.optional(),
     pcb_trace_id: z.string(),
     source_net_id: z.string().optional(),
     source_trace_id: z.string().optional(),
@@ -31,6 +36,7 @@ type InferredPcbTraceTooLongWarning = z.infer<typeof pcb_trace_too_long_warning>
 
 /** Warning emitted when a PCB trace is longer than its maximum allowed length */
 export interface PcbTraceTooLongWarning {
+  autorouting_phase?: AutoroutingPhase
   type: "pcb_trace_too_long_warning"
   pcb_trace_too_long_warning_id: string
   warning_type: "pcb_trace_too_long_warning"
