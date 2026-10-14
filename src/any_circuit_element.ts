@@ -163,6 +163,7 @@ export const any_circuit_element = z.union([
   sch.schematic_voltage_probe,
   sch.schematic_manual_edit_conflict_warning,
   sch.schematic_component_overlap_warning,
+  sch.schematic_text_overlap_warning,
   sch.schematic_component_styling_warning,
   sch.schematic_sheet_styling_warning,
   sch.schematic_missing_sheet_warning,
