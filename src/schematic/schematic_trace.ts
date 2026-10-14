@@ -16,15 +16,21 @@ export interface SchematicTraceEdge {
   to_schematic_port_id?: string
 }
 
+export interface SchematicTraceJunction {
+  x: number
+  y: number
+  /** Optional CSS color for the junction marker. */
+  color?: string
+}
+
 export interface SchematicTrace {
   type: "schematic_trace"
   schematic_trace_id: string
   schematic_sheet_id?: string
   source_trace_id?: string
-  junctions: {
-    x: number
-    y: number
-  }[]
+  /** Optional CSS color for the trace edges. */
+  color?: string
+  junctions: SchematicTraceJunction[]
   edges: SchematicTraceEdge[]
   subcircuit_id?: string
   /** Optional for now, but will be required in a future release */
@@ -36,10 +42,12 @@ export const schematic_trace = z.object({
   schematic_trace_id: z.string(),
   schematic_sheet_id: z.string().optional(),
   source_trace_id: z.string().optional(),
+  color: z.string().optional(),
   junctions: z.array(
     z.object({
       x: z.number(),
       y: z.number(),
+      color: z.string().optional(),
     }),
   ),
   edges: z.array(
