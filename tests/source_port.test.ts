@@ -22,6 +22,21 @@ test("source_port parses without most_frequently_referenced_by_name", () => {
   expect(parsed.most_frequently_referenced_by_name).toBeUndefined()
 })
 
+test("source_port preserves an exact active pin function", () => {
+  const port = {
+    type: "source_port",
+    name: "SPI_CLK",
+    source_port_id: "source_port_3",
+    active_function: "spi0_sclk",
+    package_pin: "U7",
+  }
+  expect(source_port.parse(port).active_function).toBe("spi0_sclk")
+  expect(source_port.parse(port).package_pin).toBe("U7")
+  expect(source_port.safeParse({ ...port, active_function: "" }).success).toBe(
+    false,
+  )
+})
+
 test("source_port parses configuration and support protocol flags", () => {
   const parsed = source_port.parse({
     type: "source_port",
