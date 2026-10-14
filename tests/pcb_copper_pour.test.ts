@@ -11,10 +11,12 @@ test("pcb_copper_pour rect parses", () => {
     height: 10,
     layer: "top",
     source_net_id: "net1",
+    clearance: 0.2,
   })
   expect(pour.shape).toBe("rect")
   if (pour.shape === "rect") {
     expect(pour.width).toBe(10)
+    expect(pour.clearance).toBe(0.2)
   }
   expect((pour as any).pcb_copper_pour_id).toBeDefined()
   expect(any_circuit_element.parse(pour)).toBeDefined()
@@ -75,4 +77,20 @@ test("coveredWithSolderMask defaults to true", () => {
     source_net_id: "net1",
   })
   expect(pour.covered_with_solder_mask).toBe(true)
+})
+
+test("pcb_copper_pour clearance is optional", () => {
+  const pour = pcb_copper_pour.parse({
+    type: "pcb_copper_pour",
+    shape: "polygon",
+    points: [
+      { x: 0, y: 0 },
+      { x: 10, y: 0 },
+      { x: 5, y: 10 },
+    ],
+    layer: "top",
+    clearance: "0.33mm",
+  })
+
+  expect(pour.clearance).toBe(0.33)
 })
