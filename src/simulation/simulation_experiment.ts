@@ -10,6 +10,7 @@ export const experiment_type = z.union([
   z.literal("spice_transient_analysis"),
   z.literal("spice_ac_analysis"),
   z.literal("pcb_return_current"),
+  z.literal("pcb_noise"),
 ])
 
 export type ExperimentType = z.infer<typeof experiment_type>

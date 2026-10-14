@@ -21,7 +21,9 @@
     "ts-expect": "^1.3.0",
     "ts-node": "^10.9.2",
     "tsup": "^8.3.0",
-    "typescript": "^5.7.2",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
     "zod": "3"
   },
   "peerDependencies": {
