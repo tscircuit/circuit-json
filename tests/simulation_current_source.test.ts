@@ -100,3 +100,33 @@ test("simulation_current_source AC with duty_cycle", () => {
   const acSource2 = source2 as SimulationAcCurrentSource
   expect(acSource2.duty_cycle).toBe(0.25)
 })
+
+test("simulation_current_source parses a piecewise-linear waveform", () => {
+  const source = simulation_current_source.parse({
+    type: "simulation_current_source",
+    is_dc_source: false,
+    current: "100mA",
+    current_waveform: {
+      timestamps_ms: ["0ms", "1ms", "1.001ms"],
+      current_values: ["100mA", "100mA", "1A"],
+    },
+  }) as SimulationAcCurrentSource
+
+  expect(source.current_waveform).toEqual({
+    timestamps_ms: [0, 1, 1.001],
+    current_values: [0.1, 0.1, 1],
+  })
+})
+
+test("simulation_current_source rejects misaligned waveform arrays", () => {
+  expect(() =>
+    simulation_current_source.parse({
+      type: "simulation_current_source",
+      is_dc_source: false,
+      current_waveform: {
+        timestamps_ms: [0, 1],
+        current_values: [0.1],
+      },
+    }),
+  ).toThrow("timestamps_ms and current_values must have the same length")
+})
