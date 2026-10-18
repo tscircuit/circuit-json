@@ -9,18 +9,23 @@ export const simulation_ibis_pin_state = z
     ),
     simulation_experiment_id: z.string().min(1),
     source_port_id: z.string().min(1),
-    mode: z.enum(["input", "output"]),
-    enabled: z.boolean().optional(),
+    is_output: z
+      .boolean()
+      .describe(
+        "True selects output mode; false selects input mode for this experiment",
+      ),
+    is_output_enabled: z.boolean().optional(),
   })
   .superRefine((pin, context) => {
     if (
-      (pin.mode === "output" && pin.enabled === undefined) ||
-      (pin.mode === "input" && pin.enabled !== undefined)
+      (pin.is_output && pin.is_output_enabled === undefined) ||
+      (!pin.is_output && pin.is_output_enabled !== undefined)
     ) {
       context.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ["enabled"],
-        message: "Only output pins require an explicit enabled boolean",
+        path: ["is_output_enabled"],
+        message:
+          "Only output pins require an explicit is_output_enabled boolean",
       })
     }
   })

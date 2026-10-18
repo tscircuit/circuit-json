@@ -16,7 +16,7 @@ export type ExperimentType = z.infer<typeof experiment_type>
 
 export const spice_simulation_options = z
   .object({
-    method: z.enum(["trap", "gear"]).optional(),
+    method: z.union([z.literal("trap"), z.literal("gear")]).optional(),
     reltol: z.union([z.number(), z.string()]).optional(),
     abstol: z.union([z.number(), z.string()]).optional(),
     vntol: z.union([z.number(), z.string()]).optional(),
@@ -36,8 +36,6 @@ export interface SimulationExperiment {
   name: string
   experiment_type: ExperimentType
   subcircuit_id?: string
-  /** External experiments are declarations for a separately invoked runner. */
-  execution_mode?: "native" | "external"
   spice_engine?: string
   time_per_step?: number // ms
   start_time_ms?: number // ms
@@ -65,7 +63,6 @@ export const simulation_experiment = z
     name: z.string(),
     experiment_type,
     subcircuit_id: z.string().optional(),
-    execution_mode: z.enum(["native", "external"]).optional(),
     spice_engine: z.string().optional(),
     time_per_step: duration_ms.optional(),
     start_time_ms: ms.optional(),
@@ -80,7 +77,9 @@ export const simulation_experiment = z
       .refine((dcSweepStep) => dcSweepStep !== 0)
       .optional(),
     dc_sweep_unit: simulation_dc_sweep_unit.optional(),
-    ac_sweep_type: z.enum(["linear", "decade", "octave"]).optional(),
+    ac_sweep_type: z
+      .union([z.literal("linear"), z.literal("decade"), z.literal("octave")])
+      .optional(),
     ac_samples_per_interval: z.number().int().positive().optional(),
     ac_sample_count: z.number().int().positive().optional(),
     ac_start_frequency_hz: z.number().positive().optional(),

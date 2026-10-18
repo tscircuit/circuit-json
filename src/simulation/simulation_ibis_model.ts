@@ -1,31 +1,6 @@
 import { z } from "zod"
-import { getZodPrefixedIdWithDefault } from "src/common"
+import { asset, getZodPrefixedIdWithDefault } from "src/common"
 
-const sha256 = z.string().regex(/^[a-f0-9]{64}$/i)
-const archive = z
-  .object({
-    member: z.string().min(1),
-    member_sha256: sha256.optional(),
-  })
-  .strict()
-
-/** The source is declared here; parsing never downloads or converts a model. */
-export const simulation_ibis_source = z.union([
-  z
-    .object({ url: z.string().url(), sha256, archive: archive.optional() })
-    .strict(),
-  z
-    .object({
-      file: z.string().min(1),
-      sha256: sha256.optional(),
-      archive: archive.optional(),
-    })
-    .strict(),
-  z.object({ content: z.string().min(1), sha256: sha256.optional() }).strict(),
-])
-export type SimulationIbisSource = z.infer<typeof simulation_ibis_source>
-
-/** Vendor pin numbers map to physical source ports; reference roles also use source port IDs. */
 export const simulation_ibis_model = z
   .object({
     type: z.literal("simulation_ibis_model"),
@@ -33,34 +8,58 @@ export const simulation_ibis_model = z
       "simulation_ibis_model",
     ),
     source_component_id: z.string().min(1),
-    source: simulation_ibis_source,
-    component: z.string().min(1),
-    pin_to_source_port_map: z
+    ibis_model_asset: asset.describe(
+      "Reference to the .ibs file containing the vendor's IBIS models",
+    ),
+    ibis_component_name: z
+      .string()
+      .min(1)
+      .describe("Name of the [Component] section in the IBIS file"),
+    ibis_pin_name_to_source_port_id: z
       .record(z.string().min(1), z.string().min(1))
       .refine(
         (pins) => Object.keys(pins).length > 0,
         "At least one physical IBIS pin is required",
+      )
+      .describe(
+        "Maps pin names from the IBIS [Pin] table, such as A1 or 12, to physical source_port_id values",
       ),
-    model_selections: z.record(z.string().min(1), z.string().min(1)).optional(),
-    references: z
+    ibis_pin_name_to_model_name: z
+      .record(z.string().min(1), z.string().min(1))
+      .optional()
+      .describe(
+        "Maps an IBIS pin name to the selected [Model] name when its [Model Selector] has multiple buffers",
+      ),
+    ibis_pin_name_to_reference_source_port_ids: z
       .record(
         z.string().min(1),
         z
           .object({
-            pullup: z.string().min(1).optional(),
-            pulldown: z.string().min(1).optional(),
-            power_clamp: z.string().min(1).optional(),
-            ground_clamp: z.string().min(1).optional(),
-            external: z.string().min(1).optional(),
+            pullup_reference_source_port_id: z.string().min(1).optional(),
+            pulldown_reference_source_port_id: z.string().min(1).optional(),
+            power_clamp_reference_source_port_id: z.string().min(1).optional(),
+            ground_clamp_reference_source_port_id: z.string().min(1).optional(),
+            external_reference_source_port_id: z.string().min(1).optional(),
           })
           .strict(),
       )
-      .optional(),
-    corner: z.enum(["typical", "minimum", "maximum"]),
-    package_policy: z.enum(["vendor", "omit"]),
+      .optional()
+      .describe(
+        "Maps each IBIS signal pin name to the physical source ports used as its buffer supply/clamp references",
+      ),
+    model_value_corner: z
+      .union([z.literal("typical"), z.literal("minimum"), z.literal("maximum")])
+      .describe(
+        "Selects the typ, min, or max column of numerical data in the IBIS model",
+      ),
+    include_package_parasitics: z
+      .boolean()
+      .describe(
+        "Whether the runner includes the IBIS vendor's package resistance, inductance, and capacitance",
+      ),
   })
   .describe(
-    "Declares a vendor IBIS model and its physical pin and reference mappings",
+    "Attaches an IBIS component and its physical pin bindings to a source component",
   )
 
 export type SimulationIbisModel = z.infer<typeof simulation_ibis_model>

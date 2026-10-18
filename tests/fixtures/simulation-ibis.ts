@@ -1,17 +1,23 @@
+import type {
+  SimulationIbisModelInput,
+  SimulationDigitalStimulusInput,
+  SimulationEyeDiagramInput,
+} from "../../src"
+
 export const model = {
   type: "simulation_ibis_model",
   source_component_id: "source_component_tx",
-  source: {
-    url: "https://example.com/chip.zip",
-    sha256: "a".repeat(64),
-    archive: { member: "chip.ibs", member_sha256: "b".repeat(64) },
+  ibis_model_asset: {
+    project_relative_path: "models/chip.ibs",
+    url: "https://example.com/chip.ibs",
+    mimetype: "text/plain",
   },
-  component: "CHIP",
-  pin_to_source_port_map: { A1: "source_port_tx" },
-  model_selections: { A1: "OUTPUT" },
-  corner: "typical",
-  package_policy: "omit",
-}
+  ibis_component_name: "CHIP",
+  ibis_pin_name_to_source_port_id: { A1: "source_port_tx" },
+  ibis_pin_name_to_model_name: { A1: "OUTPUT" },
+  model_value_corner: "typical",
+  include_package_parasitics: false,
+} satisfies SimulationIbisModelInput
 
 export const stimulus = {
   type: "simulation_digital_stimulus",
@@ -23,7 +29,7 @@ export const stimulus = {
   initial_state: 0,
   inverted: false,
   pattern: { type: "bits", bits: "00010111", repeat: true },
-}
+} satisfies SimulationDigitalStimulusInput
 
 export const eye = {
   type: "simulation_eye_diagram",
@@ -34,4 +40,4 @@ export const eye = {
   time_origin_ms: "1.25ns",
   start_time_ms: "40ns",
   end_time_ms: "160ns",
-}
+} satisfies SimulationEyeDiagramInput
