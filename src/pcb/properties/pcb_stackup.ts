@@ -2,9 +2,15 @@ import { z } from "zod"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import { type LayerRef, layer_string } from "./layer_ref"
 
+const conductor_material = z.object({
+  name: z.string().trim().min(1),
+  conductivity_s_per_m: z.number().finite().positive().optional(),
+})
+
 const copper_layer = z.object({
   type: z.literal("copper"),
   layer: layer_string,
+  material_id: z.string().min(1).optional(),
   thickness_mm: z.number().finite().positive().optional(),
   conductivity_s_per_m: z.number().finite().positive().optional(),
 })
@@ -30,6 +36,7 @@ export const pcb_stackup = z
     manufacturer: z.string().trim().min(1).optional(),
     manufacturer_stackup_id: z.string().trim().min(1).optional(),
     source_url: z.string().url().optional(),
+    materials: z.record(z.string().min(1), conductor_material).optional(),
     layers: z.array(
       z.discriminatedUnion("type", [copper_layer, dielectric_layer]),
     ),
@@ -104,6 +111,17 @@ export const pcb_stackup = z
         continue
       }
 
+      if (
+        layer.material_id !== undefined &&
+        !Object.hasOwn(stackup.materials ?? {}, layer.material_id)
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["layers", layer_index, "material_id"],
+          message: "material_id must reference an entry in stackup.materials",
+        })
+      }
+
       const expected_layer =
         copper_position === 0
           ? "top"
@@ -146,15 +164,26 @@ export interface PcbStackup {
   manufacturer_stackup_id?: string
   /** Source construction URL; does not establish measured or verified manufacturing. */
   source_url?: string
+  /** Reusable conductor materials keyed by a nonempty ID local to this board's stackup. */
+  materials?: Record<string, PcbStackupMaterial>
   layers: PcbStackupLayer[]
+}
+
+/** Conductor material data; a name alone does not imply a conductivity. */
+export interface PcbStackupMaterial {
+  name: string
+  /** Finite positive electrical conductivity in siemens per meter. Omission means unknown. */
+  conductivity_s_per_m?: number
 }
 
 /** Copper thickness is the nominal finished conductor thickness in millimeters. */
 export interface PcbStackupCopperLayer {
   type: "copper"
   layer: LayerRef
+  /** References this board's stackup.materials; independent of pcb_board.material (substrate). */
+  material_id?: string
   thickness_mm?: number
-  /** Finite electric conductivity in siemens per meter. Omission is unknown, not a perfect conductor. */
+  /** Overrides the referenced material's conductivity, in S/m. Otherwise inherited; unknown if neither supplies it. */
   conductivity_s_per_m?: number
 }
 

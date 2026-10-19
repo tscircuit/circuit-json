@@ -20,6 +20,9 @@ could then read the DSN file back to Circuit JSON.
 This module has the zod definitions and conversion functions for using circuit json,
 and is the primary way that Circuit JSON is defined and maintained.
 
+See [conductor materials and layer conductivity](docs/pcb-material-conductivity.md)
+for shared material declarations and conductivity inheritance for routed traces.
+
 https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
 
 > To quickly generate Circuit JSON with tscircuit, use [tscircuit/eval](https://github.com/tscircuit/eval)
