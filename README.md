@@ -1686,6 +1686,8 @@ interface PcbBoard extends ManufacturingDrcProperties {
   display_offset_y?: string
   thickness: Length
   num_layers: number
+  /** JLCPCB stackup catalog ID, e.g. JLC04161H-3313. Stores the selection without resolving physical properties. */
+  jlcpcb_stackup_id?: string
   /** Whether autorouters may generate blind and buried vias. */
   allow_blind_and_buried_vias?: boolean
   center: Point
@@ -1699,6 +1701,10 @@ interface PcbBoard extends ManufacturingDrcProperties {
   position_mode?: "relative_to_panel_anchor" | "none"
 }
 ```
+
+`jlcpcb_stackup_id` optionally stores a JLCPCB catalog selection such as
+`"JLC04161H-3313"`. Parsing does not look up the template or infer layer count,
+thickness, or material properties from the ID.
 
 ### PcbBreakoutPoint
 
