@@ -144,6 +144,7 @@ export interface PcbTraceRoutePointWire {
   is_inside_copper_pour?: boolean
   start_pcb_port_id?: string
   end_pcb_port_id?: string
+  /** Resolve conductivity through the owning board's stackup layer with getPcbLayerConductivity. */
   layer: LayerRef
 }
 
