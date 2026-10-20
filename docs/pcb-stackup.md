@@ -34,6 +34,7 @@ re-resolve the template. `nominal_board_thickness` is the fabricator's nominal
 finished thickness; it need not equal the sum of the listed layer thicknesses.
 `plated_hole_copper_thickness` describes via/barrel plating separately from the
 copper layers. Copper conductivity is optional; consumers may use 5.8e7 S/m for
-annealed copper when it is omitted. Soldermask layers can carry thickness,
-relative permittivity, and color. Dielectrics can also carry loss tangent and
-the frequency at which their dielectric properties are specified.
+annealed copper when it is omitted. Soldermask layers can carry thickness and
+relative permittivity; board color is stored on `pcb_board.solder_mask_color`.
+Dielectrics can also carry loss tangent and the frequency at which their
+dielectric properties are specified.

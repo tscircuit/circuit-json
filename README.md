@@ -3235,8 +3235,6 @@ interface PcbSoldermaskStackupLayer {
   thickness?: Length
   /** Relative permittivity of the soldermask. */
   relative_permittivity?: number
-  /** Soldermask color. */
-  color?: string
 }
 
 /** A conductive layer in the physical board stack. */

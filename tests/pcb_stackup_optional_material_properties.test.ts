@@ -10,7 +10,6 @@ test("stackup retains optional soldermask and material properties", () => {
         layer_type: "soldermask",
         thickness: "0.02mm",
         relative_permittivity: 3.5,
-        color: "green",
       },
       {
         layer_type: "copper",
@@ -28,7 +27,7 @@ test("stackup retains optional soldermask and material properties", () => {
     ],
   })
   expect(stackup.layers).toMatchObject([
-    { thickness: 0.02, relative_permittivity: 3.5, color: "green" },
+    { thickness: 0.02, relative_permittivity: 3.5 },
     { thickness: 0.035, copper_weight_oz: 1, surface_roughness: 0.001 },
     { thickness: 1, loss_tangent: 0.02, relative_permittivity_frequency: 1e9 },
   ])

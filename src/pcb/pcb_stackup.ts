@@ -19,7 +19,6 @@ export const pcb_stackup_soldermask_layer = z.object({
   relative_permittivity: positive_number
     .optional()
     .describe("Soldermask relative permittivity"),
-  color: z.string().optional().describe("Soldermask color"),
 })
 
 /** A soldermask layer in the physical board stack. */
@@ -29,8 +28,6 @@ export interface PcbSoldermaskStackupLayer {
   thickness?: Length
   /** Relative permittivity of the soldermask. */
   relative_permittivity?: number
-  /** Soldermask color. */
-  color?: string
 }
 expectTypesMatch<
   PcbSoldermaskStackupLayer,
