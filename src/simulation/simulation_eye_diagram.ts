@@ -2,7 +2,6 @@ import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { ms } from "src/units"
 
-const finiteMilliseconds = ms.refine(Number.isFinite)
 export const simulation_eye_diagram = z
   .object({
     type: z.literal("simulation_eye_diagram"),
@@ -12,16 +11,10 @@ export const simulation_eye_diagram = z
     name: z.string().min(1),
     simulation_experiment_id: z.string().min(1),
     simulation_voltage_probe_id: z.string().min(1),
-    unit_interval_ms: finiteMilliseconds.refine(
-      (milliseconds) => milliseconds > 0,
-    ),
-    time_origin_ms: finiteMilliseconds,
-    start_time_ms: finiteMilliseconds
-      .refine((milliseconds) => milliseconds >= 0)
-      .optional(),
-    end_time_ms: finiteMilliseconds
-      .refine((milliseconds) => milliseconds > 0)
-      .optional(),
+    unit_interval_ms: ms.refine((milliseconds) => milliseconds > 0),
+    time_origin_ms: ms,
+    start_time_ms: ms.refine((milliseconds) => milliseconds >= 0).optional(),
+    end_time_ms: ms.refine((milliseconds) => milliseconds > 0).optional(),
   })
   .superRefine((eye, context) => {
     if (

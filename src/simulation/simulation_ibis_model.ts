@@ -1,6 +1,11 @@
 import { z } from "zod"
 import { asset, getZodPrefixedIdWithDefault } from "src/common"
 
+const ibisAssetPath = z
+  .string()
+  .min(1)
+  .regex(/^(?!\s|[a-z][a-z\d+.-]*:|[/\\])[^\\\u0000-\u001f\u007f]+$/i)
+
 export const simulation_ibis_model = z
   .object({
     type: z.literal("simulation_ibis_model"),
@@ -8,9 +13,19 @@ export const simulation_ibis_model = z
       "simulation_ibis_model",
     ),
     source_component_id: z.string().min(1),
-    ibis_model_asset: asset.describe(
-      "Reference to the .ibs file containing the vendor's IBIS models",
-    ),
+    // Consumers must still apply their own fetch policy to prevent SSRF.
+    ibis_model_asset: asset
+      .extend({
+        project_relative_path: ibisAssetPath,
+        url: z
+          .string()
+          .url()
+          .regex(/^https?:\/\//i)
+          .or(ibisAssetPath),
+      })
+      .describe(
+        "Reference to the .ibs file containing the vendor's IBIS models",
+      ),
     ibis_component_name: z
       .string()
       .min(1)
