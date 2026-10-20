@@ -16,7 +16,7 @@ export type ExperimentType = z.infer<typeof experiment_type>
 
 export const spice_simulation_options = z
   .object({
-    method: z.union([z.literal("trap"), z.literal("gear")]).optional(),
+    method: z.enum(["trap", "gear"]).optional(),
     reltol: z.union([z.number(), z.string()]).optional(),
     abstol: z.union([z.number(), z.string()]).optional(),
     vntol: z.union([z.number(), z.string()]).optional(),
@@ -77,9 +77,7 @@ export const simulation_experiment = z
       .refine((dcSweepStep) => dcSweepStep !== 0)
       .optional(),
     dc_sweep_unit: simulation_dc_sweep_unit.optional(),
-    ac_sweep_type: z
-      .union([z.literal("linear"), z.literal("decade"), z.literal("octave")])
-      .optional(),
+    ac_sweep_type: z.enum(["linear", "decade", "octave"]).optional(),
     ac_samples_per_interval: z.number().int().positive().optional(),
     ac_sample_count: z.number().int().positive().optional(),
     ac_start_frequency_hz: z.number().positive().optional(),

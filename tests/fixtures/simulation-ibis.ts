@@ -24,11 +24,15 @@ export const stimulus = {
   name: "DATA",
   simulation_experiment_id: "experiment",
   source_port_id: "source_port_tx",
-  unit_interval_ms: "2.5ns",
+  bit_duration_ms: "2.5ns",
   start_time_ms: "0ns",
   initial_state: 0,
   inverted: false,
-  pattern: { type: "bits", bits: "00010111", repeat: true },
+  transmission_pattern: {
+    transmission_type: "bits",
+    bits: "00010111",
+    repeat: true,
+  },
 } satisfies SimulationDigitalStimulusInput
 
 export const eye = {
