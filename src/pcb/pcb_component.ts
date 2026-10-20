@@ -38,6 +38,7 @@ export const pcb_component = z
     pcb_component_id: getZodPrefixedIdWithDefault("pcb_component"),
     source_component_id: z.string(),
     center: point,
+    footprint_origin: point.optional(),
     layer: layer_ref,
     rotation: rotation,
     display_offset_x: z
@@ -109,6 +110,12 @@ export interface PcbComponent {
   source_component_id: string
   subcircuit_id?: string
   center: Point
+  /**
+   * The footprint-local (0, 0) point after placement, in the right-handed
+   * board-world frame: mm, +X right, +Y top, +Z above the board. Independent
+   * of the axis-aligned copper bounding-box center and placement anchors.
+   */
+  footprint_origin?: Point
   layer: LayerRef
   rotation: Rotation
   display_offset_x?: string
