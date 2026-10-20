@@ -1780,6 +1780,8 @@ interface PcbBusLengthSkewError extends BaseCircuitJsonError {
 interface PcbComponentMetadata {
   kicad_footprint?: KicadFootprintMetadata
 }
+
+type SupplierPin1LocationMap = Partial<Record<SupplierName, PcbPin1Location>>
 ```
 
 ### PcbComponentInvalidLayerError
