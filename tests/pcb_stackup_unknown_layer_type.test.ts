@@ -1,6 +1,6 @@
 import { expect, test } from "bun:test"
 import { pcb_stackup } from "src"
-import { jlc_stackup } from "./fixtures/jlc04161h-3313-stackup"
+import { jlc_stackup } from "./fixtures/jlc-stackup"
 
 test("stackup rejects an unknown layer type", () => {
   expect(

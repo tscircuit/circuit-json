@@ -5,7 +5,7 @@ import {
   type PcbCircuitElement,
   type PcbStackup,
 } from "src"
-import { jlc_stackup } from "./fixtures/jlc04161h-3313-stackup"
+import { jlc_stackup } from "./fixtures/jlc-stackup"
 
 test("JLCPCB stackup parses through any_circuit_element with resolved numbers", () => {
   const parsed = any_circuit_element.parse(jlc_stackup)
