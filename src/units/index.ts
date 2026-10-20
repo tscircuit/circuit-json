@@ -106,7 +106,24 @@ export const current = z
 export const duration_ms = z
   .string()
   .or(z.number())
-  .transform((v) => parseAndConvertSiUnit(v).value!)
+  .transform((v, context) => {
+    try {
+      const { value, unitOfValue } = parseAndConvertSiUnit(v)
+      if (
+        (unitOfValue === null || unitOfValue === "ms") &&
+        Number.isFinite(value)
+      ) {
+        return value!
+      }
+    } catch {
+      // Report unparseable strings as schema failures rather than throwing.
+    }
+    context.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Expected a finite number of milliseconds or a time unit",
+    })
+    return z.NEVER
+  })
 
 export const time = duration_ms
 

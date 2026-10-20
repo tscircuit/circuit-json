@@ -1,5 +1,26 @@
 import { test, expect } from "bun:test"
-import { duration_ms, ms } from "src/units"
+import { duration_ms, ms, time } from "src/units"
+
+test("shared time parsers reject non-time units and preserve milliseconds", () => {
+  for (const schema of [duration_ms, ms, time]) {
+    for (const value of [
+      "2.5V",
+      "3A",
+      "1mm",
+      "1Hz",
+      "invalid",
+      "",
+      Infinity,
+      NaN,
+    ]) {
+      expect(schema.safeParse(value).success).toBe(false)
+    }
+    expect(schema.parse(2.5)).toBe(2.5)
+    expect(schema.parse("2.5")).toBe(2.5)
+    expect(schema.parse(-1)).toBe(-1)
+    expect(schema.parse(0)).toBe(0)
+  }
+})
 
 test("duration_ms and ms parse various time units", () => {
   // Test seconds

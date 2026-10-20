@@ -35,6 +35,8 @@ export interface SimulationExperiment {
   simulation_experiment_id: string
   name: string
   experiment_type: ExperimentType
+  subcircuit_id?: string
+  spice_engine?: string
   time_per_step?: number // ms
   start_time_ms?: number // ms
   end_time_ms?: number // ms
@@ -60,6 +62,8 @@ export const simulation_experiment = z
     ),
     name: z.string(),
     experiment_type,
+    subcircuit_id: z.string().optional(),
+    spice_engine: z.string().optional(),
     time_per_step: duration_ms.optional(),
     start_time_ms: ms.optional(),
     end_time_ms: ms.optional(),
