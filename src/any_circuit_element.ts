@@ -91,6 +91,7 @@ export const any_circuit_element = z.union([
   pcb.pcb_solder_paste,
   pcb.pcb_soldermask_opening,
   pcb.pcb_board,
+  pcb.pcb_stackup,
   pcb.pcb_bend,
   pcb.pcb_stiffener,
   pcb.pcb_panel,

@@ -179,6 +179,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbSilkscreenRect](#pcbsilkscreenrect)
     - [PcbSilkscreenText](#pcbsilkscreentext)
     - [PcbSolderPaste](#pcbsolderpaste)
+    - [PcbStackup](#pcbstackup)
     - [PcbStiffener](#pcbstiffener)
     - [PcbText](#pcbtext)
     - [PcbThermalSpoke](#pcbthermalspoke)
@@ -3196,6 +3197,84 @@ interface PcbSolderPasteCircle {
   pcb_component_id?: string
   pcb_smtpad_id?: string
 }
+```
+
+### PcbStackup
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_stackup.ts)
+
+Resolved physical PCB construction, ordered from top to bottom.
+
+```typescript
+/** Resolved physical PCB construction, ordered from top to bottom. */
+interface PcbStackup {
+  type: "pcb_stackup"
+  pcb_stackup_id: string
+  /** Board described by this stackup. */
+  pcb_board_id: string
+  /** Owning subcircuit, if any. */
+  subcircuit_id?: string
+  /** Fabricator that supplied the template. */
+  fabricator?: SupplierName
+  /** Fabricator's public stackup template code. */
+  stackup_template_code?: string
+  /** Fabricator's internal stackup template ID. */
+  fabricator_template_id?: string
+  /** Nominal finished board thickness in mm. */
+  nominal_board_thickness?: Length
+  /** Via and plated-hole barrel copper thickness in mm. */
+  plated_hole_copper_thickness?: Length
+  /** Resolved physical layers ordered from top to bottom. */
+  layers: PcbStackupLayer[]
+}
+
+/** A soldermask layer in the physical board stack. */
+interface PcbSoldermaskStackupLayer {
+  layer_type: "soldermask"
+  /** Soldermask thickness in mm. */
+  thickness?: Length
+  /** Relative permittivity of the soldermask. */
+  relative_permittivity?: number
+  /** Soldermask color. */
+  color?: string
+}
+
+/** A conductive layer in the physical board stack. */
+interface PcbCopperStackupLayer {
+  layer_type: "copper"
+  /** PCB copper layer name, such as top, inner1, or bottom. */
+  layer: LayerRef
+  /** Copper thickness in mm. */
+  thickness: Length
+  /** Conductivity in S/m; consumers may use annealed copper 5.8e7 when omitted. */
+  conductivity?: number
+  /** Copper weight in oz/ft². */
+  copper_weight_oz?: number
+  /** RMS copper surface roughness in mm. */
+  surface_roughness?: Length
+}
+
+/** An insulating layer in the physical board stack. */
+interface PcbDielectricStackupLayer {
+  layer_type: "dielectric"
+  /** Core or prepreg construction. */
+  dielectric_type?: "core" | "prepreg"
+  /** Fabricator material name. */
+  material_name?: string
+  /** Dielectric thickness in mm. */
+  thickness: Length
+  /** Dielectric relative permittivity. */
+  relative_permittivity?: number
+  /** Dielectric loss tangent. */
+  loss_tangent?: number
+  /** Frequency in Hz at which dielectric properties are specified. */
+  relative_permittivity_frequency?: number
+}
+
+type PcbStackupLayer =
+  | PcbSoldermaskStackupLayer
+  | PcbCopperStackupLayer
+  | PcbDielectricStackupLayer
 ```
 
 ### PcbStiffener
