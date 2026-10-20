@@ -14,11 +14,7 @@ test("JLCPCB stackup parses through any_circuit_element with resolved numbers", 
   const element: PcbCircuitElement = stackup
   expect(element.pcb_stackup_id).toMatch(/^pcb_stackup_/)
   expect(element).toMatchObject({
-    fabricator: "jlcpcb",
-    stackup_template_code: "JLC04161H-3313",
-    fabricator_template_id: "6381a6960c0a46dba4daf70c97bd5dce",
     nominal_board_thickness: 1.6,
-    plated_hole_copper_thickness: 0.025,
     layers: [
       {
         layer_type: "copper",

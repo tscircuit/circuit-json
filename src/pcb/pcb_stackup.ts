@@ -1,9 +1,5 @@
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { type LayerRef, layer_ref } from "src/pcb/properties/layer_ref"
-import {
-  type SupplierName,
-  supplier_name,
-} from "src/pcb/properties/supplier_name"
 import { type Length, length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import { z } from "zod"
@@ -129,21 +125,12 @@ export const pcb_stackup = z
       getZodPrefixedIdWithDefault("pcb_stackup").describe("Unique stackup ID"),
     pcb_board_id: z.string().describe("Board described by this stackup"),
     subcircuit_id: z.string().optional().describe("Owning subcircuit ID"),
-    fabricator: supplier_name.optional().describe("Fabricator name"),
-    stackup_template_code: z
-      .string()
-      .optional()
-      .describe("Fabricator's public stackup template code"),
-    fabricator_template_id: z
-      .string()
-      .optional()
-      .describe("Fabricator's internal stackup template ID"),
     nominal_board_thickness: positive_length
       .optional()
       .describe("Nominal finished board thickness in mm"),
     plated_hole_copper_thickness: positive_length
       .optional()
-      .describe("Via and plated-hole barrel copper thickness in mm"),
+      .describe("Plated hole barrel wall copper thickness in mm"),
     layers: z
       .array(pcb_stackup_layer)
       .min(1)
@@ -161,15 +148,9 @@ export interface PcbStackup {
   pcb_board_id: string
   /** Owning subcircuit, if any. */
   subcircuit_id?: string
-  /** Fabricator that supplied the template. */
-  fabricator?: SupplierName
-  /** Fabricator's public stackup template code. */
-  stackup_template_code?: string
-  /** Fabricator's internal stackup template ID. */
-  fabricator_template_id?: string
   /** Nominal finished board thickness in mm. */
   nominal_board_thickness?: Length
-  /** Via and plated-hole barrel copper thickness in mm. */
+  /** Plated hole barrel wall copper thickness in mm. */
   plated_hole_copper_thickness?: Length
   /** Resolved physical layers ordered from top to bottom. */
   layers: PcbStackupLayer[]

@@ -5,6 +5,7 @@ test("stackup retains optional soldermask and material properties", () => {
   const stackup = pcb_stackup.parse({
     type: "pcb_stackup",
     pcb_board_id: "pcb_board_1",
+    plated_hole_copper_thickness: "0.018mm",
     layers: [
       {
         layer_type: "soldermask",
@@ -26,6 +27,7 @@ test("stackup retains optional soldermask and material properties", () => {
       },
     ],
   })
+  expect(stackup.plated_hole_copper_thickness).toBe(0.018)
   expect(stackup.layers).toMatchObject([
     { thickness: 0.02, relative_permittivity: 3.5 },
     { thickness: 0.035, copper_weight_oz: 1, surface_roughness: 0.001 },

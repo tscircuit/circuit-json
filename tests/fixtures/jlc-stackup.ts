@@ -3,11 +3,7 @@ import type { PcbStackupInput } from "src"
 export const jlc_stackup = {
   type: "pcb_stackup",
   pcb_board_id: "pcb_board_1",
-  fabricator: "jlcpcb",
-  stackup_template_code: "JLC04161H-3313",
-  fabricator_template_id: "6381a6960c0a46dba4daf70c97bd5dce",
   nominal_board_thickness: "1.6mm",
-  plated_hole_copper_thickness: "0.025mm",
   layers: [
     {
       layer_type: "copper",
