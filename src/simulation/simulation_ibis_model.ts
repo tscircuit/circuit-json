@@ -73,6 +73,25 @@ export const simulation_ibis_model = z
         "Whether the runner includes the IBIS vendor's package resistance, inductance, and capacitance",
       ),
   })
+  .superRefine((model, context) => {
+    const boundPins = new Set(
+      Object.keys(model.ibis_pin_name_to_source_port_id),
+    )
+    for (const field of [
+      "ibis_pin_name_to_model_name",
+      "ibis_pin_name_to_reference_source_port_ids",
+    ] as const) {
+      for (const pin of Object.keys(model[field] ?? {})) {
+        if (!boundPins.has(pin)) {
+          context.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: [field, pin],
+            message: `IBIS pin "${pin}" must be bound in ibis_pin_name_to_source_port_id`,
+          })
+        }
+      }
+    }
+  })
   .describe(
     "Attaches an IBIS component and its physical pin bindings to a source component",
   )

@@ -21,6 +21,10 @@ test("pin direction uses booleans and only outputs accept an enable state", () =
     { is_output: true, is_output_enabled: false },
     { is_output: true, is_output_enabled: true },
   ]) {
-    expect(any_circuit_element.parse({ ...pin, ...state })).toMatchObject(state)
+    const record = any_circuit_element.parse({ ...pin, ...state })
+    expect(record).toMatchObject(state)
+    expect(
+      any_circuit_element.parse(JSON.parse(JSON.stringify(record))),
+    ).toEqual(record)
   }
 })

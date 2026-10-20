@@ -16,4 +16,7 @@ test("digital stimulus accepts an array of binary bits", () => {
   if (record.type !== "simulation_digital_stimulus")
     throw new Error("Expected a digital stimulus")
   expect(record.transmission_pattern).toEqual(transmission_pattern)
+  expect(any_circuit_element.parse(JSON.parse(JSON.stringify(record)))).toEqual(
+    record,
+  )
 })
