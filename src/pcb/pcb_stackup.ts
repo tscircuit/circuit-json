@@ -1,110 +1,24 @@
 import { getZodPrefixedIdWithDefault } from "src/common"
-import { type LayerRef, layer_ref } from "src/pcb/properties/layer_ref"
-import { type Length, length } from "src/units"
+import { type Length } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import { z } from "zod"
+import {
+  type PcbSoldermaskStackupLayer,
+  pcb_stackup_soldermask_layer,
+} from "./pcb_stackup/soldermask_layer"
+import {
+  type PcbCopperStackupLayer,
+  pcb_stackup_copper_layer,
+} from "./pcb_stackup/copper_layer"
+import {
+  type PcbDielectricStackupLayer,
+  pcb_stackup_dielectric_layer,
+} from "./pcb_stackup/dielectric_layer"
+import { positive_length } from "./pcb_stackup/validators"
 
-const positive_length = length.pipe(z.number().finite().positive())
-const nonnegative_length = length.pipe(z.number().finite().nonnegative())
-const positive_number = z.number().finite().positive()
-const nonnegative_number = z.number().finite().nonnegative()
-
-export const pcb_stackup_soldermask_layer = z.object({
-  layer_type: z.literal("soldermask").describe("Soldermask layer"),
-  thickness: positive_length.optional().describe("Soldermask thickness in mm"),
-  relative_permittivity: positive_number
-    .optional()
-    .describe("Soldermask relative permittivity"),
-})
-
-/** A soldermask layer in the physical board stack. */
-export interface PcbSoldermaskStackupLayer {
-  layer_type: "soldermask"
-  /** Soldermask thickness in mm. */
-  thickness?: Length
-  /** Relative permittivity of the soldermask. */
-  relative_permittivity?: number
-}
-expectTypesMatch<
-  PcbSoldermaskStackupLayer,
-  z.infer<typeof pcb_stackup_soldermask_layer>
->(true)
-
-export const pcb_stackup_copper_layer = z.object({
-  layer_type: z.literal("copper").describe("Copper layer"),
-  layer: layer_ref.describe("PCB copper layer name"),
-  thickness: positive_length.describe("Copper thickness in mm"),
-  conductivity: positive_number
-    .optional()
-    .describe(
-      "Electrical conductivity in S/m; use 5.8e7 for annealed copper when omitted",
-    ),
-  copper_weight_oz: positive_number
-    .optional()
-    .describe("Copper weight in oz/ft²"),
-  surface_roughness: nonnegative_length
-    .optional()
-    .describe("RMS copper surface roughness in mm"),
-})
-
-/** A conductive layer in the physical board stack. */
-export interface PcbCopperStackupLayer {
-  layer_type: "copper"
-  /** PCB copper layer name, such as top, inner1, or bottom. */
-  layer: LayerRef
-  /** Copper thickness in mm. */
-  thickness: Length
-  /** Conductivity in S/m; consumers may use annealed copper 5.8e7 when omitted. */
-  conductivity?: number
-  /** Copper weight in oz/ft². */
-  copper_weight_oz?: number
-  /** RMS copper surface roughness in mm. */
-  surface_roughness?: Length
-}
-expectTypesMatch<
-  PcbCopperStackupLayer,
-  z.infer<typeof pcb_stackup_copper_layer>
->(true)
-
-export const pcb_stackup_dielectric_layer = z.object({
-  layer_type: z.literal("dielectric").describe("Dielectric layer"),
-  dielectric_type: z
-    .enum(["core", "prepreg"])
-    .optional()
-    .describe("Core or prepreg construction"),
-  material_name: z.string().optional().describe("Fabricator material name"),
-  thickness: positive_length.describe("Dielectric thickness in mm"),
-  relative_permittivity: positive_number
-    .optional()
-    .describe("Dielectric relative permittivity"),
-  loss_tangent: nonnegative_number
-    .optional()
-    .describe("Dielectric loss tangent"),
-  relative_permittivity_frequency: positive_number
-    .optional()
-    .describe("Frequency in Hz at which dielectric properties are specified"),
-})
-
-/** An insulating layer in the physical board stack. */
-export interface PcbDielectricStackupLayer {
-  layer_type: "dielectric"
-  /** Core or prepreg construction. */
-  dielectric_type?: "core" | "prepreg"
-  /** Fabricator material name. */
-  material_name?: string
-  /** Dielectric thickness in mm. */
-  thickness: Length
-  /** Dielectric relative permittivity. */
-  relative_permittivity?: number
-  /** Dielectric loss tangent. */
-  loss_tangent?: number
-  /** Frequency in Hz at which dielectric properties are specified. */
-  relative_permittivity_frequency?: number
-}
-expectTypesMatch<
-  PcbDielectricStackupLayer,
-  z.infer<typeof pcb_stackup_dielectric_layer>
->(true)
+export * from "./pcb_stackup/soldermask_layer"
+export * from "./pcb_stackup/copper_layer"
+export * from "./pcb_stackup/dielectric_layer"
 
 export const pcb_stackup_layer = z.discriminatedUnion("layer_type", [
   pcb_stackup_soldermask_layer,
