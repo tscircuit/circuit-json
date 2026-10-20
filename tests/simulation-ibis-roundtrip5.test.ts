@@ -8,5 +8,9 @@ test("experiments retain their subcircuit and requested simulation engine", () =
     subcircuit_id: "subcircuit_1",
     spice_engine: "pcb_spice",
   }
-  expect(any_circuit_element.parse(record)).toMatchObject(record)
+  const parsed = any_circuit_element.parse(record)
+  expect(parsed).toMatchObject(record)
+  expect(any_circuit_element.parse(JSON.parse(JSON.stringify(parsed)))).toEqual(
+    parsed,
+  )
 })

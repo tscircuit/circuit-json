@@ -11,5 +11,9 @@ test("transient samples retain their declared voltage probe", () => {
     start_time_ms: 0,
     end_time_ms: 1,
   }
-  expect(any_circuit_element.parse(record)).toMatchObject(record)
+  const parsed = any_circuit_element.parse(record)
+  expect(parsed).toMatchObject(record)
+  expect(any_circuit_element.parse(JSON.parse(JSON.stringify(parsed)))).toEqual(
+    parsed,
+  )
 })

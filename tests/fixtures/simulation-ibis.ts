@@ -15,6 +15,15 @@ export const model = {
   ibis_component_name: "CHIP",
   ibis_pin_name_to_source_port_id: { A1: "source_port_tx" },
   ibis_pin_name_to_model_name: { A1: "OUTPUT" },
+  ibis_pin_name_to_reference_source_port_ids: {
+    A1: {
+      pullup_reference_source_port_id: "source_port_vcc",
+      pulldown_reference_source_port_id: "source_port_gnd",
+      power_clamp_reference_source_port_id: "source_port_vcc",
+      ground_clamp_reference_source_port_id: "source_port_gnd",
+      external_reference_source_port_id: "source_port_vref",
+    },
+  },
   model_value_corner: "typical",
   include_package_parasitics: false,
 } satisfies SimulationIbisModelInput
