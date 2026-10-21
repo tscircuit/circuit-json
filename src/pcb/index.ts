@@ -32,6 +32,7 @@ export * from "./pcb_port_not_connected_error"
 export * from "./pcb_net"
 export * from "./pcb_via"
 export * from "./pcb_board"
+export * from "./pcb_stackup"
 export * from "./pcb_bend"
 export * from "./pcb_stiffener"
 export * from "./pcb_panel"
@@ -119,6 +120,7 @@ import type { PcbNet } from "./pcb_net"
 import type { PcbBend } from "./pcb_bend"
 import type { PcbStiffener } from "./pcb_stiffener"
 import type { PcbBoard } from "./pcb_board"
+import type { PcbStackup } from "./pcb_stackup"
 import type { PcbPanel } from "./pcb_panel"
 import type { PcbPlacementError } from "./pcb_placement_error"
 import type { PcbPackingError } from "./pcb_packing_error"
@@ -205,6 +207,7 @@ export type PcbCircuitElement =
   | PcbVia
   | PcbNet
   | PcbBoard
+  | PcbStackup
   | PcbBend
   | PcbStiffener
   | PcbPanel
