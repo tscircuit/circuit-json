@@ -22,7 +22,6 @@
     "ts-node": "^10.9.2",
     "tsup": "^8.3.0",
     "typescript": "^5.7.2",
-    "zod": "3",
     "bun-match-svg": "^0.0.17"
   },
   "peerDependencies": {
@@ -41,5 +40,8 @@
     "generate-docs": "bun scripts/generate-readme-docs.ts && prettier --no-semi -w README.md",
     "lint:zod": "bun run scripts/zod-lint.ts",
     "check-snake-case": "bun run scripts/check-snake-case.ts"
+  },
+  "dependencies": {
+    "zod": "3"
   }
 }
