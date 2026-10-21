@@ -1,0 +1,67 @@
+import { z } from "zod"
+import { expectTypesMatch } from "src/utils/expect-types-match"
+
+export const drawing_view_direction = z.enum([
+  "x_positive",
+  "x_negative",
+  "y_positive",
+  "y_negative",
+  "z_positive",
+  "z_negative",
+  "isometric",
+])
+export type DrawingViewDirection = z.infer<typeof drawing_view_direction>
+
+export const drawing_section_plane = z.object({
+  axis: z.enum(["x", "y", "z"]),
+  offset: z.number().finite(),
+  keep_side: z.enum(["less", "greater"]),
+  hatch_spacing: z.number().finite().positive().optional(),
+})
+export interface DrawingSectionPlane {
+  axis: "x" | "y" | "z"
+  offset: number
+  keep_side: "less" | "greater"
+  hatch_spacing?: number
+}
+
+export const drawing_view = z
+  .object({
+    type: z.literal("drawing_view"),
+    drawing_view_id: z.string().min(1),
+    drawing_id: z.string().min(1),
+    name: z.string().optional(),
+    display_name: z.string().optional(),
+    direction: drawing_view_direction,
+    center: z.object({ x: z.number().finite(), y: z.number().finite() }),
+    width: z.number().finite().positive(),
+    height: z.number().finite().positive(),
+    scale: z.number().finite().positive().optional(),
+    show_hidden_edges: z.boolean().optional(),
+    section: drawing_section_plane.optional(),
+  })
+  .describe(
+    "An orthographic outline viewport. Paper coordinates are mm, origin at sheet center, +X right/+Y up. Directions and section planes use CAD world coordinates in mm with +Z up.",
+  )
+
+export interface DrawingView {
+  type: "drawing_view"
+  drawing_view_id: string
+  drawing_id: string
+  name?: string
+  display_name?: string
+  direction: DrawingViewDirection
+  center: { x: number; y: number }
+  width: number
+  height: number
+  /** Model-to-paper ratio; omitted means fit with a margin. */
+  scale?: number
+  /** False when omitted. Hidden edges are dashed. */
+  show_hidden_edges?: boolean
+  section?: DrawingSectionPlane
+}
+export type DrawingViewInput = z.input<typeof drawing_view>
+expectTypesMatch<DrawingSectionPlane, z.infer<typeof drawing_section_plane>>(
+  true,
+)
+expectTypesMatch<DrawingView, z.infer<typeof drawing_view>>(true)

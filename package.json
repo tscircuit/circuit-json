@@ -22,7 +22,8 @@
     "ts-node": "^10.9.2",
     "tsup": "^8.3.0",
     "typescript": "^5.7.2",
-    "zod": "3"
+    "zod": "3",
+    "bun-match-svg": "^0.0.17"
   },
   "peerDependencies": {
     "format-si-unit": "*"
