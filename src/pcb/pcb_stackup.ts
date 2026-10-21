@@ -20,7 +20,7 @@ export const pcb_stackup_soldermask_layer = z.object({
 })
 
 /** A soldermask layer in the physical board stack. */
-export interface PcbStackupSoldermaskLayer {
+export interface PcbSoldermaskStackupLayer {
   layer_type: "soldermask"
   /** Soldermask thickness in mm, omitted when unknown. */
   thickness?: Length
@@ -28,7 +28,7 @@ export interface PcbStackupSoldermaskLayer {
   relative_permittivity?: number
 }
 expectTypesMatch<
-  PcbStackupSoldermaskLayer,
+  PcbSoldermaskStackupLayer,
   z.infer<typeof pcb_stackup_soldermask_layer>
 >(true)
 
@@ -47,7 +47,7 @@ export const pcb_stackup_copper_layer = z.object({
 })
 
 /** A copper layer in the physical board stack. */
-export interface PcbStackupCopperLayer {
+export interface PcbCopperStackupLayer {
   layer_type: "copper"
   /** PCB copper layer, such as top, inner1 or bottom. */
   layer: LayerRef
@@ -59,7 +59,7 @@ export interface PcbStackupCopperLayer {
   rms_surface_roughness?: Length
 }
 expectTypesMatch<
-  PcbStackupCopperLayer,
+  PcbCopperStackupLayer,
   z.infer<typeof pcb_stackup_copper_layer>
 >(true)
 
@@ -76,10 +76,10 @@ export const pcb_stackup_dielectric_layer = z.object({
   thickness: positive_length.describe("Dielectric thickness in mm"),
   relative_permittivity: positive_number
     .optional()
-    .describe("Dielectric relative permittivity (Dk)"),
+    .describe("Dielectric relative permittivity, Dk"),
   loss_tangent: nonnegative_number
     .optional()
-    .describe("Dielectric loss tangent (Df)"),
+    .describe("Dielectric loss tangent, Df"),
   dielectric_properties_frequency_hz: positive_number
     .optional()
     .describe(
@@ -88,7 +88,7 @@ export const pcb_stackup_dielectric_layer = z.object({
 })
 
 /** An insulating layer in the physical board stack. */
-export interface PcbStackupDielectricLayer {
+export interface PcbDielectricStackupLayer {
   layer_type: "dielectric"
   /** Core or prepreg construction. */
   dielectric_type?: "core" | "prepreg"
@@ -96,15 +96,15 @@ export interface PcbStackupDielectricLayer {
   material_name?: string
   /** Dielectric thickness in mm. */
   thickness: Length
-  /** Dielectric relative permittivity (Dk). */
+  /** Dielectric relative permittivity, Dk. */
   relative_permittivity?: number
-  /** Dielectric loss tangent (Df). */
+  /** Dielectric loss tangent, Df. */
   loss_tangent?: number
   /** Frequency in Hz at which relative_permittivity and loss_tangent were measured. */
   dielectric_properties_frequency_hz?: number
 }
 expectTypesMatch<
-  PcbStackupDielectricLayer,
+  PcbDielectricStackupLayer,
   z.infer<typeof pcb_stackup_dielectric_layer>
 >(true)
 
@@ -115,9 +115,9 @@ export const pcb_stackup_layer = z.discriminatedUnion("layer_type", [
 ])
 
 export type PcbStackupLayer =
-  | PcbStackupSoldermaskLayer
-  | PcbStackupCopperLayer
-  | PcbStackupDielectricLayer
+  | PcbSoldermaskStackupLayer
+  | PcbCopperStackupLayer
+  | PcbDielectricStackupLayer
 expectTypesMatch<PcbStackupLayer, z.infer<typeof pcb_stackup_layer>>(true)
 
 export const pcb_stackup = z

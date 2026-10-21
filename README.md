@@ -179,6 +179,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbSilkscreenRect](#pcbsilkscreenrect)
     - [PcbSilkscreenText](#pcbsilkscreentext)
     - [PcbSolderPaste](#pcbsolderpaste)
+    - [PcbStackup](#pcbstackup)
     - [PcbStiffener](#pcbstiffener)
     - [PcbText](#pcbtext)
     - [PcbThermalSpoke](#pcbthermalspoke)
@@ -3196,6 +3197,71 @@ interface PcbSolderPasteCircle {
   pcb_component_id?: string
   pcb_smtpad_id?: string
 }
+```
+
+### PcbStackup
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_stackup.ts)
+
+Physical layer construction and material data for a PCB board.
+
+```typescript
+/** Physical layer construction and material data for a PCB board. */
+interface PcbStackup {
+  type: "pcb_stackup"
+  pcb_stackup_id: string
+  /** Board described by this stackup. */
+  pcb_board_id: string
+  subcircuit_id?: string
+  /** Copper thickness of plated hole and via barrel walls in mm. */
+  plated_hole_copper_thickness?: Length
+  /** Physical layers ordered from top to bottom. */
+  layers: PcbStackupLayer[]
+}
+
+/** A soldermask layer in the physical board stack. */
+interface PcbSoldermaskStackupLayer {
+  layer_type: "soldermask"
+  /** Soldermask thickness in mm, omitted when unknown. */
+  thickness?: Length
+  /** Soldermask relative permittivity. */
+  relative_permittivity?: number
+}
+
+/** A copper layer in the physical board stack. */
+interface PcbCopperStackupLayer {
+  layer_type: "copper"
+  /** PCB copper layer, such as top, inner1 or bottom. */
+  layer: LayerRef
+  /** Copper thickness in mm. */
+  thickness: Length
+  /** Electrical conductivity in S/m, consumers may assume 5.8e7 (annealed copper) when omitted. */
+  electrical_conductivity_s_per_m?: number
+  /** RMS copper surface roughness in mm. */
+  rms_surface_roughness?: Length
+}
+
+/** An insulating layer in the physical board stack. */
+interface PcbDielectricStackupLayer {
+  layer_type: "dielectric"
+  /** Core or prepreg construction. */
+  dielectric_type?: "core" | "prepreg"
+  /** Fabricator material name, such as FR-4 or 7628. */
+  material_name?: string
+  /** Dielectric thickness in mm. */
+  thickness: Length
+  /** Dielectric relative permittivity, Dk. */
+  relative_permittivity?: number
+  /** Dielectric loss tangent, Df. */
+  loss_tangent?: number
+  /** Frequency in Hz at which relative_permittivity and loss_tangent were measured. */
+  dielectric_properties_frequency_hz?: number
+}
+
+type PcbStackupLayer =
+  | PcbSoldermaskStackupLayer
+  | PcbCopperStackupLayer
+  | PcbDielectricStackupLayer
 ```
 
 ### PcbStiffener
