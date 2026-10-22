@@ -12,6 +12,7 @@ import {
 
 export const any_circuit_element = z.union([
   drawings.drawing_page,
+  drawings.drawing_page_title_block,
   drawings.drawing_part_view,
   src.source_runtime_error,
   // TODO source_config

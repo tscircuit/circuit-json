@@ -261,6 +261,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationVoltageSource](#simulationvoltagesource)
   - [Drawing Elements](#drawing-elements)
     - [DrawingPage](#drawingpage)
+    - [DrawingPageTitleBlock](#drawingpagetitleblock)
     - [DrawingPartView](#drawingpartview)
 
 <!-- toc:end -->
@@ -5114,8 +5115,29 @@ interface DrawingPage {
   drawing_page_id: string
   name?: string
   display_name?: string
+  page_size?: DrawingPageSize
+  orientation?: "landscape" | "portrait"
   width: number
   height: number
+}
+```
+
+### DrawingPageTitleBlock
+
+```typescript
+interface DrawingPageTitleBlock {
+  type: "drawing_page_title_block"
+  drawing_page_title_block_id: string
+  drawing_page_id: string
+  title: string
+  legal_owner?: string
+  identification_number?: string
+  revision_index?: string
+  date_of_issue?: string
+  creator?: string
+  approval_person?: string
+  sheet_number?: number
+  number_of_sheets?: number
 }
 ```
 
