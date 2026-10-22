@@ -25,7 +25,11 @@ export const drawing_dimension = z
     drawing_dimension_id: z.string().trim().min(1),
     drawing_part_view_id: z.string().trim().min(1),
     measurement: drawing_dimension_measurement.default("edge"),
-    cad_named_edge_id: z.string().trim().min(1).optional(),
+    cad_component_id: z.string().trim().min(1).optional(),
+    edge_name: z
+      .string()
+      .refine((name) => name.trim().length > 0, "Edge name must not be blank")
+      .optional(),
     name: z.string().trim().min(1).optional(),
     orientation: drawing_dimension_orientation.optional(),
     offset: z.number().finite().default(8),
@@ -33,20 +37,22 @@ export const drawing_dimension = z
   })
   .superRefine((dimension, ctx) => {
     if (dimension.measurement === "edge") {
-      if (dimension.cad_named_edge_id === undefined)
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["cad_named_edge_id"],
-          message: "Edge measurements require cad_named_edge_id",
-        })
+      for (const field of ["cad_component_id", "edge_name"] as const)
+        if (dimension[field] === undefined)
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: [field],
+            message: `Edge measurements require ${field}`,
+          })
       return
     }
-    if (dimension.cad_named_edge_id !== undefined)
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["cad_named_edge_id"],
-        message: "View extent measurements cannot reference a named edge",
-      })
+    for (const field of ["cad_component_id", "edge_name"] as const)
+      if (dimension[field] !== undefined)
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: [field],
+          message: "View extent measurements cannot reference a model edge",
+        })
     const orientation =
       dimension.measurement === "view_width" ? "horizontal" : "vertical"
     if (
@@ -70,16 +76,19 @@ export const drawing_dimension = z
           : "aligned"),
   }))
   .describe(
-    "A linear dimension associated with a drawing part view. Edge measurements reference an actual model-defined named edge and default to aligned true 3D length. Horizontal/vertical edge measurements use the camera right/up component. Explicit view_width/view_height presets infer the selected rendered geometry's extents in camera model axes, never paper viewport size, and cannot reference named edges. All values are model millimeters, independent of fit/scale. Signed offset is paper mm, default 8; decimal precision defaults to 1.",
+    "A linear dimension associated with a drawing part view. Edge measurements target an owning CAD component and an opaque edge name supplied by its model reader. STEP/glTF/JSCAD readers own edge geometry and topology; Circuit JSON defines only the measurement intent. Aligned requests true 3D straight-edge distance. Horizontal/vertical request camera right/up extents of the native edge geometry. Readers/exporters reject unsupported geometry rather than reducing curved paths to endpoint chords. Explicit view_width/view_height presets infer selected rendered geometry extents in camera model axes and prohibit edge targets. Values are model mm independent of fit/scale; signed offset is paper mm, default 8, decimal precision default 1.",
   )
 
-/** Resolved dimension intent. measurement defaults to edge. An edge reference
- * is required only for edge measurements. View presets use no fabricated edge
- * records: they derive the rendered selection's camera-axis extent, independently
+/** Resolved dimension intent. measurement defaults to edge. cad_component_id
+ * and edge_name are required only for edge measurements. The opaque edge name
+ * is matched exactly against the owning model reader; it is not a TSX selector.
+ * Circuit JSON carries no edge points, topology or geometry definitions.
+ * View presets derive the rendered selection's camera-axis extent independently
  * of paper viewport width/height. Width is horizontal and height is vertical.
  * Edge orientation defaults to aligned. Opposing preset orientations are errors.
- * Aligned edge labels measure true 3D length. Horizontal/vertical edge labels
- * measure the absolute camera right/up component in model mm.
+ * Aligned requests true 3D straight-edge distance. Horizontal/vertical labels
+ * measure native edge extents in camera right/up model axes. Readers/exporters
+ * reject unsupported geometry instead of replacing curves with endpoint chords.
  * Signed offsets follow the left normal in paper +Y-up coordinates. Aligned
  * edges preserve authored endpoint order. Horizontal/vertical endpoint order is
  * increasing paper X/Y: positive offsets are above/left. offset is paper mm.
@@ -90,7 +99,9 @@ export interface DrawingDimension {
   drawing_dimension_id: string
   drawing_part_view_id: string
   measurement: DrawingDimensionMeasurement
-  cad_named_edge_id?: string
+  cad_component_id?: string
+  /** Exact model-reader edge name; outer whitespace is preserved. */
+  edge_name?: string
   name?: string
   orientation: DrawingDimensionOrientation
   offset: number

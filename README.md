@@ -5111,13 +5111,16 @@ interface SimulationAcVoltageSource {
 ### DrawingDimension
 
 ```typescript
-/** Resolved dimension intent. measurement defaults to edge. An edge reference
- * is required only for edge measurements. View presets use no fabricated edge
- * records: they derive the rendered selection's camera-axis extent, independently
+/** Resolved dimension intent. measurement defaults to edge. cad_component_id
+ * and edge_name are required only for edge measurements. The opaque edge name
+ * is matched exactly against the owning model reader; it is not a TSX selector.
+ * Circuit JSON carries no edge points, topology or geometry definitions.
+ * View presets derive the rendered selection's camera-axis extent independently
  * of paper viewport width/height. Width is horizontal and height is vertical.
  * Edge orientation defaults to aligned. Opposing preset orientations are errors.
- * Aligned edge labels measure true 3D length. Horizontal/vertical edge labels
- * measure the absolute camera right/up component in model mm.
+ * Aligned requests true 3D straight-edge distance. Horizontal/vertical labels
+ * measure native edge extents in camera right/up model axes. Readers/exporters
+ * reject unsupported geometry instead of replacing curves with endpoint chords.
  * Signed offsets follow the left normal in paper +Y-up coordinates. Aligned
  * edges preserve authored endpoint order. Horizontal/vertical endpoint order is
  * increasing paper X/Y: positive offsets are above/left. offset is paper mm.
@@ -5127,7 +5130,9 @@ interface DrawingDimension {
   drawing_dimension_id: string
   drawing_part_view_id: string
   measurement: DrawingDimensionMeasurement
-  cad_named_edge_id?: string
+  cad_component_id?: string
+  /** Exact model-reader edge name; outer whitespace is preserved. */
+  edge_name?: string
   name?: string
   orientation: DrawingDimensionOrientation
   offset: number
