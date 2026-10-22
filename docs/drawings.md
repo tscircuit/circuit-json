@@ -17,16 +17,16 @@ Different part views on the same page can show different geometry.
 ## Associated linear dimensions
 
 `drawing_dimension` describes one measurement in one `drawing_part_view_id`.
-`measurement` distinguishes a model-reader edge target from an explicit inferred
-view extent. Circuit JSON stores the measurement intent, not the edge geometry:
+Select exactly one target: `cad_component_id` plus `edge_name`,
+`width_of_view: true`, or `height_of_view: true`. There is no target enum or
+implicit view-extent default. Circuit JSON stores dimension intent, not edge geometry:
 STEP, glTF, and JSCAD model readers own their edge definitions, names, and
 native topology. No new geometry or topology record is introduced for dimensions.
 Numeric labels, arrowheads, extension lines, and text layout are exporter output.
 
 ### Model-reader edge targets
 
-For `measurement: "edge"` (the default), both `cad_component_id` and `edge_name`
-are required. The CAD ID selects the owning model. `edge_name` is an opaque name
+To dimension a model edge, supply both `cad_component_id` and `edge_name`. The CAD ID selects the owning model. `edge_name` is an opaque name
 published by that model's reader and must match it exactly. The schema rejects
 blank names but preserves the supplied string, including outer whitespace.
 Circuit JSON does not invent names, define endpoint coordinates, or interpret
@@ -37,7 +37,6 @@ const edgeDimension = {
   type: "drawing_dimension",
   drawing_dimension_id: "dimension_tube_top",
   drawing_part_view_id: "tube_end_view",
-  measurement: "edge",
   cad_component_id: "cad_tube",
   edge_name: "outer_top", // A name actually supplied by the model reader.
   orientation: "horizontal",
@@ -67,7 +66,7 @@ and angular annotation modes remain follow-up work.
 
 ### Explicit view extent presets
 
-`measurement: "view_width"` and `"view_height"` infer the selected rendered
+`width_of_view: true` and `height_of_view: true` infer the selected rendered
 geometry's extent along the camera's right/up model axes. These modes use only
 the part-view reference: `cad_component_id` and `edge_name` are both forbidden.
 They do not request a model edge, manufacture an edge name, or duplicate model
@@ -79,16 +78,19 @@ const widthDimension = {
   type: "drawing_dimension",
   drawing_dimension_id: "dimension_tube_envelope_width",
   drawing_part_view_id: "tube_end_view",
-  measurement: "view_width",
+  width_of_view: true,
   offset: -8,
 }
 ```
 
 The TSX equivalents are `<assembly.drawing.dimension widthOfView />` and
 `<assembly.drawing.dimension heightOfView />`. Core maps these explicit boolean
-presets to `view_width` and `view_height`. View-width orientation normalizes to
+flags directly to `width_of_view` and `height_of_view`. View-width orientation normalizes to
 `horizontal`, view-height to `vertical`. Omission or the matching explicit
-orientation is accepted; conflicting orientation is rejected.
+orientation is accepted; conflicting orientation is rejected. False flags do not
+select a target and are omitted from the parsed result. Both true flags, a flag
+plus any edge-target field, or an incomplete CAD component/edge-name pair are
+errors. Omitting all targets is an error; no target is inferred by default.
 
 ### Values, placement, and validation
 
@@ -108,12 +110,12 @@ left normal of the projected dimension line in paper coordinates, +X right and
 Horizontal/vertical dimensions normalize increasing paper X/Y respectively:
 positive horizontal is above, positive vertical is left. Negative offsets
 choose the other side. `precision` is integer decimal places 0–6, default 1.
-Parsing materializes `measurement`, canonical `orientation`, `offset`, and
-`precision`; edge targets remain absent for view presets.
+Parsing materializes canonical `orientation`, `offset`, and `precision`;
+edge targets remain absent for view presets and false view flags are omitted.
 
-Record parsing rejects blank IDs/names, nonfinite offsets, invalid measurement,
-orientation, or precision, missing either edge-target field in edge mode, and
-any edge-target field on a view preset. Unknown fields are stripped under the
+Record parsing rejects blank IDs/names, nonfinite offsets, invalid orientation
+or precision, nonboolean flags, missing either edge-target field, multiple
+selected targets, and no selected target. Unknown fields are stripped under the
 existing object-schema convention, including unsupported numeric/text overrides.
 The record is new and additive; no aliases or migration are provided.
 

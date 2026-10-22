@@ -5111,8 +5111,9 @@ interface SimulationAcVoltageSource {
 ### DrawingDimension
 
 ```typescript
-/** Resolved dimension intent. measurement defaults to edge. cad_component_id
- * and edge_name are required only for edge measurements. The opaque edge name
+/** Resolved dimension intent. Select exactly one complete cad_component_id plus
+ * edge_name target, width_of_view: true, or height_of_view: true. False input
+ * flags are unselected and omitted from the parsed result. The opaque edge name
  * is matched exactly against the owning model reader; it is not a TSX selector.
  * Circuit JSON carries no edge points, topology or geometry definitions.
  * View presets derive the rendered selection's camera-axis extent independently
@@ -5129,10 +5130,11 @@ interface DrawingDimension {
   type: "drawing_dimension"
   drawing_dimension_id: string
   drawing_part_view_id: string
-  measurement: DrawingDimensionMeasurement
   cad_component_id?: string
   /** Exact model-reader edge name; outer whitespace is preserved. */
   edge_name?: string
+  width_of_view?: true
+  height_of_view?: true
   name?: string
   orientation: DrawingDimensionOrientation
   offset: number

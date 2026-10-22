@@ -1,15 +1,6 @@
 import { z } from "zod"
 import { expectTypesMatch } from "../utils/expect-types-match"
 
-export const drawing_dimension_measurement = z.enum([
-  "edge",
-  "view_width",
-  "view_height",
-])
-export type DrawingDimensionMeasurement = z.infer<
-  typeof drawing_dimension_measurement
->
-
 export const drawing_dimension_orientation = z.enum([
   "horizontal",
   "vertical",
@@ -24,63 +15,69 @@ export const drawing_dimension = z
     type: z.literal("drawing_dimension"),
     drawing_dimension_id: z.string().trim().min(1),
     drawing_part_view_id: z.string().trim().min(1),
-    measurement: drawing_dimension_measurement.default("edge"),
     cad_component_id: z.string().trim().min(1).optional(),
     edge_name: z
       .string()
       .refine((name) => name.trim().length > 0, "Edge name must not be blank")
       .optional(),
+    width_of_view: z.boolean().optional(),
+    height_of_view: z.boolean().optional(),
     name: z.string().trim().min(1).optional(),
     orientation: drawing_dimension_orientation.optional(),
     offset: z.number().finite().default(8),
     precision: z.number().int().min(0).max(6).default(1),
   })
   .superRefine((dimension, ctx) => {
-    if (dimension.measurement === "edge") {
-      for (const field of ["cad_component_id", "edge_name"] as const)
-        if (dimension[field] === undefined)
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            path: [field],
-            message: `Edge measurements require ${field}`,
-          })
-      return
-    }
-    for (const field of ["cad_component_id", "edge_name"] as const)
-      if (dimension[field] !== undefined)
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: [field],
-          message: "View extent measurements cannot reference a model edge",
-        })
-    const orientation =
-      dimension.measurement === "view_width" ? "horizontal" : "vertical"
+    const hasComponent = dimension.cad_component_id !== undefined
+    const hasEdgeName = dimension.edge_name !== undefined
+    if (hasComponent !== hasEdgeName)
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: [hasComponent ? "edge_name" : "cad_component_id"],
+        message:
+          "Model edge targets require both cad_component_id and edge_name",
+      })
+    const selections =
+      Number(hasComponent || hasEdgeName) +
+      Number(dimension.width_of_view === true) +
+      Number(dimension.height_of_view === true)
+    if (selections !== 1)
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message:
+          "Select exactly one model edge target, width_of_view, or height_of_view",
+      })
+    const orientation = dimension.width_of_view
+      ? "horizontal"
+      : dimension.height_of_view
+        ? "vertical"
+        : undefined
     if (
+      orientation !== undefined &&
       dimension.orientation !== undefined &&
       dimension.orientation !== orientation
     )
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["orientation"],
-        message: `${dimension.measurement} requires ${orientation} orientation`,
+        message: `View ${dimension.width_of_view ? "width" : "height"} requires ${orientation} orientation`,
       })
   })
-  .transform((dimension) => ({
+  .transform(({ width_of_view, height_of_view, ...dimension }) => ({
     ...dimension,
+    ...(width_of_view ? { width_of_view: true as const } : {}),
+    ...(height_of_view ? { height_of_view: true as const } : {}),
     orientation:
       dimension.orientation ??
-      (dimension.measurement === "view_width"
-        ? "horizontal"
-        : dimension.measurement === "view_height"
-          ? "vertical"
-          : "aligned"),
+      (width_of_view ? "horizontal" : height_of_view ? "vertical" : "aligned"),
   }))
   .describe(
-    "A linear dimension associated with a drawing part view. Edge measurements target an owning CAD component and an opaque edge name supplied by its model reader. STEP/glTF/JSCAD readers own edge geometry and topology; Circuit JSON defines only the measurement intent. Aligned requests true 3D straight-edge distance. Horizontal/vertical request camera right/up extents of the native edge geometry. Readers/exporters reject unsupported geometry rather than reducing curved paths to endpoint chords. Explicit view_width/view_height presets infer selected rendered geometry extents in camera model axes and prohibit edge targets. Values are model mm independent of fit/scale; signed offset is paper mm, default 8, decimal precision default 1.",
+    "A linear dimension associated with a drawing part view. Select exactly one model edge (cad_component_id plus exact edge_name), width_of_view: true, or height_of_view: true. False flags are unselected and omitted when parsed. STEP/glTF/JSCAD readers own edge geometry and topology; Circuit JSON defines only dimension intent. Aligned requests true 3D straight-edge distance. Horizontal/vertical request camera right/up extents of native edge geometry. Readers/exporters reject unsupported geometry rather than reducing curved paths to endpoint chords. Explicit view flags infer selected rendered geometry extents in camera model axes and prohibit edge targets. Values are model mm independent of fit/scale; signed offset is paper mm, default 8, decimal precision default 1.",
   )
 
-/** Resolved dimension intent. measurement defaults to edge. cad_component_id
- * and edge_name are required only for edge measurements. The opaque edge name
+/** Resolved dimension intent. Select exactly one complete cad_component_id plus
+ * edge_name target, width_of_view: true, or height_of_view: true. False input
+ * flags are unselected and omitted from the parsed result. The opaque edge name
  * is matched exactly against the owning model reader; it is not a TSX selector.
  * Circuit JSON carries no edge points, topology or geometry definitions.
  * View presets derive the rendered selection's camera-axis extent independently
@@ -98,10 +95,11 @@ export interface DrawingDimension {
   type: "drawing_dimension"
   drawing_dimension_id: string
   drawing_part_view_id: string
-  measurement: DrawingDimensionMeasurement
   cad_component_id?: string
   /** Exact model-reader edge name; outer whitespace is preserved. */
   edge_name?: string
+  width_of_view?: true
+  height_of_view?: true
   name?: string
   orientation: DrawingDimensionOrientation
   offset: number

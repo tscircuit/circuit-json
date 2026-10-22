@@ -2,7 +2,7 @@ import { expect, test } from "bun:test"
 import "bun-match-svg"
 import { any_circuit_element, drawing_dimension } from "../src"
 
-test("dimensions retain model-reader edge targets and normalize measurement defaults", async () => {
+test("dimensions select one explicit target and normalize orientation defaults", async () => {
   // Geometry is a test-only stand-in for data read from the actual model.
   // These coordinates are not a Circuit JSON record.
   const modelEdge = {
@@ -23,7 +23,6 @@ test("dimensions retain model-reader edge targets and normalize measurement defa
     drawing_part_view_id: "view_end",
     cad_component_id: "cad_rectangular_tube",
     edge_name: "outer_top",
-    measurement: "edge",
     orientation: "aligned",
     offset: 8,
     precision: 1,
@@ -40,6 +39,8 @@ test("dimensions retain model-reader edge targets and normalize measurement defa
     ).toBe(false)
   for (const patch of [
     { orientation: "true-length" },
+    { width_of_view: "true" },
+    { height_of_view: 1 },
     { offset: Infinity },
     { offset: NaN },
     { precision: -1 },
@@ -69,6 +70,13 @@ test("dimensions retain model-reader edge targets and normalize measurement defa
   expect(
     drawing_dimension.parse({ ...dimension, value: 99, text: "99" }),
   ).toEqual(dimension)
+  expect(
+    drawing_dimension.parse({
+      ...dimension,
+      width_of_view: false,
+      height_of_view: false,
+    }),
+  ).toEqual(dimension)
   const { cad_component_id, edge_name, ...withoutEdge } = dimension
   expect(drawing_dimension.safeParse(withoutEdge).success).toBe(false)
   expect(
@@ -80,20 +88,28 @@ test("dimensions retain model-reader edge targets and normalize measurement defa
   expect(
     drawing_dimension.parse({ ...dimension, edge_name: " Edge 1 " }).edge_name,
   ).toBe(" Edge 1 ")
-  for (const [measurement, orientation] of [
-    ["view_width", "horizontal"],
-    ["view_height", "vertical"],
+  for (const [flag, orientation] of [
+    ["width_of_view", "horizontal"],
+    ["height_of_view", "vertical"],
   ] as const) {
     const { orientation: previousOrientation, ...withoutOrientation } =
       withoutEdge
-    const preset = { ...withoutOrientation, measurement }
+    const preset = { ...withoutOrientation, [flag]: true }
     const parsed = drawing_dimension.parse(preset)
-    expect(parsed.measurement).toBe(measurement)
+    expect(parsed[flag]).toBe(true)
     expect(parsed.orientation).toBe(orientation)
     expect(parsed.cad_component_id).toBeUndefined()
     expect(parsed.edge_name).toBeUndefined()
     expect(any_circuit_element.parse(preset)).toEqual(parsed)
     expect(drawing_dimension.parse({ ...preset, orientation })).toEqual(parsed)
+    const opposite =
+      flag === "width_of_view" ? "height_of_view" : "width_of_view"
+    expect(drawing_dimension.parse({ ...preset, [opposite]: false })).toEqual(
+      parsed,
+    )
+    expect(
+      drawing_dimension.safeParse({ ...preset, [opposite]: true }).success,
+    ).toBe(false)
     for (const edgeTarget of [
       { cad_component_id },
       { edge_name },
@@ -111,10 +127,15 @@ test("dimensions retain model-reader edge targets and normalize measurement defa
           .success,
       ).toBe(false)
   }
-  expect(
-    drawing_dimension.safeParse({ ...dimension, measurement: "overall_width" })
-      .success,
-  ).toBe(false)
+  for (const flags of [
+    { width_of_view: false },
+    { height_of_view: false },
+    { width_of_view: false, height_of_view: false },
+    { width_of_view: true, height_of_view: true },
+  ])
+    expect(
+      drawing_dimension.safeParse({ ...withoutEdge, ...flags }).success,
+    ).toBe(false)
   const measured = Math.hypot(
     modelEdge.end.x - modelEdge.start.x,
     modelEdge.end.y - modelEdge.start.y,
