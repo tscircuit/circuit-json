@@ -1,5 +1,6 @@
 import { z } from "zod"
 import * as cad from "./cad"
+import * as drawings from "./drawing"
 import * as pcb from "./pcb"
 import * as sch from "./schematic"
 import * as sim from "./simulation"
@@ -10,6 +11,9 @@ import {
 } from "./utils/expect-types-match"
 
 export const any_circuit_element = z.union([
+  drawings.drawing_page,
+  drawings.drawing_page_title_block,
+  drawings.drawing_part_view,
   src.source_runtime_error,
   // TODO source_config
   // TODO pcb_config

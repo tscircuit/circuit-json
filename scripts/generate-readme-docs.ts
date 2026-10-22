@@ -47,7 +47,7 @@ interface ElementDoc {
 
 async function generateDocs() {
   const sourceFiles = await glob(
-    "src/{source,pcb,schematic,simulation,cad}/**/*.ts",
+    "src/{source,pcb,schematic,simulation,cad,drawing}/**/*.ts",
   )
 
   const sections = {
@@ -56,13 +56,15 @@ async function generateDocs() {
     cad: [] as ElementDoc[],
     schematic: [] as ElementDoc[],
     simulation: [] as ElementDoc[],
+    drawing: [] as ElementDoc[],
     misc: [] as ElementDoc[],
   }
 
   for (const file of sourceFiles) {
     const content = fs.readFileSync(file, "utf8")
-    const section =
-      file.includes("\\source\\") || file.includes("/source/")
+    const section = file.replaceAll("\\", "/").includes("/drawing/")
+      ? "drawing"
+      : file.includes("\\source\\") || file.includes("/source/")
         ? "source"
         : file.includes("\\simulation\\") || file.includes("/simulation/")
           ? "simulation"
@@ -222,6 +224,12 @@ async function generateDocs() {
     toc += `    - [${elem.name}](#${elem.name.toLowerCase()})\n`
   }
 
+  toc += "  - [Drawing Elements](#drawing-elements)\n"
+  for (const elem of sections.drawing.sort((a, b) =>
+    a.name.localeCompare(b.name),
+  )) {
+    toc += `    - [${elem.name}](#${elem.name.toLowerCase()})\n`
+  }
   toc += "\n"
 
   let docs = ""
@@ -377,6 +385,17 @@ async function generateDocs() {
     if (elem.otherInterfaces.length > 0) {
       docs += `\n\n${elem.otherInterfaces.join("\n\n")}`
     }
+    docs += "\n```\n\n"
+  }
+
+  docs += "## Drawing Elements\n\n"
+  for (const elem of sections.drawing.sort((a, b) =>
+    a.name.localeCompare(b.name),
+  )) {
+    docs += `### ${elem.name}\n\n`
+    docs += "```typescript\n" + elem.interface
+    if (elem.otherInterfaces.length > 0)
+      docs += "\n\n" + elem.otherInterfaces.join("\n\n")
     docs += "\n```\n\n"
   }
 
