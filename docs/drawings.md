@@ -16,87 +16,122 @@ Different part views on the same page can show different geometry.
 
 ## Associated linear dimensions
 
-`drawing_dimension` associates one `drawing_part_view_id` with one
-`cad_named_edge_id`. This is drawing intent, not exporter output: arrowheads,
-extension lines, text layout, and generated images remain renderer concerns.
-No manually authored measurement value or text override is stored. The label is
-derived from the associated segment so it changes with the model geometry.
+`drawing_dimension` describes one measurement in one `drawing_part_view_id`.
+`measurement` distinguishes an actual model-defined edge from an explicitly
+requested inferred view extent. There is no manually authored numeric label or
+text override. Arrowheads, extension lines, text layout, and generated images
+remain exporter concerns.
 
-`cad_named_edge` describes an authored analytic reference segment or measurement
-datum with a stable semantic name (for example `overall_width`). It belongs to
-one `cad_component_id` and has finite, distinct `start` and `end` points in
-right-handed CAD world XYZ, in numeric mm: +X right, +Y top, +Z above. It adds no
-solid material and does not depend on mesh vertex/edge ordering. A named segment
-can describe a real sharp feature edge or an explicitly authored nominal-envelope
-datum; it does not claim to be final B-rep topology.
+### Model-defined edges
 
-Modelprinter can author those references in model-local coordinates. A producer
-such as core must transform both endpoints as **points**, applying the same model
-scale, rotation, and translation as the owning CAD model exactly once. Consumers
-receive world points and must not reapply that transform. Names must be unique
-within their CAD component; IDs must be unique across the document.
+For `measurement: "edge"` (the default), `cad_named_edge_id` is required and
+references one `cad_named_edge` belonging to a CAD component. A model definition
+must actually author that named straight edge and its endpoints, for example
+`outer_top` on the end profile of a rectangular tube. Names are stable across
+parameter changes and independent of mesh vertex ordering. An arbitrary string
+such as `overall_width` does not request a bounding-box measurement.
+
+`cad_named_edge` endpoints are finite, distinct absolute points in right-handed
+CAD world XYZ, in numeric mm: +X right, +Y top, +Z above. The model producer owns
+its semantic geometry definition. The record stores an analytic line, rather
+than a tessellation index, and does not add solid material. Inferring the view
+bounds and publishing them as fabricated named edges is not permitted.
+
+Modelprinter can author edges in model-local coordinates. A producer such as
+core must resolve the selector to a model-defined edge and transform both
+endpoints as **points**, applying the same scale, rotation, and translation as
+the owning CAD model exactly once. Consumers must not reapply that transform.
+Names must be unique within their CAD component. IDs are document-wide unique.
 
 ```ts
-// The referenced CAD model and part view are existing document records.
-// This is the lower outer edge of a 40 × 25 × 2 mm rectangular tube end section.
+// outer_top is an actual named edge from the model's 40 × 25 × 2 mm tube profile.
 const edge = {
   type: "cad_named_edge",
-  cad_named_edge_id: "edge_tube_width",
+  cad_named_edge_id: "edge_tube_outer_top",
   cad_component_id: "cad_tube",
-  name: "overall_width",
-  start: { x: -20, y: -12.5, z: 0 },
-  end: { x: 20, y: -12.5, z: 0 },
+  name: "outer_top",
+  start: { x: -20, y: 12.5, z: 0 },
+  end: { x: 20, y: 12.5, z: 0 },
 }
-const dimension = {
+const edgeDimension = {
   type: "drawing_dimension",
-  drawing_dimension_id: "dimension_tube_width",
+  drawing_dimension_id: "dimension_tube_top",
   drawing_part_view_id: "tube_end_view",
-  cad_named_edge_id: "edge_tube_width",
+  measurement: "edge",
+  cad_named_edge_id: "edge_tube_outer_top",
   orientation: "horizontal",
-  offset: -8,
-  precision: 1,
+  offset: 8,
 }
 ```
 
-The corresponding authoring intent is a nested
-`<assembly.drawing.dimension edgeRef="overall_width" orientation="horizontal"
-offset="-8mm" precision={1} />` within a part view of the tube. Props preserve
-the semantic edge name; eventual core support resolves it to an edge ID on the
-view's selected CAD part. Renderers do not parse TSX selectors or mesh names.
+The corresponding authoring intent is
+`<assembly.drawing.dimension edgeRef=".tube > .outer_top"
+orientation="horizontal" offset="8mm" />` nested within a part view. Props
+preserve the selector. Eventual core support resolves the actual named edge on
+the selected model and emits its ID. Circuit JSON consumers do not parse TSX
+selectors or interpret arbitrary edge names as measurement requests.
 
-Dimension orientations are `aligned` (default), `horizontal`, or `vertical`.
-Aligned labels show the true 3D distance between endpoints, including in an
-isometric view. Horizontal/vertical labels show the absolute component along
-the camera's right/up model axes. They never measure raster pixels or paper mm.
-Labels therefore remain in model mm when a viewport fits or changes scale.
-Orientation does not change or constrain model geometry.
+### Explicit view extent presets
+
+`measurement: "view_width"` and `"view_height"` request the inferred extent of
+that part view's selected rendered geometry along its camera right/up model
+axes. Presets use only the part-view reference: `cad_named_edge_id` is forbidden,
+and no synthetic edge record is generated. These measurements are model mm,
+not the width or height of the paper viewport or its fitted raster image.
+
+```ts
+const widthDimension = {
+  type: "drawing_dimension",
+  drawing_dimension_id: "dimension_tube_envelope_width",
+  drawing_part_view_id: "tube_end_view",
+  measurement: "view_width",
+  offset: -8,
+}
+```
+
+The TSX equivalents are `<assembly.drawing.dimension widthOfView />` and
+`<assembly.drawing.dimension heightOfView />`. A producer maps these explicit
+requests to `view_width`/`view_height`, instead of inventing named edges.
+View-width orientation normalizes to `horizontal`, view-height to `vertical`.
+Omitting orientation or supplying the matching orientation is accepted. A
+conflicting explicit orientation is rejected.
+
+### Values, placement, and validation
+
+For edges, orientations are `aligned` (default), `horizontal`, or `vertical`.
+Aligned labels show true 3D endpoint distance, including in an isometric view.
+Horizontal/vertical labels show the absolute component along the camera's
+right/up model axes. Presets measure the rendered selection's camera-axis
+extent. Neither path measures pixels or paper mm: values remain model mm when
+a viewport fits or changes scale. Measurement does not constrain model geometry.
 
 `offset` is signed finite **paper-space** mm, default 8. Its sign follows the
-left normal of the projected dimension line in paper coordinates (+X right,
-+Y up). Aligned dimensions preserve authored start/end order. Horizontal and
-vertical dimensions normalize endpoint order to increasing paper X and Y,
-respectively: positive horizontal is above, positive vertical is left. Negative
-offset selects the other side. `precision` is decimal places, integer 0–6,
-default 1; 0 and 6 are both accepted. Defaults are materialized when parsing.
+left normal of the projected dimension line in paper coordinates, +X right and
++Y up. Aligned edge dimensions preserve authored start/end order. Horizontal and
+vertical dimensions normalize increasing paper X and Y respectively: positive
+horizontal is above, positive vertical is left. Negative offsets choose the
+other side. `precision` is integer decimal places 0–6, default 1. Parsing
+materializes `measurement`, canonical `orientation`, `offset`, and `precision`.
 
 Schema validation rejects blank IDs/names, nonfinite points or offsets,
-coincident endpoints, invalid orientations, and invalid precision. Names/IDs
-trim outer whitespace. Unknown fields are stripped under the existing object
-schema convention, including unsupported measurement/text overrides. These are
-new additive records; there are no aliases or migrations. Angular, radius,
-diameter, tolerance, and GD&T annotations remain future extensions.
+coincident edge endpoints, invalid measurement/orientation/precision, missing
+edge references for edge mode, and edge references on view presets. Names/IDs
+trim outer whitespace. Unknown fields are stripped by the existing object
+schema convention, including unsupported numeric/text overrides. These are new
+additive records, with no aliases or migrations. Angular, radius, diameter,
+tolerance, and GD&T annotations remain future extensions.
 
-Document consumers must validate that dimension view and edge IDs resolve, the
-edge's CAD owner exists and belongs to the view's selected geometry, and no
-projected dimension is degenerate. Duplicate edge names within an owner and
-duplicate IDs are document errors. Those checks require document/scene context
-and do not belong to individual-record parsing. Section clipping and annotation
-placement also remain renderer responsibilities.
+Document consumers validate the referenced view and, in edge mode, the edge and
+its owning CAD model. The edge must be defined by a model in the selected
+geometry. Duplicate names within an owner, duplicate IDs, missing references,
+and zero projected measurements are document errors. Those checks require
+model/document context. Section clipping and annotation placement remain
+renderer responsibilities.
 
 The initial line/extension-line conventions follow common
 [aligned dimension](https://help.autodesk.com/cloudhelp/2027/ENG/AutoCAD-Core/files/GUID-D7C05A85-8985-4576-B22C-5A795DD5B179.htm)
 and [linear dimension](https://github.com/FreeCAD/FreeCAD-documentation/blob/main/wiki/TechDraw_LengthDimension.md)
-concepts; the proposal does not claim complete drafting-standard compliance.
+concepts. The proposal does not claim complete drafting-standard compliance.
 
 CAD coordinates use mm, +Z up. Paper origin is page center, +X right/+Y up.
 Directions use snake_case: x_positive/x_negative/y_positive/y_negative/
