@@ -52,6 +52,12 @@ export const pcb_board = z
     outline: z.array(point).optional(),
     shape: z.enum(["rect", "polygon"]).optional(),
     material: z.enum(["fr4", "fr1", "flex"]).default("fr4"),
+    coverlay_color: z
+      .enum(["yellow", "black", "white"])
+      .optional()
+      .describe(
+        "Coverlay appearance on both faces of a flex board. Ignored for other materials; omitted preserves existing appearance.",
+      ),
     solder_mask_color: z.string().optional(),
     silkscreen_color: z.string().optional(),
     anchor_position: point.optional(),
@@ -88,6 +94,8 @@ export interface PcbBoard extends ManufacturingDrcProperties {
   outline?: Point[]
   shape?: "rect" | "polygon"
   material: "fr4" | "fr1" | "flex"
+  /** Coverlay appearance on both faces; only applies when material is flex. */
+  coverlay_color?: "yellow" | "black" | "white"
   solder_mask_color?: string
   silkscreen_color?: string
   anchor_position?: Point
