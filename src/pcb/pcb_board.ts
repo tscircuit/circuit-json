@@ -41,7 +41,7 @@ export const pcb_board = z
       .describe(
         "How to display the y offset for this board, usually corresponding with how the user specified it",
       ),
-    thickness: length.optional().default(1.4),
+    thickness: length.optional().default(1.6),
     num_layers: z.number().optional().default(4),
     allow_blind_and_buried_vias: z
       .boolean()
