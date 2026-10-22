@@ -1693,6 +1693,8 @@ interface PcbBoard extends ManufacturingDrcProperties {
   outline?: Point[]
   shape?: "rect" | "polygon"
   material: "fr4" | "fr1"
+  /** Coverlay appearance on both faces; only applies when material is flex. */
+  coverlay_color?: "yellow" | "black" | "white"
   solder_mask_color?: string
   silkscreen_color?: string
   anchor_position?: Point
