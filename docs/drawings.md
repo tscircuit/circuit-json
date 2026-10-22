@@ -14,6 +14,90 @@ selector the enclosing assembly's geometry is used. Core resolves TSX target
 selectors to these source IDs; renderers do not resolve TSX selectors or GLB names.
 Different part views on the same page can show different geometry.
 
+## Associated linear dimensions
+
+`drawing_dimension` associates one `drawing_part_view_id` with one
+`cad_named_edge_id`. This is drawing intent, not exporter output: arrowheads,
+extension lines, text layout, and generated images remain renderer concerns.
+No manually authored measurement value or text override is stored. The label is
+derived from the associated segment so it changes with the model geometry.
+
+`cad_named_edge` describes an authored analytic reference segment or measurement
+datum with a stable semantic name (for example `overall_width`). It belongs to
+one `cad_component_id` and has finite, distinct `start` and `end` points in
+right-handed CAD world XYZ, in numeric mm: +X right, +Y top, +Z above. It adds no
+solid material and does not depend on mesh vertex/edge ordering. A named segment
+can describe a real sharp feature edge or an explicitly authored nominal-envelope
+datum; it does not claim to be final B-rep topology.
+
+Modelprinter can author those references in model-local coordinates. A producer
+such as core must transform both endpoints as **points**, applying the same model
+scale, rotation, and translation as the owning CAD model exactly once. Consumers
+receive world points and must not reapply that transform. Names must be unique
+within their CAD component; IDs must be unique across the document.
+
+```ts
+// The referenced CAD model and part view are existing document records.
+// This is the lower outer edge of a 40 × 25 × 2 mm rectangular tube end section.
+const edge = {
+  type: "cad_named_edge",
+  cad_named_edge_id: "edge_tube_width",
+  cad_component_id: "cad_tube",
+  name: "overall_width",
+  start: { x: -20, y: -12.5, z: 0 },
+  end: { x: 20, y: -12.5, z: 0 },
+}
+const dimension = {
+  type: "drawing_dimension",
+  drawing_dimension_id: "dimension_tube_width",
+  drawing_part_view_id: "tube_end_view",
+  cad_named_edge_id: "edge_tube_width",
+  orientation: "horizontal",
+  offset: -8,
+  precision: 1,
+}
+```
+
+The corresponding authoring intent is a nested
+`<assembly.drawing.dimension edgeRef="overall_width" orientation="horizontal"
+offset="-8mm" precision={1} />` within a part view of the tube. Props preserve
+the semantic edge name; eventual core support resolves it to an edge ID on the
+view's selected CAD part. Renderers do not parse TSX selectors or mesh names.
+
+Dimension orientations are `aligned` (default), `horizontal`, or `vertical`.
+Aligned labels show the true 3D distance between endpoints, including in an
+isometric view. Horizontal/vertical labels show the absolute component along
+the camera's right/up model axes. They never measure raster pixels or paper mm.
+Labels therefore remain in model mm when a viewport fits or changes scale.
+Orientation does not change or constrain model geometry.
+
+`offset` is signed finite **paper-space** mm, default 8. Its sign follows the
+left normal of the projected dimension line in paper coordinates (+X right,
++Y up). Aligned dimensions preserve authored start/end order. Horizontal and
+vertical dimensions normalize endpoint order to increasing paper X and Y,
+respectively: positive horizontal is above, positive vertical is left. Negative
+offset selects the other side. `precision` is decimal places, integer 0–6,
+default 1; 0 and 6 are both accepted. Defaults are materialized when parsing.
+
+Schema validation rejects blank IDs/names, nonfinite points or offsets,
+coincident endpoints, invalid orientations, and invalid precision. Names/IDs
+trim outer whitespace. Unknown fields are stripped under the existing object
+schema convention, including unsupported measurement/text overrides. These are
+new additive records; there are no aliases or migrations. Angular, radius,
+diameter, tolerance, and GD&T annotations remain future extensions.
+
+Document consumers must validate that dimension view and edge IDs resolve, the
+edge's CAD owner exists and belongs to the view's selected geometry, and no
+projected dimension is degenerate. Duplicate edge names within an owner and
+duplicate IDs are document errors. Those checks require document/scene context
+and do not belong to individual-record parsing. Section clipping and annotation
+placement also remain renderer responsibilities.
+
+The initial line/extension-line conventions follow common
+[aligned dimension](https://help.autodesk.com/cloudhelp/2027/ENG/AutoCAD-Core/files/GUID-D7C05A85-8985-4576-B22C-5A795DD5B179.htm)
+and [linear dimension](https://github.com/FreeCAD/FreeCAD-documentation/blob/main/wiki/TechDraw_LengthDimension.md)
+concepts; the proposal does not claim complete drafting-standard compliance.
+
 CAD coordinates use mm, +Z up. Paper origin is page center, +X right/+Y up.
 Directions use snake_case: x_positive/x_negative/y_positive/y_negative/
 z_positive/z_negative/isometric. The named axis side is where the camera sits,

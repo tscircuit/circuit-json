@@ -115,6 +115,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [CadCable](#cadcable)
     - [CadCollisionError](#cadcollisionerror)
     - [CadComponent](#cadcomponent)
+    - [CadNamedEdge](#cadnamededge)
     - [CadReferenceSurface](#cadreferencesurface)
   - [PCB Elements](#pcb-elements)
     - [PcbAutoroutingError](#pcbautoroutingerror)
@@ -260,6 +261,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationVoltageProbe](#simulationvoltageprobe)
     - [SimulationVoltageSource](#simulationvoltagesource)
   - [Drawing Elements](#drawing-elements)
+    - [DrawingDimension](#drawingdimension)
     - [DrawingPage](#drawingpage)
     - [DrawingPageTitleBlock](#drawingpagetitleblock)
     - [DrawingPartView](#drawingpartview)
@@ -1603,6 +1605,26 @@ interface CadComponent {
   show_as_bounding_box?: boolean
   show_hidden_edges?: boolean
   anchor_alignment: CadComponentAnchorAlignment
+}
+```
+
+### CadNamedEdge
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_named_edge.ts)
+
+```typescript
+/** Authored reference segment in CAD world mm (+Z up Producers transform
+ * model-local endpoints as points, including scale, rotation and translation,
+ * exactly once. Renderers must not reapply the owning model's transform.
+ * Names are stable within cad_component_id, independent of mesh tessellation.
+ * Endpoints must be finite and distinct. Nominal-envelope datums are permitted. */
+interface CadNamedEdge {
+  type: "cad_named_edge"
+  cad_named_edge_id: string
+  cad_component_id: string
+  name: string
+  start: Point3
+  end: Point3
 }
 ```
 
@@ -5106,6 +5128,30 @@ interface SimulationAcVoltageSource {
 ```
 
 ## Drawing Elements
+
+### DrawingDimension
+
+```typescript
+/** Resolved dimension intent. The edge association is authoritative; there is
+ * no authored numeric value or text override that can become stale. Positive
+ * offsets follow the left normal of the dimension's projected line in paper
+ * +Y-up coordinates. Aligned dimensions preserve authored endpoint order
+ * horizontal/vertical dimensions normalize increasing paper X/Y, respectively
+ * (positive horizontal offsets are above; positive vertical offsets are left
+ * Negative offsets select the other side. Labels measure model mm and do not
+ * change when the view is fitted or scaled. offset is always paper-space mm.
+ * Names are optional circuit identity, not dimension text. */
+interface DrawingDimension {
+  type: "drawing_dimension"
+  drawing_dimension_id: string
+  drawing_part_view_id: string
+  cad_named_edge_id: string
+  name?: string
+  orientation: DrawingDimensionOrientation
+  offset: number
+  precision: number
+}
+```
 
 ### DrawingPage
 

@@ -3,3 +3,4 @@ export * from "./drawing_part_view"
 
 export * from "./drawing_page_size"
 export * from "./drawing_page_title_block"
+export * from "./drawing_dimension"
