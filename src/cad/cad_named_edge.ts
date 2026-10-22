@@ -28,7 +28,7 @@ export const cad_named_edge = z
     "A stable, authored analytic reference segment or measurement datum belonging to a CAD component. Names are unique within the owner. Endpoints are absolute points in right-handed CAD world XYZ in millimeters (+X right, +Y top, +Z above), after applying model-to-world transforms. This is not a mesh index or a guarantee of a final B-rep feature edge; it may describe a nominal envelope datum. It adds no solid geometry.",
   )
 
-/** Authored reference segment in CAD world mm (+Z up). Producers transform
+/** Authored reference segment in CAD world mm, with +Z up. Producers transform
  * model-local endpoints as points, including scale, rotation and translation,
  * exactly once. Renderers must not reapply the owning model's transform.
  * Names are stable within cad_component_id, independent of mesh tessellation.

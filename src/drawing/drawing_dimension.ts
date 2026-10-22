@@ -28,9 +28,9 @@ export const drawing_dimension = z
 /** Resolved dimension intent. The edge association is authoritative; there is
  * no authored numeric value or text override that can become stale. Positive
  * offsets follow the left normal of the dimension's projected line in paper
- * +Y-up coordinates. Aligned dimensions preserve authored endpoint order;
+ * +Y-up coordinates. Aligned dimensions preserve authored endpoint order.
  * horizontal/vertical dimensions normalize increasing paper X/Y, respectively
- * (positive horizontal offsets are above; positive vertical offsets are left).
+ * Positive horizontal offsets are above. Positive vertical offsets are left.
  * Negative offsets select the other side. Labels measure model mm and do not
  * change when the view is fitted or scaled. offset is always paper-space mm.
  * Names are optional circuit identity, not dimension text.

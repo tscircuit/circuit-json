@@ -1613,7 +1613,7 @@ interface CadComponent {
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_named_edge.ts)
 
 ```typescript
-/** Authored reference segment in CAD world mm (+Z up Producers transform
+/** Authored reference segment in CAD world mm, with +Z up. Producers transform
  * model-local endpoints as points, including scale, rotation and translation,
  * exactly once. Renderers must not reapply the owning model's transform.
  * Names are stable within cad_component_id, independent of mesh tessellation.
@@ -5135,9 +5135,9 @@ interface SimulationAcVoltageSource {
 /** Resolved dimension intent. The edge association is authoritative; there is
  * no authored numeric value or text override that can become stale. Positive
  * offsets follow the left normal of the dimension's projected line in paper
- * +Y-up coordinates. Aligned dimensions preserve authored endpoint order
+ * +Y-up coordinates. Aligned dimensions preserve authored endpoint order.
  * horizontal/vertical dimensions normalize increasing paper X/Y, respectively
- * (positive horizontal offsets are above; positive vertical offsets are left
+ * Positive horizontal offsets are above. Positive vertical offsets are left.
  * Negative offsets select the other side. Labels measure model mm and do not
  * change when the view is fitted or scaled. offset is always paper-space mm.
  * Names are optional circuit identity, not dimension text. */
