@@ -1,3 +1,2 @@
-export * from "./drawing"
-export * from "./drawing_view"
-export * from "./drawing_artifact"
+export * from "./drawing_page"
+export * from "./drawing_part_view"

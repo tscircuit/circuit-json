@@ -1,7 +1,7 @@
 import { z } from "zod"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-export const drawing_view_direction = z.enum([
+export const drawing_part_view_direction = z.enum([
   "x_positive",
   "x_negative",
   "y_positive",
@@ -10,7 +10,9 @@ export const drawing_view_direction = z.enum([
   "z_negative",
   "isometric",
 ])
-export type DrawingViewDirection = z.infer<typeof drawing_view_direction>
+export type DrawingPartViewDirection = z.infer<
+  typeof drawing_part_view_direction
+>
 
 export const drawing_section_plane = z.object({
   axis: z.enum(["x", "y", "z"]),
@@ -25,14 +27,16 @@ export interface DrawingSectionPlane {
   hatch_spacing?: number
 }
 
-export const drawing_view = z
+export const drawing_part_view = z
   .object({
-    type: z.literal("drawing_view"),
-    drawing_view_id: z.string().min(1),
-    drawing_id: z.string().min(1),
+    type: z.literal("drawing_part_view"),
+    drawing_part_view_id: z.string().min(1),
+    drawing_page_id: z.string().min(1),
+    source_group_id: z.string().min(1).optional(),
+    source_component_ids: z.array(z.string().min(1)).optional(),
     name: z.string().optional(),
     display_name: z.string().optional(),
-    direction: drawing_view_direction,
+    direction: drawing_part_view_direction,
     center: z.object({ x: z.number().finite(), y: z.number().finite() }),
     width: z.number().finite().positive(),
     height: z.number().finite().positive(),
@@ -41,16 +45,19 @@ export const drawing_view = z
     section: drawing_section_plane.optional(),
   })
   .describe(
-    "An orthographic outline viewport. Paper coordinates are mm, origin at sheet center, +X right/+Y up. Directions and section planes use CAD world coordinates in mm with +Z up.",
+    "A configured orthographic view of selected assembly geometry. Paper coordinates are mm, origin at sheet center, +X right/+Y up. Directions and section planes use CAD world coordinates in mm with +Z up.",
   )
 
-export interface DrawingView {
-  type: "drawing_view"
-  drawing_view_id: string
-  drawing_id: string
+export interface DrawingPartView {
+  type: "drawing_part_view"
+  drawing_part_view_id: string
+  drawing_page_id: string
+  /** Resolved geometry selection for this part view; omitted selectors mean the entire assembly. */
+  source_group_id?: string
+  source_component_ids?: string[]
   name?: string
   display_name?: string
-  direction: DrawingViewDirection
+  direction: DrawingPartViewDirection
   center: { x: number; y: number }
   width: number
   height: number
@@ -60,8 +67,8 @@ export interface DrawingView {
   show_hidden_edges?: boolean
   section?: DrawingSectionPlane
 }
-export type DrawingViewInput = z.input<typeof drawing_view>
+export type DrawingPartViewInput = z.input<typeof drawing_part_view>
 expectTypesMatch<DrawingSectionPlane, z.infer<typeof drawing_section_plane>>(
   true,
 )
-expectTypesMatch<DrawingView, z.infer<typeof drawing_view>>(true)
+expectTypesMatch<DrawingPartView, z.infer<typeof drawing_part_view>>(true)

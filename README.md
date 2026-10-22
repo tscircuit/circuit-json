@@ -260,9 +260,8 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationVoltageProbe](#simulationvoltageprobe)
     - [SimulationVoltageSource](#simulationvoltagesource)
   - [Drawing Elements](#drawing-elements)
-    - [Drawing](#drawing)
-    - [DrawingArtifact](#drawingartifact)
-    - [DrawingView](#drawingview)
+    - [DrawingPage](#drawingpage)
+    - [DrawingPartView](#drawingpartview)
 
 <!-- toc:end -->
 
@@ -5107,50 +5106,32 @@ interface SimulationAcVoltageSource {
 
 ## Drawing Elements
 
-### Drawing
+### DrawingPage
 
 ```typescript
-interface Drawing {
-  type: "drawing"
-  drawing_id: string
+interface DrawingPage {
+  type: "drawing_page"
+  drawing_page_id: string
   name?: string
   display_name?: string
   width: number
   height: number
-  /** Scope to this source group and its descendants. */
+}
+```
+
+### DrawingPartView
+
+```typescript
+interface DrawingPartView {
+  type: "drawing_part_view"
+  drawing_part_view_id: string
+  drawing_page_id: string
+  /** Resolved geometry selection for this part view; omitted selectors mean the entire assembly. */
   source_group_id?: string
-  /** Resolved component selection within the group, or the whole circuit if no group is set. */
   source_component_ids?: string[]
-  /** Optional pre-exported scene for precisely this drawing's selected geometry. */
-  model_glb_url?: string
-}
-```
-
-### DrawingArtifact
-
-```typescript
-interface DrawingArtifact {
-  type: "drawing_artifact"
-  drawing_artifact_id: string
-  drawing_id: string
-  drawing_view_id?: string
-  format: "svg" | "png"
-  url: string
-  pixel_width?: number
-  pixel_height?: number
-}
-```
-
-### DrawingView
-
-```typescript
-interface DrawingView {
-  type: "drawing_view"
-  drawing_view_id: string
-  drawing_id: string
   name?: string
   display_name?: string
-  direction: DrawingViewDirection
+  direction: DrawingPartViewDirection
   center: { x: number; y: number }
   width: number
   height: number

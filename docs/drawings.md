@@ -1,46 +1,37 @@
-# Drawing elements proposal
+# Drawing page and part-view configuration
 
-`drawing` describes an engineering drawing sheet, `drawing_view` places orthographic
-outline viewports on it, and `drawing_artifact` identifies generated assets.
-They serialize `<assembly.drawing>` and `<assembly.drawingview>` from props.
-There is no style enum: views use white occluding surfaces, black visible edges,
-optional dashed hidden edges and diagonal section hatching.
+`drawing_page` configures paper layout for `<assembly.drawing.page>`.
+`drawing_part_view` configures a view of selected assembly geometry for
+`<assembly.drawing.partview>`. There is no generated asset element or image URL:
+Circuit JSON describes what to draw, and exporters decide how to render it.
 
-All dimensions and positions are numeric mm. CAD coordinates are right-handed
-with +Z up. Paper coordinates have their origin at the sheet center, +X right and
-+Y up. Every view references a drawing ID; every artifact references its drawing
-and optionally one view. Producers/consumers must reject duplicate IDs and dangling
-references; the per-element schemas cannot enforce cross-document references.
+A page has `drawing_page_id`, optional name/display_name and positive width/height
+in mm. A part view has `drawing_part_view_id`, a `drawing_page_id` reference,
+center/width/height in paper mm, direction, optional scale, hidden-edge visibility
+and a section plane. Each part view may select `source_group_id` (including its
+descendants) and/or narrow the selection to `source_component_ids`. Without either
+selector the enclosing assembly's geometry is used. Core resolves TSX target
+selectors to these source IDs; renderers do not resolve TSX selectors or GLB names.
+Different part views on the same page can show different geometry.
 
-A drawing may select a source group (including descendants) and optionally narrow
-that selection to source component IDs. Without selectors the whole circuit is
-selected. TSX target selectors must be resolved to these IDs by core. An optional
-`model_glb_url` supplies a pre-exported scene for exactly that selected geometry;
-its glTF coordinates are +Y up, with units already converted to mm. Selection is
-performed before export, never by a renderer guessing names inside a GLB.
+CAD coordinates use mm, +Z up. Paper origin is page center, +X right/+Y up.
+Directions use snake_case: x_positive/x_negative/y_positive/y_negative/
+z_positive/z_negative/isometric. The named axis side is where the camera sits,
+looking toward the selected geometry's center. X/Y views use +Z paper up; Z views
+use +Y paper up. Isometric observes from positive X/Y/Z. TSX signed axis literals
+map to these canonical values, e.g. z+ becomes z_positive.
 
-Directions are snake_case enum values. `x_positive` places the camera on the CAD
-+X side looking toward the model center. X/Y views have +Z paper up; Z views have
-+Y up. Isometric observes from positive X/Y/Z. TSX signed axis names map to these
-canonical values (e.g. `z+` becomes `z_positive`).
+Scale is model-to-paper: 0.5 means 1:2. Omit to fit with a margin. Explicit scale
+clips excess geometry to the viewport. Hidden edges default to omitted; enabling
+them uses dashed strokes. There is no style enum or authored image/resource field.
 
-Viewport center/width/height are paper-space mm. Optional scale is the model-to-paper
-ratio: 0.5 means 1:2. Omission auto-fits with a margin. Explicit scale clips excess
-geometry at viewport boundaries. Resolution is an exporter option, not design data.
-`show_hidden_edges` defaults to false. There is no perspective projection here.
+Sections use CAD world mm: axis, finite offset and explicit keep_side. less keeps
+coordinates <= offset; greater keeps >= offset. hatch_spacing defaults to 1mm,
+measured perpendicular to 45-degree hatch strokes. Cavities remain empty and open
+contours remain uncapped. Renderers must transform offsets and retained sides
+along with axes at coordinate boundaries (CAD to glTF: x,y,z -> x,z,-y).
 
-Section offset and hatch spacing are in CAD world mm. `keep_side: less` retains
-coordinates <= offset; `greater` retains >= offset. Hatch spacing defaults to 1mm
-in model space, measured perpendicular to 45-degree hatch strokes. Cavities stay
-empty; open cut contours remain uncapped. Renderers must transform axes, offsets
-and retained sides together when converting to glTF coordinates.
-
-`drawing_artifact` is derived output, not another source of drawing intent. A sheet
-SVG can contain embedded PNG views; view PNG artifacts carry `drawing_view_id`.
-URLs can be data URIs or uploaded asset locations. Optional pixel dimensions are
-positive integers. Regenerating artifacts replaces previous artifacts for that
-sheet/view; it must not change the input drawing/view records.
-
-No existing records change. Page dimensions, IDs, view dimensions, directions and
-section retained sides are explicit; optional scale means fit, optional hidden
-edges means omitted. No aliases or migration behavior are introduced.
+IDs must be unique and part-view page references must resolve; consumers enforce
+these document-level constraints. All numbers are finite. These new records have
+no aliases or migration requirements. They intentionally describe configuration
+only; rendered files belong to exporter output, not Circuit JSON.
