@@ -1,7 +1,0 @@
-dist
-node_modules
-.vscode
-package-lock.json
-.aider*
-.env
-opencode
