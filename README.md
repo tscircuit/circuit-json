@@ -260,6 +260,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationVoltageProbe](#simulationvoltageprobe)
     - [SimulationVoltageSource](#simulationvoltagesource)
   - [Drawing Elements](#drawing-elements)
+    - [DrawingDimensionLine](#drawingdimensionline)
     - [DrawingPage](#drawingpage)
     - [DrawingPageTitleBlock](#drawingpagetitleblock)
     - [DrawingPartView](#drawingpartview)
@@ -5106,6 +5107,33 @@ interface SimulationAcVoltageSource {
 ```
 
 ## Drawing Elements
+
+### DrawingDimensionLine
+
+```typescript
+/** Resolved drawing strokes in page-centered paper mm, +X right/+Y up.
+ * Core computes the model measurement, projection, placement and formatted text.
+ * A renderer draws these supplied coordinates without resolving model geometry.
+ * The preformatted text is preserved exactly and need not equal paper length. */
+interface DrawingDimensionLine {
+  type: "drawing_dimension_line"
+  drawing_dimension_line_id: string
+  drawing_part_view_id: string
+  /** Distinct endpoints of the visible dimension line, in paper mm. */
+  start: { x: number; y: number }
+  end: { x: number; y: number }
+  /** Required preformatted measured value, preserved exactly. */
+  text: string
+  /** Optional attachment of a witness line leading to start. */
+  edge_ref_start?: { x: number; y: number }
+  /** Independently optional attachment of a witness line leading to end. */
+  edge_ref_end?: { x: number; y: number }
+  /** Exact nonblank model feature name; optional metadata only. */
+  edge_ref_name?: string
+  /** Stable annotation identity, separate from the measured text. */
+  name?: string
+}
+```
 
 ### DrawingPage
 

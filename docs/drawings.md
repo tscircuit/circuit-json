@@ -14,6 +14,72 @@ selector the enclosing assembly's geometry is used. Core resolves TSX target
 selectors to these source IDs; renderers do not resolve TSX selectors or GLB names.
 Different part views on the same page can show different geometry.
 
+## Resolved dimension lines
+
+`drawing_dimension_line` contains the resolved strokes and text for one dimension
+associated with a `drawing_part_view_id`. Core computes the model measurement,
+projects and places the annotation, and formats its measured text before emitting
+Circuit JSON. The drawing renderer draws the supplied result without loading a
+model, resolving a feature name, or recomputing a value from the paper span.
+
+```ts
+const dimensionLine = {
+  type: "drawing_dimension_line",
+  drawing_dimension_line_id: "tube_outer_width",
+  drawing_part_view_id: "tube_end_view",
+  start: { x: -10, y: 20 },
+  end: { x: 10, y: 20 },
+  text: "40.0 mm",
+  edge_ref_start: { x: -10, y: 10 },
+  edge_ref_end: { x: 10, y: 10 },
+  edge_ref_name: "outer_top",
+  name: "outer-width",
+}
+```
+
+All four point fields use absolute **page-centered paper mm**, +X right and +Y
+up. They are not local to the part view, model coordinates, or raster pixels.
+Do not apply the part view's center or model placement a second time. `start` and
+`end` are required finite numeric points and must be distinct. Their authored
+order is preserved, and the line may have any direction.
+
+`text` is required, nonblank, preformatted measured text. It is preserved exactly,
+including Unicode, units, tolerances, and surrounding whitespace. Its value need
+not equal the paper length: the example spans 20 paper mm at 1:2 but displays the
+40 mm model measurement computed by core. The renderer does not infer units,
+precision, or a model-space measurement from this string or line length.
+
+`edge_ref_start` optionally supplies the attachment point for the witness line
+leading to `start`; `edge_ref_end` independently supplies the attachment leading
+to `end`. Either, both, or neither may be present. A single witness attachment is
+valid. Each uses the same finite paper coordinates and may coincide with its
+corresponding dimension endpoint. The renderer supplies arrowheads, strokes,
+and text layout using the resolved endpoints and optional attachments.
+
+`edge_ref_name` is optional metadata identifying the model-defined feature that
+core used. It must be nonblank and is preserved exactly. It does not define native
+geometry, carry an owning-model reference, or participate in rendering. Omitting
+it must not prevent the dimension from being drawn. Optional `name` is the stable
+annotation identity, separate from the displayed measurement.
+
+The record carries no model-measurement targets, inferred-view flags, orientation,
+offset, precision, or native edge geometry. Those are resolved before emission.
+STEP/glTF/JSCAD readers continue to own native geometry; it is never serialized
+as endpoint geometry in this drawing record. Paper witness attachments describe
+annotation strokes, not model features or topology.
+
+Parsing validates required IDs and text, finite numeric points, distinct line
+endpoints, and a nonblank optional feature name. Unknown fields are stripped
+under the existing object-schema convention. There are no defaults or aliases.
+The previous unreleased `drawing_dimension` record and its types are replaced;
+old records are rejected by `any_circuit_element` rather than migrated.
+
+Consumers validate document-level references and uniqueness: the part view must
+exist, annotation IDs must be unique, and page placement/clipping uses the part
+view's referenced page. Record validation does not constrain annotations to the
+view's viewport or resolve optional metadata. Core's TSX processing and model
+measurement remain upstream of this resolved drawing format.
+
 CAD coordinates use mm, +Z up. Paper origin is page center, +X right/+Y up.
 Directions use snake_case: x_positive/x_negative/y_positive/y_negative/
 z_positive/z_negative/isometric. The named axis side is where the camera sits,
