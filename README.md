@@ -4638,6 +4638,7 @@ interface SimulationExperiment {
   time_per_step?: number // ms
   start_time_ms?: number // ms
   end_time_ms?: number // ms
+  pcb_spice_channel?: PcbSpiceChannel
   spice_options?: SpiceSimulationOptions
   dc_sweep_voltage_source_id?: string
   dc_sweep_current_source_id?: string
@@ -4657,6 +4658,50 @@ interface SpiceSimulationOptions {
   reltol?: number | string
   abstol?: number | string
   vntol?: number | string
+}
+
+/** Coupled PCB channel extraction settings. Frequencies are Hz; lengths are mm. */
+interface PcbSpiceChannel {
+  reduction: "routed-copper" | "straightened-stages"
+  sections: number
+  lanes: Array<{
+    name: string
+    driver_source_port_id: string
+    receiver_source_port_id: string
+  }>
+  reference_source_port_id: string
+  passive_source_component_ids?: string[]
+  extraction: {
+    minimum_frequency_hz: number
+    maximum_frequency_hz: number
+    model_frequency_hz: number
+    filaments: number
+    refinement_filaments: number
+    convergence_tolerance: number
+    capacitance_tolerance: number
+    reciprocity_tolerance: number
+    dc_resistance_tolerance: number
+    max_panel_length_mm: number
+    ground_mesh_size_mm?: number
+  }
+  relative_permittivity?: number
+  via_plating_thickness_mm?: number
+  via_equivalent_width_mm?: number
+  omit_through_via_stubs?: boolean
+  straightened_stage_profiles?: Record<
+    string,
+    {
+      spacing_mm: number
+      relative_permittivity: number
+      return: {
+        width_mm: number
+        thickness_mm: number
+        length_factor: number
+        center_y_mm: number
+        center_z_mm: number
+      }
+    }
+  >
 }
 ```
 
