@@ -260,7 +260,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationVoltageProbe](#simulationvoltageprobe)
     - [SimulationVoltageSource](#simulationvoltagesource)
   - [Drawing Elements](#drawing-elements)
-    - [DrawingDimension](#drawingdimension)
+    - [DrawingDimensionLine](#drawingdimensionline)
     - [DrawingPage](#drawingpage)
     - [DrawingPageTitleBlock](#drawingpagetitleblock)
     - [DrawingPartView](#drawingpartview)
@@ -5108,37 +5108,30 @@ interface SimulationAcVoltageSource {
 
 ## Drawing Elements
 
-### DrawingDimension
+### DrawingDimensionLine
 
 ```typescript
-/** Resolved dimension intent. Select exactly one complete cad_component_id plus
- * edge_name target, width_of_view: true, or height_of_view: true. False input
- * flags are unselected and omitted from the parsed result. The opaque edge name
- * is matched exactly against the owning model reader; it is not a TSX selector.
- * Circuit JSON carries no edge points, topology or geometry definitions.
- * View presets derive the rendered selection's camera-axis extent independently
- * of paper viewport width/height. Width is horizontal and height is vertical.
- * Edge orientation defaults to aligned. Opposing preset orientations are errors.
- * Aligned requests true 3D straight-edge distance. Horizontal/vertical labels
- * measure native edge extents in camera right/up model axes. Readers/exporters
- * reject unsupported geometry instead of replacing curves with endpoint chords.
- * Signed offsets follow the left normal in paper +Y-up coordinates. Aligned
- * edges preserve authored endpoint order. Horizontal/vertical endpoint order is
- * increasing paper X/Y: positive offsets are above/left. offset is paper mm.
- * precision is decimal places, integer 0–6. Numeric/text overrides are absent. */
-interface DrawingDimension {
-  type: "drawing_dimension"
-  drawing_dimension_id: string
+/** Resolved drawing strokes in page-centered paper mm, +X right/+Y up.
+ * Core computes the model measurement, projection, placement and formatted text.
+ * A renderer draws these supplied coordinates without resolving model geometry.
+ * The preformatted text is preserved exactly and need not equal paper length. */
+interface DrawingDimensionLine {
+  type: "drawing_dimension_line"
+  drawing_dimension_line_id: string
   drawing_part_view_id: string
-  cad_component_id?: string
-  /** Exact model-reader edge name; outer whitespace is preserved. */
-  edge_name?: string
-  width_of_view?: true
-  height_of_view?: true
+  /** Distinct endpoints of the visible dimension line, in paper mm. */
+  start: { x: number; y: number }
+  end: { x: number; y: number }
+  /** Required preformatted measured value, preserved exactly. */
+  text: string
+  /** Optional attachment of a witness line leading to start. */
+  edge_ref_start?: { x: number; y: number }
+  /** Independently optional attachment of a witness line leading to end. */
+  edge_ref_end?: { x: number; y: number }
+  /** Exact nonblank model feature name; optional metadata only. */
+  edge_ref_name?: string
+  /** Stable annotation identity, separate from the measured text. */
   name?: string
-  orientation: DrawingDimensionOrientation
-  offset: number
-  precision: number
 }
 ```
 

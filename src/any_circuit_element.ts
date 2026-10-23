@@ -14,7 +14,7 @@ export const any_circuit_element = z.union([
   drawings.drawing_page,
   drawings.drawing_page_title_block,
   drawings.drawing_part_view,
-  drawings.drawing_dimension,
+  drawings.drawing_dimension_line,
   src.source_runtime_error,
   // TODO source_config
   // TODO pcb_config
