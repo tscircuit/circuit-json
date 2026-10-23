@@ -30,6 +30,111 @@ export interface SpiceSimulationOptions {
   vntol?: number | string
 }
 
+export interface PcbSpiceChannel {
+  reduction: "routed-copper" | "straightened-stages"
+  sections: number
+  lanes: Array<{
+    name: string
+    driver_source_port_id: string
+    receiver_source_port_id: string
+  }>
+  reference_source_port_id: string
+  passive_source_component_ids?: string[]
+  extraction: {
+    minimum_frequency_hz: number
+    maximum_frequency_hz: number
+    model_frequency_hz: number
+    filaments: number
+    refinement_filaments: number
+    convergence_tolerance: number
+    capacitance_tolerance: number
+    reciprocity_tolerance: number
+    dc_resistance_tolerance: number
+    max_panel_length_mm: number
+    ground_mesh_size_mm?: number
+  }
+  relative_permittivity?: number
+  via_plating_thickness_mm?: number
+  via_equivalent_width_mm?: number
+  omit_through_via_stubs?: boolean
+  straightened_stage_profiles?: Record<
+    string,
+    {
+      spacing_mm: number
+      relative_permittivity: number
+      return: {
+        width_mm: number
+        thickness_mm: number
+        length_factor: number
+        center_y_mm: number
+        center_z_mm: number
+      }
+    }
+  >
+}
+
+export const pcb_spice_channel = z.object({
+  reduction: z.union([
+    z.literal("routed-copper"),
+    z.literal("straightened-stages"),
+  ]),
+  sections: z.number().int().min(1).max(128),
+  lanes: z
+    .array(
+      z.object({
+        name: z.string().min(1),
+        driver_source_port_id: z.string().min(1),
+        receiver_source_port_id: z.string().min(1),
+      }),
+    )
+    .min(1)
+    .max(3),
+  reference_source_port_id: z.string().min(1),
+  passive_source_component_ids: z.array(z.string().min(1)).optional(),
+  extraction: z
+    .object({
+      minimum_frequency_hz: z.number().finite().positive(),
+      maximum_frequency_hz: z.number().finite().positive(),
+      model_frequency_hz: z.number().finite().positive(),
+      filaments: z.number().int().positive(),
+      refinement_filaments: z.number().int().positive(),
+      convergence_tolerance: z.number().finite().positive(),
+      capacitance_tolerance: z.number().finite().positive(),
+      reciprocity_tolerance: z.number().finite().positive(),
+      dc_resistance_tolerance: z.number().finite().positive(),
+      max_panel_length_mm: z.number().finite().positive(),
+      ground_mesh_size_mm: z.number().finite().positive().optional(),
+    })
+    .refine(
+      (extraction) => extraction.refinement_filaments > extraction.filaments,
+      {
+        path: ["refinement_filaments"],
+        message: "refinement_filaments must be greater than filaments",
+      },
+    ),
+  relative_permittivity: z.number().finite().positive().optional(),
+  via_plating_thickness_mm: z.number().finite().positive().optional(),
+  via_equivalent_width_mm: z.number().finite().positive().optional(),
+  omit_through_via_stubs: z.boolean().optional(),
+  straightened_stage_profiles: z
+    .record(
+      z.object({
+        spacing_mm: z.number().finite().positive(),
+        relative_permittivity: z.number().finite().positive(),
+        return: z.object({
+          width_mm: z.number().finite().positive(),
+          thickness_mm: z.number().finite().positive(),
+          length_factor: z.number().finite().positive(),
+          center_y_mm: z.number().finite(),
+          center_z_mm: z.number().finite(),
+        }),
+      }),
+    )
+    .optional(),
+})
+
+expectTypesMatch<PcbSpiceChannel, z.infer<typeof pcb_spice_channel>>(true)
+
 export interface SimulationExperiment {
   type: "simulation_experiment"
   simulation_experiment_id: string
@@ -40,6 +145,7 @@ export interface SimulationExperiment {
   time_per_step?: number // ms
   start_time_ms?: number // ms
   end_time_ms?: number // ms
+  pcb_spice_channel?: PcbSpiceChannel
   spice_options?: SpiceSimulationOptions
   dc_sweep_voltage_source_id?: string
   dc_sweep_current_source_id?: string
@@ -68,6 +174,7 @@ export const simulation_experiment = z
     start_time_ms: ms.optional(),
     end_time_ms: ms.optional(),
     spice_options: spice_simulation_options.optional(),
+    pcb_spice_channel: pcb_spice_channel.optional(),
     dc_sweep_voltage_source_id: z.string().optional(),
     dc_sweep_current_source_id: z.string().optional(),
     dc_sweep_start: z.number().optional(),
