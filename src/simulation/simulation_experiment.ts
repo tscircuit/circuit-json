@@ -30,7 +30,6 @@ export interface SpiceSimulationOptions {
   vntol?: number | string
 }
 
-/** Coupled PCB channel extraction settings. Frequencies are Hz; lengths are mm. */
 export interface PcbSpiceChannel {
   reduction: "routed-copper" | "straightened-stages"
   sections: number
@@ -75,9 +74,10 @@ export interface PcbSpiceChannel {
 }
 
 export const pcb_spice_channel = z.object({
-  // Preserve the extraction pipeline's public reduction names.
-  // @ts-ignore
-  reduction: z.enum(["routed-copper", "straightened-stages"]),
+  reduction: z.union([
+    z.literal("routed-copper"),
+    z.literal("straightened-stages"),
+  ]),
   sections: z.number().int().min(1).max(128),
   lanes: z
     .array(
