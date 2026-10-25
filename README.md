@@ -1110,7 +1110,9 @@ Defines a simple crystal oscillator component
 interface SourceSimpleCrystal extends SourceComponentBase {
   ftype: "simple_crystal"
   frequency: number
+  display_frequency?: string
   load_capacitance?: number
+  display_load_capacitance?: string
   pin_variant?: "two_pin" | "four_pin"
 }
 ```
