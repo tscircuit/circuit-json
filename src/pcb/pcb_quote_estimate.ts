@@ -21,6 +21,10 @@ export const pcb_quote_estimate = z
     estimated_at: z.string().datetime({ offset: true }),
     expires_at: z.string().datetime({ offset: true }).optional(),
     pricing_model_version: z.string(),
+    quote_request_hash: z
+      .string()
+      .regex(/^[a-f0-9]{64}$/)
+      .optional(),
     destination_country_code: z
       .string()
       .regex(/^[A-Z]{2}$/)
@@ -34,8 +38,12 @@ export const pcb_quote_estimate = z
     assembly_placement_cost: cost.optional(),
     assembly_labor_cost: cost.optional(),
     stencil_cost: cost.optional(),
+    packaging_cost: cost.optional(),
+    parts_placement_confirmation_cost: cost.optional(),
+    special_components_cost: cost.optional(),
+    expedited_build_cost: cost.optional(),
     components_cost: cost.optional(),
-    extended_components_cost: cost.optional(),
+    extended_component_loading_cost: cost.optional(),
     component_attrition_cost: cost.optional(),
     component_baking_cost: cost.optional(),
     hand_soldering_cost: cost.optional(),
@@ -51,6 +59,8 @@ export const pcb_quote_estimate = z
     other_manufacturing_cost: cost.optional(),
     shipping_cost: cost.optional(),
     duties_cost: cost.optional(),
+    import_tax_cost: cost.optional(),
+    customs_duties_and_taxes_cost: cost.optional(),
     tax_cost: cost.optional(),
     brokerage_cost: cost.optional(),
     discount_cost: cost.optional(),
@@ -63,6 +73,13 @@ export const pcb_quote_estimate = z
   .superRefine((quote, ctx) => {
     const issue = (message: string) =>
       ctx.addIssue({ code: z.ZodIssueCode.custom, message })
+    if (
+      quote.customs_duties_and_taxes_cost !== undefined &&
+      (quote.duties_cost !== undefined || quote.import_tax_cost !== undefined)
+    )
+      issue(
+        "Combined customs costs cannot also contain itemized duty/import tax",
+      )
     if (
       quote.assembled_quantity !== undefined &&
       quote.assembled_quantity > quote.quantity
@@ -113,6 +130,7 @@ export interface PcbQuoteEstimate {
   estimated_at: string
   expires_at?: string
   pricing_model_version: string
+  quote_request_hash?: string
   destination_country_code?: string
   shipping_service?: string
   is_manufacturing_cost_complete: boolean
@@ -123,8 +141,12 @@ export interface PcbQuoteEstimate {
   assembly_placement_cost?: number
   assembly_labor_cost?: number
   stencil_cost?: number
+  packaging_cost?: number
+  parts_placement_confirmation_cost?: number
+  special_components_cost?: number
+  expedited_build_cost?: number
   components_cost?: number
-  extended_components_cost?: number
+  extended_component_loading_cost?: number
   component_attrition_cost?: number
   component_baking_cost?: number
   hand_soldering_cost?: number
@@ -140,6 +162,10 @@ export interface PcbQuoteEstimate {
   other_manufacturing_cost?: number
   shipping_cost?: number
   duties_cost?: number
+  import_tax_cost?: number
+  /** Use a supplier-combined import charge only when duty/import tax cannot be separated. */
+  customs_duties_and_taxes_cost?: number
+  /** Sales tax or domestic VAT, excluding import taxes. */
   tax_cost?: number
   brokerage_cost?: number
   discount_cost?: number
