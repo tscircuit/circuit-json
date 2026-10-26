@@ -1,3 +1,4 @@
+export * from "./pcb_quote_estimate"
 export * from "./properties/brep"
 export * from "./properties/insertion_direction"
 export * from "./properties/layer_ref"
@@ -172,7 +173,10 @@ import type { PcbCourtyardPolygon } from "./pcb_courtyard_polygon"
 import type { PcbCourtyardCircle } from "./pcb_courtyard_circle"
 import type { PcbCourtyardPill } from "./pcb_courtyard_pill"
 
+import type { PcbQuoteEstimate } from "./pcb_quote_estimate"
+
 export type PcbCircuitElement =
+  | PcbQuoteEstimate
   | PcbComponent
   | PcbDebugObject
   | PcbHole
