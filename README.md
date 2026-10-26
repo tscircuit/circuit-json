@@ -172,6 +172,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbPortNotConnectedError](#pcbportnotconnectederror)
     - [PcbPortNotMatchedError](#pcbportnotmatchederror)
     - [PcbPreflightRoutingError](#pcbpreflightroutingerror)
+    - [PcbQuoteEstimate](#pcbquoteestimate)
     - [PcbRouteHints](#pcbroutehints)
     - [PcbSilkscreenCircle](#pcbsilkscreencircle)
     - [PcbSilkscreenGraphic](#pcbsilkscreengraphic)
@@ -3075,6 +3076,67 @@ interface PcbPreflightRoutingError extends BaseCircuitJsonError {
 }
 ```
 
+### PcbQuoteEstimate
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_quote_estimate.ts)
+
+```typescript
+/** Itemized estimate for an entire PCB order; all costs use currency major units.
+ * Undefined costs are unknown, never implicitly zero. manufacturing_cost is the
+ * sum of manufacturing attributes before discounts. total_cost adds delivery,
+ * duties, tax and brokerage and subtracts discount_cost. unit_cost is total_cost
+ * divided by quantity. Do not emit total_cost for an incomplete landed estimate.
+ * Assembly costs apply to assembled_quantity; quantity is fabricated PCB count.
+ * Destination is the shipping destination, not nationality or IP geolocation. */
+interface PcbQuoteEstimate {
+  type: "pcb_quote_estimate"
+  pcb_quote_estimate_id: string
+  pcb_board_id: string
+  supplier_name: string
+  currency: string
+  quantity: number
+  assembled_quantity?: number
+  estimated_at: string
+  expires_at?: string
+  pricing_model_version: string
+  destination_country_code?: string
+  shipping_service?: string
+  is_manufacturing_cost_complete: boolean
+  is_landed_cost_complete: boolean
+  pcb_fabrication_cost?: number
+  pcb_setup_cost?: number
+  assembly_setup_cost?: number
+  assembly_placement_cost?: number
+  assembly_labor_cost?: number
+  stencil_cost?: number
+  components_cost?: number
+  extended_components_cost?: number
+  component_attrition_cost?: number
+  component_baking_cost?: number
+  hand_soldering_cost?: number
+  x_ray_inspection_cost?: number
+  small_hole_cost?: number
+  via_in_pad_cost?: number
+  via_filling_cost?: number
+  kelvin_test_cost?: number
+  impedance_control_cost?: number
+  surface_finish_cost?: number
+  panelization_cost?: number
+  engineering_cost?: number
+  other_manufacturing_cost?: number
+  shipping_cost?: number
+  duties_cost?: number
+  tax_cost?: number
+  brokerage_cost?: number
+  discount_cost?: number
+  manufacturing_cost?: number
+  total_cost?: number
+  unit_cost?: number
+  assumptions?: string[]
+  warnings?: string[]
+}
+```
+
 ### PcbRouteHints
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/properties/pcb_route_hints.ts)
@@ -4641,6 +4703,7 @@ interface SimulationExperiment {
   time_per_step?: number // ms
   start_time_ms?: number // ms
   end_time_ms?: number // ms
+  pcb_spice_channel?: PcbSpiceChannel
   spice_options?: SpiceSimulationOptions
   dc_sweep_voltage_source_id?: string
   dc_sweep_current_source_id?: string
@@ -4660,6 +4723,49 @@ interface SpiceSimulationOptions {
   reltol?: number | string
   abstol?: number | string
   vntol?: number | string
+}
+
+interface PcbSpiceChannel {
+  reduction: "routed-copper" | "straightened-stages"
+  sections: number
+  lanes: Array<{
+    name: string
+    driver_source_port_id: string
+    receiver_source_port_id: string
+  }>
+  reference_source_port_id: string
+  passive_source_component_ids?: string[]
+  extraction: {
+    minimum_frequency_hz: number
+    maximum_frequency_hz: number
+    model_frequency_hz: number
+    filaments: number
+    refinement_filaments: number
+    convergence_tolerance: number
+    capacitance_tolerance: number
+    reciprocity_tolerance: number
+    dc_resistance_tolerance: number
+    max_panel_length_mm: number
+    ground_mesh_size_mm?: number
+  }
+  relative_permittivity?: number
+  via_plating_thickness_mm?: number
+  via_equivalent_width_mm?: number
+  omit_through_via_stubs?: boolean
+  straightened_stage_profiles?: Record<
+    string,
+    {
+      spacing_mm: number
+      relative_permittivity: number
+      return: {
+        width_mm: number
+        thickness_mm: number
+        length_factor: number
+        center_y_mm: number
+        center_z_mm: number
+      }
+    }
+  >
 }
 ```
 

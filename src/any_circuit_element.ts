@@ -11,6 +11,7 @@ import {
 } from "./utils/expect-types-match"
 
 export const any_circuit_element = z.union([
+  pcb.pcb_quote_estimate,
   drawings.drawing_page,
   drawings.drawing_page_title_block,
   drawings.drawing_part_view,
