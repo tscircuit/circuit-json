@@ -21,6 +21,11 @@ test("itemized quote estimates round trip through Circuit JSON without inventing
     kelvin_test_cost: 54.18,
     destination_country_code: "US",
   }
+  const { pricing_model_version: version, ...withoutVersion } = input
+  expect(
+    pcb_quote_estimate.parse(withoutVersion).pricing_model_version,
+  ).toBeUndefined()
+  expect(pcb_quote_estimate.parse(input).pricing_model_version).toBe(version)
   const parsed: PcbCircuitElement = pcb_quote_estimate.parse(input)
   expect(any_circuit_element.parse(parsed)).toEqual(parsed)
   expect(parsed.pcb_quote_estimate_id).toStartWith("pcb_quote_estimate")
@@ -28,6 +33,7 @@ test("itemized quote estimates round trip through Circuit JSON without inventing
   expect(parsed.shipping_cost).toBeUndefined()
   expect(parsed.total_cost).toBeUndefined()
   for (const invalid of [
+    { pricing_model_version: 123 },
     { quantity: 0 },
     { assembled_quantity: 6 },
     { total_cost: 100 },

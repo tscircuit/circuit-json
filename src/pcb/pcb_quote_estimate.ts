@@ -20,7 +20,7 @@ export const pcb_quote_estimate = z
     assembled_quantity: z.number().int().nonnegative().optional(),
     estimated_at: z.string().datetime({ offset: true }),
     expires_at: z.string().datetime({ offset: true }).optional(),
-    pricing_model_version: z.string(),
+    pricing_model_version: z.string().optional(),
     quote_request_hash: z
       .string()
       .regex(/^[a-f0-9]{64}$/)
@@ -129,7 +129,7 @@ export interface PcbQuoteEstimate {
   assembled_quantity?: number
   estimated_at: string
   expires_at?: string
-  pricing_model_version: string
+  pricing_model_version?: string
   quote_request_hash?: string
   destination_country_code?: string
   shipping_service?: string
