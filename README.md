@@ -953,6 +953,8 @@ interface SourcePrintedPart extends SourceComponentBase {
 
 ### SourceProjectMetadata
 
+An optional native KiCad archive can preserve project data that a generic conversion does not represent. See [artifact fields, canonical hash and consumer requirements](docs/native-kicad-project.md).
+
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_project_metadata.ts)
 
 ```typescript
@@ -962,6 +964,7 @@ interface SourceProjectMetadata {
   software_used_string?: string
   project_url?: string
   source_filesystem_md5_hash?: string
+  native_kicad_project?: NativeKicadProjectArtifact
   created_at?: string // ISO8601 timestamp
 }
 ```
