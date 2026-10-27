@@ -2230,6 +2230,8 @@ interface PcbFabricationNotePath {
   route: Point[]
   stroke_width: Length
   color?: string
+  /** This artwork supplies the component's polarity indication. Omitted means no claim. */
+  is_polarity_marking?: boolean
   /** Fill the route as a closed polygon using color. Defaults to false. */
   is_filled?: boolean
   /** Draw the outline using stroke_width and color. Defaults to true. */
@@ -2287,6 +2289,8 @@ interface PcbFabricationNoteText {
   anchor_alignment:
     "center" | "top_left" | "top_right" | "bottom_left" | "bottom_right"
   color?: string
+  /** This artwork supplies the component's polarity indication. Omitted means no claim. */
+  is_polarity_marking?: boolean
 }
 ```
 

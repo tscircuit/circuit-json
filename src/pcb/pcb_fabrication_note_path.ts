@@ -21,6 +21,7 @@ export const pcb_fabrication_note_path = z
     route: z.array(point),
     stroke_width: length,
     color: z.string().optional(),
+    is_polarity_marking: z.boolean().optional(),
     is_filled: z.boolean().optional(),
     has_stroke: z.boolean().optional(),
   })
@@ -45,6 +46,8 @@ export interface PcbFabricationNotePath {
   route: Point[]
   stroke_width: Length
   color?: string
+  /** This artwork supplies the component's polarity indication. Omitted means no claim. */
+  is_polarity_marking?: boolean
   /** Fill the route as a closed polygon using color. Defaults to false. */
   is_filled?: boolean
   /** Draw the outline using stroke_width and color. Defaults to true. */

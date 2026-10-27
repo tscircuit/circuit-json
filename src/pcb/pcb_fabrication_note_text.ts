@@ -24,6 +24,7 @@ export const pcb_fabrication_note_text = z
       .enum(["center", "top_left", "top_right", "bottom_left", "bottom_right"])
       .default("center"),
     color: z.string().optional(),
+    is_polarity_marking: z.boolean().optional(),
   })
   .describe(
     "Defines a fabrication note in text on the PCB, useful for leaving notes for assemblers or fabricators",
@@ -56,6 +57,8 @@ export interface PcbFabricationNoteText {
     | "bottom_left"
     | "bottom_right"
   color?: string
+  /** This artwork supplies the component's polarity indication. Omitted means no claim. */
+  is_polarity_marking?: boolean
 }
 
 /**
