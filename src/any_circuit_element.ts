@@ -88,6 +88,7 @@ export const any_circuit_element = z.union([
   pcb.pcb_trace,
   pcb.pcb_trace_warning,
   pcb.pcb_trace_style_warning,
+  pcb.pcb_copper_pour_style_warning,
   pcb.pcb_trace_too_long_warning,
   pcb.pcb_trace_too_long_error,
   pcb.pcb_bus_length_skew_error,
