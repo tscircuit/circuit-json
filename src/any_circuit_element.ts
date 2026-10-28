@@ -181,6 +181,8 @@ export const any_circuit_element = z.union([
   sch.schematic_table,
   sch.schematic_table_cell,
   cad.cad_component,
+  cad.cad_explosion_stage,
+  cad.cad_explosion_move,
   cad.cad_cable,
   cad.cad_reference_surface,
   cad.cad_collision_error,
