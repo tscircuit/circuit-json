@@ -22,7 +22,7 @@ test("panel ownership survives parsing traces and physical vias", () => {
     layers: ["top", "bottom"],
   })
   expect(trace.pcb_panel_id).toBe("pcb_panel_0")
-  expect(via.pcb_panel_id).toBe(trace.pcb_panel_id)
+  expect(via.pcb_panel_id).toBe("pcb_panel_0")
   expect(via.pcb_trace_id).toBe(trace.pcb_trace_id)
   expect(
     pcb_trace.parse({ type: "pcb_trace", route }).pcb_panel_id,
