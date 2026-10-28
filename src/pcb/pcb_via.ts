@@ -9,6 +9,7 @@ export const pcb_via = z
     type: z.literal("pcb_via"),
     pcb_via_id: getZodPrefixedIdWithDefault("pcb_via"),
     pcb_group_id: z.string().optional(),
+    pcb_panel_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     subcircuit_connectivity_map_key: z.string().optional(),
     x: distance,
@@ -54,6 +55,8 @@ export interface PcbVia {
   type: "pcb_via"
   pcb_via_id: string
   pcb_group_id?: string
+  /** Owning manufacturing panel for copper connecting its child boards. */
+  pcb_panel_id?: string
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
   x: Distance
