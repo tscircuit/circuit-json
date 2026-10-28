@@ -3527,8 +3527,6 @@ interface PcbThermalSpoke {
 
 ### PcbTrace
 
-Traces connecting child boards across a manufacturing panel may set `pcb_panel_id` to the owning `pcb_panel`. Their physical vias carry the same optional reference. Routes remain in circuit-world millimeters (+X right, +Y top, +Z above; right-handed).
-
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_trace.ts)
 
 Outgoing segment taper; all three fields must be specified together.
