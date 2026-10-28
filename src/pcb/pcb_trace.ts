@@ -89,6 +89,7 @@ export const pcb_trace = z
     pcb_component_id: z.string().optional(),
     pcb_trace_id: getZodPrefixedIdWithDefault("pcb_trace"),
     pcb_group_id: z.string().optional(),
+    pcb_panel_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     route_thickness_mode: z
       .enum(["constant", "interpolated"])
@@ -185,6 +186,8 @@ export interface PcbTrace {
   source_trace_id?: string
   pcb_component_id?: string
   pcb_group_id?: string
+  /** Owning manufacturing panel for copper connecting its child boards. */
+  pcb_panel_id?: string
   subcircuit_id?: string
   pcb_trace_id: string
   /**

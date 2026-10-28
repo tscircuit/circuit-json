@@ -3743,6 +3743,8 @@ interface PcbVia {
   type: "pcb_via"
   pcb_via_id: string
   pcb_group_id?: string
+  /** Owning manufacturing panel for copper connecting its child boards. */
+  pcb_panel_id?: string
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
   x: Distance
