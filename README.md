@@ -115,6 +115,8 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [CadCable](#cadcable)
     - [CadCollisionError](#cadcollisionerror)
     - [CadComponent](#cadcomponent)
+    - [CadExplosionMove](#cadexplosionmove)
+    - [CadExplosionStage](#cadexplosionstage)
     - [CadReferenceSurface](#cadreferencesurface)
   - [PCB Elements](#pcb-elements)
     - [PcbAutoroutingError](#pcbautoroutingerror)
@@ -1607,6 +1609,41 @@ interface CadComponent {
   show_as_bounding_box?: boolean
   show_hidden_edges?: boolean
   anchor_alignment: CadComponentAnchorAlignment
+}
+```
+
+### CadExplosionMove
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_explosion_move.ts)
+
+```typescript
+interface CadExplosionMove {
+  type: "cad_explosion_move"
+  cad_explosion_move_id: string
+  cad_explosion_stage_id: string
+  order: number
+  targets: CadExplosionTarget[]
+  translation: Point3
+}
+
+type CadExplosionTarget =
+  | { type: "cad_reference_surface"; cad_reference_surface_id: string }
+  | { type: "cad_component"; cad_component_id: string }
+  | { type: "cad_explosion_stage"; cad_explosion_stage_id: string }
+```
+
+### CadExplosionStage
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_explosion_stage.ts)
+
+```typescript
+interface CadExplosionStage {
+  type: "cad_explosion_stage"
+  cad_explosion_stage_id: string
+  name: string
+  order: number
+  cad_component_ids: string[]
+  cad_reference_surface_ids?: string[]
 }
 ```
 
