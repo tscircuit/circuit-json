@@ -16,7 +16,10 @@ export const pcb_silkscreen_text = z
     subcircuit_id: z.string().optional(),
     font: z.literal("tscircuit2024").default("tscircuit2024"),
     font_size: distance.default("0.2mm"),
-    pcb_component_id: z.string(),
+    pcb_component_id: z
+      .string()
+      .optional()
+      .describe("Owning component, omitted for board- or group-level text"),
     text: z.string(),
     is_knockout: z.boolean().default(false).optional(),
     knockout_padding: z
@@ -54,7 +57,7 @@ export interface PcbSilkscreenText {
   subcircuit_id?: string
   font: "tscircuit2024"
   font_size: Length
-  pcb_component_id: string
+  pcb_component_id?: string
   text: string
   is_knockout?: boolean
   knockout_padding?: {

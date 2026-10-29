@@ -3372,7 +3372,7 @@ interface PcbSilkscreenText {
   subcircuit_id?: string
   font: "tscircuit2024"
   font_size: Length
-  pcb_component_id: string
+  pcb_component_id?: string
   text: string
   is_knockout?: boolean
   knockout_padding?: {
