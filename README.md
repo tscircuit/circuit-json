@@ -3936,6 +3936,7 @@ interface SchematicComponent {
   type: "schematic_component"
   size: Size
   center: Point
+  rotation?: Rotation
   source_component_id?: string
   schematic_component_id: string
   schematic_sheet_id?: string
