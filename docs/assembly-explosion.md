@@ -56,3 +56,21 @@ This version describes CAD translations only. Reject targets with associated PCB
 geometry rather than moving component models away from pads/traces. Board/cable
 movement and rotations need separate geometry semantics. These records do not
 certify collision clearance.
+
+## Collision diagnostics
+
+`cad_explosion_collision_error` identifies the executing stage and move, the
+moving CAD component, and an obstacle (`cad_component` or `pcb_board`). It reports
+newly entered positive-volume intersection over the continuous translation,
+including collisions between otherwise clear start and end poses. Earlier moves
+are already applied; all members of one move translate together.
+
+`swept_intersection_volume_mm3` measures the obstacle volume inside the sweep
+after subtracting the moving solid's position at the start of that move. Existing
+overlap is therefore excluded, as is touching without penetration. This metric
+is neither instantaneous penetration depth nor the exact time of first contact.
+
+`cad_explosion_collision_check_warning` records incomplete coverage when CAD or
+PCB geometry is unsupported/invalid, or the collision check fails. Consumers
+must preserve that warning alongside any confirmed collisions; absence of an
+error alone is not evidence that unexamined geometry has clearance.
