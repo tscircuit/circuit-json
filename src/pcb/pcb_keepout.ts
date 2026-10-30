@@ -2,6 +2,7 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 import { z } from "zod"
 import { type Point, point } from "../common"
 import { type Length, distance, length } from "../units"
+import { type BRepShape, brep_shape } from "./properties/brep"
 
 export const pcb_keepout_outline = z.object({
   type: z.literal("pcb_keepout"),
@@ -19,6 +20,25 @@ export const pcb_keepout_outline = z.object({
   allow_traces: z.boolean().optional(),
   allow_placements: z.boolean().optional(),
 })
+
+export const pcb_keepout_brep = z.object({
+  type: z.literal("pcb_keepout"),
+  shape: z.literal("brep"),
+  pcb_component_id: z.string().optional(),
+  pcb_group_id: z.string().optional(),
+  subcircuit_id: z.string().optional(),
+  brep_shape,
+  pcb_keepout_id: z.string(),
+  layers: z.array(z.string()),
+  description: z.string().optional(),
+  excluded_pcb_component_ids: z.array(z.string()).optional(),
+  warning_only: z.boolean().optional(),
+  allow_traces: z.boolean().optional(),
+  allow_placements: z.boolean().optional(),
+})
+
+export type PcbKeepoutBrepInput = z.input<typeof pcb_keepout_brep>
+type InferredPcbKeepoutBrep = z.infer<typeof pcb_keepout_brep>
 
 export type PcbKeepoutOutlineInput = z.input<typeof pcb_keepout_outline>
 type InferredPcbKeepoutOutline = z.infer<typeof pcb_keepout_outline>
@@ -60,6 +80,7 @@ export const pcb_keepout = z
     }),
   )
   .or(pcb_keepout_outline)
+  .or(pcb_keepout_brep)
 
 export type PCBKeepoutInput = z.input<typeof pcb_keepout>
 type InferredPCBKeepout = z.infer<typeof pcb_keepout>
@@ -140,8 +161,38 @@ export interface PcbKeepoutOutline {
   allow_placements?: boolean
 }
 
+export interface PcbKeepoutBrep {
+  type: "pcb_keepout"
+  shape: "brep"
+  pcb_component_id?: string
+  pcb_group_id?: string
+  subcircuit_id?: string
+  brep_shape: BRepShape
+  pcb_keepout_id: string
+  layers: string[]
+  description?: string
+  /** PCB components excluded from keepout DRC enforcement. */
+  excluded_pcb_component_ids?: string[]
+  /**
+   * When true, this keepout is advisory: it does not block routing or copper
+   * placement, and DRC reports overlaps as pcb_keepout_overlap_warning records.
+   * False or omitted preserves normal enforcement. Component exclusions still apply.
+   */
+  warning_only?: boolean
+  /** Allow trace crossings without keepout diagnostics; copper pours remain excluded. */
+  allow_traces?: boolean
+  /** Allow components and their pads/plated holes without keepout diagnostics; copper pours remain excluded. */
+  allow_placements?: boolean
+}
+
 expectTypesMatch<PcbKeepoutOutline, InferredPcbKeepoutOutline>(true)
 
-export type PCBKeepout = PCBKeepoutRect | PCBKeepoutCircle | PcbKeepoutOutline
+expectTypesMatch<PcbKeepoutBrep, InferredPcbKeepoutBrep>(true)
+
+export type PCBKeepout =
+  | PCBKeepoutRect
+  | PCBKeepoutCircle
+  | PcbKeepoutOutline
+  | PcbKeepoutBrep
 
 expectTypesMatch<PCBKeepout, InferredPCBKeepout>(true)

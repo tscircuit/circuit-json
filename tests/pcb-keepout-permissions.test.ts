@@ -20,6 +20,19 @@ test("keepout permissions preserve booleans and omission across all shapes", () 
       ],
       stroke_width: 0.2,
     },
+    {
+      ...base,
+      shape: "brep",
+      brep_shape: {
+        outer_ring: {
+          vertices: [
+            { x: 3, y: 0, bulge: -1 },
+            { x: -3, y: 0, bulge: -1 },
+          ],
+        },
+        inner_rings: [],
+      },
+    },
   ] satisfies PCBKeepoutInput[]
   for (const keepout of keepouts) {
     for (const field of ["allow_traces", "allow_placements"] as const) {
