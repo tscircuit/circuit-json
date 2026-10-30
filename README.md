@@ -4293,6 +4293,8 @@ interface SchematicPort {
 
   display_pin_label_text_parts?: SchematicTextPart[]
   display_pin_label_font_size?: number
+  /** Authored font family for the pin label, such as "Times New Roman". */
+  display_pin_label_font_family?: string
   subcircuit_id?: string
   is_connected?: boolean
   is_internal_circuit_port?: boolean
