@@ -99,6 +99,8 @@ import type { PcbDebugObject } from "./pcb_debug_object"
 import type { PcbHole } from "./pcb_hole"
 import type { PcbPlatedHole } from "./pcb_plated_hole"
 import type { PcbPort } from "./pcb_port"
+import type { PcbGroup } from "./pcb_group"
+import type { PCBKeepout } from "./pcb_keepout"
 import type { PcbSmtPad } from "./pcb_smtpad"
 import type { PcbSolderPaste } from "./pcb_solder_paste"
 import type { PcbSoldermaskOpening } from "./pcb_soldermask_opening"
@@ -146,6 +148,8 @@ import type { PcbSilkscreenOval } from "./pcb_silkscreen_oval"
 import type { PcbSilkscreenGraphic } from "./pcb_silkscreen_graphic"
 import type { PcbCopperText } from "./pcb_copper_text"
 import type { PcbFabricationNoteRect } from "./pcb_fabrication_note_rect"
+import type { PcbFabricationNotePath } from "./pcb_fabrication_note_path"
+import type { PcbFabricationNoteText } from "./pcb_fabrication_note_text"
 import type { PcbFabricationNoteDimension } from "./pcb_fabrication_note_dimension"
 import type { PcbNoteText } from "./pcb_note_text"
 import type { PcbNoteRect } from "./pcb_note_rect"
@@ -155,6 +159,7 @@ import type { PcbNoteDimension } from "./pcb_note_dimension"
 import type { PcbAutoroutingError } from "./pcb_autorouting_error"
 import type { PcbPreflightRoutingError } from "./pcb_preflight_routing_error"
 import type { PcbFootprintOverlapError } from "./pcb_footprint_overlap_error"
+import type { PcbCourtyardOverlapError } from "./pcb_courtyard_overlap_error"
 import type { PcbCutout } from "./pcb_cutout"
 import type { PcbBreakoutPoint } from "./pcb_breakout_point"
 import type { PcbGroundPlane } from "./pcb_ground_plane"
@@ -184,6 +189,8 @@ export type PcbCircuitElement =
   | PcbHole
   | PcbPlatedHole
   | PcbPort
+  | PcbGroup
+  | PCBKeepout
   | PcbSmtPad
   | PcbSolderPaste
   | PcbSoldermaskOpening
@@ -232,6 +239,8 @@ export type PcbCircuitElement =
   | PcbSilkscreenOval
   | PcbSilkscreenGraphic
   | PcbFabricationNoteRect
+  | PcbFabricationNotePath
+  | PcbFabricationNoteText
   | PcbFabricationNoteDimension
   | PcbNoteText
   | PcbNoteRect
@@ -241,6 +250,7 @@ export type PcbCircuitElement =
   | PcbAutoroutingError
   | PcbPreflightRoutingError
   | PcbFootprintOverlapError
+  | PcbCourtyardOverlapError
   | PcbCutout
   | PcbBreakoutPoint
   | PcbGroundPlane
