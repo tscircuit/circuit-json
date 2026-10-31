@@ -1,9 +1,9 @@
-import { z } from "zod"
-import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
-import { length, type Length, rotation, type Rotation } from "src/units"
-import { layer_ref, type LayerRef } from "./properties/layer_ref"
+import { type Point, getZodPrefixedIdWithDefault, point } from "src/common"
+import { type Length, type Rotation, length, rotation } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
-import { brep_shape, type BRepShape } from "./properties/brep"
+import { z } from "zod"
+import { type BRepShape, brep_shape } from "./properties/brep"
+import { type LayerRef, layer_ref } from "./properties/layer_ref"
 
 // Common properties base for all pour shapes (internal)
 const pcb_copper_pour_base = z.object({
@@ -14,6 +14,14 @@ const pcb_copper_pour_base = z.object({
   layer: layer_ref,
   source_net_id: z.string().optional(),
   covered_with_solder_mask: z.boolean().optional().default(true),
+  clearance: length.optional(),
+  pad_margin: length.optional(),
+  trace_margin: length.optional(),
+  board_edge_margin: length.optional(),
+  cutout_margin: length.optional(),
+  use_thermal_reliefs: z.boolean().optional(),
+  thermal_relief_spoke_width: length.optional(),
+  outline: z.array(point).optional(),
 })
 
 // Rectangular Pour
@@ -37,6 +45,14 @@ export interface PcbCopperPourRect {
   subcircuit_id?: string
   layer: LayerRef
   source_net_id?: string
+  clearance?: Length
+  pad_margin?: Length
+  trace_margin?: Length
+  board_edge_margin?: Length
+  cutout_margin?: Length
+  use_thermal_reliefs?: boolean
+  thermal_relief_spoke_width?: Length
+  outline?: Point[]
   shape: "rect"
   center: Point
   width: Length
@@ -63,6 +79,14 @@ export interface PcbCopperPourBRep {
   subcircuit_id?: string
   layer: LayerRef
   source_net_id?: string
+  clearance?: Length
+  pad_margin?: Length
+  trace_margin?: Length
+  board_edge_margin?: Length
+  cutout_margin?: Length
+  use_thermal_reliefs?: boolean
+  thermal_relief_spoke_width?: Length
+  outline?: Point[]
   shape: "brep"
   brep_shape: BRepShape
 }
@@ -87,6 +111,14 @@ export interface PcbCopperPourPolygon {
   subcircuit_id?: string
   layer: LayerRef
   source_net_id?: string
+  clearance?: Length
+  pad_margin?: Length
+  trace_margin?: Length
+  board_edge_margin?: Length
+  cutout_margin?: Length
+  use_thermal_reliefs?: boolean
+  thermal_relief_spoke_width?: Length
+  outline?: Point[]
   shape: "polygon"
   points: Point[]
 }
