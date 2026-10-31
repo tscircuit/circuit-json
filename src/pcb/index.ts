@@ -1,3 +1,6 @@
+export * from "./pcb_clearance_error"
+import type { PcbClearanceError } from "./pcb_clearance_error"
+export * from "./properties/pcb_clearance_rule"
 export * from "./pcb_quote_estimate"
 export * from "./properties/brep"
 export * from "./properties/insertion_direction"
@@ -252,6 +255,7 @@ export type PcbCircuitElement =
   | PcbComponentInvalidLayerError
   | PcbViaClearanceError
   | PcbViaTraceClearanceError
+  | PcbClearanceError
   | PcbPadPadClearanceError
   | PcbPadTraceClearanceError
   | PcbCourtyardRect

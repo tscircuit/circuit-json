@@ -1,4 +1,8 @@
 import {
+  pcb_clearance_rule,
+  type PcbClearanceRule,
+} from "./properties/pcb_clearance_rule"
+import {
   type NinePointAnchor,
   type Point,
   getZodPrefixedIdWithDefault,
@@ -16,6 +20,7 @@ import { z } from "zod"
 export const pcb_board = z
   .object({
     type: z.literal("pcb_board"),
+    clearance_rules: z.array(pcb_clearance_rule).optional(),
     pcb_board_id: getZodPrefixedIdWithDefault("pcb_board"),
     pcb_panel_id: z.string().optional(),
     carrier_pcb_board_id: z.string().optional(),
@@ -66,6 +71,7 @@ export const pcb_board = z
  */
 export interface PcbBoard extends ManufacturingDrcProperties {
   type: "pcb_board"
+  clearance_rules?: PcbClearanceRule[]
   pcb_board_id: string
   pcb_panel_id?: string
   carrier_pcb_board_id?: string
