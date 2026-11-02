@@ -15,7 +15,8 @@ export const pcb_fabrication_note_path = z
     pcb_fabrication_note_path_id: getZodPrefixedIdWithDefault(
       "pcb_fabrication_note_path",
     ),
-    pcb_component_id: z.string(),
+    pcb_component_id: z.string().optional(),
+    pcb_panel_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     layer: layer_ref,
     route: z.array(point),
@@ -39,7 +40,9 @@ type InferredPcbFabricationNotePath = z.infer<typeof pcb_fabrication_note_path>
 export interface PcbFabricationNotePath {
   type: "pcb_fabrication_note_path"
   pcb_fabrication_note_path_id: string
-  pcb_component_id: string
+  /** Omitted for board/panel-level annotations, matching standalone silkscreen ownership. */
+  pcb_component_id?: string
+  pcb_panel_id?: string
   subcircuit_id?: string
   layer: LayerRef
   route: Point[]

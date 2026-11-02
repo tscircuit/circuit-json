@@ -15,7 +15,8 @@ export const pcb_fabrication_note_text = z
     pcb_group_id: z.string().optional(),
     font: z.literal("tscircuit2024").default("tscircuit2024"),
     font_size: distance.default("1mm"),
-    pcb_component_id: z.string(),
+    pcb_component_id: z.string().optional(),
+    pcb_panel_id: z.string().optional(),
     text: z.string(),
     ccw_rotation: z.number().optional(),
     layer: visible_layer,
@@ -44,7 +45,9 @@ export interface PcbFabricationNoteText {
   pcb_group_id?: string
   font: "tscircuit2024"
   font_size: Length
-  pcb_component_id: string
+  /** Omitted for board/panel-level annotations, matching standalone silkscreen ownership. */
+  pcb_component_id?: string
+  pcb_panel_id?: string
   text: string
   ccw_rotation?: number
   layer: VisibleLayer

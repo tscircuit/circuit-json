@@ -32,4 +32,24 @@ test("panel score annotations do not need an invented component reference", () =
   expect(pcb_fabrication_note_text.parse(text)).toMatchObject({
     pcb_panel_id: "pcb_panel_0",
   })
+  expect(
+    pcb_fabrication_note_path.parse({
+      ...path,
+      pcb_component_id: "pcb_component_0",
+    }).pcb_component_id,
+  ).toBe("pcb_component_0")
+  expect(
+    pcb_fabrication_note_text.parse({
+      ...text,
+      pcb_component_id: "pcb_component_0",
+    }).pcb_component_id,
+  ).toBe("pcb_component_0")
+  for (const pcb_panel_id of [null, 42]) {
+    expect(
+      pcb_fabrication_note_path.safeParse({ ...path, pcb_panel_id }).success,
+    ).toBe(false)
+    expect(
+      pcb_fabrication_note_text.safeParse({ ...text, pcb_panel_id }).success,
+    ).toBe(false)
+  }
 })
