@@ -4,9 +4,15 @@ import { length, type Length, rotation, type Rotation } from "src/units"
 import { layer_ref, type LayerRef } from "./properties/layer_ref"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import { brep_shape, type BRepShape } from "./properties/brep"
+import {
+  copper_pour_clearance_properties,
+  type CopperPourClearanceProperties,
+} from "./properties/copper_pour_clearance_properties"
+
+export * from "./properties/copper_pour_clearance_properties"
 
 // Common properties base for all pour shapes (internal)
-const pcb_copper_pour_base = z.object({
+const pcb_copper_pour_base = copper_pour_clearance_properties.extend({
   type: z.literal("pcb_copper_pour"),
   pcb_copper_pour_id: getZodPrefixedIdWithDefault("pcb_copper_pour"),
   pcb_group_id: z.string().optional(),
@@ -29,7 +35,7 @@ type InferredPcbCopperPourRect = z.infer<typeof pcb_copper_pour_rect>
 /**
  * Defines a rectangular copper pour on the PCB.
  */
-export interface PcbCopperPourRect {
+export interface PcbCopperPourRect extends CopperPourClearanceProperties {
   type: "pcb_copper_pour"
   pcb_copper_pour_id: string
   covered_with_solder_mask: boolean
@@ -55,7 +61,7 @@ type InferredPcbCopperPourBRep = z.infer<typeof pcb_copper_pour_brep>
 /**
  * Defines a BRep copper pour on the PCB.
  */
-export interface PcbCopperPourBRep {
+export interface PcbCopperPourBRep extends CopperPourClearanceProperties {
   type: "pcb_copper_pour"
   pcb_copper_pour_id: string
   covered_with_solder_mask: boolean
@@ -79,7 +85,7 @@ type InferredPcbCopperPourPolygon = z.infer<typeof pcb_copper_pour_polygon>
  * Defines a polygonal copper pour on the PCB, specified by a list of points.
  * The polygon should be closed (the last point implicitly connects to the first).
  */
-export interface PcbCopperPourPolygon {
+export interface PcbCopperPourPolygon extends CopperPourClearanceProperties {
   type: "pcb_copper_pour"
   pcb_copper_pour_id: string
   covered_with_solder_mask: boolean
