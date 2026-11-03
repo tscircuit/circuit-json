@@ -46,6 +46,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
   - [Typescript Usage](#typescript-usage)
 
   - [Source Components](#source-components)
+    - [BomSource](#bomsource)
     - [SourceAmbiguousPortReference](#sourceambiguousportreference)
     - [SourceBoard](#sourceboard)
     - [SourceBus](#sourcebus)
@@ -341,6 +342,23 @@ There are 3 main element prefixes:
 
 ## Source Components
 
+### BomSource
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/properties/bom_source.ts)
+
+A purchasing option, independent of a live price or stock quote.
+
+```typescript
+/** A purchasing option, independent of a live price or stock quote. */
+interface BomSource {
+  supplier_name: string
+  supplier_part_number?: string
+  url?: string
+  /** Number of individual items in one purchasable pack. Omission means one. */
+  pack_quantity?: number
+}
+```
+
 ### SourceAmbiguousPortReference
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_ambiguous_port_reference.ts)
@@ -468,6 +486,13 @@ interface SourceComponentBase {
   internally_connected_source_port_ids?: string[][]
   source_group_id?: string
   subcircuit_id?: string
+  /** Physical assembly parent; independent of electrical group membership. */
+  parent_source_component_id?: string
+  /** Number required per parent assembly; omission means one. */
+  bom_quantity?: number
+  bom_sources?: BomSource[]
+  /** Build rolls up children; buy purchases this component and excludes child costs. */
+  bom_assembly_mode?: "build" | "buy"
 }
 ```
 
