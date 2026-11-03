@@ -13,7 +13,7 @@ algorithm, infer block dimensions, or resolve authoring names.
 | `system_block_page` | Positive finite `width` and `height` |
 | `system_block_group` | Finite `center`, positive finite `width` and `height` |
 | `system_block_component` | Finite `center`, positive finite `width` and `height` |
-| `system_block_connection` | Ordered `route` of at least two finite points; `label_center` when `label` is supplied |
+| `system_block_connection` | Ordered `route` of at least two finite points; `label_anchor_center` when `label` is supplied |
 
 All records have their own matching `*_id`. Groups, components, and connections
 also require `system_block_page_id`. Optional `name`, `display_name`, and (except
@@ -58,14 +58,15 @@ already resolved attachment sides and intermediate bends. Consecutive points mus
 be distinct. Straight, orthogonal, diagonal, and self-loop routes are supported;
 renderers must not replace supplied waypoints with an inferred shortest path.
 
-`kind` is explicitly `signal` or `power`. `direction` is explicitly `forward`
-(arrow at the last route point), `both` (arrows at both ends), or `none`. Neither
-field has a schema default; core materializes the authoring defaults before emission.
+`is_signal` and `is_power` are required independent booleans. Both may be true
+or both false; neither is inferred from the other. `direction` is explicitly
+`forward` (arrow at the last route point), `both` (arrows at both ends), or `none`.
+These fields have no schema defaults; core supplies their resolved values before emission.
 Arrowheads follow the first/last segment. Stroke and arrowhead styling is up to
 the viewer, without moving the stored attachment points.
 
 An optional `label` is preserved verbatim. Supplying a label, including an empty
-string, requires a `label_center` for centered horizontal text. The producer
+string, requires a `label_anchor_center` for centered horizontal text. The producer
 places the label; viewers do not infer its position from a route midpoint.
 
 ## Resolved PCB associations

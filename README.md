@@ -5405,14 +5405,16 @@ interface SystemBlockConnection {
   name?: string
   from_system_block_component_id: string
   to_system_block_component_id: string
-  kind: "signal" | "power"
+  /** Independent classifications; both flags are required. */
+  is_signal: boolean
+  is_power: boolean
   /** Forward draws an arrow at the route's end; both draws at both ends. */
   direction: "forward" | "both" | "none"
   /** Ordered page-local points from source to target; at least two, no zero-length segments. */
   route: Point[]
   label?: string
   /** Required when label is supplied. Center of horizontal text in page-local mm. */
-  label_center?: Point
+  label_anchor_center?: Point
 }
 ```
 

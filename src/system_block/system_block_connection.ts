@@ -11,7 +11,8 @@ export const system_block_connection = z
     name: system_block_id.optional(),
     from_system_block_component_id: system_block_id,
     to_system_block_component_id: system_block_id,
-    kind: z.enum(["signal", "power"]),
+    is_signal: z.boolean(),
+    is_power: z.boolean(),
     direction: z.enum(["forward", "both", "none"]),
     route: z
       .array(system_block_point)
@@ -27,14 +28,15 @@ export const system_block_connection = z
         "Consecutive route points must be distinct",
       ),
     label: z.string().optional(),
-    label_center: system_block_point.optional(),
+    label_anchor_center: system_block_point.optional(),
   })
   .refine(
     (connection) =>
-      connection.label === undefined || connection.label_center !== undefined,
+      connection.label === undefined ||
+      connection.label_anchor_center !== undefined,
     {
-      message: "A connection label requires a resolved label_center",
-      path: ["label_center"],
+      message: "A connection label requires a resolved label_anchor_center",
+      path: ["label_anchor_center"],
     },
   )
   .describe(
@@ -49,14 +51,16 @@ export interface SystemBlockConnection {
   name?: string
   from_system_block_component_id: string
   to_system_block_component_id: string
-  kind: "signal" | "power"
+  /** Independent classifications; both flags are required. */
+  is_signal: boolean
+  is_power: boolean
   /** Forward draws an arrow at the route's end; both draws at both ends. */
   direction: "forward" | "both" | "none"
   /** Ordered page-local points from source to target; at least two, no zero-length segments. */
   route: Point[]
   label?: string
   /** Required when label is supplied. Center of horizontal text in page-local mm. */
-  label_center?: Point
+  label_anchor_center?: Point
 }
 
 export type SystemBlockConnectionInput = z.input<typeof system_block_connection>

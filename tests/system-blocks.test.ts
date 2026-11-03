@@ -134,21 +134,26 @@ test("connections preserve bends, direction, and explicit off-midpoint label pos
     { x: -32, y: -20 },
     { x: -20, y: -20 },
   ]
-  for (const kind of ["signal", "power"] as const) {
+  for (const flags of [
+    { is_signal: true, is_power: false },
+    { is_signal: false, is_power: true },
+    { is_signal: true, is_power: true },
+    { is_signal: false, is_power: false },
+  ]) {
     for (const direction of ["forward", "both", "none"] as const) {
       const input = {
         ...connection,
         route,
-        kind,
+        ...flags,
         direction,
         label: "  3.3 V  ",
-        label_center: { x: -35, y: 5 },
+        label_anchor_center: { x: -35, y: 5 },
       }
       expect(system_block_connection.parse(input)).toEqual(input)
       expect(any_circuit_element.parse(input)).toEqual(input)
     }
   }
-  const { label, label_center, ...unlabeled } = connection
+  const { label, label_anchor_center, ...unlabeled } = connection
   expect(system_block_connection.parse(unlabeled)).toEqual(unlabeled)
   // Self-loops may close the polyline, but no consecutive segment may be zero length.
   const loop = {
@@ -201,13 +206,19 @@ test("rejects unresolved routes, invalid directions, and labels without placemen
       ],
     },
     { route: [{ x: 0, y: 0 }, { x: 1 }] },
-    { kind: undefined },
-    { kind: "electrical" },
+    { is_signal: undefined },
+    { is_power: undefined },
+    { is_signal: "true" },
+    { is_power: "false" },
+    { is_signal: null },
+    { is_power: 1 },
+    { is_signal: undefined, is_power: undefined, kind: "signal" },
     { direction: undefined },
     { direction: "reverse" },
-    { label_center: undefined },
-    { label_center: { x: 0, y: Infinity } },
-    { label_center: null },
+    { label_anchor_center: undefined },
+    { label_anchor_center: { x: 0, y: Infinity } },
+    { label_anchor_center: null },
+    { label_anchor_center: undefined, label_center: { x: 0, y: 0 } },
     { label: 123 },
   ]) {
     const invalid = { ...connection, ...patch }
@@ -218,7 +229,7 @@ test("rejects unresolved routes, invalid directions, and labels without placemen
     system_block_connection.safeParse({
       ...connection,
       label: "",
-      label_center: undefined,
+      label_anchor_center: undefined,
     }).success,
   ).toBe(false)
 })
@@ -317,8 +328,8 @@ test("renders the example entirely from supplied bounds, routes, and label cente
     pieces.push(
       `<polyline points="${points.map((p) => `${p.x},${p.y}`).join(" ")}" fill="none" stroke="#2563a6" stroke-width="0.4"${c.direction !== "none" ? ' marker-end="url(#arrow)"' : ""}${c.direction === "both" ? ' marker-start="url(#arrow)"' : ""}/>`,
     )
-    if (c.label !== undefined && c.label_center) {
-      const p = svgPoint(c.label_center)
+    if (c.label !== undefined && c.label_anchor_center) {
+      const p = svgPoint(c.label_anchor_center)
       pieces.push(
         `<text x="${p.x}" y="${p.y}" text-anchor="middle" dominant-baseline="central" font-size="2.5" fill="#526174">${escape(c.label)}</text>`,
       )
