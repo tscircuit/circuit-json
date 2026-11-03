@@ -10,7 +10,7 @@ It is a separate Circuit JSON element with its own stable identity:
   parent_cad_assembly_bom_item_id: "bom_housing",
   name: "M3 screws",
   quantity: 4,
-  purchase_url: "https://www.amazon.com/dp/B000000001",
+  purchase_urls: ["https://www.amazon.com/dp/B000000001"],
 }
 ```
 
@@ -31,9 +31,11 @@ entry; geometry count does not determine quantity. Both references can be omitte
 for unmodeled materials. Creating a BOM entry does not require a PCB footprint.
 
 Existing `supplier_part_numbers` identifiers can support parts-engine lookups.
-An optional `purchase_url` is a direct HTTP(S) product listing at any store,
-including Amazon. It does not imply automatic price support or a correspondence
-to any particular supplier part number. Live price and stock quotes remain in the
+Optional `purchase_urls` contains direct HTTP(S) product listings at any stores,
+including Amazon. Multiple URLs are purchasing options for the same BOM item;
+they do not add quantities. Omission or an empty array means no product links.
+Links do not imply automatic price support or a correspondence to any particular
+supplier part number. Live price and stock quotes remain in the
 parts engine or consuming UI.
 
 Parentage expresses BOM structure only. This record does not define build/buy

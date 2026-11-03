@@ -17,12 +17,15 @@ export const cad_assembly_bom_item = z
     supplier_part_numbers: z
       .record(supplier_name, z.array(z.string()))
       .optional(),
-    purchase_url: z
-      .string()
-      .url()
-      .refine((value) => /^https?:\/\//i.test(value), {
-        message: "Purchase URLs must use HTTP or HTTPS",
-      })
+    purchase_urls: z
+      .array(
+        z
+          .string()
+          .url()
+          .refine((value) => /^https?:\/\//i.test(value), {
+            message: "Purchase URLs must use HTTP or HTTPS",
+          }),
+      )
       .optional(),
   })
   .describe(
@@ -45,8 +48,8 @@ export interface CadAssemblyBomItem {
   cad_component_ids?: string[]
   /** Existing supplier identifiers for parts-engine lookup. */
   supplier_part_numbers?: Partial<Record<SupplierName, string[]>>
-  /** Optional product listing, including stores outside the parts engine. */
-  purchase_url?: string
+  /** Optional product listings, including stores outside the parts engine. */
+  purchase_urls?: string[]
 }
 
 export type CadAssemblyBomItemInput = z.input<typeof cad_assembly_bom_item>

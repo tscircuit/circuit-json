@@ -1541,8 +1541,8 @@ interface CadAssemblyBomItem {
   cad_component_ids?: string[]
   /** Existing supplier identifiers for parts-engine lookup. */
   supplier_part_numbers?: Partial<Record<SupplierName, string[]>>
-  /** Optional product listing, including stores outside the parts engine. */
-  purchase_url?: string
+  /** Optional product listings, including stores outside the parts engine. */
+  purchase_urls?: string[]
 }
 ```
 

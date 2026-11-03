@@ -15,7 +15,10 @@ const screws: CadAssemblyBomItem = {
 test("assembly materials need no source component, PCB footprint or CAD geometry", () => {
   const item = {
     ...screws,
-    purchase_url: "https://www.amazon.com/dp/B000000001?variant=black",
+    purchase_urls: [
+      "https://www.amazon.com/dp/B000000001?variant=black",
+      "https://parts.example.com/screws/m3",
+    ],
   }
   expect(any_circuit_element.parse(item)).toEqual(item)
 })
@@ -33,7 +36,7 @@ test("nested BOM entries preserve ownership, explicit quantities and geometry re
     parent_cad_assembly_bom_item_id: parent.cad_assembly_bom_item_id,
     cad_component_ids: ["screw_geometry_1", "screw_geometry_2"],
     supplier_part_numbers: { jlcpcb: ["C1525"] },
-    purchase_url: "https://parts.example.com/screws/m3",
+    purchase_urls: ["https://parts.example.com/screws/m3"],
   }
   expect(
     [parent, child].map((item) => any_circuit_element.parse(item)),
@@ -95,13 +98,31 @@ test("purchase links accept HTTP(S) listings from arbitrary stores", () => {
     "",
   ]) {
     expect(
-      cad_assembly_bom_item.safeParse({ ...screws, purchase_url }).success,
+      cad_assembly_bom_item.safeParse({
+        ...screws,
+        purchase_urls: ["https://parts.example.com/valid", purchase_url],
+      }).success,
     ).toBe(false)
   }
   expect(
     cad_assembly_bom_item.parse({
       ...screws,
-      purchase_url: "http://parts.example.com/123",
-    }).purchase_url,
-  ).toBe("http://parts.example.com/123")
+      purchase_urls: ["http://parts.example.com/123"],
+    }).purchase_urls,
+  ).toEqual(["http://parts.example.com/123"])
+})
+
+test("purchase URLs are an optional array, never a single string", () => {
+  expect(cad_assembly_bom_item.parse(screws)).not.toHaveProperty(
+    "purchase_urls",
+  )
+  expect(
+    cad_assembly_bom_item.parse({ ...screws, purchase_urls: [] }).purchase_urls,
+  ).toEqual([])
+  expect(
+    cad_assembly_bom_item.safeParse({
+      ...screws,
+      purchase_urls: "https://parts.example.com/123",
+    }).success,
+  ).toBe(false)
 })
