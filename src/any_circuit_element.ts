@@ -5,12 +5,17 @@ import * as pcb from "./pcb"
 import * as sch from "./schematic"
 import * as sim from "./simulation"
 import * as src from "./source"
+import * as system_block from "./system_block"
 import {
   expectStringUnionsMatch,
   expectTypesMatch,
 } from "./utils/expect-types-match"
 
 export const any_circuit_element = z.union([
+  system_block.system_block_page,
+  system_block.system_block_group,
+  system_block.system_block_component,
+  system_block.system_block_connection,
   pcb.pcb_quote_estimate,
   drawings.drawing_page,
   drawings.drawing_page_title_block,

@@ -268,6 +268,12 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [DrawingPageTitleBlock](#drawingpagetitleblock)
     - [DrawingPartView](#drawingpartview)
 
+  - [System Block Elements](#system-block-elements)
+    - [SystemBlockComponent](#systemblockcomponent)
+    - [SystemBlockConnection](#systemblockconnection)
+    - [SystemBlockGroup](#systemblockgroup)
+    - [SystemBlockPage](#systemblockpage)
+
 <!-- toc:end -->
 
 ## Typescript Usage
@@ -336,6 +342,9 @@ There are 3 main element prefixes:
     definition that we wouldn't want to lose.
 - `pcb_` - e.g. `pcb_component`, `pcb_port`. Anything required to render the PCB
 - `schematic_` - e.g. `schematic_component`. Anything required to render the Schematic
+
+The `system_block_` prefix describes [resolved system block diagrams](docs/system-blocks.md),
+including page bounds, block/group geometry, and routed logical connections.
 
 <!-- circuit-json-docs:start -->
 
@@ -5355,6 +5364,98 @@ interface DrawingSectionPlane {
   offset: number
   keep_side: "less" | "greater"
   hatch_spacing?: number
+}
+```
+
+## System Block Elements
+
+### SystemBlockComponent
+
+```typescript
+/** A functional block with resolved geometry and optional PCB associations. */
+interface SystemBlockComponent {
+  type: "system_block_component"
+  system_block_component_id: string
+  system_block_page_id: string
+  /** Immediate containing diagram group; omitted for a top-level block. */
+  system_block_group_id?: string
+  name?: string
+  display_name?: string
+  description?: string
+  /** Absolute page-local center in mm, including when inside a group. */
+  center: Point
+  /** Positive resolved dimensions in diagram mm, independent of PCB size. */
+  width: number
+  height: number
+  /** Resolved selection from pcbComponentName or pcbComponentNames. */
+  pcb_component_ids?: string[]
+  /** Resolved pcbSubcircuitName; alone selects the whole PCB group. */
+  pcb_group_id?: string
+}
+```
+
+### SystemBlockConnection
+
+```typescript
+/** A logical interface with resolved route and label placement. */
+interface SystemBlockConnection {
+  type: "system_block_connection"
+  system_block_connection_id: string
+  system_block_page_id: string
+  name?: string
+  from_system_block_component_id: string
+  to_system_block_component_id: string
+  /** Independent classifications; both flags are required. */
+  is_signal: boolean
+  is_power: boolean
+  /** Forward draws an arrow at the route's end; both draws at both ends. */
+  direction: "forward" | "both" | "none"
+  /** Ordered page-local points from source to target; at least two, no zero-length segments. */
+  route: Point[]
+  label?: string
+  /** Required when label is supplied. Center of horizontal text in page-local mm. */
+  label_anchor_center?: Point
+}
+```
+
+### SystemBlockGroup
+
+```typescript
+/** A subsystem boundary with resolved bounds, including space for its text. */
+interface SystemBlockGroup {
+  type: "system_block_group"
+  system_block_group_id: string
+  system_block_page_id: string
+  /** Immediate parent on the same page; omitted for a top-level group. */
+  parent_system_block_group_id?: string
+  name?: string
+  display_name?: string
+  description?: string
+  /** Absolute page-local center in mm; never relative to the parent group. */
+  center: Point
+  /** Positive resolved dimensions in diagram mm. */
+  width: number
+  height: number
+  /** Resolved selection from pcbComponentName or pcbComponentNames. */
+  pcb_component_ids?: string[]
+  /** Resolved pcbSubcircuitName; alone selects the whole PCB group. */
+  pcb_group_id?: string
+}
+```
+
+### SystemBlockPage
+
+```typescript
+/** A system overview with resolved page bounds in diagram mm. */
+interface SystemBlockPage {
+  type: "system_block_page"
+  system_block_page_id: string
+  name?: string
+  display_name?: string
+  description?: string
+  /** Positive resolved dimensions in diagram mm. */
+  width: number
+  height: number
 }
 ```
 

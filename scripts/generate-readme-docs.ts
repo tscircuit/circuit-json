@@ -47,7 +47,7 @@ interface ElementDoc {
 
 async function generateDocs() {
   const sourceFiles = await glob(
-    "src/{source,pcb,schematic,simulation,cad,drawing}/**/*.ts",
+    "src/{source,pcb,schematic,simulation,cad,drawing,system_block}/**/*.ts",
   )
 
   const sections = {
@@ -57,24 +57,27 @@ async function generateDocs() {
     schematic: [] as ElementDoc[],
     simulation: [] as ElementDoc[],
     drawing: [] as ElementDoc[],
+    system_block: [] as ElementDoc[],
     misc: [] as ElementDoc[],
   }
 
   for (const file of sourceFiles) {
     const content = fs.readFileSync(file, "utf8")
-    const section = file.replaceAll("\\", "/").includes("/drawing/")
-      ? "drawing"
-      : file.includes("\\source\\") || file.includes("/source/")
-        ? "source"
-        : file.includes("\\simulation\\") || file.includes("/simulation/")
-          ? "simulation"
-          : file.includes("\\cad\\") || file.includes("/cad/")
-            ? "cad"
-            : file.includes("pcb_")
-              ? "pcb"
-              : file.includes("schematic_")
-                ? "schematic"
-                : "misc"
+    const section = file.replaceAll("\\", "/").includes("/system_block/")
+      ? "system_block"
+      : file.replaceAll("\\", "/").includes("/drawing/")
+        ? "drawing"
+        : file.includes("\\source\\") || file.includes("/source/")
+          ? "source"
+          : file.includes("\\simulation\\") || file.includes("/simulation/")
+            ? "simulation"
+            : file.includes("\\cad\\") || file.includes("/cad/")
+              ? "cad"
+              : file.includes("pcb_")
+                ? "pcb"
+                : file.includes("schematic_")
+                  ? "schematic"
+                  : "misc"
 
     const basename = path.basename(file, ".ts")
     const primaryName = basename
@@ -226,6 +229,12 @@ async function generateDocs() {
 
   toc += "  - [Drawing Elements](#drawing-elements)\n"
   for (const elem of sections.drawing.sort((a, b) =>
+    a.name.localeCompare(b.name),
+  )) {
+    toc += `    - [${elem.name}](#${elem.name.toLowerCase()})\n`
+  }
+  toc += "  - [System Block Elements](#system-block-elements)\n"
+  for (const elem of sections.system_block.sort((a, b) =>
     a.name.localeCompare(b.name),
   )) {
     toc += `    - [${elem.name}](#${elem.name.toLowerCase()})\n`
@@ -390,6 +399,17 @@ async function generateDocs() {
 
   docs += "## Drawing Elements\n\n"
   for (const elem of sections.drawing.sort((a, b) =>
+    a.name.localeCompare(b.name),
+  )) {
+    docs += `### ${elem.name}\n\n`
+    docs += "```typescript\n" + elem.interface
+    if (elem.otherInterfaces.length > 0)
+      docs += "\n\n" + elem.otherInterfaces.join("\n\n")
+    docs += "\n```\n\n"
+  }
+
+  docs += "## System Block Elements\n\n"
+  for (const elem of sections.system_block.sort((a, b) =>
     a.name.localeCompare(b.name),
   )) {
     docs += `### ${elem.name}\n\n`
