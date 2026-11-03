@@ -8,3 +8,5 @@ export * from "./cad_reference_surface"
 
 export * from "./cad_explosion_stage"
 export * from "./cad_explosion_move"
+
+export * from "./cad_assembly_bom_item"
