@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="500" viewBox="0 0 200 100" font-family="sans-serif">
+<rect width="200" height="100" fill="white"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2563a6"/></marker></defs>
+<text x="8" y="10" font-size="4.5" fill="#20252d">Wireless sensor node</text>
+<rect x="8" y="20" width="184" height="70" rx="1.5" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.3"/>
+<text x="11" y="25" font-size="2.8" fill="#526174">Sensor node</text>
+<rect x="16" y="39" width="112" height="42" rx="1.5" fill="#eef2f7" stroke="#cbd5e1" stroke-width="0.3"/>
+<text x="19" y="44" font-size="2.8" fill="#526174">Sensing and processing</text>
+<polyline points="62,62 80,62" fill="none" stroke="#2563a6" stroke-width="0.4" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<text x="71" y="56" text-anchor="middle" dominant-baseline="central" font-size="2.5" fill="#526174">I2C</text>
+<polyline points="120,62 138,62" fill="none" stroke="#2563a6" stroke-width="0.4" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<text x="133" y="56" text-anchor="middle" dominant-baseline="central" font-size="2.5" fill="#526174">SPI</text>
+<rect x="22" y="51" width="40" height="22" rx="1" fill="white" stroke="#64748b" stroke-width="0.3"/>
+<text x="42" y="60" text-anchor="middle" font-size="3" fill="#20252d">Environment sensor</text>
+<text x="42" y="66" text-anchor="middle" font-size="2.4" fill="#526174">Temperature + humidity</text>
+<rect x="80" y="51" width="40" height="22" rx="1" fill="white" stroke="#64748b" stroke-width="0.3"/>
+<text x="100" y="60" text-anchor="middle" font-size="3" fill="#20252d">Microcontroller</text>
+<text x="100" y="66" text-anchor="middle" font-size="2.4" fill="#526174">Processes samples</text>
+<rect x="138" y="51" width="40" height="22" rx="1" fill="white" stroke="#64748b" stroke-width="0.3"/>
+<text x="158" y="60" text-anchor="middle" font-size="3" fill="#20252d">Radio module</text>
+<text x="158" y="66" text-anchor="middle" font-size="2.4" fill="#526174">Sends measurements</text>
+</svg>

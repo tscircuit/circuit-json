@@ -1,0 +1,91 @@
+[
+  {
+    "type": "system_block_page",
+    "system_block_page_id": "overview",
+    "name": "overview",
+    "display_name": "Wireless sensor node",
+    "width": 200,
+    "height": 100
+  },
+  {
+    "type": "system_block_group",
+    "system_block_group_id": "node",
+    "system_block_page_id": "overview",
+    "name": "node",
+    "display_name": "Sensor node",
+    "center": { "x": 0, "y": -5 },
+    "width": 184,
+    "height": 70
+  },
+  {
+    "type": "system_block_group",
+    "system_block_group_id": "processing",
+    "system_block_page_id": "overview",
+    "parent_system_block_group_id": "node",
+    "name": "processing",
+    "display_name": "Sensing and processing",
+    "center": { "x": -28, "y": -10 },
+    "width": 112,
+    "height": 42
+  },
+  {
+    "type": "system_block_component",
+    "system_block_component_id": "sensor",
+    "system_block_page_id": "overview",
+    "system_block_group_id": "processing",
+    "name": "sensor",
+    "display_name": "Environment sensor",
+    "description": "Temperature + humidity",
+    "center": { "x": -58, "y": -12 },
+    "width": 40,
+    "height": 22
+  },
+  {
+    "type": "system_block_component",
+    "system_block_component_id": "mcu",
+    "system_block_page_id": "overview",
+    "system_block_group_id": "processing",
+    "name": "mcu",
+    "display_name": "Microcontroller",
+    "description": "Processes samples",
+    "center": { "x": 0, "y": -12 },
+    "width": 40,
+    "height": 22
+  },
+  {
+    "type": "system_block_component",
+    "system_block_component_id": "radio",
+    "system_block_page_id": "overview",
+    "system_block_group_id": "node",
+    "name": "radio",
+    "display_name": "Radio module",
+    "description": "Sends measurements",
+    "center": { "x": 58, "y": -12 },
+    "width": 40,
+    "height": 22
+  },
+  {
+    "type": "system_block_connection",
+    "system_block_connection_id": "i2c",
+    "system_block_page_id": "overview",
+    "from_system_block_component_id": "sensor",
+    "to_system_block_component_id": "mcu",
+    "kind": "signal",
+    "direction": "both",
+    "route": [{ "x": -38, "y": -12 }, { "x": -20, "y": -12 }],
+    "label": "I2C",
+    "label_center": { "x": -29, "y": -6 }
+  },
+  {
+    "type": "system_block_connection",
+    "system_block_connection_id": "spi",
+    "system_block_page_id": "overview",
+    "from_system_block_component_id": "mcu",
+    "to_system_block_component_id": "radio",
+    "kind": "signal",
+    "direction": "both",
+    "route": [{ "x": 20, "y": -12 }, { "x": 38, "y": -12 }],
+    "label": "SPI",
+    "label_center": { "x": 33, "y": -6 }
+  }
+]
