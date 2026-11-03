@@ -46,7 +46,6 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
   - [Typescript Usage](#typescript-usage)
 
   - [Source Components](#source-components)
-    - [BomSource](#bomsource)
     - [SourceAmbiguousPortReference](#sourceambiguousportreference)
     - [SourceBoard](#sourceboard)
     - [SourceBus](#sourcebus)
@@ -342,23 +341,6 @@ There are 3 main element prefixes:
 
 ## Source Components
 
-### BomSource
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/properties/bom_source.ts)
-
-A purchasing option, independent of a live price or stock quote.
-
-```typescript
-/** A purchasing option, independent of a live price or stock quote. */
-interface BomSource {
-  supplier_name: string
-  supplier_part_number?: string
-  url?: string
-  /** Number of individual items in one purchasable pack. Omission means one. */
-  pack_quantity?: number
-}
-```
-
 ### SourceAmbiguousPortReference
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_ambiguous_port_reference.ts)
@@ -480,6 +462,8 @@ interface SourceComponentBase {
   name: string
   manufacturer_part_number?: string
   supplier_part_numbers?: Partial<Record<SupplierName, string[]>>
+  /** Product listing URLs, including suppliers outside the parts engine. */
+  supplier_part_urls?: string[]
   display_value?: string
   display_name?: string
   are_pins_interchangeable?: boolean
@@ -490,9 +474,6 @@ interface SourceComponentBase {
   parent_source_component_id?: string
   /** Number required per parent assembly; omission means one. */
   bom_quantity?: number
-  bom_sources?: BomSource[]
-  /** Build rolls up children; buy purchases this component and excludes child costs. */
-  bom_assembly_mode?: "build" | "buy"
 }
 ```
 

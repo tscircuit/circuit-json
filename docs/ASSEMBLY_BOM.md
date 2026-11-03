@@ -1,31 +1,41 @@
 # Assembly BOM metadata
 
-Source components may describe purchasing requirements without a PCB footprint.
-`bom_sources` stores product URLs (including Amazon and other arbitrary suppliers)
-and/or supplier part numbers. These are alternative purchasing options, not
-additional materials. Existing `supplier_part_numbers` remains supported.
+Components can carry product links directly, including assembly materials without
+PCB footprints:
+
+```ts
+{
+  type: "source_component",
+  ftype: "subassembly",
+  source_component_id: "housing",
+  name: "Housing",
+  parent_source_component_id: "device",
+  bom_quantity: 1,
+  supplier_part_urls: ["https://www.amazon.com/dp/B000000001"],
+}
+```
+
+`supplier_part_urls` is an optional array of complete HTTP(S) product listing
+URLs. It accepts any supplier host, so adding an Amazon or specialist supplier
+link does not require changing the supplier enum. URLs retain their query strings
+and are independent of `supplier_part_numbers`; there is no positional mapping
+between the two fields. Existing electronic supplier identifiers continue to use
+`supplier_part_numbers` unchanged. Multiple URLs are links to purchasing options
+for the same component, not additional BOM items.
 
 `parent_source_component_id` preserves physical assembly membership separately
-from `source_group_id` and `subcircuit_id`. Producers should emit an acyclic tree
-with existing parents. Consumers must detect cycles and tolerate missing parents.
+from electrical `source_group_id` and `subcircuit_id`. Producers should emit an
+acyclic hierarchy with existing parents. Parentage is structural and does not
+specify how an assembly should be purchased or how prices should be rolled up.
 
 `bom_quantity` is a positive integer count per parent assembly, defaulting to one
-in consumers. Descendant quantities multiply through their ancestors. It does not
-create additional geometry. `pack_quantity` is the number of individual items in
-a purchasable pack, also defaulting to one. Fractional/length-based materials are
-outside this initial contract.
+in consumers. It does not create additional geometry. Fractional/length-based
+materials are outside this initial contract.
 
-`bom_assembly_mode: "build"` identifies a physical assembly whose material cost is
-the sum of its children. `"buy"` identifies a complete purchased assembly: its
-children may be inspected, but must not also contribute to purchasing totals.
-Without a mode, consumers may treat a component with physical children as a built
-assembly, and a leaf as a purchased item. Electrical groups alone do not imply a
-physical purchasing boundary.
+All three fields are optional, and parsing old documents does not add defaults.
+Prices and stock remain in the parts engine or consuming UI. A product URL does
+not imply automatic pricing support. This API contains no purchasing modes,
+pack sizes, or separate supplier-offer records.
 
-Prices and stock are deliberately absent. Live quotes belong to the consuming
-parts engine/UI, with their currency, quantity basis and lookup time. A URL alone
-does not imply that automatic pricing is available.
-
-All fields are optional, so old documents retain their exact parsed shape. This
-schema establishes the interchange contract; TSX authoring and renderer emission
-are separate integrations.
+This schema defines the interchange fields. TSX authoring and renderer emission
+remain separate integrations.

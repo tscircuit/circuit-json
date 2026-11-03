@@ -4,7 +4,6 @@ import {
 } from "src/pcb/properties/supplier_name"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import { z } from "zod"
-import { bom_source, type BomSource } from "../properties/bom_source"
 
 export interface SourceComponentBase {
   type: "source_component"
@@ -13,6 +12,8 @@ export interface SourceComponentBase {
   name: string
   manufacturer_part_number?: string
   supplier_part_numbers?: Partial<Record<SupplierName, string[]>>
+  /** Product listing URLs, including suppliers outside the parts engine. */
+  supplier_part_urls?: string[]
   display_value?: string
   display_name?: string
   are_pins_interchangeable?: boolean
@@ -23,9 +24,6 @@ export interface SourceComponentBase {
   parent_source_component_id?: string
   /** Number required per parent assembly; omission means one. */
   bom_quantity?: number
-  bom_sources?: BomSource[]
-  /** Build rolls up children; buy purchases this component and excludes child costs. */
-  bom_assembly_mode?: "build" | "buy"
 }
 
 export const source_component_base = z.object({
@@ -37,6 +35,16 @@ export const source_component_base = z.object({
   supplier_part_numbers: z
     .record(supplier_name, z.array(z.string()))
     .optional(),
+  supplier_part_urls: z
+    .array(
+      z
+        .string()
+        .url()
+        .refine((value) => /^https?:\/\//i.test(value), {
+          message: "Supplier product URLs must use HTTP or HTTPS",
+        }),
+    )
+    .optional(),
   display_value: z.string().optional(),
   display_name: z.string().optional(),
   are_pins_interchangeable: z.boolean().optional(),
@@ -45,8 +53,6 @@ export const source_component_base = z.object({
   subcircuit_id: z.string().optional(),
   parent_source_component_id: z.string().optional(),
   bom_quantity: z.number().int().positive().finite().optional(),
-  bom_sources: z.array(bom_source).optional(),
-  bom_assembly_mode: z.enum(["build", "buy"]).optional(),
 })
 
 type InferredSourceComponentBase = z.infer<typeof source_component_base>
