@@ -1,0 +1,411 @@
+[
+  {
+    "type": "system_block_connection",
+    "system_block_connection_id": "system_block_connection_0",
+    "system_block_page_id": "system_block_page_0",
+    "from_system_block_component_id": "system_block_component_0",
+    "to_system_block_component_id": "system_block_component_1",
+    "is_signal": false,
+    "is_power": true,
+    "direction": "forward",
+    "route": [
+      {
+        "x": -10.3125,
+        "y": 102.0
+      },
+      {
+        "x": 0.342292,
+        "y": 85.36813
+      },
+      {
+        "x": 2.5,
+        "y": 78.0,
+        "cubic_bezier_control_points": [
+          {
+            "x": 1.780764,
+            "y": 83.12271
+          },
+          {
+            "x": 2.5,
+            "y": 80.666667
+          }
+        ]
+      },
+      {
+        "x": 2.5,
+        "y": 44.0
+      }
+    ],
+    "label": "3.3 V",
+    "label_anchor_center": {
+      "x": -4.25,
+      "y": 82.0
+    }
+  },
+  {
+    "type": "system_block_connection",
+    "system_block_connection_id": "system_block_connection_1",
+    "system_block_page_id": "system_block_page_0",
+    "from_system_block_component_id": "system_block_component_0",
+    "to_system_block_component_id": "system_block_component_3",
+    "is_signal": false,
+    "is_power": true,
+    "direction": "forward",
+    "route": [
+      {
+        "x": -32.4375,
+        "y": 102.0
+      },
+      {
+        "x": -53.423843,
+        "y": 84.556806
+      },
+      {
+        "x": -56.5,
+        "y": 78.0,
+        "cubic_bezier_control_points": [
+          {
+            "x": -55.474614,
+            "y": 82.852269
+          },
+          {
+            "x": -56.5,
+            "y": 80.666667
+          }
+        ]
+      },
+      {
+        "x": -56.5,
+        "y": -60.0
+      },
+      {
+        "x": -53.5872,
+        "y": -66.741459,
+        "cubic_bezier_control_points": [
+          {
+            "x": -56.5,
+            "y": -62.666667
+          },
+          {
+            "x": -55.529067,
+            "y": -64.91382
+          }
+        ]
+      },
+      {
+        "x": -35.25,
+        "y": -84.0
+      }
+    ],
+    "label": "3.3 V",
+    "label_anchor_center": {
+      "x": -63.25,
+      "y": 0.0
+    }
+  },
+  {
+    "type": "system_block_connection",
+    "system_block_connection_id": "system_block_connection_2",
+    "system_block_page_id": "system_block_page_0",
+    "from_system_block_component_id": "system_block_component_1",
+    "to_system_block_component_id": "system_block_component_2",
+    "is_signal": true,
+    "is_power": false,
+    "direction": "forward",
+    "route": [
+      {
+        "x": 20.96875,
+        "y": 20.0
+      },
+      {
+        "x": 48.395837,
+        "y": 2.179355
+      },
+      {
+        "x": 49.830751,
+        "y": -3.509485,
+        "cubic_bezier_control_points": [
+          {
+            "x": 50.631946,
+            "y": 0.726452
+          },
+          {
+            "x": 51.11025,
+            "y": -1.169828
+          }
+        ]
+      },
+      {
+        "x": 40.8125,
+        "y": -20.0
+      }
+    ],
+    "label": "PWM",
+    "label_anchor_center": {
+      "x": 46.5,
+      "y": 0.0
+    }
+  },
+  {
+    "type": "system_block_connection",
+    "system_block_connection_id": "system_block_connection_3",
+    "system_block_page_id": "system_block_page_0",
+    "from_system_block_component_id": "system_block_component_1",
+    "to_system_block_component_id": "system_block_component_2",
+    "is_signal": true,
+    "is_power": false,
+    "direction": "none",
+    "route": [
+      {
+        "x": 10.0,
+        "y": 20.0
+      },
+      {
+        "x": 20.380004,
+        "y": 3.391993
+      },
+      {
+        "x": 23.878742,
+        "y": -3.754873,
+        "cubic_bezier_control_points": [
+          {
+            "x": 21.793335,
+            "y": 1.130664
+          },
+          {
+            "x": 22.959581,
+            "y": -1.251624
+          }
+        ]
+      },
+      {
+        "x": 29.84375,
+        "y": -20.0
+      }
+    ],
+    "label": "Enable",
+    "label_anchor_center": {
+      "x": 15.0,
+      "y": 0.0
+    }
+  },
+  {
+    "type": "system_block_connection",
+    "system_block_connection_id": "system_block_connection_4",
+    "system_block_page_id": "system_block_page_0",
+    "from_system_block_component_id": "system_block_component_2",
+    "to_system_block_component_id": "system_block_component_3",
+    "is_signal": true,
+    "is_power": false,
+    "direction": "forward",
+    "route": [
+      {
+        "x": 34.25,
+        "y": -44.0
+      },
+      {
+        "x": 34.25,
+        "y": -60.0
+      },
+      {
+        "x": 30.765749,
+        "y": -65.964688,
+        "cubic_bezier_control_points": [
+          {
+            "x": 34.25,
+            "y": -62.666667
+          },
+          {
+            "x": 33.088583,
+            "y": -64.654896
+          }
+        ]
+      },
+      {
+        "x": -1.21875,
+        "y": -84.0
+      }
+    ],
+    "label": "Rotation",
+    "label_anchor_center": {
+      "x": 25.25,
+      "y": -64.0
+    }
+  },
+  {
+    "type": "system_block_connection",
+    "system_block_connection_id": "system_block_connection_5",
+    "system_block_page_id": "system_block_page_0",
+    "from_system_block_component_id": "system_block_component_3",
+    "to_system_block_component_id": "system_block_component_1",
+    "is_signal": true,
+    "is_power": false,
+    "direction": "forward",
+    "route": [
+      {
+        "x": -20.25,
+        "y": -84.0
+      },
+      {
+        "x": -17.237154,
+        "y": -67.931489
+      },
+      {
+        "x": -16.5,
+        "y": -60.0,
+        "cubic_bezier_control_points": [
+          {
+            "x": -16.745718,
+            "y": -65.310496
+          },
+          {
+            "x": -16.5,
+            "y": -62.666667
+          }
+        ]
+      },
+      {
+        "x": -16.5,
+        "y": -4.0
+      },
+      {
+        "x": -14.457845,
+        "y": 3.439419,
+        "cubic_bezier_control_points": [
+          {
+            "x": -16.5,
+            "y": -1.333333
+          },
+          {
+            "x": -15.819282,
+            "y": 1.146473
+          }
+        ]
+      },
+      {
+        "x": -4.625,
+        "y": 20.0
+      }
+    ],
+    "label": "Feedback",
+    "label_anchor_center": {
+      "x": -25.5,
+      "y": -32.0
+    }
+  },
+  {
+    "type": "system_block_connection",
+    "system_block_connection_id": "system_block_connection_6",
+    "system_block_page_id": "system_block_page_0",
+    "from_system_block_component_id": "system_block_component_1",
+    "to_system_block_component_id": "system_block_component_1",
+    "is_signal": true,
+    "is_power": false,
+    "direction": "forward",
+    "route": [
+      {
+        "x": 26.5,
+        "y": 37.798658
+      },
+      {
+        "x": 50.087601,
+        "y": 43.497675
+      },
+      {
+        "x": 54.305556,
+        "y": 44.0,
+        "cubic_bezier_control_points": [
+          {
+            "x": 51.473645,
+            "y": 43.832558
+          },
+          {
+            "x": 52.87963,
+            "y": 44.0
+          }
+        ]
+      },
+      {
+        "x": 56.444444,
+        "y": 44.0
+      },
+      {
+        "x": 59.591908,
+        "y": 42.113834,
+        "cubic_bezier_control_points": [
+          {
+            "x": 57.87037,
+            "y": 44.0
+          },
+          {
+            "x": 58.919525,
+            "y": 43.371278
+          }
+        ]
+      },
+      {
+        "x": 63.113834,
+        "y": 35.527375
+      },
+      {
+        "x": 63.113834,
+        "y": 28.472625,
+        "cubic_bezier_control_points": [
+          {
+            "x": 64.371278,
+            "y": 33.175792
+          },
+          {
+            "x": 64.371278,
+            "y": 30.824208
+          }
+        ]
+      },
+      {
+        "x": 59.591908,
+        "y": 21.886166
+      },
+      {
+        "x": 56.444444,
+        "y": 20.0,
+        "cubic_bezier_control_points": [
+          {
+            "x": 58.919525,
+            "y": 20.628722
+          },
+          {
+            "x": 57.87037,
+            "y": 20.0
+          }
+        ]
+      },
+      {
+        "x": 54.305556,
+        "y": 20.0
+      },
+      {
+        "x": 50.087601,
+        "y": 20.502325,
+        "cubic_bezier_control_points": [
+          {
+            "x": 52.87963,
+            "y": 20.0
+          },
+          {
+            "x": 51.473645,
+            "y": 20.167442
+          }
+        ]
+      },
+      {
+        "x": 26.5,
+        "y": 26.201342
+      }
+    ],
+    "label": "Watchdog",
+    "label_anchor_center": {
+      "x": 56.0,
+      "y": 32.0
+    }
+  }
+]
