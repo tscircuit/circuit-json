@@ -112,6 +112,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceUnnamedTraceWarning](#sourceunnamedtracewarning)
     - [UnknownErrorFindingPart](#unknownerrorfindingpart)
   - [CAD Components](#cad-components)
+    - [CadAssemblyBomItem](#cadassemblybomitem)
     - [CadCable](#cadcable)
     - [CadCollisionError](#cadcollisionerror)
     - [CadComponent](#cadcomponent)
@@ -462,18 +463,12 @@ interface SourceComponentBase {
   name: string
   manufacturer_part_number?: string
   supplier_part_numbers?: Partial<Record<SupplierName, string[]>>
-  /** Product listing URLs, including suppliers outside the parts engine. */
-  supplier_part_urls?: string[]
   display_value?: string
   display_name?: string
   are_pins_interchangeable?: boolean
   internally_connected_source_port_ids?: string[][]
   source_group_id?: string
   subcircuit_id?: string
-  /** Physical assembly parent; independent of electrical group membership. */
-  parent_source_component_id?: string
-  /** Number required per parent assembly; omission means one. */
-  bom_quantity?: number
 }
 ```
 
@@ -1522,6 +1517,34 @@ interface UnknownErrorFindingPart extends BaseCircuitJsonError {
 ```
 
 ## CAD Components
+
+### CadAssemblyBomItem
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_assembly_bom_item.ts)
+
+A bill-of-materials entry for a physical assembly.
+
+```typescript
+/** A bill-of-materials entry for a physical assembly. */
+interface CadAssemblyBomItem {
+  type: "cad_assembly_bom_item"
+  cad_assembly_bom_item_id: string
+  /** Human-readable item or subassembly name. */
+  name: string
+  /** Individual item count per parent assembly, or per root build when unparented. */
+  quantity: number
+  /** Parent BOM entry for nesting; independent of electrical group membership. */
+  parent_cad_assembly_bom_item_id?: string
+  /** Optional link to the authored component. BOM-only materials may omit it. */
+  source_component_id?: string
+  /** Optional associated geometry; its count does not determine the quantity. */
+  cad_component_ids?: string[]
+  /** Existing supplier identifiers for parts-engine lookup. */
+  supplier_part_numbers?: Partial<Record<SupplierName, string[]>>
+  /** Optional product listing, including stores outside the parts engine. */
+  purchase_url?: string
+}
+```
 
 ### CadCable
 

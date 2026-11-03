@@ -1,41 +1,45 @@
-# Assembly BOM metadata
+# Assembly BOM entries
 
-Components can carry product links directly, including assembly materials without
-PCB footprints:
+`cad_assembly_bom_item` represents a material or subassembly in an assembly BOM.
+It is a separate Circuit JSON element with its own stable identity:
 
 ```ts
 {
-  type: "source_component",
-  ftype: "subassembly",
-  source_component_id: "housing",
-  name: "Housing",
-  parent_source_component_id: "device",
-  bom_quantity: 1,
-  supplier_part_urls: ["https://www.amazon.com/dp/B000000001"],
+  type: "cad_assembly_bom_item",
+  cad_assembly_bom_item_id: "bom_screws",
+  parent_cad_assembly_bom_item_id: "bom_housing",
+  name: "M3 screws",
+  quantity: 4,
+  purchase_url: "https://www.amazon.com/dp/B000000001",
 }
 ```
 
-`supplier_part_urls` is an optional array of complete HTTP(S) product listing
-URLs. It accepts any supplier host, so adding an Amazon or specialist supplier
-link does not require changing the supplier enum. URLs retain their query strings
-and are independent of `supplier_part_numbers`; there is no positional mapping
-between the two fields. Existing electronic supplier identifiers continue to use
-`supplier_part_numbers` unchanged. Multiple URLs are links to purchasing options
-for the same component, not additional BOM items.
+`parent_cad_assembly_bom_item_id` refers to another BOM entry and enables nested,
+collapsible subassemblies. An omitted parent means a root entry. Producers should
+emit an acyclic hierarchy with existing parents; the per-record schema does not
+resolve references or validate the complete hierarchy.
 
-`parent_source_component_id` preserves physical assembly membership separately
-from electrical `source_group_id` and `subcircuit_id`. Producers should emit an
-acyclic hierarchy with existing parents. Parentage is structural and does not
-specify how an assembly should be purchased or how prices should be rolled up.
+`quantity` is a required positive safe integer: the number of individual items
+per parent assembly, or per root build when there is no parent. Four screws under
+a housing with quantity two require eight screws for one root build. Quantity
+does not create geometry and is not a pack size. Length-based materials are
+outside this initial contract.
 
-`bom_quantity` is a positive integer count per parent assembly, defaulting to one
-in consumers. It does not create additional geometry. Fractional/length-based
-materials are outside this initial contract.
+An optional `source_component_id` connects the entry to its authored component.
+Optional `cad_component_ids` associate one or more geometry records with the
+entry; geometry count does not determine quantity. Both references can be omitted
+for unmodeled materials. Creating a BOM entry does not require a PCB footprint.
 
-All three fields are optional, and parsing old documents does not add defaults.
-Prices and stock remain in the parts engine or consuming UI. A product URL does
-not imply automatic pricing support. This API contains no purchasing modes,
-pack sizes, or separate supplier-offer records.
+Existing `supplier_part_numbers` identifiers can support parts-engine lookups.
+An optional `purchase_url` is a direct HTTP(S) product listing at any store,
+including Amazon. It does not imply automatic price support or a correspondence
+to any particular supplier part number. Live price and stock quotes remain in the
+parts engine or consuming UI.
 
-This schema defines the interchange fields. TSX authoring and renderer emission
-remain separate integrations.
+Parentage expresses BOM structure only. This record does not define build/buy
+modes, supplier-offer objects or price-rollup policy. Source component schemas
+remain unchanged; assembly-specific quantities, links and nesting live here.
+
+This schema provides the interchange format. TSX emission, converter and UI
+integration are separate follow-ups. Consumers must avoid generating duplicate
+BOM entries from a source component already represented by an explicit entry.
