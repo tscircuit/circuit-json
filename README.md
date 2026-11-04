@@ -3830,9 +3830,7 @@ interface PcbVia {
   topmost_drill_layer?: LayerRef
   bottommost_drill_layer?: LayerRef
   through_hole?: boolean
-  /** @deprecated */
   from_layer?: LayerRef
-  /** @deprecated */
   to_layer?: LayerRef
   layers: LayerRef[]
   /** PCB ports belonging to this via, including layer ports and aliases. */
