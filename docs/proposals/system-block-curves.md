@@ -1,9 +1,10 @@
-# Proposal: curved system block routes
+# Curved system block routes
 
-Status: proposal only. These fields are not registered schemas yet, and current
-core/circuit-to-svg releases still produce/render polylines.
+Status: the Zod schemas, exported types, and validation tests are implemented in
+this PR. Cubic rendering in circuit-to-svg and circular-corner generation in core
+remain separate follow-ups. The illustrations below demonstrate the geometry.
 
-## Proposed representation
+## Representation
 
 Keep `system_block_connection.route` as an ordered array of endpoints. Add an
 optional pair of absolute control points to the endpoint of a cubic segment:
@@ -142,8 +143,9 @@ the handles, so lossless round trips require a schema-aware version. A closed
 single-segment loop is a deliberate exception: it requires the new validator and
 has no useful old-renderer fallback; use distinct loop anchors during rollout.
 
-1. Add/export `SystemBlockRoutePoint` and its Zod validator, then update connection
-   validation and public-union round-trip tests.
+1. Implemented in this PR: `SystemBlockRoutePoint`, `SystemBlockRoutePointInput`,
+   and `system_block_route_point`, connection validation, and public-union
+   round-trip tests.
 2. Add `L`/`C` path rendering, tangent arrowheads, and snapshots in circuit-to-svg.
 3. Let core resolve optional corner radii into circle-derived control points after
    layout. Keep the original endpoints, enforce tangent joins, handle insufficient

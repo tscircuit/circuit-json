@@ -274,6 +274,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SystemBlockConnection](#systemblockconnection)
     - [SystemBlockGroup](#systemblockgroup)
     - [SystemBlockPage](#systemblockpage)
+    - [SystemBlockRoutePoint](#systemblockroutepoint)
 
 <!-- toc:end -->
 
@@ -5439,8 +5440,8 @@ interface SystemBlockConnection {
   is_power: boolean
   /** Forward draws an arrow at the route's end; both draws at both ends. */
   direction: "forward" | "both" | "none"
-  /** Ordered page-local points from source to target; at least two, no zero-length segments. */
-  route: Point[]
+  /** Ordered page-local endpoints from source to target; at least two, no zero-length segments. */
+  route: SystemBlockRoutePoint[]
   label?: string
   /** Required when label is supplied. Center of horizontal text in page-local mm. */
   label_anchor_center?: Point
@@ -5485,6 +5486,19 @@ interface SystemBlockPage {
   /** Positive resolved dimensions in diagram mm. */
   width: number
   height: number
+}
+```
+
+### SystemBlockRoutePoint
+
+```typescript
+/** A resolved route endpoint in absolute page-local diagram mm. */
+interface SystemBlockRoutePoint extends Point {
+  /** Controls the cubic segment arriving from the previous endpoint, in departure
+   * then arrival order. Omit for a straight segment; forbidden on the first point.
+   * Both controls use the same absolute coordinates as the endpoints. */
+
+  cubic_bezier_control_points?: [Point, Point]
 }
 ```
 
