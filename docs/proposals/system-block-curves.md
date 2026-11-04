@@ -28,8 +28,8 @@ interface SystemBlockConnection {
     {
       "x": 18, "y": 6,
       "cubic_bezier_control_points": [
-        { "x": 16, "y": 0 },
-        { "x": 18, "y": 2 }
+        { "x": 15.313708, "y": 0 },
+        { "x": 18, "y": 2.686292 }
       ]
     },
     { "x": 18, "y": 24 }
@@ -37,7 +37,8 @@ interface SystemBlockConnection {
 }
 ```
 
-This is a straight segment, a rounded turn, then another straight segment. The
+This is a straight segment, a radius-6 quarter-circle approximation, then another
+straight segment. Its circular arc is centered at `(12, 6)`. The
 first control point belongs to the departure from the previous endpoint; the
 second belongs to the arrival at the current endpoint. Missing controls mean a
 straight line. The first route point must not carry controls.
@@ -46,6 +47,47 @@ All endpoints and controls are **absolute page-local points in diagram mm**, wit
 the origin at page center, +X right and +Y up. Group membership introduces no
 transform. The representation stores geometry, not an SVG path string, a
 renderer-specific interpolation name, or an unresolved corner-radius request.
+
+## Circular corners, not arbitrary smoothing
+
+The recommended producer behavior is a **constant-radius circular fillet** with
+matching tangent directions where the straight segments meet it. Cubic Bézier
+storage does not imply loose or wavy interpolation: the handles can be derived
+from a circle.
+
+![Small parabolic rounding compared with a circular corner and a rounded return route](./system-block-rounded-corners.svg)
+
+For a 90-degree turn of radius `r`, put both handles along the adjoining straight
+segments at distance `k * r` from their respective curve endpoints, where
+`k = 4/3 * tan(pi/8) ≈ 0.55228475`. This closely follows a quarter circle, with a
+maximum radial error of about **0.0273% of the radius**. The endpoints and tangent
+directions match the circle. See the [standard circular-arc construction](https://spencermortensen.com/articles/bezier-circle/).
+A return route can use two such quarter-circle segments for a round semicircular
+end, rather than rounding a pointed apex.
+
+For a general signed turn `theta` between incoming and outgoing unit directions:
+
+1. Remove redundant collinear waypoints first. Compute the tangent trim distance
+   `d = r * tan(abs(theta)/2)` on each adjacent segment.
+2. Trim back from the corner along the incoming segment and forward along the
+   outgoing segment. Join those points with the circular arc tangent to both.
+3. For each arc piece with sweep `phi`, use handle distance
+   `h = 4/3 * r * tan(abs(phi)/4)` along its endpoint tangents. Split turns larger
+   than 90 degrees into multiple pieces to retain the quarter-circle error bound.
+4. Limit trimming so adjacent corners do not consume more than their shared
+   segment. The illustrative motor-control generator caps each trim at half each
+   adjacent segment and reduces that corner's radius accordingly. If a requested
+   radius must be preserved, the producer must route with enough clearance.
+
+Skip straight-through corners. An exact reversal has no finite fillet at a
+single waypoint: lay out a U-turn with distinct anchors and adequate room. Check
+rounded geometry for obstacle collisions and recalculate bounds. A larger radius
+alone does not fix a poor routing skeleton.
+
+This produces tangent-continuous joins, not curvature-continuous joins: curvature
+changes from zero on a straight line to `1/r` on a circular arc. There is no
+visible kink. The authoring API can eventually accept a corner radius; core must
+resolve it to endpoints and control points before emitting Circuit JSON.
 
 ## Effect on the motor-control example
 
@@ -59,9 +101,15 @@ to the second image. They are a fragment referencing the unchanged blocks from
 core's motor-control fixture, not a standalone Circuit JSON document. The image
 is an illustrative SVG path rendering, not output from released circuit-to-svg.
 
-The example inserts rounded transitions at internal bends, preserves endpoints,
-and keeps labels at their existing `label_anchor_center`. Core could offer a
-rounded-route option later; this proposal only defines its resolved output.
+The revised example uses a target radius of 12 diagram mm, reduced only where
+adjacent segments leave insufficient space. It replaces the earlier tiny
+quadratic-derived bends with circle-derived cubic pieces and preserves endpoints.
+The PWM label moves outward via `label_anchor_center` to avoid its newly curved
+route; the other label anchors remain unchanged. It retains the original
+Dagre route directions, so diagonal routing remains diagonal. The close-up above
+shows the same construction on orthogonal routes and a semicircular return.
+Core could offer a rounded-route option later; this proposal only defines its
+resolved output.
 
 ## Validation and rendering contract
 
@@ -97,8 +145,9 @@ has no useful old-renderer fallback; use distinct loop anchors during rollout.
 1. Add/export `SystemBlockRoutePoint` and its Zod validator, then update connection
    validation and public-union round-trip tests.
 2. Add `L`/`C` path rendering, tangent arrowheads, and snapshots in circuit-to-svg.
-3. Let core resolve optional rounding into explicit control points after layout.
-   Keep the original endpoints and re-check bounds/collisions.
+3. Let core resolve optional corner radii into circle-derived control points after
+   layout. Keep the original endpoints, enforce tangent joins, handle insufficient
+   clearance, and re-check bounds/collisions.
 4. Extend other diagram records only when a concrete consumer needs the same
    representation. This does not change physical PCB trace geometry.
 
