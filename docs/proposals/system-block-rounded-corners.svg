@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="340" viewBox="0 0 1000 340" font-family="Arial, sans-serif">
+<rect width="1000" height="340" rx="16" fill="#f8fafc"/>
+<path d="M330 24V310M660 24V310" stroke="#e2e8f0"/>
+<g font-size="18" font-weight="600" fill="#0f172a"><text x="28" y="42">Previous example</text><text x="358" y="42">Circular corner</text><text x="688" y="42">Rounded return route</text></g>
+<g font-size="14" fill="#475569"><text x="28" y="70">Small parabolic bend</text><text x="358" y="70">Radius 72 · tangent joins</text><text x="688" y="70">Two quarter-circle segments</text></g>
+<circle cx="510" cy="184" r="72" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 5"/>
+<path d="M510 184H582" stroke="#94a3b8" stroke-width="1.5"/>
+<circle cx="510" cy="184" r="3" fill="#94a3b8"/>
+<text x="538" y="177" font-size="13" fill="#64748b">r</text>
+<g fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+<path d="M40 112H236C246.666667 112 252 117.333333 252 128V260"/>
+<path d="M370 112H510C549.764502 112 582 144.235498 582 184V260"/>
+<path d="M700 112H876C915.764502 112 948 144.235498 948 184C948 223.764502 915.764502 256 876 256H700"/>
+</g>
+<path d="M711 249L700 256L711 263" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<g font-size="13" fill="#475569"><text x="28" y="310">Only softens the sharp corner</text><text x="358" y="310">Dashed outline is an exact circle</text><text x="688" y="310">Smooth U-turn, no pointed apex</text></g>
+</svg>

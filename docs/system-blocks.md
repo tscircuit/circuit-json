@@ -52,17 +52,26 @@ const svgY = page.height / 2 - point.y
 components on the same page. These are IDs, not names, selectors, or electrical
 ports. Connections may cross group boundaries and do not create nets or traces.
 
-`route` contains the final polyline in source-to-target order, including the
-attachment points on the source and target block boundaries. The producer has
-already resolved attachment sides and intermediate bends. Consecutive points must
-be distinct. Straight, orthogonal, diagonal, and self-loop routes are supported;
-renderers must not replace supplied waypoints with an inferred shortest path.
+`route` contains the final endpoints in source-to-target order, including the
+attachment points on the source and target block boundaries. Each endpoint may
+have `cubic_bezier_control_points: [Point, Point]` to describe the cubic segment
+arriving from the previous endpoint. Controls are absolute page-local coordinates,
+in departure then arrival order. Omit them for a straight segment. The first
+endpoint must not have controls. Each control tuple has exactly two finite points.
+
+Routes need at least two endpoints. Equal consecutive endpoints are allowed only
+for a cubic with at least one control different from that endpoint, supporting
+closed self-loops. Straight zero-length segments and fully collapsed cubics fail.
+The producer resolves attachment sides, intermediate bends, and controls;
+renderers must not replace supplied geometry with an inferred shortest path.
+See [curved routes and circular corners](proposals/system-block-curves.md) for a
+radius-6 quarter-circle example, illustrations, and the rendering contract.
 
 `is_signal` and `is_power` are required independent booleans. Both may be true
 or both false; neither is inferred from the other. `direction` is explicitly
 `forward` (arrow at the last route point), `both` (arrows at both ends), or `none`.
 These fields have no schema defaults; core supplies their resolved values before emission.
-Arrowheads follow the first/last segment. Stroke and arrowhead styling is up to
+Arrowheads follow the tangent of the first/last segment. Stroke and arrowhead styling is up to
 the viewer, without moving the stored attachment points.
 
 An optional `label` is preserved verbatim. Supplying a label, including an empty
@@ -118,8 +127,8 @@ interfaces, and `SystemBlock*Input` types. They participate in `AnyCircuitElemen
 `AnyCircuitElementInput`, and `CircuitJson` through the existing union.
 
 Validation checks required fields, finite numeric geometry, positive sizes,
-nonblank IDs/names (trimmed), nonempty PCB ID selections, distinct consecutive
-route points, label placement, and direct group self-parenting. It supplies no
+nonblank IDs/names (trimmed), nonempty PCB ID selections, nonzero route segments,
+valid control tuples, label placement, and direct group self-parenting. It supplies no
 layout, dimensions, IDs, routes, or styling defaults. Unknown keys are stripped
 under the existing Zod object convention; there are no aliases or migrations.
 
@@ -129,5 +138,6 @@ membership must be acyclic and stay within a page, routes must attach to their
 referenced blocks, and bounds must accommodate the intended content. Per-record
 schemas do not look up foreign records or solve collisions/containment.
 
-This PR defines the resolved interchange format. Core's layout/emission and
-runframe's System viewer are separate follow-ups.
+The package also exports `system_block_route_point`, `SystemBlockRoutePoint`, and
+`SystemBlockRoutePointInput`. Cubic rendering in circuit-to-svg and circular-corner
+generation in core require separate follow-ups.
