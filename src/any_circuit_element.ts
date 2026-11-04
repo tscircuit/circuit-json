@@ -61,6 +61,7 @@ export const any_circuit_element = z.union([
   src.source_pin_missing_trace_warning,
   src.source_unnamed_trace_warning,
   src.source_confusing_net_name_warning,
+  src.source_internal_connection_net_conflict_warning,
   src.source_missing_manufacturer_part_number_warning,
   src.source_component_availability_warning,
   src.source_refdes_convention_warning,

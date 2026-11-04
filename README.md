@@ -60,6 +60,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceGroup](#sourcegroup)
     - [SourceI2cMisconfiguredError](#sourcei2cmisconfigurederror)
     - [SourceInterconnect](#sourceinterconnect)
+    - [SourceInternalConnectionNetConflictWarning](#sourceinternalconnectionnetconflictwarning)
     - [SourceInvalidComponentPropertyError](#sourceinvalidcomponentpropertyerror)
     - [SourceManuallyPlacedVia](#sourcemanuallyplacedvia)
     - [SourceMissingManufacturerPartNumberWarning](#sourcemissingmanufacturerpartnumberwarning)
@@ -637,6 +638,26 @@ Defines a generic interconnect component
 /** Defines a generic interconnect component */
 interface SourceInterconnect extends SourceComponentBase {
   ftype: "interconnect"
+}
+```
+
+### SourceInternalConnectionNetConflictWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_internal_connection_net_conflict_warning.ts)
+
+Warning emitted when internally connected pins of a source component are wired to different nets, shorting those nets together
+
+```typescript
+/** Warning emitted when internally connected pins of a source component are wired to different nets, shorting those nets together */
+interface SourceInternalConnectionNetConflictWarning {
+  type: "source_internal_connection_net_conflict_warning"
+  source_internal_connection_net_conflict_warning_id: string
+  warning_type: "source_internal_connection_net_conflict_warning"
+  message: string
+  source_component_id: string
+  source_port_ids: string[]
+  source_net_ids: string[]
+  subcircuit_id?: string
 }
 ```
 
