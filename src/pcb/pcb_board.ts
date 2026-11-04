@@ -43,6 +43,12 @@ export const pcb_board = z
       ),
     thickness: length.optional().default(1.4),
     num_layers: z.number().optional().default(4),
+    jlcpcb_stackup_id: z
+      .string()
+      .trim()
+      .min(1)
+      .optional()
+      .describe("JLCPCB stackup catalog ID, for example JLC04161H-3313"),
     allow_blind_and_buried_vias: z
       .boolean()
       .optional()
@@ -82,6 +88,8 @@ export interface PcbBoard extends ManufacturingDrcProperties {
   display_offset_y?: string
   thickness: Length
   num_layers: number
+  /** JLCPCB stackup catalog ID, e.g. JLC04161H-3313. Stores the selection without resolving physical properties. */
+  jlcpcb_stackup_id?: string
   /** Whether autorouters may generate blind and buried vias. */
   allow_blind_and_buried_vias?: boolean
   center: Point
