@@ -151,16 +151,24 @@ export const rotation = z
 export const battery_capacity = z
   .number()
   .or(z.string().endsWith("mAh"))
-  .transform((v) => {
+  .transform((v, context) => {
+    let value: number
     if (typeof v === "string") {
-      const valString = v.replace("mAh", "")
-      const num = Number.parseFloat(valString)
-      if (Number.isNaN(num)) {
-        throw new Error("Invalid capacity")
-      }
-      return num
+      const scalar = v.slice(0, -3).trim()
+      value = /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/.test(scalar)
+        ? Number(scalar)
+        : Number.NaN
+    } else {
+      value = v
     }
-    return v
+    if (!Number.isFinite(value)) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Expected a finite numeric capacity in mAh",
+      })
+      return z.NEVER
+    }
+    return value
   })
   .describe("Battery capacity in mAh")
 
