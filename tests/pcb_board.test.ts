@@ -118,6 +118,30 @@ test("pcb_board with solder mask and silkscreen colors", () => {
   expect(board.silkscreen_color).toBe("white")
 })
 
+test("pcb_board preserves per-side finish colors and double-sided assembly", () => {
+  const board = pcb_board.parse({
+    type: "pcb_board",
+    width: "10mm",
+    height: "20mm",
+    center: { x: 0, y: 0 },
+    solder_mask_color: "green",
+    top_solder_mask_color: "black",
+    bottom_solder_mask_color: "red",
+    silkscreen_color: "white",
+    top_silkscreen_color: "yellow",
+    bottom_silkscreen_color: "white",
+    double_sided_assembly: true,
+  })
+
+  expect(board.solder_mask_color).toBe("green")
+  expect(board.top_solder_mask_color).toBe("black")
+  expect(board.bottom_solder_mask_color).toBe("red")
+  expect(board.silkscreen_color).toBe("white")
+  expect(board.top_silkscreen_color).toBe("yellow")
+  expect(board.bottom_silkscreen_color).toBe("white")
+  expect(board.double_sided_assembly).toBe(true)
+})
+
 test("pcb_board with anchor properties", () => {
   const board = pcb_board.parse({
     type: "pcb_board",

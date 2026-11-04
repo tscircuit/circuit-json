@@ -53,7 +53,12 @@ export const pcb_board = z
     shape: z.enum(["rect", "polygon"]).optional(),
     material: z.enum(["fr4", "fr1", "flex"]).default("fr4"),
     solder_mask_color: z.string().optional(),
+    top_solder_mask_color: z.string().optional(),
+    bottom_solder_mask_color: z.string().optional(),
     silkscreen_color: z.string().optional(),
+    top_silkscreen_color: z.string().optional(),
+    bottom_silkscreen_color: z.string().optional(),
+    double_sided_assembly: z.boolean().optional(),
     anchor_position: point.optional(),
     anchor_alignment: ninePointAnchor.optional(),
     position_mode: z.enum(["relative_to_panel_anchor", "none"]).optional(),
@@ -89,7 +94,12 @@ export interface PcbBoard extends ManufacturingDrcProperties {
   shape?: "rect" | "polygon"
   material: "fr4" | "fr1" | "flex"
   solder_mask_color?: string
+  top_solder_mask_color?: string
+  bottom_solder_mask_color?: string
   silkscreen_color?: string
+  top_silkscreen_color?: string
+  bottom_silkscreen_color?: string
+  double_sided_assembly?: boolean
   anchor_position?: Point
   anchor_alignment?: NinePointAnchor
   position_mode?: "relative_to_panel_anchor" | "none"
