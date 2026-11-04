@@ -23,6 +23,8 @@ interface SimulationParameterSweepBase {
   name?: string
   parameter_values: number[]
   parameter_unit: SimulationParameterUnit
+  display_parameter_values?: number[]
+  display_parameter_unit?: string
 }
 
 export interface SimulationResistanceParameterSweep
@@ -71,6 +73,8 @@ const simulation_parameter_sweep_base = z.object({
   name: z.string().optional(),
   parameter_values: z.array(z.number()).min(1),
   parameter_unit: simulation_parameter_unit,
+  display_parameter_values: z.array(z.number()).min(1).optional(),
+  display_parameter_unit: z.string().min(1).optional(),
 })
 
 export const simulation_parameter_sweep = z
@@ -96,6 +100,30 @@ export const simulation_parameter_sweep = z
       current_source_component_id: z.string(),
     }),
   ])
+  .superRefine((parameterSweep, context) => {
+    const hasDisplayValues =
+      parameterSweep.display_parameter_values !== undefined
+    const hasDisplayUnit = parameterSweep.display_parameter_unit !== undefined
+    if (hasDisplayValues !== hasDisplayUnit) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message:
+          "display_parameter_values and display_parameter_unit must be provided together",
+      })
+    }
+    if (
+      parameterSweep.display_parameter_values &&
+      parameterSweep.display_parameter_values.length !==
+        parameterSweep.parameter_values.length
+    ) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["display_parameter_values"],
+        message:
+          "display_parameter_values and parameter_values must have the same length",
+      })
+    }
+  })
   .describe("Repeats a simulation experiment over component parameter values")
 
 export type SimulationParameterSweepInput = z.input<

@@ -7,6 +7,7 @@ import {
 } from "./simulation_complex_sample"
 import {
   simulation_parameter_sweep_coordinate,
+  simulation_parameter_sweep_coordinates,
   type SimulationParameterSweepCoordinate,
 } from "./simulation_parameter_sweep_coordinate"
 
@@ -15,6 +16,7 @@ export interface SimulationAcSweepVoltageGraph {
   simulation_ac_sweep_voltage_graph_id: string
   simulation_experiment_id: string
   simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_parameter_sweep_coordinates?: SimulationParameterSweepCoordinate[]
   simulation_voltage_probe_id: string
   frequencies_hz: number[]
   complex_voltages: SimulationComplexSample[]
@@ -31,6 +33,8 @@ export const simulation_ac_sweep_voltage_graph = z
     simulation_experiment_id: z.string(),
     simulation_parameter_sweep_coordinate:
       simulation_parameter_sweep_coordinate.optional(),
+    simulation_parameter_sweep_coordinates:
+      simulation_parameter_sweep_coordinates.optional(),
     simulation_voltage_probe_id: z.string(),
     frequencies_hz: z.array(z.number()),
     complex_voltages: z.array(simulation_complex_sample),

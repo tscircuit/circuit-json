@@ -6,6 +6,37 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 export const wave_shape = z.enum(["sinewave", "square", "triangle", "sawtooth"])
 export type WaveShape = z.infer<typeof wave_shape>
 
+export interface SimulationVoltageWaveform {
+  timestamps_ms: number[]
+  voltage_values: number[]
+}
+
+export const simulation_voltage_waveform = z
+  .object({
+    timestamps_ms: z.array(ms.pipe(z.number().nonnegative())),
+    voltage_values: z.array(voltage),
+  })
+  .superRefine((waveform, context) => {
+    if (waveform.timestamps_ms.length !== waveform.voltage_values.length) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "timestamps_ms and voltage_values must have the same length",
+      })
+    }
+
+    for (let index = 1; index < waveform.timestamps_ms.length; index++) {
+      if (
+        waveform.timestamps_ms[index]! <= waveform.timestamps_ms[index - 1]!
+      ) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "timestamps_ms must be strictly increasing",
+          path: ["timestamps_ms", index],
+        })
+      }
+    }
+  })
+
 const percentage = z
   .union([z.string(), z.number()])
   .transform((val) => {
@@ -63,9 +94,14 @@ export const simulation_ac_voltage_source = z
     fall_time: ms.optional(),
     pulse_width: ms.optional(),
     period: ms.optional(),
+    voltage_waveform: simulation_voltage_waveform.optional(),
     ac_magnitude: voltage.optional(),
     ac_phase: rotation.optional(),
   })
+  .refine(
+    (source) => !(source.voltage_waveform && source.wave_shape),
+    "voltage_waveform and wave_shape cannot be used together",
+  )
   .describe("Defines an AC voltage source for simulation")
 
 export type SimulationAcVoltageSourceInput = z.input<
@@ -120,6 +156,7 @@ export interface SimulationAcVoltageSource {
   fall_time?: number // ms
   pulse_width?: number // ms
   period?: number // ms
+  voltage_waveform?: SimulationVoltageWaveform
   ac_magnitude?: number
   ac_phase?: number
 }
@@ -135,5 +172,9 @@ expectTypesMatch<
 expectTypesMatch<
   SimulationAcVoltageSource,
   z.infer<typeof simulation_ac_voltage_source>
+>(true)
+expectTypesMatch<
+  SimulationVoltageWaveform,
+  z.infer<typeof simulation_voltage_waveform>
 >(true)
 expectTypesMatch<SimulationVoltageSource, InferredSimulationVoltageSource>(true)
