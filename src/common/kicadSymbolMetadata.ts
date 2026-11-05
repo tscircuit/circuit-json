@@ -64,7 +64,9 @@ export const kicadSymbolProperty = z.object({
 type InferredKicadSymbolProperty = z.infer<typeof kicadSymbolProperty>
 expectTypesMatch<KicadSymbolProperty, InferredKicadSymbolProperty>(true)
 
+/** Built-in and custom property names share the same validated property shape. */
 export interface KicadSymbolProperties {
+  [propertyName: string]: KicadSymbolProperty | undefined
   Reference?: KicadSymbolProperty
   Value?: KicadSymbolProperty
   Footprint?: KicadSymbolProperty
@@ -74,15 +76,33 @@ export interface KicadSymbolProperties {
   ki_fp_filters?: KicadSymbolProperty
 }
 
-export const kicadSymbolProperties = z.object({
-  Reference: kicadSymbolProperty.optional(),
-  Value: kicadSymbolProperty.optional(),
-  Footprint: kicadSymbolProperty.optional(),
-  Datasheet: kicadSymbolProperty.optional(),
-  Description: kicadSymbolProperty.optional(),
-  ki_keywords: kicadSymbolProperty.optional(),
-  ki_fp_filters: kicadSymbolProperty.optional(),
-})
+const kicadSymbolPropertiesSchema = z
+  .object({
+    Reference: kicadSymbolProperty.optional(),
+    Value: kicadSymbolProperty.optional(),
+    Footprint: kicadSymbolProperty.optional(),
+    Datasheet: kicadSymbolProperty.optional(),
+    Description: kicadSymbolProperty.optional(),
+    ki_keywords: kicadSymbolProperty.optional(),
+    ki_fp_filters: kicadSymbolProperty.optional(),
+  })
+  .catchall(kicadSymbolProperty.optional())
+
+// Name the schema type so consumers retain the named properties without
+// expanding the catchall throughout generated package declarations.
+interface KicadSymbolPropertiesSchema
+  extends z.ZodObject<
+    typeof kicadSymbolPropertiesSchema.shape,
+    "strip",
+    z.ZodOptional<typeof kicadSymbolProperty>,
+    KicadSymbolProperties,
+    z.input<typeof kicadSymbolPropertiesSchema>
+  > {}
+
+export { type KicadSymbolPropertiesSchema }
+
+export const kicadSymbolProperties: KicadSymbolPropertiesSchema =
+  kicadSymbolPropertiesSchema
 
 type InferredKicadSymbolProperties = z.infer<typeof kicadSymbolProperties>
 expectTypesMatch<KicadSymbolProperties, InferredKicadSymbolProperties>(true)
