@@ -114,3 +114,42 @@ test("component metadata survives Circuit JSON parsing", () => {
     schematicSymbol.metadata?.kicad_symbol?.properties?.Max_Current_A?.value,
   ).toBe("6.4")
 })
+
+test("built-in properties stay named and validated alongside custom properties", () => {
+  for (const [schema, propertyNames] of [
+    [
+      kicadFootprintMetadata,
+      ["Reference", "Value", "Datasheet", "Description"],
+    ],
+    [
+      kicadSymbolMetadata,
+      [
+        "Reference",
+        "Value",
+        "Footprint",
+        "Datasheet",
+        "Description",
+        "ki_keywords",
+        "ki_fp_filters",
+      ],
+    ],
+  ] as const) {
+    const properties = Object.fromEntries(
+      propertyNames.map((propertyName) => [
+        propertyName,
+        { value: String(propertyName) },
+      ]),
+    )
+    properties.Max_Current_A = { value: "6.4" }
+    expect(schema.parse({ properties }).properties).toEqual(properties)
+    expect(Object.keys(schema.shape.properties.unwrap().shape)).toEqual([
+      ...propertyNames,
+    ])
+    for (const propertyName of propertyNames) {
+      expect(
+        schema.safeParse({ properties: { [propertyName]: { value: 6.4 } } })
+          .success,
+      ).toBe(false)
+    }
+  }
+})
