@@ -86,7 +86,7 @@ interface KicadFootprintPropertiesSchema
   extends z.ZodObject<
     typeof kicadFootprintPropertiesSchema.shape,
     "strip",
-    typeof kicadFootprintPropertiesSchema._def.catchall,
+    z.ZodOptional<typeof kicadProperty>,
     KicadFootprintProperties,
     z.input<typeof kicadFootprintPropertiesSchema>
   > {}
