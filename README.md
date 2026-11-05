@@ -53,6 +53,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceComponentBase](#sourcecomponentbase)
     - [SourceComponentInternalConnection](#sourcecomponentinternalconnection)
     - [SourceComponentMisconfiguredError](#sourcecomponentmisconfigurederror)
+    - [SourceComponentMisconfiguredWarning](#sourcecomponentmisconfiguredwarning)
     - [SourceComponentPinsUnderspecifiedWarning](#sourcecomponentpinsunderspecifiedwarning)
     - [SourceConfusingNetNameWarning](#sourceconfusingnetnamewarning)
     - [SourceDatasheet](#sourcedatasheet)
@@ -60,7 +61,6 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceGroup](#sourcegroup)
     - [SourceI2cMisconfiguredError](#sourcei2cmisconfigurederror)
     - [SourceInterconnect](#sourceinterconnect)
-    - [SourceInternalConnectionNetConflictWarning](#sourceinternalconnectionnetconflictwarning)
     - [SourceInvalidComponentPropertyError](#sourceinvalidcomponentpropertyerror)
     - [SourceManuallyPlacedVia](#sourcemanuallyplacedvia)
     - [SourceMissingManufacturerPartNumberWarning](#sourcemissingmanufacturerpartnumberwarning)
@@ -514,6 +514,25 @@ interface SourceComponentMisconfiguredError extends BaseCircuitJsonError {
 }
 ```
 
+### SourceComponentMisconfiguredWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_component_misconfigured_warning.ts)
+
+Warning emitted when one or more source components have a suspicious or conflicting configuration
+
+```typescript
+/** Warning emitted when one or more source components have a suspicious or conflicting configuration */
+interface SourceComponentMisconfiguredWarning {
+  type: "source_component_misconfigured_warning"
+  source_component_misconfigured_warning_id: string
+  warning_type: "source_component_misconfigured_warning"
+  message: string
+  source_component_ids: string[]
+  source_port_ids?: string[]
+  subcircuit_id?: string
+}
+```
+
 ### SourceComponentPinsUnderspecifiedWarning
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_component_pins_underspecified_warning.ts)
@@ -638,26 +657,6 @@ Defines a generic interconnect component
 /** Defines a generic interconnect component */
 interface SourceInterconnect extends SourceComponentBase {
   ftype: "interconnect"
-}
-```
-
-### SourceInternalConnectionNetConflictWarning
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_internal_connection_net_conflict_warning.ts)
-
-Warning emitted when internally connected pins of a source component are wired to different nets, shorting those nets together
-
-```typescript
-/** Warning emitted when internally connected pins of a source component are wired to different nets, shorting those nets together */
-interface SourceInternalConnectionNetConflictWarning {
-  type: "source_internal_connection_net_conflict_warning"
-  source_internal_connection_net_conflict_warning_id: string
-  warning_type: "source_internal_connection_net_conflict_warning"
-  message: string
-  source_component_id: string
-  source_port_ids: string[]
-  source_net_ids: string[]
-  subcircuit_id?: string
 }
 ```
 

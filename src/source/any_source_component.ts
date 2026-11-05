@@ -157,6 +157,10 @@ import {
   type SourceComponentMisconfiguredError,
 } from "./source_component_misconfigured_error"
 import {
+  source_component_misconfigured_warning,
+  type SourceComponentMisconfiguredWarning,
+} from "./source_component_misconfigured_warning"
+import {
   source_simple_voltage_source,
   type SourceSimpleVoltageSource,
 } from "./source_simple_voltage_source"
@@ -208,6 +212,7 @@ export const any_source_component = z.union([
   source_component_availability_warning,
   source_i2c_misconfigured_error,
   source_component_misconfigured_error,
+  source_component_misconfigured_warning,
 ])
 
 /**
@@ -260,5 +265,6 @@ export type AnySourceElement =
   | SourceRefdesConventionWarning
   | SourceI2cMisconfiguredError
   | SourceComponentMisconfiguredError
+  | SourceComponentMisconfiguredWarning
 
 expectTypesMatch<AnySourceElement, AnySourceComponent>(true)
