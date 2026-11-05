@@ -64,25 +64,13 @@ export const kicadSymbolProperty = z.object({
 type InferredKicadSymbolProperty = z.infer<typeof kicadSymbolProperty>
 expectTypesMatch<KicadSymbolProperty, InferredKicadSymbolProperty>(true)
 
-export interface KicadSymbolProperties {
-  Reference?: KicadSymbolProperty
-  Value?: KicadSymbolProperty
-  Footprint?: KicadSymbolProperty
-  Datasheet?: KicadSymbolProperty
-  Description?: KicadSymbolProperty
-  ki_keywords?: KicadSymbolProperty
-  ki_fp_filters?: KicadSymbolProperty
-}
+/** Custom property names use the same validated shape as built-in properties. */
+export type KicadSymbolProperties = Record<
+  string,
+  KicadSymbolProperty | undefined
+>
 
-export const kicadSymbolProperties = z.object({
-  Reference: kicadSymbolProperty.optional(),
-  Value: kicadSymbolProperty.optional(),
-  Footprint: kicadSymbolProperty.optional(),
-  Datasheet: kicadSymbolProperty.optional(),
-  Description: kicadSymbolProperty.optional(),
-  ki_keywords: kicadSymbolProperty.optional(),
-  ki_fp_filters: kicadSymbolProperty.optional(),
-})
+export const kicadSymbolProperties = z.record(kicadSymbolProperty.optional())
 
 type InferredKicadSymbolProperties = z.infer<typeof kicadSymbolProperties>
 expectTypesMatch<KicadSymbolProperties, InferredKicadSymbolProperties>(true)
