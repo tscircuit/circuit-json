@@ -13,8 +13,11 @@ test("pcb_panel parses and defaults thickness and covered_with_solder_mask", () 
 
   const parsed = pcb_panel.parse(panelData)
 
-  expect(parsed.thickness).toBe(1.4)
+  expect(parsed.thickness).toBe(1.6)
   expect(parsed.covered_with_solder_mask).toBe(true)
+  expect(pcb_panel.parse({ ...panelData, thickness: "0.8mm" }).thickness).toBe(
+    0.8,
+  )
 })
 
 test("any_circuit_element includes pcb_panel", () => {

@@ -10,7 +10,7 @@ export const pcb_panel = z
     width: length,
     height: length,
     center: point,
-    thickness: length.optional().default(1.4),
+    thickness: length.optional().default(1.6),
     covered_with_solder_mask: z.boolean().optional().default(true),
   })
   .describe("Defines a PCB panel that can contain multiple boards")
