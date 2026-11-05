@@ -8,7 +8,7 @@ export const pcb_silkscreen_rect = z
   .object({
     type: z.literal("pcb_silkscreen_rect"),
     pcb_silkscreen_rect_id: getZodPrefixedIdWithDefault("pcb_silkscreen_rect"),
-    pcb_component_id: z.string(),
+    pcb_component_id: z.string().optional(),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     center: point,
@@ -33,7 +33,7 @@ type InferredPcbSilkscreenRect = z.infer<typeof pcb_silkscreen_rect>
 export interface PcbSilkscreenRect {
   type: "pcb_silkscreen_rect"
   pcb_silkscreen_rect_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   center: Point

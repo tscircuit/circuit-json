@@ -13,7 +13,7 @@ export const pcb_silkscreen_oval = z
   .object({
     type: z.literal("pcb_silkscreen_oval"),
     pcb_silkscreen_oval_id: getZodPrefixedIdWithDefault("pcb_silkscreen_oval"),
-    pcb_component_id: z.string(),
+    pcb_component_id: z.string().optional(),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     center: point,
@@ -33,7 +33,7 @@ type InferredPcbSilkscreenOval = z.infer<typeof pcb_silkscreen_oval>
 export interface PcbSilkscreenOval {
   type: "pcb_silkscreen_oval"
   pcb_silkscreen_oval_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   center: Point
