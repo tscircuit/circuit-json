@@ -1,6 +1,10 @@
 import { expect, test } from "bun:test"
 import { any_circuit_element } from "../src/any_circuit_element"
-import { type PCBKeepout, pcb_keepout } from "../src/pcb/pcb_keepout"
+import {
+  type PCBKeepout,
+  pcb_keepout,
+  pcb_keepout_ring,
+} from "../src/pcb/pcb_keepout"
 
 test.each([
   {
@@ -22,6 +26,16 @@ test.each([
     layers: ["top"],
     excluded_pcb_component_ids: ["pcb_component_ant1"],
   },
+  {
+    type: "pcb_keepout" as const,
+    shape: "ring" as const,
+    pcb_keepout_id: "keepout_ring",
+    center: { x: 0, y: 0 },
+    inner_radius: 3,
+    outer_radius: 5,
+    layers: ["top"],
+    excluded_pcb_component_ids: ["pcb_component_ant1"],
+  },
 ])("$shape keepout retains excluded PCB component IDs", (input) => {
   const keepout = pcb_keepout.parse(input)
   const circuitElement = any_circuit_element.parse(input) as PCBKeepout
@@ -30,4 +44,28 @@ test.each([
   expect(circuitElement.excluded_pcb_component_ids).toEqual([
     "pcb_component_ant1",
   ])
+})
+
+test("ring keepout requires positive inner radius below outer radius", () => {
+  const ring = {
+    type: "pcb_keepout" as const,
+    shape: "ring" as const,
+    pcb_keepout_id: "keepout_ring",
+    center: { x: 0, y: 0 },
+    inner_radius: 3,
+    outer_radius: 5,
+    layers: ["top"],
+  }
+
+  expect(pcb_keepout_ring.parse(ring)).toEqual(ring)
+  for (const radii of [
+    { inner_radius: 0, outer_radius: 5 },
+    { inner_radius: 5, outer_radius: 5 },
+    { inner_radius: 6, outer_radius: 5 },
+  ]) {
+    expect(pcb_keepout_ring.safeParse({ ...ring, ...radii }).success).toBe(
+      false,
+    )
+    expect(pcb_keepout.safeParse({ ...ring, ...radii }).success).toBe(false)
+  }
 })
