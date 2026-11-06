@@ -3978,6 +3978,8 @@ interface SchematicCircle {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_component.ts)
 
+Export metadata for generated boxes and builtin symbols without a schematic_symbol.
+
 ```typescript
 interface SchematicComponent {
   type: "schematic_component"
@@ -3987,6 +3989,8 @@ interface SchematicComponent {
   schematic_component_id: string
   schematic_sheet_id?: string
   schematic_symbol_id?: string
+  /** Export metadata for generated boxes and builtin symbols without a schematic_symbol. */
+  metadata?: SchematicSymbolMetadata
   pin_spacing?: number
   pin_styles?: Record<
     string,
@@ -4027,7 +4031,8 @@ interface SchematicPortArrangementBySides {
 }
 
 type SchematicPortArrangement =
-  SchematicPortArrangementBySize | SchematicPortArrangementBySides
+  | SchematicPortArrangementBySize
+  | SchematicPortArrangementBySides
 ```
 
 ### SchematicComponentOverlapWarning
