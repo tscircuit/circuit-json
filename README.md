@@ -2033,6 +2033,8 @@ interface PcbCopperPourRect {
   subcircuit_id?: string
   layer: LayerRef
   source_net_id?: string
+  /** Local copper-pour clearance in mm; distinct from the board-edge inset. */
+  clearance?: Length
   shape: "rect"
   center: Point
   width: Length
