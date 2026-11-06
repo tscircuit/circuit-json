@@ -2300,7 +2300,9 @@ Defines a fabrication path on the PCB for fabricators or assemblers
 interface PcbFabricationNotePath {
   type: "pcb_fabrication_note_path"
   pcb_fabrication_note_path_id: string
-  pcb_component_id: string
+  /** Omitted for board/panel-level annotations, matching standalone silkscreen ownership. */
+  pcb_component_id?: string
+  pcb_panel_id?: string
   subcircuit_id?: string
   layer: LayerRef
   route: Point[]
@@ -2355,13 +2357,19 @@ interface PcbFabricationNoteText {
   pcb_group_id?: string
   font: "tscircuit2024"
   font_size: Length
-  pcb_component_id: string
+  /** Omitted for board/panel-level annotations, matching standalone silkscreen ownership. */
+  pcb_component_id?: string
+  pcb_panel_id?: string
   text: string
   ccw_rotation?: number
   layer: VisibleLayer
   anchor_position: Point
   anchor_alignment:
-    "center" | "top_left" | "top_right" | "bottom_left" | "bottom_right"
+    | "center"
+    | "top_left"
+    | "top_right"
+    | "bottom_left"
+    | "bottom_right"
   color?: string
 }
 ```
