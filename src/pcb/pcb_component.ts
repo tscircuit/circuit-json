@@ -32,6 +32,8 @@ export type SupplierPin1LocationMap = Partial<
   Record<SupplierName, PcbPin1Location>
 >
 
+export type SupplierRotationOffsetMap = Partial<Record<SupplierName, Rotation>>
+
 export const pcb_component = z
   .object({
     type: z.literal("pcb_component"),
@@ -83,6 +85,12 @@ export const pcb_component = z
       .optional()
       .describe(
         "Pin 1 location for each supplier's unrotated, top-view footprint",
+      ),
+    supplier_rotation_offset_map: z
+      .record(supplier_name, rotation.pipe(z.number().finite()))
+      .optional()
+      .describe(
+        "Counterclockwise degrees from the supplier footprint to the authored footprint in top view. Add this offset to the PCB rotation to place the supplier part.",
       ),
     metadata: z
       .object({
@@ -138,6 +146,8 @@ export interface PcbComponent {
   insertion_direction?: InsertionDirection
   pin1_location?: PcbPin1Location
   supplier_pin1_location_map?: SupplierPin1LocationMap
+  /** Counterclockwise degrees from each supplier footprint to the authored footprint in top view. */
+  supplier_rotation_offset_map?: SupplierRotationOffsetMap
   metadata?: PcbComponentMetadata
   obstructs_within_bounds: boolean
 }
