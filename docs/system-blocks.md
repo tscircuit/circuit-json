@@ -141,3 +141,15 @@ schemas do not look up foreign records or solve collisions/containment.
 The package also exports `system_block_route_point`, `SystemBlockRoutePoint`, and
 `SystemBlockRoutePointInput`. Cubic rendering in circuit-to-svg and circular-corner
 generation in core require separate follow-ups.
+
+### Connection presentation
+
+`system_block_connection.color` optionally overrides the theme's classification
+color for both stroke and arrowheads. Accepted values are trimmed `#RGB` or
+`#RRGGBB` strings, preserved in that form. `line_style` optionally overrides the
+classification's stroke pattern with `solid`, `dashed`, or `dotted`. Neither field
+changes `is_signal`, `is_power`, `direction`, or electrical connectivity.
+
+Both fields are optional, with no schema defaults or aliases. Existing records
+require no migration: omitted fields keep the renderer's signal/power theme.
+Explicit connection styles take precedence over renderer-wide color overrides.
