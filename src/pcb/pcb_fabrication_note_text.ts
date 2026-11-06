@@ -18,6 +18,8 @@ export const pcb_fabrication_note_text = z
     pcb_component_id: z.string(),
     text: z.string(),
     ccw_rotation: z.number().optional(),
+    is_visible: z.boolean().optional(),
+    is_mirrored: z.boolean().optional(),
     layer: visible_layer,
     anchor_position: point.default({ x: 0, y: 0 }),
     anchor_alignment: z
@@ -47,6 +49,8 @@ export interface PcbFabricationNoteText {
   pcb_component_id: string
   text: string
   ccw_rotation?: number
+  is_visible?: boolean
+  is_mirrored?: boolean
   layer: VisibleLayer
   anchor_position: Point
   anchor_alignment:
