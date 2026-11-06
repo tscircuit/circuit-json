@@ -350,3 +350,27 @@ test("renders the example entirely from supplied bounds, routes, and label cente
   pieces.push("</svg>")
   await expect(pieces.join("\n")).toMatchSvgSnapshot(import.meta.path)
 })
+
+test("explicit connection presentation round-trips without changing classification", () => {
+  for (const line_style of ["solid", "dashed", "dotted"] as const) {
+    const styled = { ...connection, color: "#16a085", line_style }
+    expect(any_circuit_element.parse(styled)).toEqual(styled)
+    expect(
+      system_block_connection.parse(JSON.parse(JSON.stringify(styled))),
+    ).toEqual(styled)
+  }
+  for (const color of [
+    "red",
+    "#12",
+    "#12345",
+    "url(https://example.com/color)",
+  ]) {
+    expect(
+      system_block_connection.safeParse({ ...connection, color }).success,
+    ).toBe(false)
+  }
+  expect(
+    system_block_connection.safeParse({ ...connection, line_style: "dash" })
+      .success,
+  ).toBe(false)
+})

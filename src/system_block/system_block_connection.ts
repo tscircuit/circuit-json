@@ -15,6 +15,12 @@ export const system_block_connection = z
     name: system_block_id.optional(),
     from_system_block_component_id: system_block_id,
     to_system_block_component_id: system_block_id,
+    color: z
+      .string()
+      .trim()
+      .regex(/^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i)
+      .optional(),
+    line_style: z.enum(["solid", "dashed", "dotted"]).optional(),
     is_signal: z.boolean(),
     is_power: z.boolean(),
     direction: z.enum(["forward", "both", "none"]),
@@ -76,6 +82,10 @@ export interface SystemBlockConnection {
   to_system_block_component_id: string
   /** Independent classifications; both flags are required. */
   is_signal: boolean
+  /** Optional #RGB or #RRGGBB stroke and arrow color; overrides classification/theme color. */
+  color?: string
+  /** Omitted retains the renderer's classification-based pattern. */
+  line_style?: "solid" | "dashed" | "dotted"
   is_power: boolean
   /** Forward draws an arrow at the route's end; both draws at both ends. */
   direction: "forward" | "both" | "none"
