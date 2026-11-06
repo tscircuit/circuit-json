@@ -53,6 +53,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceComponentBase](#sourcecomponentbase)
     - [SourceComponentInternalConnection](#sourcecomponentinternalconnection)
     - [SourceComponentMisconfiguredError](#sourcecomponentmisconfigurederror)
+    - [SourceComponentMisconfiguredWarning](#sourcecomponentmisconfiguredwarning)
     - [SourceComponentPinsUnderspecifiedWarning](#sourcecomponentpinsunderspecifiedwarning)
     - [SourceConfusingNetNameWarning](#sourceconfusingnetnamewarning)
     - [SourceDatasheet](#sourcedatasheet)
@@ -510,6 +511,25 @@ interface SourceComponentMisconfiguredError extends BaseCircuitJsonError {
   error_type: "source_component_misconfigured_error"
   source_component_ids: string[]
   source_port_ids?: string[]
+}
+```
+
+### SourceComponentMisconfiguredWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_component_misconfigured_warning.ts)
+
+Warning emitted when one or more source components have a suspicious or conflicting configuration
+
+```typescript
+/** Warning emitted when one or more source components have a suspicious or conflicting configuration */
+interface SourceComponentMisconfiguredWarning {
+  type: "source_component_misconfigured_warning"
+  source_component_misconfigured_warning_id: string
+  warning_type: "source_component_misconfigured_warning"
+  message: string
+  source_component_ids: string[]
+  source_port_ids?: string[]
+  subcircuit_id?: string
 }
 ```
 
