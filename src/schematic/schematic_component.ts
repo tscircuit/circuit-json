@@ -3,6 +3,10 @@ import { point, type Point } from "../common/point"
 import { size, type Size } from "../common/size"
 import { length } from "../units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import {
+  schematicSymbolMetadata,
+  type SchematicSymbolMetadata,
+} from "./schematic_symbol"
 
 export const schematic_pin_styles = z.record(
   z.object({
@@ -42,6 +46,8 @@ export interface SchematicComponent {
   schematic_component_id: string
   schematic_sheet_id?: string
   schematic_symbol_id?: string
+  /** Export metadata for generated boxes and builtin symbols without a schematic_symbol. */
+  metadata?: SchematicSymbolMetadata
   pin_spacing?: number
   pin_styles?: Record<
     string,
@@ -125,6 +131,7 @@ export const schematic_component = z.object({
   schematic_component_id: z.string(),
   schematic_sheet_id: z.string().optional(),
   schematic_symbol_id: z.string().optional(),
+  metadata: schematicSymbolMetadata.optional(),
   pin_spacing: length.optional(),
   pin_styles: schematic_pin_styles.optional(),
   box_width: length.optional(),

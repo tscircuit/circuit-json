@@ -2,7 +2,7 @@ import { kicadSymbolMetadata } from "src/common/kicadSymbolMetadata"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import { z } from "zod"
 
-const schematicSymbolMetadata = z
+export const schematicSymbolMetadata = z
   .object({
     kicad_symbol: kicadSymbolMetadata.optional(),
   })
