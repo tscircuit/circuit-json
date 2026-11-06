@@ -9,7 +9,7 @@ const pcb_silkscreen_graphic_base = z.object({
   pcb_silkscreen_graphic_id: getZodPrefixedIdWithDefault(
     "pcb_silkscreen_graphic",
   ),
-  pcb_component_id: z.string(),
+  pcb_component_id: z.string().optional(),
   pcb_group_id: z.string().optional(),
   subcircuit_id: z.string().optional(),
   layer: visible_layer,
@@ -36,7 +36,7 @@ type InferredPcbSilkscreenGraphicBRep = z.infer<
 export interface PcbSilkscreenGraphicBRep {
   type: "pcb_silkscreen_graphic"
   pcb_silkscreen_graphic_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   layer: VisibleLayer

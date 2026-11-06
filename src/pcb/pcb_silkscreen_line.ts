@@ -13,7 +13,7 @@ export const pcb_silkscreen_line = z
   .object({
     type: z.literal("pcb_silkscreen_line"),
     pcb_silkscreen_line_id: getZodPrefixedIdWithDefault("pcb_silkscreen_line"),
-    pcb_component_id: z.string(),
+    pcb_component_id: z.string().optional(),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     stroke_width: distance.default("0.1mm"),
@@ -34,7 +34,7 @@ type InferredPcbSilkscreenLine = z.infer<typeof pcb_silkscreen_line>
 export interface PcbSilkscreenLine {
   type: "pcb_silkscreen_line"
   pcb_silkscreen_line_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   stroke_width: Distance

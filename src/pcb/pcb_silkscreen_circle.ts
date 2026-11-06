@@ -15,7 +15,7 @@ export const pcb_silkscreen_circle = z
     pcb_silkscreen_circle_id: getZodPrefixedIdWithDefault(
       "pcb_silkscreen_circle",
     ),
-    pcb_component_id: z.string(),
+    pcb_component_id: z.string().optional(),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     center: point,
@@ -35,7 +35,7 @@ type InferredPcbSilkscreenCircle = z.infer<typeof pcb_silkscreen_circle>
 export interface PcbSilkscreenCircle {
   type: "pcb_silkscreen_circle"
   pcb_silkscreen_circle_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   center: Point
