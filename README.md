@@ -255,6 +255,13 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationReturnCurrentContact](#simulationreturncurrentcontact)
     - [SimulationReturnCurrentExcitation](#simulationreturncurrentexcitation)
     - [SimulationReturnCurrentGridJson](#simulationreturncurrentgridjson)
+    - [SimulationSignal](#simulationsignal)
+    - [SimulationSignalCrosstalk](#simulationsignalcrosstalk)
+    - [SimulationSignalEye](#simulationsignaleye)
+    - [SimulationSignalIntegrity](#simulationsignalintegrity)
+    - [SimulationSignalIntegrityRlgc](#simulationsignalintegrityrlgc)
+    - [SimulationSignalStrobeMargin](#simulationsignalstrobemargin)
+    - [SimulationSignalWaveform](#simulationsignalwaveform)
     - [SimulationSpiceSubcircuit](#simulationspicesubcircuit)
     - [SimulationSwitch](#simulationswitch)
     - [SimulationTerminalPort](#simulationterminalport)
@@ -4805,7 +4812,6 @@ interface SimulationExperiment {
   time_per_step?: number // ms
   start_time_ms?: number // ms
   end_time_ms?: number // ms
-  pcb_spice_channel?: PcbSpiceChannel
   spice_options?: SpiceSimulationOptions
   dc_sweep_voltage_source_id?: string
   dc_sweep_current_source_id?: string
@@ -4825,49 +4831,6 @@ interface SpiceSimulationOptions {
   reltol?: number | string
   abstol?: number | string
   vntol?: number | string
-}
-
-interface PcbSpiceChannel {
-  reduction: "routed-copper" | "straightened-stages"
-  sections: number
-  lanes: Array<{
-    name: string
-    driver_source_port_id: string
-    receiver_source_port_id: string
-  }>
-  reference_source_port_id: string
-  passive_source_component_ids?: string[]
-  extraction: {
-    minimum_frequency_hz: number
-    maximum_frequency_hz: number
-    model_frequency_hz: number
-    filaments: number
-    refinement_filaments: number
-    convergence_tolerance: number
-    capacitance_tolerance: number
-    reciprocity_tolerance: number
-    dc_resistance_tolerance: number
-    max_panel_length_mm: number
-    ground_mesh_size_mm?: number
-  }
-  relative_permittivity?: number
-  via_plating_thickness_mm?: number
-  via_equivalent_width_mm?: number
-  omit_through_via_stubs?: boolean
-  straightened_stage_profiles?: Record<
-    string,
-    {
-      spacing_mm: number
-      relative_permittivity: number
-      return: {
-        width_mm: number
-        thickness_mm: number
-        length_factor: number
-        center_y_mm: number
-        center_z_mm: number
-      }
-    }
-  >
 }
 ```
 
@@ -5130,6 +5093,161 @@ type SimulationReturnCurrentGridJson =
       sheet_current_y_real: (number | null)[]
       sheet_current_y_imag: (number | null)[]
     }
+```
+
+### SimulationSignal
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal.ts)
+
+A resolved signal, its traffic, and the receivers measured in one test.
+
+```typescript
+/** A resolved signal, its traffic, and the receivers measured in one test. */
+interface SimulationSignal {
+  type: "simulation_signal"
+  simulation_signal_id: string
+  simulation_signal_integrity_id: string
+  name: string
+  driver: SignalEndpoint
+  receivers: SignalEndpoint[]
+  bit_rate_bps: number
+  pattern: string
+  seed: number
+  offset_s: number
+  quiet?: "low" | "high" | "off"
+  probe: "local" | "global"
+  mask:
+    | "ibis"
+    | { vih_v?: number; vil_v?: number; setup_s?: number; hold_s?: number }
+  strobe_simulation_signal_id?: string
+}
+
+type SignalEndpoint =
+  | { kind: "single"; source_port_id: string; ibis_model_name?: string }
+  | {
+      kind: "differential"
+      p_source_port_id: string
+      n_source_port_id: string
+      ibis_model_name?: string
+    }
+```
+
+### SimulationSignalCrosstalk
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_crosstalk.ts)
+
+Peak near-end and far-end crosstalk magnitudes in volts for one quiet receiver.
+
+```typescript
+/** Peak near-end and far-end crosstalk magnitudes in volts for one quiet receiver. */
+interface SimulationSignalCrosstalk {
+  type: "simulation_signal_crosstalk"
+  simulation_signal_crosstalk_id: string
+  simulation_signal_id: string
+  source_port_id: string
+  peak_next_v: number
+  peak_fext_v: number
+}
+```
+
+### SimulationSignalEye
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_eye.ts)
+
+A receiver's folded eye traces and voltage/time opening; negative margin fails the mask.
+
+```typescript
+/** A receiver's folded eye traces and voltage/time opening; negative margin fails the mask. */
+interface SimulationSignalEye {
+  type: "simulation_signal_eye"
+  simulation_signal_eye_id: string
+  simulation_signal_id: string
+  source_port_id: string
+  folded_traces: { timestamps_s: number[]; voltage_levels: number[] }[]
+  eye_height_v: number
+  eye_width_s: number
+  mask_margin_v: number
+}
+```
+
+### SimulationSignalIntegrity
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_integrity.ts)
+
+One independent signal integrity test over the board's coupled copper.
+
+```typescript
+/** One independent signal integrity test over the board's coupled copper. */
+interface SimulationSignalIntegrity {
+  type: "simulation_signal_integrity"
+  simulation_signal_integrity_id: string
+  name?: string
+  bit_rate_bps: number
+  duration_s: number
+  corner: "typ" | "min" | "max"
+  unlisted_nets: "passive"
+  unrouted: "error" | "ideal"
+  pdn: "extracted" | "ideal"
+  supply: "board" | "ibis"
+}
+```
+
+### SimulationSignalIntegrityRlgc
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_integrity_rlgc.ts)
+
+Coupled lumped matrices in ohms, henries, farads and siemens, ordered by signal IDs.
+
+```typescript
+/** Coupled lumped matrices in ohms, henries, farads and siemens, ordered by signal IDs. */
+interface SimulationSignalIntegrityRlgc {
+  type: "simulation_signal_integrity_rlgc"
+  simulation_signal_integrity_rlgc_id: string
+  simulation_signal_integrity_id: string
+  signal_order: string[]
+  r_ohm: number[][]
+  l_h: number[][]
+  c_f: number[][]
+  g_s: number[][]
+}
+```
+
+### SimulationSignalStrobeMargin
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_strobe_margin.ts)
+
+Per received strobe edge and worst setup/hold margins in seconds; negative margins fail.
+
+```typescript
+/** Per received strobe edge and worst setup/hold margins in seconds; negative margins fail. */
+interface SimulationSignalStrobeMargin {
+  type: "simulation_signal_strobe_margin"
+  simulation_signal_strobe_margin_id: string
+  simulation_signal_id: string
+  source_port_id: string
+  edges: { time_s: number; setup_margin_s: number; hold_margin_s: number }[]
+  worst_setup_margin_s: number
+  worst_hold_margin_s: number
+}
+```
+
+### SimulationSignalWaveform
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_waveform.ts)
+
+Parallel time (seconds) and voltage (volts) samples, including differential P - N.
+
+```typescript
+/** Parallel time (seconds) and voltage (volts) samples, including differential P - N. */
+interface SimulationSignalWaveform {
+  type: "simulation_signal_waveform"
+  simulation_signal_waveform_id: string
+  simulation_signal_id: string
+  end: "near" | "far"
+  source_port_id: string
+  timestamps_s: number[]
+  voltage_levels: number[]
+}
 ```
 
 ### SimulationSpiceSubcircuit
