@@ -13,21 +13,39 @@ export interface SimulationSignalWaveform {
   voltage_levels: number[]
 }
 
-export const simulation_signal_samples = z
-  .object({
-    timestamps_s: z.array(z.number().finite().nonnegative()).min(1),
-    voltage_levels: z.array(z.number().finite()).min(1),
-  })
-  .refine(
-    (samples) => samples.timestamps_s.length === samples.voltage_levels.length,
-    {
+const samples = z.object({
+  timestamps_s: z.array(z.number().finite().nonnegative()).min(1),
+  voltage_levels: z.array(z.number().finite()).min(1),
+})
+
+function validateSamples(
+  data: z.infer<typeof samples>,
+  context: z.RefinementCtx,
+) {
+  if (data.timestamps_s.length !== data.voltage_levels.length) {
+    context.addIssue({
+      code: z.ZodIssueCode.custom,
       path: ["voltage_levels"],
       message: "Each timestamp must have a voltage sample",
-    },
-  )
+    })
+  }
+  if (
+    data.timestamps_s.some(
+      (time, index, times) => index > 0 && time <= times[index - 1]!,
+    )
+  ) {
+    context.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["timestamps_s"],
+      message: "Sample timestamps must be strictly increasing",
+    })
+  }
+}
 
-export const simulation_signal_waveform = z
-  .object({
+export const simulation_signal_samples = samples.superRefine(validateSamples)
+
+export const simulation_signal_waveform = samples
+  .extend({
     type: z.literal("simulation_signal_waveform"),
     simulation_signal_waveform_id: getZodPrefixedIdWithDefault(
       "simulation_signal_waveform",
@@ -35,16 +53,8 @@ export const simulation_signal_waveform = z
     simulation_signal_id: z.string().min(1),
     end: z.enum(["near", "far"]),
     source_port_id: z.string().min(1),
-    timestamps_s: z.array(z.number().finite().nonnegative()).min(1),
-    voltage_levels: z.array(z.number().finite()).min(1),
   })
-  .refine(
-    (samples) => samples.timestamps_s.length === samples.voltage_levels.length,
-    {
-      path: ["voltage_levels"],
-      message: "Each timestamp must have a voltage sample",
-    },
-  )
+  .superRefine(validateSamples)
   .describe(
     "Stores near-end or far-end signal voltage samples in seconds and volts",
   )

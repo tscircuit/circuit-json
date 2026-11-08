@@ -5112,7 +5112,7 @@ interface SimulationSignal {
   receivers: SignalEndpoint[]
   bit_rate_bps: number
   pattern: string
-  seed: number
+  seed?: number
   offset_s: number
   quiet?: "low" | "high" | "off"
   probe: "local" | "global"
@@ -5128,7 +5128,8 @@ type SignalEndpoint =
       kind: "differential"
       p_source_port_id: string
       n_source_port_id: string
-      ibis_model_name?: string
+      p_ibis_model_name?: string
+      n_ibis_model_name?: string
     }
 ```
 
@@ -5136,17 +5137,19 @@ type SignalEndpoint =
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_crosstalk.ts)
 
-Peak near-end and far-end crosstalk magnitudes in volts for one quiet receiver.
+Signed crosstalk peaks relative to the undisturbed idle voltage at one quiet endpoint.
 
 ```typescript
-/** Peak near-end and far-end crosstalk magnitudes in volts for one quiet receiver. */
+/** Signed crosstalk peaks relative to the undisturbed idle voltage at one quiet endpoint. */
 interface SimulationSignalCrosstalk {
   type: "simulation_signal_crosstalk"
   simulation_signal_crosstalk_id: string
   simulation_signal_id: string
+  end: "near" | "far"
   source_port_id: string
-  peak_next_v: number
-  peak_fext_v: number
+  idle_voltage_v: number
+  peak_positive_v: number
+  peak_negative_v: number
 }
 ```
 
@@ -5183,12 +5186,11 @@ interface SimulationSignalIntegrity {
   simulation_signal_integrity_id: string
   name?: string
   bit_rate_bps: number
-  duration_s: number
+  duration_s?: number
   corner: "typ" | "min" | "max"
   unlisted_nets: "passive"
   unrouted: "error" | "ideal"
   pdn: "extracted" | "ideal"
-  supply: "board" | "ibis"
 }
 ```
 
@@ -5196,19 +5198,25 @@ interface SimulationSignalIntegrity {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_integrity_rlgc.ts)
 
-Coupled lumped matrices in ohms, henries, farads and siemens, ordered by signal IDs.
+Frequency-indexed total loop R/L and floating-return Maxwell C/G in physical conductor order.
 
 ```typescript
-/** Coupled lumped matrices in ohms, henries, farads and siemens, ordered by signal IDs. */
+/** Frequency-indexed total loop R/L and floating-return Maxwell C/G in physical conductor order. */
 interface SimulationSignalIntegrityRlgc {
   type: "simulation_signal_integrity_rlgc"
   simulation_signal_integrity_rlgc_id: string
   simulation_signal_integrity_id: string
-  signal_order: string[]
-  r_ohm: number[][]
-  l_h: number[][]
-  c_f: number[][]
-  g_s: number[][]
+  conductors: (
+    | { simulation_signal_id: string; leg: "p" | "n" | "single" }
+    | { source_trace_id: string }
+  )[]
+  matrices: {
+    frequency_hz: number
+    r_ohm: number[][]
+    l_h: number[][]
+    c_f: number[][]
+    g_s: number[][]
+  }[]
 }
 ```
 

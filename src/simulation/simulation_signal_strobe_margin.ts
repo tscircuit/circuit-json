@@ -33,6 +33,29 @@ export const simulation_signal_strobe_margin = z
     worst_setup_margin_s: z.number().finite(),
     worst_hold_margin_s: z.number().finite(),
   })
+  .refine(
+    (result) =>
+      result.edges.every(
+        (edge, index, edges) =>
+          index === 0 || edge.time_s > edges[index - 1]!.time_s,
+      ),
+    { path: ["edges"], message: "Strobe edges must be in time order" },
+  )
+  .superRefine((result, context) => {
+    for (const field of ["setup_margin_s", "hold_margin_s"] as const) {
+      const worst = result[`worst_${field}`]
+      if (
+        !result.edges.some((edge) => edge[field] === worst) ||
+        result.edges.some((edge) => edge[field] < worst)
+      ) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: [`worst_${field}`],
+          message: "Worst margin must equal the minimum per-edge margin",
+        })
+      }
+    }
+  })
   .describe(
     "Stores per-edge and worst receiver setup and hold margins in seconds",
   )

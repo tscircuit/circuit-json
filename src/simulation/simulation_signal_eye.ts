@@ -24,7 +24,7 @@ export const simulation_signal_eye = z
     simulation_signal_id: z.string().min(1),
     source_port_id: z.string().min(1),
     folded_traces: z.array(simulation_signal_samples).min(1),
-    eye_height_v: z.number().finite().nonnegative(),
+    eye_height_v: z.number().finite(),
     eye_width_s: z.number().finite().nonnegative(),
     mask_margin_v: z.number().finite(),
   })

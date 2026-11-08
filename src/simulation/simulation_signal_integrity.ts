@@ -8,12 +8,11 @@ export interface SimulationSignalIntegrity {
   simulation_signal_integrity_id: string
   name?: string
   bit_rate_bps: number
-  duration_s: number
+  duration_s?: number
   corner: "typ" | "min" | "max"
   unlisted_nets: "passive"
   unrouted: "error" | "ideal"
   pdn: "extracted" | "ideal"
-  supply: "board" | "ibis"
 }
 
 export const simulation_signal_integrity = z
@@ -24,12 +23,11 @@ export const simulation_signal_integrity = z
     ),
     name: z.string().min(1).optional(),
     bit_rate_bps: z.number().finite().positive(),
-    duration_s: z.number().finite().positive(),
+    duration_s: z.number().finite().positive().optional(),
     corner: z.enum(["typ", "min", "max"]),
     unlisted_nets: z.literal("passive"),
     unrouted: z.enum(["error", "ideal"]),
     pdn: z.enum(["extracted", "ideal"]),
-    supply: z.enum(["board", "ibis"]),
   })
   .describe("Defines an independent coupled signal integrity simulation")
 

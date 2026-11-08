@@ -2,14 +2,16 @@ import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-/** Peak near-end and far-end crosstalk magnitudes in volts for one quiet receiver. */
+/** Signed crosstalk peaks relative to the undisturbed idle voltage at one quiet endpoint. */
 export interface SimulationSignalCrosstalk {
   type: "simulation_signal_crosstalk"
   simulation_signal_crosstalk_id: string
   simulation_signal_id: string
+  end: "near" | "far"
   source_port_id: string
-  peak_next_v: number
-  peak_fext_v: number
+  idle_voltage_v: number
+  peak_positive_v: number
+  peak_negative_v: number
 }
 
 export const simulation_signal_crosstalk = z
@@ -19,11 +21,15 @@ export const simulation_signal_crosstalk = z
       "simulation_signal_crosstalk",
     ),
     simulation_signal_id: z.string().min(1),
+    end: z.enum(["near", "far"]),
     source_port_id: z.string().min(1),
-    peak_next_v: z.number().finite().nonnegative(),
-    peak_fext_v: z.number().finite().nonnegative(),
+    idle_voltage_v: z.number().finite(),
+    peak_positive_v: z.number().finite().nonnegative(),
+    peak_negative_v: z.number().finite().nonpositive(),
   })
-  .describe("Stores peak NEXT and FEXT magnitudes in volts for a quiet signal")
+  .describe(
+    "Stores signed NEXT or FEXT peaks from a quiet endpoint's idle level",
+  )
 
 export type SimulationSignalCrosstalkInput = z.input<
   typeof simulation_signal_crosstalk
