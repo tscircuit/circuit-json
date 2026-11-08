@@ -10,7 +10,7 @@ export const pcb_fabrication_note_rect = z
     pcb_fabrication_note_rect_id: getZodPrefixedIdWithDefault(
       "pcb_fabrication_note_rect",
     ),
-    pcb_component_id: z.string(),
+    pcb_component_id: z.string().optional(),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     center: point,
@@ -37,7 +37,7 @@ type InferredPcbFabricationNoteRect = z.infer<typeof pcb_fabrication_note_rect>
 export interface PcbFabricationNoteRect {
   type: "pcb_fabrication_note_rect"
   pcb_fabrication_note_rect_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   center: Point

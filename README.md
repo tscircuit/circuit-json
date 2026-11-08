@@ -2056,7 +2056,7 @@ interface PcbCopperText {
   subcircuit_id?: string
   font: "tscircuit2024"
   font_size: Length
-  pcb_component_id: string
+  pcb_component_id?: string
   text: string
   is_knockout?: boolean
   knockout_padding?: {
@@ -2268,7 +2268,7 @@ Defines a measurement annotation within PCB fabrication notes
 interface PcbFabricationNoteDimension {
   type: "pcb_fabrication_note_dimension"
   pcb_fabrication_note_dimension_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   layer: VisibleLayer
@@ -2326,7 +2326,7 @@ Defines a fabrication note rectangle on the PCB
 interface PcbFabricationNoteRect {
   type: "pcb_fabrication_note_rect"
   pcb_fabrication_note_rect_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   center: Point
@@ -3258,7 +3258,7 @@ Defines a silkscreen circle on the PCB
 interface PcbSilkscreenCircle {
   type: "pcb_silkscreen_circle"
   pcb_silkscreen_circle_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   center: Point
@@ -3280,7 +3280,7 @@ Defines a BRep silkscreen graphic on the PCB
 interface PcbSilkscreenGraphicBRep {
   type: "pcb_silkscreen_graphic"
   pcb_silkscreen_graphic_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   layer: VisibleLayer
@@ -3301,7 +3301,7 @@ Defines a silkscreen line on the PCB
 interface PcbSilkscreenLine {
   type: "pcb_silkscreen_line"
   pcb_silkscreen_line_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   stroke_width: Distance
@@ -3324,7 +3324,7 @@ Defines a silkscreen oval on the PCB
 interface PcbSilkscreenOval {
   type: "pcb_silkscreen_oval"
   pcb_silkscreen_oval_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   center: Point
@@ -3346,7 +3346,7 @@ Defines a silkscreen path on the PCB
 interface PcbSilkscreenPath {
   type: "pcb_silkscreen_path"
   pcb_silkscreen_path_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   layer: VisibleLayerRef
@@ -3366,7 +3366,7 @@ Defines a silkscreen pill on the PCB
 interface PcbSilkscreenPill {
   type: "pcb_silkscreen_pill"
   pcb_silkscreen_pill_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   center: Point
@@ -3388,7 +3388,7 @@ Defines a silkscreen rect on the PCB
 interface PcbSilkscreenRect {
   type: "pcb_silkscreen_rect"
   pcb_silkscreen_rect_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   center: Point

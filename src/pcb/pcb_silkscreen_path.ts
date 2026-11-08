@@ -11,7 +11,7 @@ export const pcb_silkscreen_path = z
   .object({
     type: z.literal("pcb_silkscreen_path"),
     pcb_silkscreen_path_id: getZodPrefixedIdWithDefault("pcb_silkscreen_path"),
-    pcb_component_id: z.string(),
+    pcb_component_id: z.string().optional(),
     pcb_group_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
     layer: visible_layer,
@@ -29,7 +29,7 @@ type InferredPcbSilkscreenPath = z.infer<typeof pcb_silkscreen_path>
 export interface PcbSilkscreenPath {
   type: "pcb_silkscreen_path"
   pcb_silkscreen_path_id: string
-  pcb_component_id: string
+  pcb_component_id?: string
   pcb_group_id?: string
   subcircuit_id?: string
   layer: VisibleLayerRef
