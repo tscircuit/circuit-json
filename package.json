@@ -1,5 +1,6 @@
 {
   "name": "circuit-json",
+  "license": "MIT",
   "version": "0.0.547",
   "repository": {
     "type": "git",
