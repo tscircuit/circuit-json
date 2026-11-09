@@ -2808,6 +2808,7 @@ interface PcbNoteText {
   font: "tscircuit2024"
   font_size: Length
   text?: string
+  ccw_rotation?: Rotation
   anchor_position: Point
   anchor_alignment:
     "center" | "top_left" | "top_right" | "bottom_left" | "bottom_right"
