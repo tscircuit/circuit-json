@@ -11,6 +11,7 @@ export interface SimulationSignalWaveform {
   source_port_id: string
   timestamps_s: number[]
   voltage_levels: number[]
+  idle_voltage_v?: number
 }
 
 const samples = z.object({
@@ -42,8 +43,6 @@ function validateSamples(
   }
 }
 
-export const simulation_signal_samples = samples.superRefine(validateSamples)
-
 export const simulation_signal_waveform = samples
   .extend({
     type: z.literal("simulation_signal_waveform"),
@@ -51,6 +50,7 @@ export const simulation_signal_waveform = samples
       "simulation_signal_waveform",
     ),
     simulation_signal_id: z.string().min(1),
+    idle_voltage_v: z.number().finite().optional(),
     end: z.enum(["near", "far"]),
     source_port_id: z.string().min(1),
   })

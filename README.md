@@ -256,11 +256,8 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationReturnCurrentExcitation](#simulationreturncurrentexcitation)
     - [SimulationReturnCurrentGridJson](#simulationreturncurrentgridjson)
     - [SimulationSignal](#simulationsignal)
-    - [SimulationSignalCrosstalk](#simulationsignalcrosstalk)
-    - [SimulationSignalEye](#simulationsignaleye)
     - [SimulationSignalIntegrity](#simulationsignalintegrity)
     - [SimulationSignalIntegrityRlgc](#simulationsignalintegrityrlgc)
-    - [SimulationSignalStrobeMargin](#simulationsignalstrobemargin)
     - [SimulationSignalWaveform](#simulationsignalwaveform)
     - [SimulationSpiceSubcircuit](#simulationspicesubcircuit)
     - [SimulationSwitch](#simulationswitch)
@@ -5116,10 +5113,6 @@ interface SimulationSignal {
   offset_s: number
   quiet?: "low" | "high" | "off"
   probe: "local" | "global"
-  mask:
-    | "ibis"
-    | { vih_v?: number; vil_v?: number; setup_s?: number; hold_s?: number }
-  strobe_simulation_signal_id?: string
 }
 
 type SignalEndpoint =
@@ -5133,45 +5126,6 @@ type SignalEndpoint =
     }
 ```
 
-### SimulationSignalCrosstalk
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_crosstalk.ts)
-
-Signed crosstalk peaks relative to the undisturbed idle voltage at one quiet endpoint.
-
-```typescript
-/** Signed crosstalk peaks relative to the undisturbed idle voltage at one quiet endpoint. */
-interface SimulationSignalCrosstalk {
-  type: "simulation_signal_crosstalk"
-  simulation_signal_crosstalk_id: string
-  simulation_signal_id: string
-  end: "near" | "far"
-  source_port_id: string
-  idle_voltage_v: number
-  peak_positive_v: number
-  peak_negative_v: number
-}
-```
-
-### SimulationSignalEye
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_eye.ts)
-
-A receiver's folded eye traces and voltage/time opening; negative margin fails the mask.
-
-```typescript
-/** A receiver's folded eye traces and voltage/time opening; negative margin fails the mask. */
-interface SimulationSignalEye {
-  type: "simulation_signal_eye"
-  simulation_signal_eye_id: string
-  simulation_signal_id: string
-  source_port_id: string
-  folded_traces: { timestamps_s: number[]; voltage_levels: number[] }[]
-  eye_height_v: number
-  eye_width_s: number
-  mask_margin_v: number
-}
-```
 
 ### SimulationSignalIntegrity
 
@@ -5187,7 +5141,7 @@ interface SimulationSignalIntegrity {
   name?: string
   bit_rate_bps: number
   duration_s?: number
-  corner: "typ" | "min" | "max"
+  corner: "typical" | "minimum" | "maximum"
   unlisted_nets: "passive"
   unrouted: "error" | "ideal"
   pdn: "extracted" | "ideal"
@@ -5198,18 +5152,15 @@ interface SimulationSignalIntegrity {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_integrity_rlgc.ts)
 
-Frequency-indexed total loop R/L and floating-return Maxwell C/G in physical conductor order.
+Frequency-indexed total loop R/L and ground-referenced Maxwell C/G in physical conductor order.
 
 ```typescript
-/** Frequency-indexed total loop R/L and floating-return Maxwell C/G in physical conductor order. */
+/** Frequency-indexed total loop R/L and ground-referenced Maxwell C/G in physical conductor order. */
 interface SimulationSignalIntegrityRlgc {
   type: "simulation_signal_integrity_rlgc"
   simulation_signal_integrity_rlgc_id: string
   simulation_signal_integrity_id: string
-  conductors: (
-    | { simulation_signal_id: string; leg: "p" | "n" | "single" }
-    | { source_trace_id: string }
-  )[]
+  conductors: { simulation_signal_id: string; leg: "p" | "n" | "single" }[]
   matrices: {
     frequency_hz: number
     r_ohm: number[][]
@@ -5220,24 +5171,6 @@ interface SimulationSignalIntegrityRlgc {
 }
 ```
 
-### SimulationSignalStrobeMargin
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_strobe_margin.ts)
-
-Per received strobe edge and worst setup/hold margins in seconds; negative margins fail.
-
-```typescript
-/** Per received strobe edge and worst setup/hold margins in seconds; negative margins fail. */
-interface SimulationSignalStrobeMargin {
-  type: "simulation_signal_strobe_margin"
-  simulation_signal_strobe_margin_id: string
-  simulation_signal_id: string
-  source_port_id: string
-  edges: { time_s: number; setup_margin_s: number; hold_margin_s: number }[]
-  worst_setup_margin_s: number
-  worst_hold_margin_s: number
-}
-```
 
 ### SimulationSignalWaveform
 
@@ -5255,6 +5188,7 @@ interface SimulationSignalWaveform {
   source_port_id: string
   timestamps_s: number[]
   voltage_levels: number[]
+  idle_voltage_v?: number
 }
 ```
 

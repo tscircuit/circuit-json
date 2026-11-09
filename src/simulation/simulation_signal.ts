@@ -45,10 +45,6 @@ export interface SimulationSignal {
   offset_s: number
   quiet?: "low" | "high" | "off"
   probe: "local" | "global"
-  mask:
-    | "ibis"
-    | { vih_v?: number; vil_v?: number; setup_s?: number; hold_s?: number }
-  strobe_simulation_signal_id?: string
 }
 
 export const simulation_signal = z
@@ -65,19 +61,8 @@ export const simulation_signal = z
     offset_s: z.number().finite().nonnegative(),
     quiet: z.enum(["low", "high", "off"]).optional(),
     probe: z.enum(["local", "global"]),
-    mask: z.union([
-      z.literal("ibis"),
-      z
-        .object({
-          vih_v: z.number().finite().optional(),
-          vil_v: z.number().finite().optional(),
-          setup_s: z.number().finite().nonnegative().optional(),
-          hold_s: z.number().finite().nonnegative().optional(),
-        })
-        .strict(),
-    ]),
-    strobe_simulation_signal_id: z.string().min(1).optional(),
   })
+  .strict()
   .superRefine((signal, context) => {
     const order = /^prbs(7|15|31)$/.exec(signal.pattern)?.[1]
     if (order) {
@@ -102,27 +87,6 @@ export const simulation_signal = z
         path: ["quiet"],
         message: "Constant patterns must carry their normalized quiet state",
       })
-    }
-    if (signal.strobe_simulation_signal_id === signal.simulation_signal_id) {
-      context.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["strobe_simulation_signal_id"],
-        message: "Strobe must reference a different signal",
-      })
-    }
-    if (
-      typeof signal.mask === "object" &&
-      !signal.strobe_simulation_signal_id
-    ) {
-      for (const field of ["setup_s", "hold_s"] as const) {
-        if (signal.mask[field] !== undefined) {
-          context.addIssue({
-            code: z.ZodIssueCode.custom,
-            path: ["mask", field],
-            message: "Setup and hold limits require a strobe signal",
-          })
-        }
-      }
     }
   })
   .describe(

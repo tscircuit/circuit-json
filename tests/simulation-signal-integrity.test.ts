@@ -4,9 +4,6 @@ import type {
   SimulationSignalInput,
   SimulationSignalIntegrityInput,
   SimulationSignalWaveformInput,
-  SimulationSignalEyeInput,
-  SimulationSignalCrosstalkInput,
-  SimulationSignalStrobeMarginInput,
   SimulationSignalIntegrityRlgcInput,
 } from "../src"
 import { model } from "./fixtures/simulation-ibis"
@@ -16,7 +13,7 @@ const block = {
   name: "WRITE",
   bit_rate_bps: 1.6e9,
   duration_s: 1e-6,
-  corner: "typ",
+  corner: "typical",
   unlisted_nets: "passive",
   unrouted: "error",
   pdn: "ideal",
@@ -40,8 +37,6 @@ const signal = {
   seed: 123,
   offset_s: 0,
   probe: "local",
-  mask: { vih_v: 0.9, vil_v: 0.6, setup_s: 75e-12, hold_s: 100e-12 },
-  strobe_simulation_signal_id: "dqs",
 } satisfies SimulationSignalInput
 
 const samples = {
@@ -55,35 +50,6 @@ const waveform = {
   source_port_id: "dram_dq0",
   ...samples,
 } satisfies SimulationSignalWaveformInput
-const eye = {
-  type: "simulation_signal_eye",
-  simulation_signal_id: "dq0",
-  source_port_id: "dram_dq0",
-  folded_traces: [samples, samples],
-  eye_height_v: 0.8,
-  eye_width_s: 300e-12,
-  mask_margin_v: -0.02,
-} satisfies SimulationSignalEyeInput
-const crosstalk = {
-  type: "simulation_signal_crosstalk",
-  simulation_signal_id: "dq0",
-  end: "far",
-  source_port_id: "dram_dq0",
-  idle_voltage_v: 1.5,
-  peak_positive_v: 0.02,
-  peak_negative_v: -0.04,
-} satisfies SimulationSignalCrosstalkInput
-const strobeMargin = {
-  type: "simulation_signal_strobe_margin",
-  simulation_signal_id: "dq0",
-  source_port_id: "dram_dq0",
-  edges: [
-    { time_s: 1e-9, setup_margin_s: -10e-12, hold_margin_s: 20e-12 },
-    { time_s: 2e-9, setup_margin_s: 30e-12, hold_margin_s: -5e-12 },
-  ],
-  worst_setup_margin_s: -10e-12,
-  worst_hold_margin_s: -5e-12,
-} satisfies SimulationSignalStrobeMarginInput
 const rlgc = {
   type: "simulation_signal_integrity_rlgc",
   simulation_signal_integrity_id: "si_write",
@@ -102,10 +68,10 @@ const rlgc = {
         [1e-9, 0.1e-9],
         [0.1e-9, 1e-9],
       ],
-      // RFC charge-neutral reduction of [[4,-1,-1],[-1,4,-1],[-1,-1,4]] pF.
+      // Ground-referenced signal block of the primitive Maxwell matrix.
       c_f: [
-        [(10 / 3) * 1e-12, (-5 / 3) * 1e-12],
-        [(-5 / 3) * 1e-12, (10 / 3) * 1e-12],
+        [4e-12, -1e-12],
+        [-1e-12, 4e-12],
       ],
       g_s: [
         [0, 0],
@@ -115,7 +81,7 @@ const rlgc = {
   ],
 } satisfies SimulationSignalIntegrityRlgcInput
 
-test.each([block, signal, waveform, eye, crosstalk, strobeMargin, rlgc])(
+test.each([block, signal, waveform, rlgc])(
   "$type is exported, generates an ID, and survives the public union and JSON roundtrip",
   (record) => {
     const schema = circuitJson[record.type]
@@ -153,7 +119,7 @@ test("block choices are explicit and finite numerical values use SI units", () =
       supply: "board",
     }),
   ).not.toHaveProperty("supply")
-  for (const corner of ["typ", "min", "max"]) {
+  for (const corner of ["typical", "minimum", "maximum"]) {
     for (const [unrouted, pdn] of [
       ["error", "extracted"],
       ["ideal", "ideal"],
@@ -176,7 +142,7 @@ test("block choices are explicit and finite numerical values use SI units", () =
     { duration_s: 0 },
     { duration_s: Infinity },
     { duration_s: NaN },
-    { corner: "typical" },
+    { corner: "typ" },
     { unlisted_nets: "ignore" },
     { unrouted: "skip" },
     { pdn: "guessed" },
@@ -242,7 +208,7 @@ test("differential endpoints select models while arrays mean multiple receivers"
   }
 })
 
-test("signals support named patterns, literal bits, quiet levels and masks without a count cap", () => {
+test("signals support named patterns, literal bits, quiet levels without a count cap", () => {
   for (const pattern of [
     "prbs7",
     "prbs15",
@@ -258,9 +224,7 @@ test("signals support named patterns, literal bits, quiet levels and masks witho
           pattern,
           seed: pattern.startsWith("prbs") ? 123 : undefined,
           quiet,
-          mask: "ibis",
           probe: "global",
-          strobe_simulation_signal_id: undefined,
         }).success,
       ).toBe(true)
     }
@@ -286,20 +250,10 @@ test("signals support named patterns, literal bits, quiet levels and masks witho
     { pattern: "prbs9" },
     { quiet: true },
     { probe: "ideal" },
-    { mask: { setup_s: -1 } },
-    { mask: { vih_v: Infinity } },
-    { strobe_simulation_signal_id: undefined },
   ])
     expect(
       circuitJson.simulation_signal.safeParse({ ...signal, ...change }).success,
     ).toBe(false)
-  expect(
-    circuitJson.simulation_signal.safeParse({
-      ...signal,
-      mask: { vih_v: 0.9 },
-      strobe_simulation_signal_id: undefined,
-    }).success,
-  ).toBe(true)
 })
 
 test.each([7, 15, 31])(
@@ -361,20 +315,7 @@ test("clock and literal sources omit seed; constant literals carry a quiet state
   }
 })
 
-test("a required strobe cannot refer to the signal itself; forward references remain valid", () => {
-  const record = { ...signal, simulation_signal_id: "dq0" }
-  expect(
-    circuitJson.simulation_signal.parse(record).strobe_simulation_signal_id,
-  ).toBe("dqs")
-  const self = { ...record, strobe_simulation_signal_id: "dq0" }
-  expect(circuitJson.simulation_signal.safeParse(self).success).toBe(false)
-  expect(circuitJson.any_circuit_element.safeParse(self).success).toBe(false)
-  expect(
-    circuitJson.simulation_signal.safeParse({ ...self, mask: "ibis" }).success,
-  ).toBe(false)
-})
-
-test("waveforms and folded traces require paired finite samples", () => {
+test("waveforms require paired finite samples", () => {
   for (const end of ["near", "far"]) {
     expect(
       circuitJson.simulation_signal_waveform.safeParse({ ...waveform, end })
@@ -404,122 +345,19 @@ test("waveforms and folded traces require paired finite samples", () => {
         ...change,
       }).success,
     ).toBe(false)
-    expect(
-      circuitJson.simulation_signal_eye.safeParse({
-        ...eye,
-        folded_traces: [{ ...samples, ...change }],
-      }).success,
-    ).toBe(false)
   }
-  for (const change of [
-    { folded_traces: [] },
-    { eye_height_v: Infinity },
-    { eye_width_s: -1 },
-    { eye_width_s: Infinity },
-    { mask_margin_v: NaN },
-  ]) {
-    expect(
-      circuitJson.simulation_signal_eye.safeParse({ ...eye, ...change })
-        .success,
-    ).toBe(false)
-  }
-})
-
-test("crosstalk keeps near and each far receiver separate, with signed peaks from idle", () => {
-  const records = [
-    {
-      ...crosstalk,
-      end: "near",
-      source_port_id: "mc_dq0",
-      peak_negative_v: -0.01,
-    },
-    crosstalk,
-    {
-      ...crosstalk,
-      source_port_id: "dram2_dq0",
-      idle_voltage_v: 1.4,
-      peak_positive_v: 0.03,
-    },
-  ].map((record) => circuitJson.simulation_signal_crosstalk.parse(record))
-  expect(records.map((record) => [record.end, record.source_port_id])).toEqual([
-    ["near", "mc_dq0"],
-    ["far", "dram_dq0"],
-    ["far", "dram2_dq0"],
-  ])
-  expect(records.map((record) => record.peak_negative_v)).toEqual([
-    -0.01, -0.04, -0.04,
-  ])
-  expect(records.map((record) => record.idle_voltage_v)).toEqual([
-    1.5, 1.5, 1.4,
-  ])
-  for (const record of records)
-    expect(circuitJson.any_circuit_element.parse(record)).toEqual(record)
-  for (const field of [
-    "idle_voltage_v",
-    "peak_positive_v",
-    "peak_negative_v",
-  ]) {
-    for (const value of [Infinity, -Infinity, NaN]) {
-      expect(
-        circuitJson.simulation_signal_crosstalk.safeParse({
-          ...crosstalk,
-          [field]: value,
-        }).success,
-      ).toBe(false)
-    }
-  }
-  for (const change of [
-    { peak_positive_v: -0.01 },
-    { peak_negative_v: 0.01 },
-    { end: "middle" },
-    { source_port_id: undefined },
-  ])
-    expect(
-      circuitJson.simulation_signal_crosstalk.safeParse({
-        ...crosstalk,
-        ...change,
-      }).success,
-    ).toBe(false)
   expect(
-    circuitJson.simulation_signal_crosstalk.safeParse({
-      ...crosstalk,
-      idle_voltage_v: -0.5,
-      peak_positive_v: 0,
-      peak_negative_v: 0,
+    circuitJson.simulation_signal_waveform.parse({
+      ...waveform,
+      idle_voltage_v: 0.1,
+    }).idle_voltage_v,
+  ).toBe(0.1)
+  expect(
+    circuitJson.simulation_signal_waveform.safeParse({
+      ...waveform,
+      idle_voltage_v: Infinity,
     }).success,
-  ).toBe(true)
-})
-
-test("eye height, mask and timing margins can be negative; worst margins are edge minima", () => {
-  expect(
-    circuitJson.simulation_signal_eye.parse({ ...eye, eye_height_v: -0.1 })
-      .eye_height_v,
-  ).toBe(-0.1)
-  expect(
-    circuitJson.simulation_signal_eye.parse(eye).mask_margin_v,
-  ).toBeLessThan(0)
-  expect(
-    circuitJson.simulation_signal_strobe_margin.parse(strobeMargin)
-      .worst_setup_margin_s,
-  ).toBeLessThan(0)
-  for (const change of [
-    { edges: [] },
-    { worst_setup_margin_s: Infinity },
-    { worst_hold_margin_s: NaN },
-    { edges: [{ ...strobeMargin.edges[0], time_s: -1 }] },
-    { edges: [{ ...strobeMargin.edges[0], setup_margin_s: Infinity }] },
-    { edges: [{ ...strobeMargin.edges[0], hold_margin_s: undefined }] },
-    { edges: [...strobeMargin.edges].reverse() },
-    { edges: [strobeMargin.edges[0], strobeMargin.edges[0]] },
-    { worst_setup_margin_s: 30e-12 },
-    { worst_hold_margin_s: -10e-12 },
-  ])
-    expect(
-      circuitJson.simulation_signal_strobe_margin.safeParse({
-        ...strobeMargin,
-        ...change,
-      }).success,
-    ).toBe(false)
+  ).toBe(false)
 })
 
 test("differential RLGC keeps distinct P/N conductors with the same signal ID", () => {
@@ -529,16 +367,15 @@ test("differential RLGC keeps distinct P/N conductors with the same signal ID", 
   expect(circuitJson.any_circuit_element.parse(result)).toEqual(result)
 })
 
-test("RLGC matrices use physical conductor order, including unlisted copper, without a size cap", () => {
+test("RLGC matrices use listed conductor order, without a size cap", () => {
   for (const size of [1, 4, 16]) {
     const matrix = Array.from({ length: size }, (_, i) =>
       Array.from({ length: size }, (_, j) => (i === j ? 1 : -0.1)),
     )
-    const conductors = Array.from({ length: size }, (_, i) =>
-      i === 0
-        ? { source_trace_id: "unlisted_trace" }
-        : { simulation_signal_id: `signal_${i}`, leg: "single" },
-    )
+    const conductors = Array.from({ length: size }, (_, i) => ({
+      simulation_signal_id: `signal_${i}`,
+      leg: "single",
+    }))
     expect(
       circuitJson.simulation_signal_integrity_rlgc.safeParse({
         ...rlgc,
@@ -635,6 +472,9 @@ test("removed SI records and settings are absent while general SPICE remains", (
     "simulation_ibis_pin_state",
     "simulation_digital_stimulus",
     "simulation_eye_diagram",
+    "simulation_signal_eye",
+    "simulation_signal_crosstalk",
+    "simulation_signal_strobe_margin",
   ]) {
     expect(Reflect.has(circuitJson, type)).toBe(false)
     expect(circuitJson.any_circuit_element.safeParse({ type }).success).toBe(
@@ -667,4 +507,19 @@ test("removed SI records and settings are absent while general SPICE remains", (
   })
   expect(parsedModel).not.toHaveProperty("model_value_corner")
   expect(parsedModel).not.toHaveProperty("include_package_parasitics")
+})
+
+test("measurement source fields are rejected", () => {
+  for (const field of [
+    "mask",
+    "strobe_simulation_signal_id",
+    "thresholds",
+    "setup_s",
+    "hold_s",
+  ]) {
+    expect(
+      circuitJson.simulation_signal.safeParse({ ...signal, [field]: "removed" })
+        .success,
+    ).toBe(false)
+  }
 })

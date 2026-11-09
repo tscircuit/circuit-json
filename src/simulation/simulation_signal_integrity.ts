@@ -9,7 +9,7 @@ export interface SimulationSignalIntegrity {
   name?: string
   bit_rate_bps: number
   duration_s?: number
-  corner: "typ" | "min" | "max"
+  corner: "typical" | "minimum" | "maximum"
   unlisted_nets: "passive"
   unrouted: "error" | "ideal"
   pdn: "extracted" | "ideal"
@@ -24,7 +24,7 @@ export const simulation_signal_integrity = z
     name: z.string().min(1).optional(),
     bit_rate_bps: z.number().finite().positive(),
     duration_s: z.number().finite().positive().optional(),
-    corner: z.enum(["typ", "min", "max"]),
+    corner: z.enum(["typical", "minimum", "maximum"]),
     unlisted_nets: z.literal("passive"),
     unrouted: z.enum(["error", "ideal"]),
     pdn: z.enum(["extracted", "ideal"]),

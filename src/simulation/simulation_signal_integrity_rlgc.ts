@@ -2,15 +2,12 @@ import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-/** Frequency-indexed total loop R/L and floating-return Maxwell C/G in physical conductor order. */
+/** Frequency-indexed total loop R/L and ground-referenced Maxwell C/G in physical conductor order. */
 export interface SimulationSignalIntegrityRlgc {
   type: "simulation_signal_integrity_rlgc"
   simulation_signal_integrity_rlgc_id: string
   simulation_signal_integrity_id: string
-  conductors: (
-    | { simulation_signal_id: string; leg: "p" | "n" | "single" }
-    | { source_trace_id: string }
-  )[]
+  conductors: { simulation_signal_id: string; leg: "p" | "n" | "single" }[]
   matrices: {
     frequency_hz: number
     r_ohm: number[][]
@@ -31,15 +28,12 @@ export const simulation_signal_integrity_rlgc = z
     simulation_signal_integrity_id: z.string().min(1),
     conductors: z
       .array(
-        z.union([
-          z
-            .object({
-              simulation_signal_id: z.string().min(1),
-              leg: z.enum(["p", "n", "single"]),
-            })
-            .strict(),
-          z.object({ source_trace_id: z.string().min(1) }).strict(),
-        ]),
+        z
+          .object({
+            simulation_signal_id: z.string().min(1),
+            leg: z.enum(["p", "n", "single"]),
+          })
+          .strict(),
       )
       .min(1),
     matrices: z
@@ -95,11 +89,7 @@ export const simulation_signal_integrity_rlgc = z
       }
     }
     const identities = result.conductors.map((conductor) =>
-      JSON.stringify(
-        "simulation_signal_id" in conductor
-          ? ["signal", conductor.simulation_signal_id, conductor.leg]
-          : ["trace", conductor.source_trace_id],
-      ),
+      JSON.stringify([conductor.simulation_signal_id, conductor.leg]),
     )
     if (new Set(identities).size !== size) {
       context.addIssue({
