@@ -3,6 +3,6 @@
 exports[`board round trip preserves nominal trace width separately from the manufacturing minimum 1`] = `
 {
   "minimum": 0.1,
-  "nominal": undefined,
+  "nominal": 0.35000000000000003,
 }
 `;
