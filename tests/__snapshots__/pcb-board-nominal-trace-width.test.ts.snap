@@ -1,0 +1,8 @@
+// Bun Snapshot v1, https://bun.sh/docs/test/snapshots
+
+exports[`board round trip preserves nominal trace width separately from the manufacturing minimum 1`] = `
+{
+  "minimum": 0.1,
+  "nominal": undefined,
+}
+`;
