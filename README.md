@@ -5111,14 +5111,12 @@ interface SimulationSignal {
   pattern: string
   seed?: number
   offset_s: number
-  quiet?: "low" | "high" | "off"
-  probe: "local" | "global"
+  driver_disabled?: boolean
 }
 
 type SignalEndpoint =
-  | { kind: "single"; source_port_id: string; ibis_model_name?: string }
+  | { source_port_id: string; ibis_model_name?: string }
   | {
-      kind: "differential"
       p_source_port_id: string
       n_source_port_id: string
       p_ibis_model_name?: string
@@ -5140,10 +5138,7 @@ interface SimulationSignalIntegrity {
   name?: string
   bit_rate_bps: number
   duration_s?: number
-  corner: "typical" | "minimum" | "maximum"
-  unlisted_nets: "passive"
-  unrouted: "error" | "ideal"
-  pdn: "extracted" | "ideal"
+  allow_unrouted_traces: boolean
 }
 ```
 
@@ -5159,7 +5154,7 @@ interface SimulationSignalIntegrityRlgc {
   type: "simulation_signal_integrity_rlgc"
   simulation_signal_integrity_rlgc_id: string
   simulation_signal_integrity_id: string
-  conductors: { simulation_signal_id: string; leg: "p" | "n" | "single" }[]
+  conductors: { simulation_signal_id: string; source_port_id: string }[]
   matrices: {
     frequency_hz: number
     r_ohm: number[][]
@@ -5182,10 +5177,11 @@ interface SimulationSignalWaveform {
   type: "simulation_signal_waveform"
   simulation_signal_waveform_id: string
   simulation_signal_id: string
-  end: "near" | "far"
+  /** Driver port identifies the near end; receiver port identifies the far end. */
   source_port_id: string
   timestamps_s: number[]
   voltage_levels: number[]
+  /** Required for constant literal patterns or disabled drivers; omitted otherwise. Requires the referenced signal to validate. */
   idle_voltage_v?: number
 }
 ```

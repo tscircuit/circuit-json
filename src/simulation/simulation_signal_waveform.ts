@@ -7,10 +7,11 @@ export interface SimulationSignalWaveform {
   type: "simulation_signal_waveform"
   simulation_signal_waveform_id: string
   simulation_signal_id: string
-  end: "near" | "far"
+  /** Driver port identifies the near end; receiver port identifies the far end. */
   source_port_id: string
   timestamps_s: number[]
   voltage_levels: number[]
+  /** Required for constant literal patterns or disabled drivers; omitted otherwise. Requires the referenced signal to validate. */
   idle_voltage_v?: number
 }
 
@@ -51,7 +52,6 @@ export const simulation_signal_waveform = samples
     ),
     simulation_signal_id: z.string().min(1),
     idle_voltage_v: z.number().finite().optional(),
-    end: z.enum(["near", "far"]),
     source_port_id: z.string().min(1),
   })
   .refine((waveform) => waveform.timestamps_s[0] === 0, {

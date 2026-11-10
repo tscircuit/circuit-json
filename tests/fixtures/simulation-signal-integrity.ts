@@ -12,30 +12,25 @@ export const block = {
   name: "WRITE",
   bit_rate_bps: 1.6e9,
   duration_s: 1e-6,
-  corner: "typical",
-  unlisted_nets: "passive",
-  unrouted: "error",
-  pdn: "ideal",
+  allow_unrouted_traces: false,
 } satisfies SimulationSignalIntegrityInput
 
 export const signal = {
   type: "simulation_signal",
   simulation_signal_integrity_id: "si_write",
   name: "DQ0",
-  driver: { kind: "single", source_port_id: "mc_dq0" },
+  driver: { source_port_id: "mc_dq0" },
   receivers: [
     {
-      kind: "single",
       source_port_id: "dram_dq0",
       ibis_model_name: "DQ_40_ODT40_1600",
     },
-    { kind: "single", source_port_id: "dram2_dq0" },
+    { source_port_id: "dram2_dq0" },
   ],
   bit_rate_bps: 1.6e9,
   pattern: "prbs7",
   seed: 123,
   offset_s: 0,
-  probe: "local",
 } satisfies SimulationSignalInput
 
 export const samples = {
@@ -46,7 +41,6 @@ export const samples = {
 export const waveform = {
   type: "simulation_signal_waveform",
   simulation_signal_id: "dq0",
-  end: "far",
   source_port_id: "dram_dq0",
   ...samples,
 } satisfies SimulationSignalWaveformInput
@@ -55,8 +49,8 @@ export const rlgc = {
   type: "simulation_signal_integrity_rlgc",
   simulation_signal_integrity_id: "si_write",
   conductors: [
-    { simulation_signal_id: "dqs", leg: "p" },
-    { simulation_signal_id: "dqs", leg: "n" },
+    { simulation_signal_id: "dqs", source_port_id: "mc_dqs_p" },
+    { simulation_signal_id: "dqs", source_port_id: "mc_dqs_n" },
   ],
   matrices: [
     {
@@ -97,7 +91,6 @@ export function expectInvalidChanges(
 }
 
 export const endpoint = {
-  kind: "differential",
   p_source_port_id: "bus_p",
   n_source_port_id: "bus_n",
   p_ibis_model_name: "Model_579",

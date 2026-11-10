@@ -6,7 +6,7 @@ import {
   expectInvalidChanges,
 } from "./fixtures/simulation-signal-integrity"
 
-test("block choices are explicit and finite numerical values use SI units", () => {
+test("unrouted traces require an explicit boolean and finite numerical values use SI units", () => {
   const { name, duration_s, ...automatic } = block
   const parsed = circuitJson.simulation_signal_integrity.parse({
     ...automatic,
@@ -14,13 +14,10 @@ test("block choices are explicit and finite numerical values use SI units", () =
   })
   for (const field of ["name", "duration_s", "supply"])
     expect(parsed).not.toHaveProperty(field)
-  for (const change of [
-    { corner: "minimum" },
-    { corner: "maximum" },
-    { unrouted: "ideal", pdn: "extracted" },
-  ])
-    expect(accepts(block, change)).toBe(true)
+  for (const allow_unrouted_traces of [false, true])
+    expect(accepts(block, { allow_unrouted_traces })).toBe(true)
   expectInvalidChanges(block, [
+    { name: "" },
     { bit_rate_bps: 0 },
     { bit_rate_bps: Infinity },
     { bit_rate_bps: "20Mbps" },
@@ -28,9 +25,8 @@ test("block choices are explicit and finite numerical values use SI units", () =
     { duration_s: 0 },
     { duration_s: Infinity },
     { duration_s: NaN },
-    { corner: "typ" },
-    { unlisted_nets: "ignore" },
-    { unrouted: "skip" },
-    { pdn: "guessed" },
+    { allow_unrouted_traces: "ideal" },
+    { allow_unrouted_traces: 0 },
+    { allow_unrouted_traces: null },
   ])
 })

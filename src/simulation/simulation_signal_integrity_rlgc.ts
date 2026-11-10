@@ -7,7 +7,7 @@ export interface SimulationSignalIntegrityRlgc {
   type: "simulation_signal_integrity_rlgc"
   simulation_signal_integrity_rlgc_id: string
   simulation_signal_integrity_id: string
-  conductors: { simulation_signal_id: string; leg: "p" | "n" | "single" }[]
+  conductors: { simulation_signal_id: string; source_port_id: string }[]
   matrices: {
     frequency_hz: number
     r_ohm: number[][]
@@ -31,7 +31,7 @@ export const simulation_signal_integrity_rlgc = z
         z
           .object({
             simulation_signal_id: z.string().min(1),
-            leg: z.enum(["p", "n", "single"]),
+            source_port_id: z.string().min(1),
           })
           .strict(),
       )
@@ -111,24 +111,23 @@ export const simulation_signal_integrity_rlgc = z
         }
       }
     }
-    const legsBySignal = new Map<string, string[]>()
-    for (const { simulation_signal_id, leg } of result.conductors) {
-      legsBySignal.set(simulation_signal_id, [
-        ...(legsBySignal.get(simulation_signal_id) ?? []),
-        leg,
+    const portsBySignal = new Map<string, string[]>()
+    for (const { simulation_signal_id, source_port_id } of result.conductors) {
+      portsBySignal.set(simulation_signal_id, [
+        ...(portsBySignal.get(simulation_signal_id) ?? []),
+        source_port_id,
       ])
     }
-    // Each signal is one "single" conductor or one P/N pair.
     if (
-      [...legsBySignal.values()].some(
-        (legs) => !["single", "n,p"].includes(legs.sort().join(",")),
+      [...portsBySignal.values()].some(
+        (ports) => ports.length > 2 || new Set(ports).size !== ports.length,
       )
     ) {
       context.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["conductors"],
         message:
-          "Each signal must list one single conductor or exactly one P and one N conductor",
+          "Each signal must list one conductor or two distinct source ports",
       })
     }
   })

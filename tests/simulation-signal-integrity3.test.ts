@@ -14,13 +14,8 @@ test("differential endpoints select models while arrays mean multiple receivers"
       receivers: [endpoint],
     }),
   ).toMatchObject({ driver: endpoint, receivers: [endpoint] })
-  expect(
-    circuitJson.signal_endpoint.parse({
-      ...endpoint,
-      p_ibis_model_name: undefined,
-      n_ibis_model_name: undefined,
-    }).kind,
-  ).toBe("differential")
+  const { p_ibis_model_name, n_ibis_model_name, ...ports } = endpoint
+  expect(circuitJson.signal_endpoint.parse(ports)).toEqual(ports)
   expectInvalidChanges(signal, [
     { driver: endpoint },
     { receivers: [signal.driver, endpoint] },

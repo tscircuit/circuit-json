@@ -18,7 +18,11 @@ test.each([7, 15, 31])(
       "1",
     ]) {
       expect(
-        accepts(signal, { pattern: `prbs${order}`, seed, quiet: "off" }),
+        accepts(signal, {
+          pattern: `prbs${order}`,
+          seed,
+          driver_disabled: true,
+        }),
       ).toBe(seed === 1 || seed === maxSeed)
     }
   },

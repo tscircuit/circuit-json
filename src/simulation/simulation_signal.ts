@@ -3,9 +3,8 @@ import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export type SignalEndpoint =
-  | { kind: "single"; source_port_id: string; ibis_model_name?: string }
+  | { source_port_id: string; ibis_model_name?: string }
   | {
-      kind: "differential"
       p_source_port_id: string
       n_source_port_id: string
       p_ibis_model_name?: string
@@ -13,17 +12,15 @@ export type SignalEndpoint =
     }
 
 export const signal_endpoint = z
-  .discriminatedUnion("kind", [
+  .union([
     z
       .object({
-        kind: z.literal("single"),
         source_port_id: z.string().min(1),
         ibis_model_name: z.string().min(1).optional(),
       })
       .strict(),
     z
       .object({
-        kind: z.literal("differential"),
         p_source_port_id: z.string().min(1),
         n_source_port_id: z.string().min(1),
         p_ibis_model_name: z.string().min(1).optional(),
@@ -33,7 +30,7 @@ export const signal_endpoint = z
   ])
   .refine(
     (endpoint) =>
-      endpoint.kind === "single" ||
+      "source_port_id" in endpoint ||
       endpoint.p_source_port_id !== endpoint.n_source_port_id,
     {
       path: ["n_source_port_id"],
@@ -53,8 +50,7 @@ export interface SimulationSignal {
   pattern: string
   seed?: number
   offset_s: number
-  quiet?: "low" | "high" | "off"
-  probe: "local" | "global"
+  driver_disabled?: boolean
 }
 
 export const simulation_signal = z
@@ -69,14 +65,16 @@ export const simulation_signal = z
     pattern: z.string().regex(/^(?:prbs7|prbs15|prbs31|clock|[01]+)$/),
     seed: z.number().finite().int().positive().optional(),
     offset_s: z.number().finite().nonnegative(),
-    quiet: z.enum(["low", "high", "off"]).optional(),
-    probe: z.enum(["local", "global"]),
+    driver_disabled: z.boolean().optional(),
   })
   .strict()
   .refine(
     (signal) =>
-      signal.receivers.every(({ kind }) => kind === signal.driver.kind),
-    { path: ["receivers"], message: "Receivers must have the driver's kind" },
+      signal.receivers.every(
+        (receiver) =>
+          "source_port_id" in receiver === "source_port_id" in signal.driver,
+      ),
+    { path: ["receivers"], message: "Receivers must have the driver's shape" },
   )
   .superRefine((signal, context) => {
     const order = /^prbs(7|15|31)$/.exec(signal.pattern)?.[1]
@@ -94,13 +92,6 @@ export const simulation_signal = z
         code: z.ZodIssueCode.custom,
         path: ["seed"],
         message: "Non-PRBS source records must omit seed",
-      })
-    }
-    if (/^(?:0+|1+)$/.test(signal.pattern) && signal.quiet === undefined) {
-      context.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["quiet"],
-        message: "Constant patterns must carry their normalized quiet state",
       })
     }
   })
