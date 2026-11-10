@@ -111,14 +111,24 @@ export const simulation_signal_integrity_rlgc = z
         }
       }
     }
-    const identities = result.conductors.map((conductor) =>
-      JSON.stringify([conductor.simulation_signal_id, conductor.leg]),
-    )
-    if (new Set(identities).size !== size) {
+    const legsBySignal = new Map<string, string[]>()
+    for (const { simulation_signal_id, leg } of result.conductors) {
+      legsBySignal.set(simulation_signal_id, [
+        ...(legsBySignal.get(simulation_signal_id) ?? []),
+        leg,
+      ])
+    }
+    // Each signal is one "single" conductor or one P/N pair.
+    if (
+      [...legsBySignal.values()].some(
+        (legs) => !["single", "n,p"].includes(legs.sort().join(",")),
+      )
+    ) {
       context.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["conductors"],
-        message: "Each physical conductor must occur once",
+        message:
+          "Each signal must list one single conductor or exactly one P and one N conductor",
       })
     }
   })

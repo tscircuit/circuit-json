@@ -317,6 +317,8 @@ test("RLGC matrices use listed conductor order, without a size cap", () => {
   for (const conductors of [
     [],
     [rlgc.conductors[0], rlgc.conductors[0]],
+    [rlgc.conductors[0], { simulation_signal_id: "dq0", leg: "p" }],
+    [{ simulation_signal_id: "dqs", leg: "single" }, rlgc.conductors[1]],
     [rlgc.conductors[0], { simulation_signal_id: "dqs", leg: "" }],
     [{ simulation_signal_id: "dqs" }, rlgc.conductors[1]],
     [{ ...rlgc.conductors[0], source_trace_id: "trace" }, rlgc.conductors[1]],
