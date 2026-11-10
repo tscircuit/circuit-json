@@ -5126,7 +5126,6 @@ type SignalEndpoint =
     }
 ```
 
-
 ### SimulationSignalIntegrity
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_integrity.ts)
@@ -5170,7 +5169,6 @@ interface SimulationSignalIntegrityRlgc {
   }[]
 }
 ```
-
 
 ### SimulationSignalWaveform
 

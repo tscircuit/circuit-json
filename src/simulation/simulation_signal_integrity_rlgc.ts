@@ -74,6 +74,29 @@ export const simulation_signal_integrity_rlgc = z
         }
       }
       for (const field of ["c_f", "g_s"] as const) {
+        const values = entry[field]
+        // Allow roundoff up to 1e-9 of this matrix's largest absolute entry.
+        const tolerance =
+          values.reduce(
+            (max, row) =>
+              row.reduce((max, value) => Math.max(max, Math.abs(value)), max),
+            0,
+          ) * 1e-9
+        if (
+          values.some((row, i) =>
+            row.some(
+              (value, j) =>
+                j < i &&
+                Math.abs(value - (values[j]?.[i] ?? value)) > tolerance,
+            ),
+          )
+        ) {
+          context.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["matrices", index, field],
+            message: "Maxwell matrices must be symmetric",
+          })
+        }
         if (
           entry[field].some((row, i) =>
             row.some((value, j) => (i === j ? value < 0 : value > 0)),

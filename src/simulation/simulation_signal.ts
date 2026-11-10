@@ -12,24 +12,34 @@ export type SignalEndpoint =
       n_ibis_model_name?: string
     }
 
-export const signal_endpoint = z.discriminatedUnion("kind", [
-  z
-    .object({
-      kind: z.literal("single"),
-      source_port_id: z.string().min(1),
-      ibis_model_name: z.string().min(1).optional(),
-    })
-    .strict(),
-  z
-    .object({
-      kind: z.literal("differential"),
-      p_source_port_id: z.string().min(1),
-      n_source_port_id: z.string().min(1),
-      p_ibis_model_name: z.string().min(1).optional(),
-      n_ibis_model_name: z.string().min(1).optional(),
-    })
-    .strict(),
-])
+export const signal_endpoint = z
+  .discriminatedUnion("kind", [
+    z
+      .object({
+        kind: z.literal("single"),
+        source_port_id: z.string().min(1),
+        ibis_model_name: z.string().min(1).optional(),
+      })
+      .strict(),
+    z
+      .object({
+        kind: z.literal("differential"),
+        p_source_port_id: z.string().min(1),
+        n_source_port_id: z.string().min(1),
+        p_ibis_model_name: z.string().min(1).optional(),
+        n_ibis_model_name: z.string().min(1).optional(),
+      })
+      .strict(),
+  ])
+  .refine(
+    (endpoint) =>
+      endpoint.kind === "single" ||
+      endpoint.p_source_port_id !== endpoint.n_source_port_id,
+    {
+      path: ["n_source_port_id"],
+      message: "Differential endpoints require distinct P and N ports",
+    },
+  )
 
 /** A resolved signal, its traffic, and the receivers measured in one test. */
 export interface SimulationSignal {
@@ -63,6 +73,11 @@ export const simulation_signal = z
     probe: z.enum(["local", "global"]),
   })
   .strict()
+  .refine(
+    (signal) =>
+      signal.receivers.every(({ kind }) => kind === signal.driver.kind),
+    { path: ["receivers"], message: "Receivers must have the driver's kind" },
+  )
   .superRefine((signal, context) => {
     const order = /^prbs(7|15|31)$/.exec(signal.pattern)?.[1]
     if (order) {

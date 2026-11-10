@@ -54,6 +54,10 @@ export const simulation_signal_waveform = samples
     end: z.enum(["near", "far"]),
     source_port_id: z.string().min(1),
   })
+  .refine((waveform) => waveform.timestamps_s[0] === 0, {
+    path: ["timestamps_s", 0],
+    message: "Sample timestamps must start at zero",
+  })
   .superRefine(validateSamples)
   .describe(
     "Stores near-end or far-end signal voltage samples in seconds and volts",

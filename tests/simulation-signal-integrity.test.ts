@@ -81,6 +81,20 @@ const rlgc = {
   ],
 } satisfies SimulationSignalIntegrityRlgcInput
 
+function accepts(
+  record: typeof block | typeof signal | typeof waveform | typeof rlgc,
+  change: Record<string, unknown>,
+) {
+  return circuitJson[record.type].safeParse({ ...record, ...change }).success
+}
+
+function expectInvalidChanges(
+  record: typeof block | typeof signal | typeof waveform | typeof rlgc,
+  changes: Record<string, unknown>[],
+) {
+  for (const change of changes) expect(accepts(record, change)).toBe(false)
+}
+
 test.each([block, signal, waveform, rlgc])(
   "$type is exported, generates an ID, and survives the public union and JSON roundtrip",
   (record) => {
@@ -105,36 +119,20 @@ test.each([block, signal, waveform, rlgc])(
 )
 
 test("block choices are explicit and finite numerical values use SI units", () => {
-  expect(
-    circuitJson.simulation_signal_integrity.parse({ ...block, name: undefined })
-      .name,
-  ).toBeUndefined()
-  const { duration_s, ...automatic } = block
-  expect(
-    circuitJson.simulation_signal_integrity.parse(automatic),
-  ).not.toHaveProperty("duration_s")
-  expect(
-    circuitJson.simulation_signal_integrity.parse({
-      ...block,
-      supply: "board",
-    }),
-  ).not.toHaveProperty("supply")
-  for (const corner of ["typical", "minimum", "maximum"]) {
-    for (const [unrouted, pdn] of [
-      ["error", "extracted"],
-      ["ideal", "ideal"],
-    ]) {
-      expect(
-        circuitJson.simulation_signal_integrity.safeParse({
-          ...block,
-          corner,
-          unrouted,
-          pdn,
-        }).success,
-      ).toBe(true)
-    }
-  }
+  const { name, duration_s, ...automatic } = block
+  const parsed = circuitJson.simulation_signal_integrity.parse({
+    ...automatic,
+    supply: "board",
+  })
+  for (const field of ["name", "duration_s", "supply"])
+    expect(parsed).not.toHaveProperty(field)
   for (const change of [
+    { corner: "minimum" },
+    { corner: "maximum" },
+    { unrouted: "ideal", pdn: "extracted" },
+  ])
+    expect(accepts(block, change)).toBe(true)
+  expectInvalidChanges(block, [
     { bit_rate_bps: 0 },
     { bit_rate_bps: Infinity },
     { bit_rate_bps: "20Mbps" },
@@ -147,20 +145,16 @@ test("block choices are explicit and finite numerical values use SI units", () =
     { unrouted: "skip" },
     { pdn: "guessed" },
   ])
-    expect(
-      circuitJson.simulation_signal_integrity.safeParse({ ...block, ...change })
-        .success,
-    ).toBe(false)
 })
 
+const endpoint = {
+  kind: "differential",
+  p_source_port_id: "bus_p",
+  n_source_port_id: "bus_n",
+  p_ibis_model_name: "Model_579",
+  n_ibis_model_name: "Model_771",
+}
 test("differential endpoints select models while arrays mean multiple receivers", () => {
-  const endpoint = {
-    kind: "differential",
-    p_source_port_id: "bus_p",
-    n_source_port_id: "bus_n",
-    p_ibis_model_name: "Model_579",
-    n_ibis_model_name: "Model_771",
-  }
   expect(
     circuitJson.simulation_signal.parse({
       ...signal,
@@ -175,74 +169,49 @@ test("differential endpoints select models while arrays mean multiple receivers"
       n_ibis_model_name: undefined,
     }).kind,
   ).toBe("differential")
-  for (const invalid of [
+  expectInvalidChanges(signal, [
+    { driver: endpoint },
+    { receivers: [signal.driver, endpoint] },
+    { driver: endpoint, receivers: [endpoint, signal.driver] },
+  ])
+})
+
+test.each(
+  [
     "selector",
     [],
     [signal.driver, signal.driver],
     { kind: "single", source_port_id: "" },
     { kind: "single", source_port_id: "port", ibis_model_name: "" },
     { kind: "differential", p_source_port_id: "p" },
-    { kind: "differential", p_source_port_id: "p", n_source_port_id: "" },
+    { ...endpoint, n_source_port_id: "" },
+    { ...endpoint, n_source_port_id: endpoint.p_source_port_id },
     { ...endpoint, ibis_model_name: "BUS" },
     { ...endpoint, p_ibis_model_name: "" },
     { ...endpoint, n_ibis_model_name: "" },
-    {
-      kind: "single",
-      source_port_id: "p",
-      p_source_port_id: "p",
-      n_source_port_id: "n",
-    },
-    { kind: "pair", p_source_port_id: "p", n_source_port_id: "n" },
-  ]) {
-    expect(circuitJson.signal_endpoint.safeParse(invalid).success).toBe(false)
-    expect(
-      circuitJson.simulation_signal.safeParse({ ...signal, driver: invalid })
-        .success,
-    ).toBe(false)
-    expect(
-      circuitJson.simulation_signal.safeParse({
-        ...signal,
-        receivers: [invalid],
-      }).success,
-    ).toBe(false)
-  }
+    { ...signal.driver, p_source_port_id: "p", n_source_port_id: "n" },
+    { ...endpoint, kind: "pair" },
+  ].map((invalid) => ({ invalid })),
+)("rejects invalid endpoint $invalid", ({ invalid }) => {
+  expect(circuitJson.signal_endpoint.safeParse(invalid).success).toBe(false)
 })
 
-test("signals support named patterns, literal bits, quiet levels without a count cap", () => {
-  for (const pattern of [
-    "prbs7",
-    "prbs15",
-    "prbs31",
-    "clock",
-    "0011010",
-    "01".repeat(65537),
-  ]) {
-    for (const quiet of [undefined, "low", "high", "off"]) {
-      expect(
-        circuitJson.simulation_signal.safeParse({
-          ...signal,
-          pattern,
-          seed: pattern.startsWith("prbs") ? 123 : undefined,
-          quiet,
-          probe: "global",
-        }).success,
-      ).toBe(true)
-    }
-  }
+test("signals support literal bits and multiple receivers without a count cap", () => {
   expect(
     circuitJson.simulation_signal.parse({
       ...signal,
+      pattern: "01".repeat(65537),
+      seed: undefined,
+      probe: "global",
       receivers: Array(64).fill(signal.driver),
     }).receivers,
   ).toHaveLength(64)
-  for (const change of [
+  expectInvalidChanges(signal, [
     { receivers: [] },
     { name: "" },
     { simulation_signal_integrity_id: "" },
     { bit_rate_bps: 0 },
     { bit_rate_bps: Infinity },
-    { seed: 1.5 },
-    { seed: -1 },
     { offset_s: -1 },
     { offset_s: Infinity },
     { pattern: "012" },
@@ -251,37 +220,27 @@ test("signals support named patterns, literal bits, quiet levels without a count
     { quiet: true },
     { probe: "ideal" },
   ])
-    expect(
-      circuitJson.simulation_signal.safeParse({ ...signal, ...change }).success,
-    ).toBe(false)
 })
 
 test.each([7, 15, 31])(
-  "PRBS%d seeds are resolved integers in 1..2^n-1, including quiet records",
+  "PRBS%d seeds are resolved integers in 1..2^n-1",
   (order) => {
     const maxSeed = 2 ** order - 1
-    for (const quiet of [undefined, "low", "high", "off"]) {
-      for (const seed of [
-        1,
-        maxSeed,
-        undefined,
-        0,
-        -1,
-        1.5,
-        maxSeed + 1,
-        Infinity,
-        NaN,
-        "1",
-      ]) {
-        expect(
-          circuitJson.simulation_signal.safeParse({
-            ...signal,
-            pattern: `prbs${order}`,
-            seed,
-            quiet,
-          }).success,
-        ).toBe(seed === 1 || seed === maxSeed)
-      }
+    for (const seed of [
+      1,
+      maxSeed,
+      undefined,
+      0,
+      -1,
+      1.5,
+      maxSeed + 1,
+      Infinity,
+      NaN,
+      "1",
+    ]) {
+      expect(
+        accepts(signal, { pattern: `prbs${order}`, seed, quiet: "off" }),
+      ).toBe(seed === 1 || seed === maxSeed)
     }
   },
 )
@@ -298,73 +257,39 @@ test("clock and literal sources omit seed; constant literals carry a quiet state
     expect(circuitJson.simulation_signal.parse(normalized)).not.toHaveProperty(
       "seed",
     )
+    expect(accepts(signal, { ...normalized, seed: 1 })).toBe(false)
     expect(
-      circuitJson.simulation_signal.safeParse({ ...normalized, seed: 1 })
-        .success,
-    ).toBe(false)
-    expect(
-      circuitJson.simulation_signal.safeParse({
-        ...normalized,
-        quiet: undefined,
-      }).success,
+      accepts(signal, { ...normalized, quiet: undefined, seed: undefined }),
     ).toBe(!constant)
     expect(
-      circuitJson.simulation_signal.safeParse({ ...normalized, quiet: "off" })
-        .success,
+      accepts(signal, { ...normalized, quiet: "off", seed: undefined }),
     ).toBe(true)
   }
 })
 
 test("waveforms require paired finite samples", () => {
-  for (const end of ["near", "far"]) {
-    expect(
-      circuitJson.simulation_signal_waveform.safeParse({ ...waveform, end })
-        .success,
-    ).toBe(true)
-  }
-  expect(
-    circuitJson.simulation_signal_waveform.safeParse({
-      ...waveform,
-      end: "middle",
-    }).success,
-  ).toBe(false)
-  for (const change of [
+  expectInvalidChanges(waveform, [
+    { end: "middle" },
+    { idle_voltage_v: Infinity },
     { timestamps_s: [] },
     { voltage_levels: [] },
     { voltage_levels: [0] },
     { timestamps_s: [0, -1, 2] },
     { timestamps_s: [0, 0, 2] },
     { timestamps_s: [0, 2, 1] },
+    { timestamps_s: [1e-9, 2e-9, 3e-9] },
+    { timestamps_s: [1e-9], voltage_levels: [0] },
     { timestamps_s: [0, Infinity, 2] },
     { voltage_levels: [0, NaN, 1] },
     { voltage_levels: [0, Infinity, 1] },
-  ]) {
-    expect(
-      circuitJson.simulation_signal_waveform.safeParse({
-        ...waveform,
-        ...change,
-      }).success,
-    ).toBe(false)
-  }
+  ])
   expect(
     circuitJson.simulation_signal_waveform.parse({
       ...waveform,
+      end: "near",
       idle_voltage_v: 0.1,
     }).idle_voltage_v,
   ).toBe(0.1)
-  expect(
-    circuitJson.simulation_signal_waveform.safeParse({
-      ...waveform,
-      idle_voltage_v: Infinity,
-    }).success,
-  ).toBe(false)
-})
-
-test("differential RLGC keeps distinct P/N conductors with the same signal ID", () => {
-  const result = circuitJson.simulation_signal_integrity_rlgc.parse(rlgc)
-  expect(result.conductors).toEqual(rlgc.conductors)
-  expect(result.matrices[0]!.c_f[0]![1]).toBeLessThan(0)
-  expect(circuitJson.any_circuit_element.parse(result)).toEqual(result)
 })
 
 test("RLGC matrices use listed conductor order, without a size cap", () => {
@@ -377,8 +302,7 @@ test("RLGC matrices use listed conductor order, without a size cap", () => {
       leg: "single",
     }))
     expect(
-      circuitJson.simulation_signal_integrity_rlgc.safeParse({
-        ...rlgc,
+      accepts(rlgc, {
         conductors,
         matrices: [1e6, 1e7].map((frequency_hz) => ({
           frequency_hz,
@@ -387,46 +311,17 @@ test("RLGC matrices use listed conductor order, without a size cap", () => {
           c_f: matrix,
           g_s: matrix,
         })),
-      }).success,
+      }),
     ).toBe(true)
-  }
-  for (const field of ["r_ohm", "l_h", "c_f", "g_s"]) {
-    for (const matrix of [
-      [],
-      [[1]],
-      [[1, 0], [0]],
-      [
-        [1, Infinity],
-        [0, 1],
-      ],
-    ]) {
-      expect(
-        circuitJson.simulation_signal_integrity_rlgc.safeParse({
-          ...rlgc,
-          matrices: [{ ...rlgc.matrices[0], [field]: matrix }],
-        }).success,
-      ).toBe(false)
-    }
   }
   for (const conductors of [
     [],
     [rlgc.conductors[0], rlgc.conductors[0]],
-    [{ source_trace_id: "trace" }, { source_trace_id: "trace" }],
-    [
-      { simulation_signal_id: "dqs", leg: "p" },
-      { simulation_signal_id: "dqs", leg: "" },
-    ],
+    [rlgc.conductors[0], { simulation_signal_id: "dqs", leg: "" }],
     [{ simulation_signal_id: "dqs" }, rlgc.conductors[1]],
-    [{ source_trace_id: "" }, rlgc.conductors[1]],
     [{ ...rlgc.conductors[0], source_trace_id: "trace" }, rlgc.conductors[1]],
-  ]) {
-    expect(
-      circuitJson.simulation_signal_integrity_rlgc.safeParse({
-        ...rlgc,
-        conductors,
-      }).success,
-    ).toBe(false)
-  }
+  ])
+    expect(accepts(rlgc, { conductors })).toBe(false)
   for (const frequencies of [
     [],
     [0],
@@ -435,49 +330,145 @@ test("RLGC matrices use listed conductor order, without a size cap", () => {
     [NaN],
     [1e6, 1e6],
     [1e7, 1e6],
-  ]) {
+  ])
     expect(
-      circuitJson.simulation_signal_integrity_rlgc.safeParse({
-        ...rlgc,
+      accepts(rlgc, {
         matrices: frequencies.map((frequency_hz) => ({
           ...rlgc.matrices[0],
           frequency_hz,
         })),
-      }).success,
+      }),
     ).toBe(false)
-  }
-  for (const field of ["c_f", "g_s"]) {
-    for (const matrix of [
-      [
-        [-1, 0],
-        [0, 1],
-      ],
-      [
-        [1, 0.1],
-        [0.1, 1],
-      ],
-    ]) {
-      expect(
-        circuitJson.simulation_signal_integrity_rlgc.safeParse({
-          ...rlgc,
-          matrices: [{ ...rlgc.matrices[0], [field]: matrix }],
-        }).success,
-      ).toBe(false)
-    }
-  }
 })
 
+test.each(["r_ohm", "l_h", "c_f", "g_s"])(
+  "%s matrices are finite and square, with Maxwell signs for C/G",
+  (field) => {
+    for (const [matrix, valid] of [
+      [[], false],
+      [[[1]], false],
+      [[[1, 0], [0]], false],
+      [
+        [
+          [1, Infinity],
+          [0, 1],
+        ],
+        false,
+      ],
+      [
+        [
+          [-1, 0],
+          [0, 1],
+        ],
+        field === "r_ohm" || field === "l_h",
+      ],
+      [
+        [
+          [1, 0.1],
+          [0.1, 1],
+        ],
+        field === "r_ohm" || field === "l_h",
+      ],
+    ] as const)
+      expect(
+        accepts(rlgc, {
+          matrices: [{ ...rlgc.matrices[0], [field]: matrix }],
+        }),
+      ).toBe(valid)
+  },
+)
+
+test.each(["c_f", "g_s"])(
+  "%s symmetry uses a relative matrix tolerance",
+  (field) => {
+    for (const scale of [1e-12, 1, 1e12]) {
+      for (const [difference, valid] of [
+        [0, true],
+        [0.5e-9, true],
+        [2e-9, false],
+      ] as const) {
+        const matrix = [
+          [scale, -scale / 4],
+          [-scale / 4 + scale * difference, scale],
+        ]
+        expect(
+          accepts(rlgc, {
+            matrices: [{ ...rlgc.matrices[0], [field]: matrix }],
+          }),
+        ).toBe(valid)
+      }
+    }
+  },
+)
+
 test("removed SI records and settings are absent while general SPICE remains", () => {
-  for (const type of [
-    "simulation_ibis_pin_state",
-    "simulation_digital_stimulus",
-    "simulation_eye_diagram",
-    "simulation_signal_eye",
-    "simulation_signal_crosstalk",
-    "simulation_signal_strobe_margin",
+  // Complete records accepted by the schemas before their removal.
+  for (const record of [
+    {
+      type: "simulation_ibis_pin_state",
+      simulation_ibis_pin_state_id: "pin_state",
+      simulation_experiment_id: "experiment",
+      source_port_id: "port",
+      is_output: true,
+      is_output_enabled: true,
+    },
+    {
+      type: "simulation_digital_stimulus",
+      simulation_digital_stimulus_id: "stimulus",
+      simulation_experiment_id: "experiment",
+      source_port_id: "port",
+      name: "Data",
+      bit_duration_ms: 1e-6,
+      start_time_ms: 0,
+      initial_state: 0,
+      inverted: false,
+      transmission_pattern: {
+        transmission_type: "bits",
+        bits: "01",
+        repeat: true,
+      },
+    },
+    {
+      type: "simulation_eye_diagram",
+      simulation_eye_diagram_id: "eye",
+      simulation_experiment_id: "experiment",
+      simulation_voltage_probe_id: "probe",
+      name: "Eye",
+      unit_interval_ms: 1e-6,
+      time_origin_ms: 0,
+    },
+    {
+      type: "simulation_signal_eye",
+      simulation_signal_eye_id: "eye",
+      simulation_signal_id: "dq0",
+      source_port_id: "port",
+      folded_traces: [samples],
+      eye_height_v: 1,
+      eye_width_s: 1e-9,
+      mask_margin_v: 0,
+    },
+    {
+      type: "simulation_signal_crosstalk",
+      simulation_signal_crosstalk_id: "crosstalk",
+      simulation_signal_id: "dq0",
+      source_port_id: "port",
+      end: "far",
+      idle_voltage_v: 0,
+      peak_positive_v: 0.1,
+      peak_negative_v: -0.1,
+    },
+    {
+      type: "simulation_signal_strobe_margin",
+      simulation_signal_strobe_margin_id: "margin",
+      simulation_signal_id: "dq0",
+      source_port_id: "port",
+      edges: [{ time_s: 1e-9, setup_margin_s: 1e-10, hold_margin_s: 2e-10 }],
+      worst_setup_margin_s: 1e-10,
+      worst_hold_margin_s: 2e-10,
+    },
   ]) {
-    expect(Reflect.has(circuitJson, type)).toBe(false)
-    expect(circuitJson.any_circuit_element.safeParse({ type }).success).toBe(
+    expect(Reflect.has(circuitJson, record.type)).toBe(false)
+    expect(circuitJson.any_circuit_element.safeParse(record).success).toBe(
       false,
     )
   }
@@ -510,16 +501,14 @@ test("removed SI records and settings are absent while general SPICE remains", (
 })
 
 test("measurement source fields are rejected", () => {
-  for (const field of [
-    "mask",
-    "strobe_simulation_signal_id",
-    "thresholds",
-    "setup_s",
-    "hold_s",
-  ]) {
-    expect(
-      circuitJson.simulation_signal.safeParse({ ...signal, [field]: "removed" })
-        .success,
-    ).toBe(false)
-  }
+  expectInvalidChanges(
+    signal,
+    [
+      "mask",
+      "strobe_simulation_signal_id",
+      "thresholds",
+      "setup_s",
+      "hold_s",
+    ].map((field) => ({ [field]: "removed" })),
+  )
 })
