@@ -8,6 +8,7 @@ export const pcb_via = z
   .object({
     type: z.literal("pcb_via"),
     pcb_via_id: getZodPrefixedIdWithDefault("pcb_via"),
+    pcb_component_id: z.string().min(1).nullable().optional(),
     pcb_group_id: z.string().optional(),
     pcb_panel_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
@@ -54,6 +55,7 @@ type InferredPcbVia = z.infer<typeof pcb_via>
 export interface PcbVia {
   type: "pcb_via"
   pcb_via_id: string
+  pcb_component_id?: string | null
   pcb_group_id?: string
   /** Owning manufacturing panel for copper connecting its child boards. */
   pcb_panel_id?: string
