@@ -10,8 +10,5 @@ test("board round trip preserves nominal trace width separately from the manufac
     nominal_trace_width: "350um",
   })
   expect(board.nominal_trace_width).toBeCloseTo(0.35)
-  expect({
-    minimum: board.min_trace_width,
-    nominal: board.nominal_trace_width,
-  }).toMatchSnapshot()
+  expect(board.min_trace_width).toBe(0.1)
 })
