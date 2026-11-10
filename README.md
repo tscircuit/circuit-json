@@ -42,6 +42,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
 <!-- toc:start -->
 
 - [Circuit JSON Specification `circuit-json`](#circuit-json-specification-circuit-json)
+
   - [Things You Can Do With Circuit JSON](#things-you-can-do-with-circuit-json)
   - [Typescript Usage](#typescript-usage)
 
@@ -116,6 +117,8 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [CadCable](#cadcable)
     - [CadCollisionError](#cadcollisionerror)
     - [CadComponent](#cadcomponent)
+    - [CadExplosionCollisionCheckWarning](#cadexplosioncollisioncheckwarning)
+    - [CadExplosionCollisionError](#cadexplosioncollisionerror)
     - [CadExplosionMove](#cadexplosionmove)
     - [CadExplosionStage](#cadexplosionstage)
     - [CadReferenceSurface](#cadreferencesurface)
@@ -134,6 +137,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbComponentOutsideBoardError](#pcbcomponentoutsideboarderror)
     - [PcbConnectorNotInAccessibleOrientationWarning](#pcbconnectornotinaccessibleorientationwarning)
     - [PcbCopperPour](#pcbcopperpour)
+    - [PcbCopperPourIsolatedWarning](#pcbcopperpourisolatedwarning)
     - [PcbCopperText](#pcbcoppertext)
     - [PcbCourtyardCircle](#pcbcourtyardcircle)
     - [PcbCourtyardOutline](#pcbcourtyardoutline)
@@ -268,7 +272,6 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [DrawingPage](#drawingpage)
     - [DrawingPageTitleBlock](#drawingpagetitleblock)
     - [DrawingPartView](#drawingpartview)
-
   - [System Block Elements](#system-block-elements)
     - [SystemBlockComponent](#systemblockcomponent)
     - [SystemBlockConnection](#systemblockconnection)
@@ -295,7 +298,9 @@ const resistor: SourceSimpleResistor = simple_source_resistor.parse({
 console.log(resistor.resistance) // 1000
 
 // This is the common way to parse/transform any element
-any_circuit_element.parse({/* ... */})
+any_circuit_element.parse({
+  /* ... */
+})
 ```
 
 ## Base Units
@@ -348,6 +353,9 @@ There are 3 main element prefixes:
 The `system_block_` prefix describes [resolved system block diagrams](docs/system-blocks.md),
 including page bounds, block/group geometry, and routed logical connections.
 
+See [differential pair buses](docs/differential-pairs.md) for ordered lanes,
+lane-sum skew, strict schemas, and validation requiring a complete document.
+
 <!-- circuit-json-docs:start -->
 
 ## Source Components
@@ -388,11 +396,25 @@ interface SourceBoard {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_bus.ts)
 
-A group of resolved source traces with a maximum routed-length difference.
+Ordinary bus skew compares members; differential pair skew compares lane sums.
 
 ```typescript
+/** Ordinary bus skew compares members; differential pair skew compares lane sums. */type SourceBus = OrdinarySourceBus | SourceDifferentialPairBus
+
+/** A routed length in mm, or an offset from the longest endpoint Manhattan distance.
+ * Explicit references are resolved source traces; omitted references use the bus
+ * members and length_match_source_trace_ids. */type SourceBusRouteLength =
+  | number
+  | {
+  reference: "longest_manhattan"
+  source_trace_ids?: string[]
+  offset?: number
+}
+
+/** Centerline separation in mm or a multiple of the larger local trace width. */type SourceBusTraceSpacing = number | { width_multiplier: number }
+
 /** A group of resolved source traces with a maximum routed-length difference. */
-interface SourceBus {
+interface OrdinarySourceBus {
   type: "source_bus"
   source_bus_id: string
   name?: string
@@ -401,44 +423,47 @@ interface SourceBus {
   max_length_skew?: number
   /** Intended single-ended characteristic impedance, in ohms. */
   target_impedance?: number
-  /** Intended differential characteristic impedance, in ohms. */
-  target_differential_impedance?: number
-  /** Ordered polarity for a resolved point-to-point differential pair. */
-  differential_pair?: {
-    positive_source_trace_id: string
-    negative_source_trace_id: string
-    trace_gap?: number
-    max_uncoupled_length?: number
-  }
+  differential_pair?: never
   /** Additional traces for length comparison, without changing electrical membership. */
   length_match_source_trace_ids?: string[]
   min_length?: SourceBusRouteLength
   max_length?: SourceBusRouteLength
   target_length?: SourceBusRouteLength
   length_tolerance?: number
-  /** Within this bus, excluding declared differential partners. */
+  /** Within this bus. */
   pcb_trace_spacing?: SourceBusTraceSpacing
-  /** To all signals outside this bus or pair. */
+  /** To all signals outside this bus. */
   pcb_spacing_to_other_signals?: SourceBusTraceSpacing
   target_impedance_min?: number
   target_impedance_max?: number
-  target_differential_impedance_min?: number
-  target_differential_impedance_max?: number
   subcircuit_id?: string
 }
 
-/** A routed length in mm, or an offset from the longest endpoint Manhattan distance.
- * Explicit references are resolved source traces; omitted references use the bus
- * members and length_match_source_trace_ids. */ type SourceBusRouteLength =
-  | number
-  | {
-      reference: "longest_manhattan"
-      source_trace_ids?: string[]
-      offset?: number
-    }
-
-/** Centerline separation in mm or a multiple of the larger local trace width. */ type SourceBusTraceSpacing =
-  number | { width_multiplier: number }
+/** Ordered owned hops; skew compares the two lane sums of planar copper in mm. */type SourceDifferentialPairBus {
+  type: "source_bus"
+  source_bus_id: string
+  name?: string
+  subcircuit_id?: string
+  /** Exactly the positive IDs followed by the negative IDs, without duplicates. */
+  source_trace_ids: [string, ...string[]]
+  /** Required finite, nonnegative maximum difference between the lane sums. */
+  max_length_skew: number
+  differential_pair: {
+  positive_source_trace_ids: [string, ...string[]]
+  negative_source_trace_ids: [string, ...string[]]
+}
+} & {
+  [K in Exclude<
+  keyof OrdinarySourceBus,
+  | "type"
+  | "source_bus_id"
+  | "name"
+  | "subcircuit_id"
+  | "source_trace_ids"
+  | "max_length_skew"
+  | "differential_pair"
+  >]?: never
+}
 ```
 
 ### SourceComponentAvailabilityWarning
@@ -1025,10 +1050,8 @@ interface SourceRefdesConventionWarning {
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_runtime_error.ts)
 
 ```typescript
-interface SourceRuntimeError extends Pick<
-  BaseCircuitJsonError,
-  "message" | "error_type"
-> {
+interface SourceRuntimeError
+  extends Pick<BaseCircuitJsonError, "message" | "error_type"> {
   type: "source_runtime_error"
   source_runtime_error_id: string
   error_type: "source_runtime_error"
@@ -1651,6 +1674,47 @@ interface CadComponent {
 }
 ```
 
+### CadExplosionCollisionCheckWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_explosion_collision_check_warning.ts)
+
+```typescript
+interface CadExplosionCollisionCheckWarning extends BaseCircuitJsonError {
+  type: "cad_explosion_collision_check_warning"
+  cad_explosion_collision_check_warning_id: string
+  error_type: "cad_explosion_collision_check_warning"
+  cad_explosion_stage_ids: string[]
+  cad_component_ids: string[]
+  pcb_board_ids: string[]
+  reason: "unsupported_geometry" | "invalid_geometry" | "collision_check_failed"
+}
+```
+
+### CadExplosionCollisionError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_explosion_collision_error.ts)
+
+Newly swept obstacle volume in mm³, excluding the move's initial solid.
+
+```typescript
+interface CadExplosionCollisionError extends BaseCircuitJsonError {
+  type: "cad_explosion_collision_error"
+  cad_explosion_collision_error_id: string
+  error_type: "cad_explosion_collision_error"
+  cad_explosion_stage_id: string
+  cad_explosion_move_id: string
+  moving_cad_component_id: string
+  obstacle: CadExplosionCollisionObstacle
+  source_component_ids: string[]
+  /** Newly swept obstacle volume in mm³, excluding the move's initial solid. */
+  swept_intersection_volume_mm3: number
+}
+
+type CadExplosionCollisionObstacle =
+  | { type: "cad_component"; cad_component_id: string }
+  | { type: "pcb_board"; pcb_board_id: string }
+```
+
 ### CadExplosionMove
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_explosion_move.ts)
@@ -1718,12 +1782,20 @@ interface CadReferenceSurface {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_autorouting_error.ts)
 
+Measured pair-skew failure; routing may have produced no accepted copper.
+
 ```typescript
 interface PcbAutoroutingErrorInterface extends BaseCircuitJsonError {
   type: "pcb_autorouting_error"
   pcb_error_id: string
   error_type: "pcb_autorouting_error"
   subcircuit_id?: string
+  /** Measured pair-skew failure; routing may have produced no accepted copper. */
+  differential_pair_length_skew?: {
+    source_bus_id: string
+    positive_length: number
+    negative_length: number
+  }
 }
 ```
 
@@ -1835,6 +1907,8 @@ interface PcbBusLengthSkewError extends BaseCircuitJsonError {
   actual_length_skew: number
   maximum_length_skew: number
   subcircuit_id?: string
+  /** Required for pair diagnostics; absent for ordinary bus diagnostics. */
+  differential_pair_lengths?: DifferentialPairLaneLengths
 }
 ```
 
@@ -1847,47 +1921,48 @@ type PcbBusRoutingConstraintError =
   WithErrorContext<PcbBusRoutingConstraintViolation>
 
 /** Rule-specific routing measurements. Lengths and centreline spacing are mm; impedance is ohms. */ type PcbBusRoutingConstraintViolation =
-  | {
-      routing_rule: "length_skew"
-      actual_length_skew: number
-      maximum_length_skew: number
-    }
-  | {
-      routing_rule: "min_length"
-      actual_trace_length: number
-      minimum_trace_length: number
-    }
-  | {
-      routing_rule: "max_length"
-      actual_trace_length: number
-      maximum_trace_length: number
-    }
-  | {
-      routing_rule: "target_length"
-      actual_trace_length: number
-      target_trace_length: number
-      length_tolerance: number
-    }
-  | {
-      routing_rule: "pcb_trace_spacing"
-      other_pcb_trace_id: string
-      other_source_trace_id?: string
-      actual_centerline_spacing: number
-      minimum_centerline_spacing: number
-    }
-  | {
-      routing_rule: "pcb_spacing_to_other_signals"
-      other_pcb_trace_id: string
-      other_source_trace_id?: string
-      actual_centerline_spacing: number
-      minimum_centerline_spacing: number
-    }
-  | {
-      routing_rule: "impedance_target"
-      target_impedance: number
-      minimum_impedance?: number
-      maximum_impedance?: number
-    }
+
+    | {
+        routing_rule: "length_skew"
+        actual_length_skew: number
+        maximum_length_skew: number
+      }
+    | {
+        routing_rule: "min_length"
+        actual_trace_length: number
+        minimum_trace_length: number
+      }
+    | {
+        routing_rule: "max_length"
+        actual_trace_length: number
+        maximum_trace_length: number
+      }
+    | {
+        routing_rule: "target_length"
+        actual_trace_length: number
+        target_trace_length: number
+        length_tolerance: number
+      }
+    | {
+        routing_rule: "pcb_trace_spacing"
+        other_pcb_trace_id: string
+        other_source_trace_id?: string
+        actual_centerline_spacing: number
+        minimum_centerline_spacing: number
+      }
+    | {
+        routing_rule: "pcb_spacing_to_other_signals"
+        other_pcb_trace_id: string
+        other_source_trace_id?: string
+        actual_centerline_spacing: number
+        minimum_centerline_spacing: number
+      }
+    | {
+        routing_rule: "impedance_target"
+        target_impedance: number
+        minimum_impedance?: number
+        maximum_impedance?: number
+      }
 ```
 
 ### PcbBusRoutingConstraintWarning
@@ -2038,6 +2113,28 @@ interface PcbCopperPourRect {
   width: Length
   height: Length
   rotation?: Rotation
+}
+```
+
+### PcbCopperPourIsolatedWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_copper_pour_isolated_warning.ts)
+
+An isolated copper pour, with its original reference and location.
+
+```typescript
+/** An isolated copper pour, with its original reference and location. */
+interface PcbCopperPourIsolatedWarning {
+  type: "pcb_copper_pour_isolated_warning"
+  pcb_copper_pour_isolated_warning_id: string
+  warning_type: "pcb_copper_pour_isolated_warning"
+  message: string
+  pcb_copper_pour_id: string
+  source_net_id?: string
+  subcircuit_id?: string
+  layer: LayerRef
+  /** Approximate island location in board-world millimeters. */
+  center: Point
 }
 ```
 
@@ -2810,7 +2907,11 @@ interface PcbNoteText {
   text?: string
   anchor_position: Point
   anchor_alignment:
-    "center" | "top_left" | "top_right" | "bottom_left" | "bottom_right"
+    | "center"
+    | "top_left"
+    | "top_right"
+    | "bottom_left"
+    | "bottom_right"
   layer: VisibleLayer
   is_mirrored_from_top_view?: boolean
   color?: string
@@ -3534,7 +3635,9 @@ interface PcbDielectricStackupLayer {
 }
 
 type PcbStackupLayer =
-  PcbSoldermaskStackupLayer | PcbCopperStackupLayer | PcbDielectricStackupLayer
+  | PcbSoldermaskStackupLayer
+  | PcbCopperStackupLayer
+  | PcbDielectricStackupLayer
 ```
 
 ### PcbStiffener
@@ -3633,7 +3736,9 @@ interface PcbTraceRoutePointWire {
 }
 
 type PcbTraceRoutePoint =
-  PcbTraceRoutePointWire | PcbTraceRoutePointVia | PcbTraceRoutePointThroughPad
+  | PcbTraceRoutePointWire
+  | PcbTraceRoutePointVia
+  | PcbTraceRoutePointThroughPad
 ```
 
 ### PcbTraceError
@@ -4081,7 +4186,9 @@ interface SchematicComponentStylingWarning {
 
 ```typescript
 type SchematicDebugObject =
-  SchematicDebugRect | SchematicDebugLine | SchematicDebugPoint
+  | SchematicDebugRect
+  | SchematicDebugLine
+  | SchematicDebugPoint
 
 interface SchematicDebugRect {
   type: "schematic_debug_object"
@@ -4125,7 +4232,9 @@ interface SchematicElementOutsideSheetWarning {
   message: string
   schematic_sheet_id: string
   schematic_element_type:
-    "schematic_component" | "schematic_net_label" | "schematic_trace"
+    | "schematic_component"
+    | "schematic_net_label"
+    | "schematic_trace"
   schematic_element_id: string
 }
 ```
@@ -4624,7 +4733,8 @@ interface SimulationAcSweepVoltageGraph {
 
 ```typescript
 type SimulationAnalysisResult =
-  SimulationVoltageAnalysisResult | SimulationCurrentAnalysisResult
+  | SimulationVoltageAnalysisResult
+  | SimulationCurrentAnalysisResult
 
 type SimulationNonTransientVoltageAnalysisResult =
   | SimulationDcOperatingPointVoltage
@@ -4637,10 +4747,12 @@ type SimulationNonTransientCurrentAnalysisResult =
   | SimulationAcSweepCurrentGraph
 
 type SimulationVoltageAnalysisResult =
-  SimulationTransientVoltageGraph | SimulationNonTransientVoltageAnalysisResult
+  | SimulationTransientVoltageGraph
+  | SimulationNonTransientVoltageAnalysisResult
 
 type SimulationCurrentAnalysisResult =
-  SimulationTransientCurrentGraph | SimulationNonTransientCurrentAnalysisResult
+  | SimulationTransientCurrentGraph
+  | SimulationNonTransientCurrentAnalysisResult
 ```
 
 ### SimulationComplexSample
@@ -4681,7 +4793,8 @@ interface SimulationCurrentProbe {
 
 ```typescript
 type SimulationCurrentSource =
-  SimulationDcCurrentSource | SimulationAcCurrentSource
+  | SimulationDcCurrentSource
+  | SimulationAcCurrentSource
 
 /** Defines a DC current source for simulation purposes. It forces a current
  * between two source ports. */
@@ -4931,17 +5044,20 @@ type SimulationParameterSweep =
   | SimulationVoltageParameterSweep
   | SimulationCurrentParameterSweep
 
-interface SimulationResistanceParameterSweep extends SimulationParameterSweepBase {
+interface SimulationResistanceParameterSweep
+  extends SimulationParameterSweepBase {
   parameter_type: "resistance"
   resistor_source_component_id: string
 }
 
-interface SimulationCapacitanceParameterSweep extends SimulationParameterSweepBase {
+interface SimulationCapacitanceParameterSweep
+  extends SimulationParameterSweepBase {
   parameter_type: "capacitance"
   capacitor_source_component_id: string
 }
 
-interface SimulationInductanceParameterSweep extends SimulationParameterSweepBase {
+interface SimulationInductanceParameterSweep
+  extends SimulationParameterSweepBase {
   parameter_type: "inductance"
   inductor_source_component_id: string
 }
@@ -5019,7 +5135,8 @@ interface SimulationPcbReturnCurrentHeatmap {
 
 ```typescript
 type SimulationPcbReturnCurrentMarker =
-  SimulationPcbReturnCurrentPortMarker | SimulationPcbReturnCurrentViaMarker
+  | SimulationPcbReturnCurrentPortMarker
+  | SimulationPcbReturnCurrentViaMarker
 
 interface SimulationReturnCurrentMarkerBase {
   type: "simulation_pcb_return_current_marker"
@@ -5037,13 +5154,15 @@ interface SimulationReturnCurrentMarkerBase {
   label_y?: number
 }
 
-interface SimulationPcbReturnCurrentPortMarker extends SimulationReturnCurrentMarkerBase {
+interface SimulationPcbReturnCurrentPortMarker
+  extends SimulationReturnCurrentMarkerBase {
   target_type: "pcb_port"
   pcb_port_id: string
   layer: LayerRef
 }
 
-interface SimulationPcbReturnCurrentViaMarker extends SimulationReturnCurrentMarkerBase {
+interface SimulationPcbReturnCurrentViaMarker
+  extends SimulationReturnCurrentMarkerBase {
   target_type: "pcb_via"
   pcb_via_id: string
   from_layer: LayerRef
@@ -5077,17 +5196,20 @@ interface SimulationReturnCurrentContactBase {
   layer: LayerRef
 }
 
-interface SimulationReturnCurrentPortContact extends SimulationReturnCurrentContactBase {
+interface SimulationReturnCurrentPortContact
+  extends SimulationReturnCurrentContactBase {
   contact_type: "pcb_port"
   pcb_port_id: string
 }
 
-interface SimulationReturnCurrentViaContact extends SimulationReturnCurrentContactBase {
+interface SimulationReturnCurrentViaContact
+  extends SimulationReturnCurrentContactBase {
   contact_type: "pcb_via"
   pcb_via_id: string
 }
 
-interface SimulationReturnCurrentCopperPourContact extends SimulationReturnCurrentContactBase {
+interface SimulationReturnCurrentCopperPourContact
+  extends SimulationReturnCurrentContactBase {
   contact_type: "pcb_copper_pour"
   pcb_copper_pour_id: string
 }
@@ -5274,7 +5396,8 @@ interface SimulationVoltageProbe {
 
 ```typescript
 type SimulationVoltageSource =
-  SimulationDcVoltageSource | SimulationAcVoltageSource
+  | SimulationDcVoltageSource
+  | SimulationAcVoltageSource
 
 /** Defines a DC voltage source for simulation purposes. It applies a voltage
  * difference between two source ports. */
@@ -5450,6 +5573,10 @@ interface SystemBlockConnection {
   to_system_block_component_id: string
   /** Independent classifications; both flags are required. */
   is_signal: boolean
+  /** Optional #RGB or #RRGGBB stroke and arrow color; overrides classification/theme color. */
+  color?: string
+  /** Omitted retains the renderer's classification-based pattern. */
+  line_style?: "solid" | "dashed" | "dotted"
   is_power: boolean
   /** Forward draws an arrow at the route's end; both draws at both ends. */
   direction: "forward" | "both" | "none"

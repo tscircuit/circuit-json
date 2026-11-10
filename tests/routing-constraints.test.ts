@@ -27,28 +27,15 @@ test("flat bus constraints preserve resolved references without changing members
   expect(source_bus.parse(input).source_trace_ids).toEqual(["data_0", "data_1"])
 })
 
-test("pair polarity and explicit shared length references survive serialization", () => {
+test("ordered pair polarity and lane-sum skew survive serialization", () => {
   const input: SourceBus = {
     type: "source_bus",
     source_bus_id: "clock_pair",
     source_trace_ids: ["clock_plus", "clock_minus"],
-    target_length: {
-      reference: "longest_manhattan",
-      source_trace_ids: ["address_0", "clock_plus", "clock_minus"],
-      offset: 7.62,
-    },
-    length_tolerance: 1.27,
-    min_length: 10,
-    max_length: 30,
-    pcb_spacing_to_other_signals: 0.4,
-    target_differential_impedance: 125,
-    target_differential_impedance_min: 100,
-    target_differential_impedance_max: 150,
+    max_length_skew: 0.1,
     differential_pair: {
-      positive_source_trace_id: "clock_plus",
-      negative_source_trace_id: "clock_minus",
-      trace_gap: 0.12,
-      max_uncoupled_length: 0.5,
+      positive_source_trace_ids: ["clock_plus"],
+      negative_source_trace_ids: ["clock_minus"],
     },
   }
   expect(any_circuit_element.parse(JSON.parse(JSON.stringify(input)))).toEqual(
