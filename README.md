@@ -4317,6 +4317,14 @@ interface SchematicPath {
   dash_length?: number
   dash_gap?: number
   points: Point[]
+  /**
+   * Path points relative to the owning schematic_component's center, in mm
+   * (+X right, +Y up, right-handed), after symbol resizing and rotation.
+   * Preserve these from local geometry before adding the component's world
+   * position. Translating the component changes points, not symbol_local_points.
+   * When present, these are authoritative for library-symbol artwork.
+   */
+  symbol_local_points?: Point[]
   subcircuit_id?: string
 }
 ```
