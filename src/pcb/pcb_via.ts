@@ -4,6 +4,39 @@ import { getZodPrefixedIdWithDefault } from "src/common"
 import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
+export const pcb_pad_stack_entry = z.object({
+  layer: layer_ref,
+  shape: z.enum(["circle", "rect", "oval", "pill", "polygon"]).optional(),
+  outer_diameter: distance.optional(),
+  width: distance.optional(),
+  height: distance.optional(),
+  outer_width: distance.optional(),
+  outer_height: distance.optional(),
+  rect_border_radius: distance.optional(),
+  ccw_rotation: distance.optional(),
+  points: z
+    .array(
+      z.object({
+        x: distance,
+        y: distance,
+      }),
+    )
+    .optional(),
+})
+
+export interface PcbPadStackEntry {
+  layer: LayerRef
+  shape?: "circle" | "rect" | "oval" | "pill" | "polygon"
+  outer_diameter?: Distance
+  width?: Distance
+  height?: Distance
+  outer_width?: Distance
+  outer_height?: Distance
+  rect_border_radius?: Distance
+  ccw_rotation?: Distance
+  points?: { x: Distance; y: Distance }[]
+}
+
 export const pcb_via = z
   .object({
     type: z.literal("pcb_via"),
@@ -24,6 +57,7 @@ export const pcb_via = z
     /** @deprecated */
     to_layer: layer_ref.optional(),
     layers: z.array(layer_ref),
+    pad_stack: z.array(pcb_pad_stack_entry).optional(),
     /** PCB ports belonging to this via, including layer ports and aliases. */
     pcb_port_ids: z.array(z.string()).optional(),
     pcb_trace_id: z.string().optional(),
@@ -71,6 +105,7 @@ export interface PcbVia {
   /** @deprecated */
   to_layer?: LayerRef
   layers: LayerRef[]
+  pad_stack?: PcbPadStackEntry[]
   /** PCB ports belonging to this via, including layer ports and aliases. */
   pcb_port_ids?: string[]
   pcb_trace_id?: string
