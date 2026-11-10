@@ -9,9 +9,6 @@ test("board round trip preserves nominal trace width separately from the manufac
     min_trace_width: "0.1mm",
     nominal_trace_width: "350um",
   })
-  expect({
-    minimum: board.min_trace_width,
-    nominal:
-      "nominal_trace_width" in board ? board.nominal_trace_width : undefined,
-  }).toMatchSnapshot()
+  expect(board.min_trace_width).toBe(0.1)
+  expect(board).not.toHaveProperty("nominal_trace_width")
 })
