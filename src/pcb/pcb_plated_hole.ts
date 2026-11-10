@@ -3,6 +3,7 @@ import { distance, type Distance, rotation, type Rotation } from "src/units"
 import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+import { pcb_pad_stack_entry, type PcbPadStackEntry } from "./pcb_via"
 
 const pcb_plated_hole_circle = z.object({
   type: z.literal("pcb_plated_hole"),
@@ -15,6 +16,7 @@ const pcb_plated_hole_circle = z.object({
   x: distance,
   y: distance,
   layers: z.array(layer_ref),
+  pad_stack: z.array(pcb_pad_stack_entry).optional(),
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
@@ -36,6 +38,7 @@ export interface PcbPlatedHoleCircle {
   x: Distance
   y: Distance
   layers: LayerRef[]
+  pad_stack?: PcbPadStackEntry[]
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
@@ -57,6 +60,7 @@ const pcb_plated_hole_oval = z.object({
   y: distance,
   ccw_rotation: rotation,
   layers: z.array(layer_ref),
+  pad_stack: z.array(pcb_pad_stack_entry).optional(),
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
@@ -81,6 +85,7 @@ export interface PcbPlatedHoleOval {
   y: Distance
   ccw_rotation: Rotation
   layers: LayerRef[]
+  pad_stack?: PcbPadStackEntry[]
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
@@ -105,6 +110,7 @@ const pcb_circular_hole_with_rect_pad = z.object({
   x: distance,
   y: distance,
   layers: z.array(layer_ref),
+  pad_stack: z.array(pcb_pad_stack_entry).optional(),
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
@@ -130,6 +136,7 @@ const pcb_pill_hole_with_rect_pad = z.object({
   x: distance,
   y: distance,
   layers: z.array(layer_ref),
+  pad_stack: z.array(pcb_pad_stack_entry).optional(),
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
@@ -156,6 +163,7 @@ const pcb_rotated_pill_hole_with_rect_pad = z.object({
   x: distance,
   y: distance,
   layers: z.array(layer_ref),
+  pad_stack: z.array(pcb_pad_stack_entry).optional(),
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
@@ -180,6 +188,7 @@ export interface PcbHolePillWithRectPad {
   x: Distance
   y: Distance
   layers: LayerRef[]
+  pad_stack?: PcbPadStackEntry[]
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
@@ -207,6 +216,7 @@ export interface PcbHoleRotatedPillWithRectPad {
   x: Distance
   y: Distance
   layers: LayerRef[]
+  pad_stack?: PcbPadStackEntry[]
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
@@ -231,6 +241,7 @@ export interface PcbHoleCircularWithRectPad {
   x: Distance
   y: Distance
   layers: LayerRef[]
+  pad_stack?: PcbPadStackEntry[]
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
@@ -263,6 +274,7 @@ const pcb_hole_with_polygon_pad = z.object({
   x: distance,
   y: distance,
   layers: z.array(layer_ref),
+  pad_stack: z.array(pcb_pad_stack_entry).optional(),
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
@@ -291,6 +303,7 @@ export interface PcbHoleWithPolygonPad {
   x: Distance
   y: Distance
   layers: LayerRef[]
+  pad_stack?: PcbPadStackEntry[]
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
