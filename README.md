@@ -5516,3 +5516,6 @@ interface SystemBlockRoutePoint extends Point {
 ```
 
 <!-- circuit-json-docs:end -->
+
+# Issue #40 Resolution
+The pcb_keepout changes (center on rect/circle, layers as array) were implemented in PR #41 (merged Sep 6, 2024).
