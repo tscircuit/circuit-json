@@ -28,7 +28,7 @@ const trace_spacing = z.union([
   z.object({ width_multiplier: z.number().positive().finite() }),
 ])
 
-/** A group of resolved source traces with a maximum routed-length difference. */
+/** A bus that is not a differential pair: resolved source traces with a maximum routed-length difference. */
 export interface OrdinarySourceBus {
   type: "source_bus"
   source_bus_id: string
@@ -38,6 +38,7 @@ export interface OrdinarySourceBus {
   max_length_skew?: number
   /** Intended single-ended characteristic impedance, in ohms. */
   target_impedance?: number
+  /** Only set on SourceDifferentialPairBus. */
   differential_pair?: never
   /** Additional traces for length comparison, without changing electrical membership. */
   length_match_source_trace_ids?: string[]
@@ -45,114 +46,86 @@ export interface OrdinarySourceBus {
   max_length?: SourceBusRouteLength
   target_length?: SourceBusRouteLength
   length_tolerance?: number
-  /** Within this bus. */
+  /** Spacing between traces within this bus. */
   pcb_trace_spacing?: SourceBusTraceSpacing
-  /** To all signals outside this bus. */
+  /** Spacing to all signals outside this bus. */
   pcb_spacing_to_other_signals?: SourceBusTraceSpacing
   target_impedance_min?: number
   target_impedance_max?: number
   subcircuit_id?: string
 }
 
-const ordinary_source_bus = z
-  .object({
-    type: z.literal("source_bus"),
-    source_bus_id: z.string(),
-    name: z.string().optional(),
-    source_trace_ids: z.array(z.string()).min(1),
-    max_length_skew: z.number().nonnegative().finite().optional(),
-    target_impedance: z.number().positive().finite().optional(),
-    differential_pair: z.never().optional(),
-    length_match_source_trace_ids: z.array(z.string()).min(1).optional(),
-    min_length: route_length.optional(),
-    max_length: route_length.optional(),
-    target_length: route_length.optional(),
-    length_tolerance: z.number().nonnegative().finite().optional(),
-    pcb_trace_spacing: trace_spacing.optional(),
-    pcb_spacing_to_other_signals: trace_spacing.optional(),
-    target_impedance_min: z.number().positive().finite().optional(),
-    target_impedance_max: z.number().positive().finite().optional(),
-    subcircuit_id: z.string().optional(),
-  })
-  .strict()
+const ordinary_source_bus = z.object({
+  type: z.literal("source_bus"),
+  source_bus_id: z.string(),
+  name: z.string().optional(),
+  source_trace_ids: z.array(z.string()).min(1),
+  max_length_skew: z.number().nonnegative().finite().optional(),
+  target_impedance: z.number().positive().finite().optional(),
+  differential_pair: z.never().optional(),
+  length_match_source_trace_ids: z.array(z.string()).min(1).optional(),
+  min_length: route_length.optional(),
+  max_length: route_length.optional(),
+  target_length: route_length.optional(),
+  length_tolerance: z.number().nonnegative().finite().optional(),
+  pcb_trace_spacing: trace_spacing.optional(),
+  pcb_spacing_to_other_signals: trace_spacing.optional(),
+  target_impedance_min: z.number().positive().finite().optional(),
+  target_impedance_max: z.number().positive().finite().optional(),
+  subcircuit_id: z.string().optional(),
+})
 
-/** Ordered owned hops; skew compares the two lane sums of planar copper in mm. */
-export type SourceDifferentialPairBus = {
+/** A differential pair: two lanes of source traces whose total lengths must match. */
+export interface SourceDifferentialPairBus {
   type: "source_bus"
   source_bus_id: string
   name?: string
   subcircuit_id?: string
-  /** Exactly the positive IDs followed by the negative IDs, without duplicates. */
+  /** Positive lane IDs followed by negative lane IDs. */
   source_trace_ids: [string, ...string[]]
-  /** Required finite, nonnegative maximum difference between the lane sums. */
+  /** Maximum difference between the summed positive and negative lane lengths, in mm. */
   max_length_skew: number
   differential_pair: {
     positive_source_trace_ids: [string, ...string[]]
     negative_source_trace_ids: [string, ...string[]]
   }
-} & {
-  [K in Exclude<
-    keyof OrdinarySourceBus,
-    | "type"
-    | "source_bus_id"
-    | "name"
-    | "subcircuit_id"
-    | "source_trace_ids"
-    | "max_length_skew"
-    | "differential_pair"
-  >]?: never
 }
 
-const nonempty_trace_ids = z
-  .array(z.string().regex(/\S/, "Trace IDs must not be empty"))
-  .nonempty()
+const trace_ids = z.array(z.string()).nonempty()
 
-export const source_differential_pair_bus: z.ZodType<SourceDifferentialPairBus> =
-  ordinary_source_bus
-    .pick({
-      type: true,
-      source_bus_id: true,
-      name: true,
-      subcircuit_id: true,
-    })
-    .extend({
-      source_trace_ids: nonempty_trace_ids,
-      max_length_skew: z.number().nonnegative().finite(),
-      differential_pair: z
-        .object({
-          positive_source_trace_ids: nonempty_trace_ids,
-          negative_source_trace_ids: nonempty_trace_ids,
-        })
-        .strict(),
-    })
-    .strict()
-    .superRefine((bus, ctx) => {
-      const ids = [
-        ...bus.differential_pair.positive_source_trace_ids,
-        ...bus.differential_pair.negative_source_trace_ids,
+export const source_differential_pair_bus = z
+  .object({
+    type: z.literal("source_bus"),
+    source_bus_id: z.string(),
+    name: z.string().optional(),
+    subcircuit_id: z.string().optional(),
+    source_trace_ids: trace_ids,
+    max_length_skew: z.number().nonnegative().finite(),
+    differential_pair: z.object({
+      positive_source_trace_ids: trace_ids,
+      negative_source_trace_ids: trace_ids,
+    }),
+  })
+  .strict()
+  .refine(
+    ({ source_trace_ids, differential_pair }) => {
+      const lane_ids = [
+        ...differential_pair.positive_source_trace_ids,
+        ...differential_pair.negative_source_trace_ids,
       ]
-      if (new Set(ids).size !== ids.length) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["differential_pair"],
-          message:
-            "Each source trace must occur exactly once across both lanes",
-        })
-      }
-      if (
-        ids.length !== bus.source_trace_ids.length ||
-        ids.some((id, index) => id !== bus.source_trace_ids[index])
-      ) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["source_trace_ids"],
-          message:
-            "source_trace_ids must equal positive_source_trace_ids followed by negative_source_trace_ids",
-        })
-      }
-    })
+      return (
+        lane_ids.length === source_trace_ids.length &&
+        lane_ids.every((id, i) => id === source_trace_ids[i])
+      )
+    },
+    {
+      path: ["source_trace_ids"],
+      message:
+        "source_trace_ids must list the positive lane IDs, then the negative lane IDs",
+    },
+  )
 
-/** Ordinary bus skew compares members; differential pair skew compares lane sums. */
+/** A group of source traces routed together: an ordinary bus or a differential pair. */
 export type SourceBus = OrdinarySourceBus | SourceDifferentialPairBus
 
 export const source_bus = z.union([
@@ -162,4 +135,8 @@ export const source_bus = z.union([
 
 export type SourceBusInput = z.input<typeof source_bus>
 expectTypesMatch<OrdinarySourceBus, z.infer<typeof ordinary_source_bus>>(true)
+expectTypesMatch<
+  SourceDifferentialPairBus,
+  z.infer<typeof source_differential_pair_bus>
+>(true)
 expectTypesMatch<SourceBus, z.infer<typeof source_bus>>(true)

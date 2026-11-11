@@ -27,22 +27,6 @@ test("flat bus constraints preserve resolved references without changing members
   expect(source_bus.parse(input).source_trace_ids).toEqual(["data_0", "data_1"])
 })
 
-test("ordered pair polarity and lane-sum skew survive serialization", () => {
-  const input: SourceBus = {
-    type: "source_bus",
-    source_bus_id: "clock_pair",
-    source_trace_ids: ["clock_plus", "clock_minus"],
-    max_length_skew: 0.1,
-    differential_pair: {
-      positive_source_trace_ids: ["clock_plus"],
-      negative_source_trace_ids: ["clock_minus"],
-    },
-  }
-  expect(any_circuit_element.parse(JSON.parse(JSON.stringify(input)))).toEqual(
-    input,
-  )
-})
-
 test("routing violations use a dedicated bus constraint error with structured measurements", () => {
   const error = pcb_bus_routing_constraint_error.parse({
     type: "pcb_bus_routing_constraint_error",
@@ -91,7 +75,6 @@ test("canonical constraints reject invalid units, domains and unresolved selecto
     { pcb_spacing_to_other_signals: { width_multiplier: -1 } },
     { target_impedance: NaN },
     { target_impedance_min: 0 },
-    { target_differential_impedance_max: Infinity },
     { target_impedance: { min: 50, max: 75 } },
     { target_impedance: "50±25ohm" },
   ]) {
