@@ -91,10 +91,6 @@ export interface PcbCutoutPolygon {
   pcb_board_id?: string
   pcb_panel_id?: string
   shape: "polygon"
-  /**
-   * Closed boundary in board coordinates (mm, +X right, +Y up).
-   * The last point connects to the first.
-   */
   points: PointWithBulge[]
 }
 expectTypesMatch<PcbCutoutPolygon, InferredPcbCutoutPolygon>(true)
@@ -125,10 +121,6 @@ export interface PcbCutoutPath {
   pcb_board_id?: string
   pcb_panel_id?: string
   shape: "path"
-  /**
-   * Open slot path in board coordinates (mm, +X right, +Y up).
-   * The final point has no outgoing segment.
-   */
   route: PointWithBulge[]
   slot_width: Length
   slot_length?: Length

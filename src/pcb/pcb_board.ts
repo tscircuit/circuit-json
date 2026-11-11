@@ -86,10 +86,6 @@ export interface PcbBoard extends ManufacturingDrcProperties {
   /** Whether autorouters may generate blind and buried vias. */
   allow_blind_and_buried_vias?: boolean
   center: Point
-  /**
-   * Closed outline in board coordinates (mm, +X right, +Y up).
-   * The last point connects to the first.
-   */
   outline?: PointWithBulge[]
   shape?: "rect" | "polygon"
   material: "fr4" | "fr1" | "flex"

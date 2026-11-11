@@ -1,6 +1,6 @@
-import { type Distance, distance } from "src/units"
-import { expectTypesMatch } from "src/utils/expect-types-match"
 import { z } from "zod"
+import { distance, type Distance } from "src/units"
+import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const point_with_bulge = z.object({
   x: distance,
@@ -11,10 +11,6 @@ export const point_with_bulge = z.object({
 export interface PointWithBulge {
   x: Distance
   y: Distance
-  /**
-   * tan(ccw_sweep_radians / 4) for the circular arc from this point to the
-   * next point. Omit for a straight segment.
-   */
   bulge?: number
 }
 type InferredPointWithBulge = z.infer<typeof point_with_bulge>
