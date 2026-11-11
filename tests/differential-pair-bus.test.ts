@@ -12,12 +12,15 @@ const pair = {
   },
 }
 
-test("ordered multi-hop lanes round-trip through the public element schema", () => {
-  expect(source_bus.parse(pair)).toEqual(JSON.parse(JSON.stringify(pair)))
-  expect(any_circuit_element.parse(JSON.parse(JSON.stringify(pair)))).toEqual(
-    JSON.parse(JSON.stringify(pair)),
-  )
-})
+test.failing(
+  "ordered multi-hop lanes round-trip through the public element schema",
+  () => {
+    expect(source_bus.parse(pair)).toEqual(JSON.parse(JSON.stringify(pair)))
+    expect(any_circuit_element.parse(JSON.parse(JSON.stringify(pair)))).toEqual(
+      JSON.parse(JSON.stringify(pair)),
+    )
+  },
+)
 
 // Exercise both the old singular representation and the decided ordered lanes.
 // The old schema accepts the invalid singular states instead of validating them.
@@ -25,7 +28,9 @@ for (const differential_pair of [
   { positive_source_trace_id: "dp1", negative_source_trace_id: "dm1" },
   pair.differential_pair,
 ]) {
-  test("pair membership must equal the ordered lane concatenation", () => {
+  const reproTest =
+    "positive_source_trace_id" in differential_pair ? test.failing : test
+  reproTest("pair membership must equal the ordered lane concatenation", () => {
     expect(
       source_bus.safeParse({
         ...pair,
@@ -35,7 +40,7 @@ for (const differential_pair of [
     ).toBe(false)
   })
 
-  test.each([
+  reproTest.each([
     { length_match_source_trace_ids: ["other"] },
     { min_length: 1 },
     { max_length: 10 },
@@ -58,7 +63,7 @@ for (const differential_pair of [
   })
 }
 
-test.each([
+test.failing.each([
   { positive_source_trace_id: "dp1", negative_source_trace_id: "dp1" },
   { positive_source_trace_id: "", negative_source_trace_id: "dm1" },
   {

@@ -13,5 +13,7 @@ test("flex boards validate through the board schema and Circuit JSON union", () 
   expect(board.material).toBe("flex")
   expect(board.thickness).toBe(0.15)
   expect(any_circuit_element.parse(board)).toEqual(board)
-  expect(pcb_board.parse({ ...input, material: undefined }).material).toBe("fr4")
+  expect(pcb_board.parse({ ...input, material: undefined }).material).toBe(
+    "fr4",
+  )
 })
