@@ -40,7 +40,7 @@ for (const differential_pair of [
     ).toBe(false)
   })
 
-  reproTest.each([
+  for (const fields of [
     { length_match_source_trace_ids: ["other"] },
     { min_length: 1 },
     { max_length: 10 },
@@ -56,14 +56,20 @@ for (const differential_pair of [
     { target_differential_impedance_max: 100 },
     { trace_gap: 0.1 },
     { max_uncoupled_length: 1 },
-  ])("pair rejects ordinary-bus or unsupported intent: %j", (fields) => {
-    expect(
-      source_bus.safeParse({ ...pair, differential_pair, ...fields }).success,
-    ).toBe(false)
-  })
+  ]) {
+    reproTest(
+      `pair rejects ordinary-bus or unsupported intent: ${JSON.stringify(fields)}`,
+      () => {
+        expect(
+          source_bus.safeParse({ ...pair, differential_pair, ...fields })
+            .success,
+        ).toBe(false)
+      },
+    )
+  }
 }
 
-test.failing.each([
+for (const differential_pair of [
   { positive_source_trace_id: "dp1", negative_source_trace_id: "dp1" },
   { positive_source_trace_id: "", negative_source_trace_id: "dm1" },
   {
@@ -76,8 +82,13 @@ test.failing.each([
     negative_source_trace_id: "dm1",
     max_uncoupled_length: 1,
   },
-])("rejects invalid legacy pair lanes: %j", (differential_pair) => {
-  expect(source_bus.safeParse({ ...pair, differential_pair }).success).toBe(
-    false,
+]) {
+  test.failing(
+    `rejects invalid legacy pair lanes: ${JSON.stringify(differential_pair)}`,
+    () => {
+      expect(source_bus.safeParse({ ...pair, differential_pair }).success).toBe(
+        false,
+      )
+    },
   )
-})
+}
