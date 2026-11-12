@@ -4186,6 +4186,8 @@ interface SchematicGroup {
   center: Point
   schematic_component_ids: string[]
   show_as_schematic_box?: boolean
+  /** Draw the group's boundary while keeping its schematic contents visible. */
+  show_boundary?: boolean
   name?: string
   description?: string
 }
@@ -4325,6 +4327,8 @@ interface SchematicPath {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/schematic/schematic_port.ts)
 
+Owner of an expanded subcircuit interface port; component ownership is omitted.
+
 ```typescript
 interface SchematicPort {
   type: "schematic_port"
@@ -4332,6 +4336,14 @@ interface SchematicPort {
   source_port_id: string
   schematic_sheet_id?: string
   schematic_component_id?: string
+  /** Owner of an expanded subcircuit interface port; component ownership is omitted. */
+  schematic_group_id?: string
+  /** Point where the port stem meets the group boundary. Like center, this is a
+   * schematic-world point in mm (+X right, +Y up), including group translation.
+   * center remains the externally connectable terminal; facing_direction points
+   * out of the group. This field does not create an electrical connection. */
+
+  boundary_position?: Point
   center: Point
   facing_direction?: "up" | "down" | "left" | "right"
   distance_from_component_edge?: number

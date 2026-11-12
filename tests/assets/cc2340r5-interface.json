@@ -1,0 +1,90 @@
+{
+  "group": {
+    "type": "schematic_group",
+    "schematic_group_id": "schematic_group_0",
+    "is_subcircuit": true,
+    "subcircuit_id": "subcircuit_source_group_0",
+    "name": "CC2340R5",
+    "center": {
+      "x": 0.20750000000000046,
+      "y": -0.09499999999999975
+    },
+    "width": 27.814999999999998,
+    "height": 22.39,
+    "schematic_component_ids": [
+      "schematic_component_0",
+      "schematic_component_1",
+      "schematic_component_2",
+      "schematic_component_3",
+      "schematic_component_4",
+      "schematic_component_5",
+      "schematic_component_6",
+      "schematic_component_7",
+      "schematic_component_8",
+      "schematic_component_9",
+      "schematic_component_10",
+      "schematic_component_11",
+      "schematic_component_12",
+      "schematic_component_13",
+      "schematic_component_14",
+      "schematic_component_15",
+      "schematic_component_16",
+      "schematic_component_17",
+      "schematic_component_18",
+      "schematic_component_19",
+      "schematic_component_20",
+      "schematic_component_21",
+      "schematic_component_22",
+      "schematic_component_23",
+      "schematic_component_24",
+      "schematic_component_25",
+      "schematic_component_26"
+    ],
+    "source_group_id": "source_group_0",
+    "show_as_schematic_box": false,
+    "show_boundary": true
+  },
+  "sourcePort": {
+    "type": "source_port",
+    "source_port_id": "source_port_11",
+    "name": "RESET_N",
+    "port_hints": ["RESET_N"],
+    "subcircuit_id": "subcircuit_source_group_0",
+    "source_group_id": "source_group_0",
+    "subcircuit_connectivity_map_key": "CC2340R5_connectivity_net13"
+  },
+  "port": {
+    "type": "schematic_port",
+    "schematic_port_id": "schematic_port_93",
+    "source_port_id": "source_port_11",
+    "schematic_group_id": "schematic_group_0",
+    "center": {
+      "x": -14.1,
+      "y": 1.1999999999999993
+    },
+    "boundary_position": {
+      "x": -13.7,
+      "y": 1.1999999999999993
+    },
+    "facing_direction": "left",
+    "display_pin_label": "RESET_N",
+    "is_connected": true
+  },
+  "componentPort": {
+    "type": "schematic_port",
+    "schematic_port_id": "schematic_port_12",
+    "schematic_component_id": "schematic_component_0",
+    "center": {
+      "x": -9,
+      "y": 1.1999999999999993
+    },
+    "source_port_id": "source_port_25",
+    "facing_direction": "left",
+    "distance_from_component_edge": 0.4,
+    "side_of_component": "left",
+    "pin_number": 13,
+    "true_ccw_index": 12,
+    "display_pin_label": "RSTN",
+    "is_connected": true
+  }
+}

@@ -10,6 +10,15 @@ export interface SchematicPort {
   source_port_id: string
   schematic_sheet_id?: string
   schematic_component_id?: string
+  /** Owner of an expanded subcircuit interface port; component ownership is omitted. */
+  schematic_group_id?: string
+  /**
+   * Point where the port stem meets the group boundary. Like center, this is a
+   * schematic-world point in mm (+X right, +Y up), including group translation.
+   * center remains the externally connectable terminal; facing_direction points
+   * out of the group. This field does not create an electrical connection.
+   */
+  boundary_position?: Point
   center: Point
   facing_direction?: "up" | "down" | "left" | "right"
   distance_from_component_edge?: number
@@ -40,6 +49,8 @@ export const schematic_port = z
     source_port_id: z.string(),
     schematic_sheet_id: z.string().optional(),
     schematic_component_id: z.string().optional(),
+    schematic_group_id: z.string().optional(),
+    boundary_position: point.optional(),
     center: point,
     facing_direction: z.enum(["up", "down", "left", "right"]).optional(),
     distance_from_component_edge: z.number().optional(),
