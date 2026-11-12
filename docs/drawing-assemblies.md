@@ -22,6 +22,16 @@ Record schemas validate IDs, nonempty selections, finite coordinates and scalar 
 
 Both `drawing_part_label` and `drawing_dimension_line` require exactly one parent reference: `drawing_part_view_id` or `drawing_explosion_view_id`. Consumers must validate that the referenced ID belongs to the matching view type. Dimensions remain preformatted paper primitives.
 
-`drawing_part_label` attaches plain text to a target selection. `anchor` is an assembled CAD-world point; it follows that selection's explosion translation. `label_position` stays in page-centered paper mm (+X right, +Y up). Label targets must be visible in their view and share the same translation. `drawing_page_note` places plain text at a page-centered left baseline; its positive `font_size` is paper mm (default 2.7). No embedded image, model geometry or generated drawing output belongs in these records.
+`drawing_part_label` attaches plain text to a target selection. `anchor` is an assembled CAD-world point; it follows that selection's explosion translation. `label_position` is relative to `drawing_page.origin` in paper mm (+X right, +Y up). Each axis may instead use `x_offset_from_view_center`/`y_offset_from_view_center` to follow the enclosing view center. Label targets must be visible in their view and share the same translation. `drawing_page_note` places plain text at an origin-relative left baseline; its positive `font_size` is paper mm (default 2.7). No embedded image, model geometry or generated drawing output belongs in these records.
 
 Rendering, label collision avoidance and mechanical insertion-path validation are separate concerns. These offsets describe a drawing pose, not verified assembly motion. TSX selector resolution and emission are follow-up core work; props and renderer changes accompany this schema proposal.
+
+## Paper coordinate origin
+
+`drawing_page.origin: { x, y }` locates the drawing origin in mm from the physical lower-left corner of the sheet (+X right, +Y up). Omitted origin means `{ x: width / 2, y: height / 2 }`, preserving existing documents. Values must be finite; an origin outside the sheet is allowed. View centers, absolute label/note positions and all resolved dimension points are expressed relative to this origin. Model coordinates are unaffected. Border/title-block placement stays sheet-relative.
+
+For an origin-relative point `p`, SVG coordinates are `{ x: origin.x + p.x, y: height - (origin.y + p.y) }`. Consumers apply this once and perform bounds checks in physical sheet coordinates.
+
+Labels and notes independently select exactly one position per axis: `label_position.x`/`position.x` or `x_offset_from_view_center`, and `.y` or `y_offset_from_view_center`. A missing axis or both modes on one axis is invalid, including explicit zero conflicts. Absolute points may contain only the selected axes, or be omitted for two offsets. Offsets are finite paper mm from the referenced view's center, not model coordinates. Mixed modes are supported.
+
+Labels always carry one typed view reference. Notes with offsets require exactly one `drawing_part_view_id` or `drawing_explosion_view_id`; absolute notes may omit that reference. Consumers reject missing, wrong-type or cross-page referenced views. Core resolves TSX `viewRef` or an enclosing view into that ID. `drawing_dimension_line` remains resolved paper primitives relative to the drawing origin.

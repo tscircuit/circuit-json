@@ -42,10 +42,10 @@ export const drawing_dimension_line = z
     "Provide exactly one drawing part or explosion view reference",
   )
   .describe(
-    "A resolved dimension annotation associated with a drawing part view. start/end and optional edge_ref_start/edge_ref_end use page-centered paper mm, +X right/+Y up. Core resolves model measurement and formats the required text before emitting this record; renderers draw the supplied line, text and optional witness attachments without resolving native geometry or deriving values from paper length. Each witness attachment is independently optional. edge_ref_name is optional exact nonblank model-feature metadata, never a geometry definition or a rendering dependency.",
+    "A resolved dimension annotation associated with a drawing part view. start/end and optional edge_ref_start/edge_ref_end use drawing-origin-relative paper mm, +X right/+Y up. Core resolves model measurement and formats the required text before emitting this record; renderers draw the supplied line, text and optional witness attachments without resolving native geometry or deriving values from paper length. Each witness attachment is independently optional. edge_ref_name is optional exact nonblank model-feature metadata, never a geometry definition or a rendering dependency.",
   )
 
-/** Resolved drawing strokes in page-centered paper mm, +X right/+Y up.
+/** Resolved drawing strokes in drawing-origin-relative paper mm, +X right/+Y up.
  * Core computes the model measurement, projection, placement and formatted text.
  * A renderer draws these supplied coordinates without resolving model geometry.
  * The preformatted text is preserved exactly and need not equal paper length.
