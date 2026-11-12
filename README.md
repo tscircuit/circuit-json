@@ -255,6 +255,10 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationReturnCurrentContact](#simulationreturncurrentcontact)
     - [SimulationReturnCurrentExcitation](#simulationreturncurrentexcitation)
     - [SimulationReturnCurrentGridJson](#simulationreturncurrentgridjson)
+    - [SimulationSignal](#simulationsignal)
+    - [SimulationSignalIntegrity](#simulationsignalintegrity)
+    - [SimulationSignalIntegrityRlgc](#simulationsignalintegrityrlgc)
+    - [SimulationSignalWaveform](#simulationsignalwaveform)
     - [SimulationSpiceSubcircuit](#simulationspicesubcircuit)
     - [SimulationSwitch](#simulationswitch)
     - [SimulationTerminalPort](#simulationterminalport)
@@ -4817,7 +4821,6 @@ interface SimulationExperiment {
   time_per_step?: number // ms
   start_time_ms?: number // ms
   end_time_ms?: number // ms
-  pcb_spice_channel?: PcbSpiceChannel
   spice_options?: SpiceSimulationOptions
   dc_sweep_voltage_source_id?: string
   dc_sweep_current_source_id?: string
@@ -4837,49 +4840,6 @@ interface SpiceSimulationOptions {
   reltol?: number | string
   abstol?: number | string
   vntol?: number | string
-}
-
-interface PcbSpiceChannel {
-  reduction: "routed-copper" | "straightened-stages"
-  sections: number
-  lanes: Array<{
-    name: string
-    driver_source_port_id: string
-    receiver_source_port_id: string
-  }>
-  reference_source_port_id: string
-  passive_source_component_ids?: string[]
-  extraction: {
-    minimum_frequency_hz: number
-    maximum_frequency_hz: number
-    model_frequency_hz: number
-    filaments: number
-    refinement_filaments: number
-    convergence_tolerance: number
-    capacitance_tolerance: number
-    reciprocity_tolerance: number
-    dc_resistance_tolerance: number
-    max_panel_length_mm: number
-    ground_mesh_size_mm?: number
-  }
-  relative_permittivity?: number
-  via_plating_thickness_mm?: number
-  via_equivalent_width_mm?: number
-  omit_through_via_stubs?: boolean
-  straightened_stage_profiles?: Record<
-    string,
-    {
-      spacing_mm: number
-      relative_permittivity: number
-      return: {
-        width_mm: number
-        thickness_mm: number
-        length_factor: number
-        center_y_mm: number
-        center_z_mm: number
-      }
-    }
-  >
 }
 ```
 
@@ -5142,6 +5102,100 @@ type SimulationReturnCurrentGridJson =
       sheet_current_y_real: (number | null)[]
       sheet_current_y_imag: (number | null)[]
     }
+```
+
+### SimulationSignal
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal.ts)
+
+A resolved signal, its traffic, and the receivers measured in one test.
+
+```typescript
+/** A resolved signal, its traffic, and the receivers measured in one test. */
+interface SimulationSignal {
+  type: "simulation_signal"
+  simulation_signal_id: string
+  simulation_signal_integrity_id: string
+  name: string
+  driver: SignalEndpoint
+  receivers: SignalEndpoint[]
+  bit_rate_bps: number
+  pattern: string
+  seed?: number
+  offset_s: number
+  driver_disabled?: boolean
+}
+
+type SignalEndpoint =
+  | { source_port_id: string; ibis_model_name?: string }
+  | {
+      p_source_port_id: string
+      n_source_port_id: string
+      p_ibis_model_name?: string
+      n_ibis_model_name?: string
+    }
+```
+
+### SimulationSignalIntegrity
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_integrity.ts)
+
+One independent signal integrity test over the board's coupled copper.
+
+```typescript
+/** One independent signal integrity test over the board's coupled copper. */
+interface SimulationSignalIntegrity {
+  type: "simulation_signal_integrity"
+  simulation_signal_integrity_id: string
+  name?: string
+  bit_rate_bps: number
+  duration_s?: number
+  allow_unrouted_traces: boolean
+}
+```
+
+### SimulationSignalIntegrityRlgc
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_integrity_rlgc.ts)
+
+Frequency-indexed total loop R/L and ground-referenced Maxwell C/G in physical conductor order.
+
+```typescript
+/** Frequency-indexed total loop R/L and ground-referenced Maxwell C/G in physical conductor order. */
+interface SimulationSignalIntegrityRlgc {
+  type: "simulation_signal_integrity_rlgc"
+  simulation_signal_integrity_rlgc_id: string
+  simulation_signal_integrity_id: string
+  conductors: { simulation_signal_id: string; source_port_id: string }[]
+  matrices: {
+    frequency_hz: number
+    r_ohm: number[][]
+    l_h: number[][]
+    c_f: number[][]
+    g_s: number[][]
+  }[]
+}
+```
+
+### SimulationSignalWaveform
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_waveform.ts)
+
+Parallel time (seconds) and voltage (volts) samples, including differential P - N.
+
+```typescript
+/** Parallel time (seconds) and voltage (volts) samples, including differential P - N. */
+interface SimulationSignalWaveform {
+  type: "simulation_signal_waveform"
+  simulation_signal_waveform_id: string
+  simulation_signal_id: string
+  /** Driver port identifies the near end; receiver port identifies the far end. */
+  source_port_id: string
+  timestamps_s: number[]
+  voltage_levels: number[]
+  /** Required for constant literal patterns or disabled drivers; omitted otherwise. Requires the referenced signal to validate. */
+  idle_voltage_v?: number
+}
 ```
 
 ### SimulationSpiceSubcircuit

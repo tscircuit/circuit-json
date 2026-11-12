@@ -62,16 +62,6 @@ export const simulation_ibis_model = z
       .describe(
         "Maps each IBIS signal pin name to the physical source ports used as its buffer supply/clamp references",
       ),
-    model_value_corner: z
-      .union([z.literal("typical"), z.literal("minimum"), z.literal("maximum")])
-      .describe(
-        "Selects the typ, min, or max column of numerical data in the IBIS model",
-      ),
-    include_package_parasitics: z
-      .boolean()
-      .describe(
-        "Whether the runner includes the IBIS vendor's package resistance, inductance, and capacitance",
-      ),
   })
   .superRefine((model, context) => {
     const boundPins = new Set(
