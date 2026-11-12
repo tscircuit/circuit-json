@@ -5343,7 +5343,7 @@ interface DrawingPartSelection {
 ### DrawingDimensionLine
 
 ```typescript
-/** Resolved drawing strokes in drawing-origin-relative paper mm, +X right/+Y up.
+/** Resolved drawing strokes in page-anchor-relative paper mm, +X right/+Y up.
  * Core computes the model measurement, projection, placement and formatted text.
  * A renderer draws these supplied coordinates without resolving model geometry.
  * The preformatted text is preserved exactly and need not equal paper length. */
@@ -5412,8 +5412,8 @@ interface DrawingPage {
   orientation?: "landscape" | "portrait"
   width: number
   height: number
-  /** Paper origin in mm from the sheet's lower-left corner, with +X right and +Y up. Omitted means the sheet center. */
-  origin?: { x: number; y: number }
+  /** Sheet anchor used as (0, 0) for drawing coordinates; defaults to center. Axes remain +X right and +Y up. */
+  anchor_alignment?: NinePointAnchor
 }
 ```
 
@@ -5464,7 +5464,7 @@ interface DrawingPartLabel extends DrawingPartSelection {
   drawing_explosion_view_id?: string
   text: string
   anchor: { x: number; y: number; z: number }
-  /** Text baseline relative to the drawing origin; choose exactly one coordinate or view offset per axis. */
+  /** Text baseline relative to the page anchor; choose exactly one coordinate or view offset per axis. */
   label_position?: { x?: number; y?: number }
   x_offset_from_view_center?: number
   y_offset_from_view_center?: number

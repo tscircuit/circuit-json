@@ -43,7 +43,7 @@ export const drawing_page_note = z
       })
   })
   .describe(
-    "Plain text on a drawing sheet. position is the left text baseline relative to the drawing origin in paper mm (+X right, +Y up). Each axis may instead use x_offset_from_view_center/y_offset_from_view_center, requiring a part or explosion view on the same page. font_size is paper mm, default 2.7. Consumers validate the page reference and note position; text is escaped, never markup.",
+    "Plain text on a drawing sheet. position is the left text baseline relative to the page anchor in paper mm (+X right, +Y up). Each axis may instead use x_offset_from_view_center/y_offset_from_view_center, requiring a part or explosion view on the same page. font_size is paper mm, default 2.7. Consumers validate the page reference and note position; text is escaped, never markup.",
   )
 export interface DrawingPageNote {
   type: "drawing_page_note"

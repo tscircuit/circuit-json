@@ -1,3 +1,4 @@
+import { ninePointAnchor, type NinePointAnchor } from "src/common"
 import { z } from "zod"
 import {
   drawing_page_size,
@@ -16,9 +17,7 @@ export const drawing_page = z
     orientation: z.enum(["landscape", "portrait"]).optional(),
     width: z.number().finite().positive(),
     height: z.number().finite().positive(),
-    origin: z
-      .object({ x: z.number().finite(), y: z.number().finite() })
-      .optional(),
+    anchor_alignment: ninePointAnchor.optional(),
   })
   .superRefine((page, ctx) => {
     if (!page.page_size) {
@@ -55,8 +54,8 @@ export interface DrawingPage {
   orientation?: "landscape" | "portrait"
   width: number
   height: number
-  /** Paper origin in mm from the sheet's lower-left corner, with +X right and +Y up. Omitted means the sheet center. */
-  origin?: { x: number; y: number }
+  /** Sheet anchor used as (0, 0) for drawing coordinates; defaults to center. Axes remain +X right and +Y up. */
+  anchor_alignment?: NinePointAnchor
 }
 export type DrawingPageInput = z.input<typeof drawing_page>
 expectTypesMatch<DrawingPage, z.infer<typeof drawing_page>>(true)

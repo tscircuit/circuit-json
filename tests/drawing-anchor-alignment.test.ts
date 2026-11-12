@@ -6,13 +6,13 @@ import {
   drawing_part_label,
 } from "../src"
 
-test("drawing origins and view-relative annotation positions round-trip with scalar validation", () => {
+test("page anchor alignments and view-relative annotation positions round-trip with scalar validation", () => {
   const page = {
     type: "drawing_page" as const,
     drawing_page_id: "p",
     width: 200,
     height: 140,
-    origin: { x: 0, y: 0 },
+    anchor_alignment: "bottom_left" as const,
   }
   const label = {
     type: "drawing_part_label" as const,
@@ -35,10 +35,28 @@ test("drawing origins and view-relative annotation positions round-trip with sca
   }
   for (const r of [page, label, note])
     expect(any_circuit_element.parse(r)).toEqual(r)
-  for (const bad of [NaN, Infinity])
-    expect(
-      drawing_page.safeParse({ ...page, origin: { x: bad, y: 0 } }).success,
-    ).toBe(false)
+  for (const anchor_alignment of [
+    "top_left",
+    "top_center",
+    "top_right",
+    "center_left",
+    "center",
+    "center_right",
+    "bottom_left",
+    "bottom_center",
+    "bottom_right",
+  ]) {
+    expect(drawing_page.parse({ ...page, anchor_alignment })).toMatchObject({
+      anchor_alignment,
+    })
+  }
+  for (const anchor_alignment of ["bottom-left", "", { x: 0, y: 0 }])
+    expect(drawing_page.safeParse({ ...page, anchor_alignment }).success).toBe(
+      false,
+    )
+  expect(
+    drawing_page.parse({ ...page, origin: { x: 0, y: 0 } }),
+  ).not.toHaveProperty("origin")
   expect(
     drawing_part_label.safeParse({ ...label, label_position: { x: 0 } })
       .success,

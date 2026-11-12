@@ -4,7 +4,7 @@ export const drawing_paper_position = z.object({
   x: z.number().finite().optional(),
   y: z.number().finite().optional(),
 })
-/** Each axis uses either an origin-relative paper coordinate or a view-center
+/** Each axis uses either an anchor-relative paper coordinate or a view-center
  * offset. An explicit zero selects that mode; no axis is implicit. */
 export function validate_drawing_annotation_position(
   position: { x?: number; y?: number } | undefined,

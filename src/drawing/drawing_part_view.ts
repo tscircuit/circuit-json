@@ -54,7 +54,7 @@ export const drawing_part_view = drawing_part_view_base
     "Use drawing stage membership instead of mixing assembly and legacy selectors",
   )
   .describe(
-    "A configured orthographic view of selected assembly geometry. Paper coordinates are mm, relative to the drawing page origin, +X right/+Y up. Directions and section planes use CAD world coordinates in mm with +Z up.",
+    "A configured orthographic view of selected assembly geometry. Paper coordinates are mm, relative to the drawing page anchor, +X right/+Y up. Directions and section planes use CAD world coordinates in mm with +Z up.",
   )
 
 export interface DrawingPartView {
