@@ -255,6 +255,10 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationReturnCurrentContact](#simulationreturncurrentcontact)
     - [SimulationReturnCurrentExcitation](#simulationreturncurrentexcitation)
     - [SimulationReturnCurrentGridJson](#simulationreturncurrentgridjson)
+    - [SimulationSignal](#simulationsignal)
+    - [SimulationSignalIntegrity](#simulationsignalintegrity)
+    - [SimulationSignalIntegrityRlgc](#simulationsignalintegrityrlgc)
+    - [SimulationSignalWaveform](#simulationsignalwaveform)
     - [SimulationSpiceSubcircuit](#simulationspicesubcircuit)
     - [SimulationSwitch](#simulationswitch)
     - [SimulationTerminalPort](#simulationterminalport)
@@ -5130,6 +5134,100 @@ type SimulationReturnCurrentGridJson =
       sheet_current_y_real: (number | null)[]
       sheet_current_y_imag: (number | null)[]
     }
+```
+
+### SimulationSignal
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal.ts)
+
+A resolved signal, its traffic, and the receivers measured in one test.
+
+```typescript
+/** A resolved signal, its traffic, and the receivers measured in one test. */
+interface SimulationSignal {
+  type: "simulation_signal"
+  simulation_signal_id: string
+  simulation_signal_integrity_id: string
+  name: string
+  driver: SignalEndpoint
+  receivers: SignalEndpoint[]
+  bit_rate_bps: number
+  pattern: string
+  seed?: number
+  offset_s: number
+  driver_disabled?: boolean
+}
+
+type SignalEndpoint =
+  | { source_port_id: string; ibis_model_name?: string }
+  | {
+      p_source_port_id: string
+      n_source_port_id: string
+      p_ibis_model_name?: string
+      n_ibis_model_name?: string
+    }
+```
+
+### SimulationSignalIntegrity
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_integrity.ts)
+
+One independent signal integrity test over the board's coupled copper.
+
+```typescript
+/** One independent signal integrity test over the board's coupled copper. */
+interface SimulationSignalIntegrity {
+  type: "simulation_signal_integrity"
+  simulation_signal_integrity_id: string
+  name?: string
+  bit_rate_bps: number
+  duration_s?: number
+  allow_unrouted_traces: boolean
+}
+```
+
+### SimulationSignalIntegrityRlgc
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_integrity_rlgc.ts)
+
+Frequency-indexed total loop R/L and ground-referenced Maxwell C/G in physical conductor order.
+
+```typescript
+/** Frequency-indexed total loop R/L and ground-referenced Maxwell C/G in physical conductor order. */
+interface SimulationSignalIntegrityRlgc {
+  type: "simulation_signal_integrity_rlgc"
+  simulation_signal_integrity_rlgc_id: string
+  simulation_signal_integrity_id: string
+  conductors: { simulation_signal_id: string; source_port_id: string }[]
+  matrices: {
+    frequency_hz: number
+    r_ohm: number[][]
+    l_h: number[][]
+    c_f: number[][]
+    g_s: number[][]
+  }[]
+}
+```
+
+### SimulationSignalWaveform
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_waveform.ts)
+
+Parallel time (seconds) and voltage (volts) samples, including differential P - N.
+
+```typescript
+/** Parallel time (seconds) and voltage (volts) samples, including differential P - N. */
+interface SimulationSignalWaveform {
+  type: "simulation_signal_waveform"
+  simulation_signal_waveform_id: string
+  simulation_signal_id: string
+  /** Driver port identifies the near end; receiver port identifies the far end. */
+  source_port_id: string
+  timestamps_s: number[]
+  voltage_levels: number[]
+  /** Required for constant literal patterns or disabled drivers; omitted otherwise. Requires the referenced signal to validate. */
+  idle_voltage_v?: number
+}
 ```
 
 ### SimulationSpiceSubcircuit
