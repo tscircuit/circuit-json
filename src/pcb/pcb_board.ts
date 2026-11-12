@@ -26,6 +26,11 @@ export const pcb_board = z
     default_via_tented_on_top: z.boolean().optional(),
     default_via_tented_on_bottom: z.boolean().optional(),
     default_via_plugged: z.boolean().optional(),
+    nominal_trace_width: length
+      .optional()
+      .describe(
+        "Preferred trace width in mm for connections without an explicit width.",
+      ),
     width: length.optional(),
     height: length.optional(),
     center: point,
@@ -76,6 +81,8 @@ export interface PcbBoard extends ManufacturingDrcProperties {
   default_via_tented_on_top?: boolean
   default_via_tented_on_bottom?: boolean
   default_via_plugged?: boolean
+  /** Preferred trace width in mm for connections without an explicit width. */
+  nominal_trace_width?: Length
   width?: Length
   height?: Length
   display_offset_x?: string
