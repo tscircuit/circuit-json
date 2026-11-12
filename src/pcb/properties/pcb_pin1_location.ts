@@ -32,18 +32,8 @@ expectTypesMatch<PcbPin1Location, InferredPcbPin1Location>(true)
 export type PcbPin1LocationRotation = 0 | 90 | 180 | 270
 
 const pin1LocationRotationCycles: readonly (readonly PcbPin1Location[])[] = [
-  [
-    "leftside_top",
-    "bottomside_left",
-    "rightside_bottom",
-    "topside_right",
-  ],
-  [
-    "leftside_bottom",
-    "bottomside_right",
-    "rightside_top",
-    "topside_left",
-  ],
+  ["leftside_top", "bottomside_left", "rightside_bottom", "topside_right"],
+  ["leftside_bottom", "bottomside_right", "rightside_top", "topside_left"],
 ]
 
 /**

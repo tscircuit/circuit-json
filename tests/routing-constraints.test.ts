@@ -27,35 +27,6 @@ test("flat bus constraints preserve resolved references without changing members
   expect(source_bus.parse(input).source_trace_ids).toEqual(["data_0", "data_1"])
 })
 
-test("pair polarity and explicit shared length references survive serialization", () => {
-  const input: SourceBus = {
-    type: "source_bus",
-    source_bus_id: "clock_pair",
-    source_trace_ids: ["clock_plus", "clock_minus"],
-    target_length: {
-      reference: "longest_manhattan",
-      source_trace_ids: ["address_0", "clock_plus", "clock_minus"],
-      offset: 7.62,
-    },
-    length_tolerance: 1.27,
-    min_length: 10,
-    max_length: 30,
-    pcb_spacing_to_other_signals: 0.4,
-    target_differential_impedance: 125,
-    target_differential_impedance_min: 100,
-    target_differential_impedance_max: 150,
-    differential_pair: {
-      positive_source_trace_id: "clock_plus",
-      negative_source_trace_id: "clock_minus",
-      trace_gap: 0.12,
-      max_uncoupled_length: 0.5,
-    },
-  }
-  expect(any_circuit_element.parse(JSON.parse(JSON.stringify(input)))).toEqual(
-    input,
-  )
-})
-
 test("routing violations use a dedicated bus constraint error with structured measurements", () => {
   const error = pcb_bus_routing_constraint_error.parse({
     type: "pcb_bus_routing_constraint_error",
@@ -104,7 +75,6 @@ test("canonical constraints reject invalid units, domains and unresolved selecto
     { pcb_spacing_to_other_signals: { width_multiplier: -1 } },
     { target_impedance: NaN },
     { target_impedance_min: 0 },
-    { target_differential_impedance_max: Infinity },
     { target_impedance: { min: 50, max: 75 } },
     { target_impedance: "50±25ohm" },
   ]) {

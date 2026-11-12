@@ -388,44 +388,11 @@ interface SourceBoard {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_bus.ts)
 
-A group of resolved source traces with a maximum routed-length difference.
+A group of source traces routed together: an ordinary bus or a differential pair.
 
 ```typescript
-/** A group of resolved source traces with a maximum routed-length difference. */
-interface SourceBus {
-  type: "source_bus"
-  source_bus_id: string
-  name?: string
-  source_trace_ids: string[]
-  /** Maximum difference between the longest and shortest member, in millimeters. */
-  max_length_skew?: number
-  /** Intended single-ended characteristic impedance, in ohms. */
-  target_impedance?: number
-  /** Intended differential characteristic impedance, in ohms. */
-  target_differential_impedance?: number
-  /** Ordered polarity for a resolved point-to-point differential pair. */
-  differential_pair?: {
-    positive_source_trace_id: string
-    negative_source_trace_id: string
-    trace_gap?: number
-    max_uncoupled_length?: number
-  }
-  /** Additional traces for length comparison, without changing electrical membership. */
-  length_match_source_trace_ids?: string[]
-  min_length?: SourceBusRouteLength
-  max_length?: SourceBusRouteLength
-  target_length?: SourceBusRouteLength
-  length_tolerance?: number
-  /** Within this bus, excluding declared differential partners. */
-  pcb_trace_spacing?: SourceBusTraceSpacing
-  /** To all signals outside this bus or pair. */
-  pcb_spacing_to_other_signals?: SourceBusTraceSpacing
-  target_impedance_min?: number
-  target_impedance_max?: number
-  target_differential_impedance_min?: number
-  target_differential_impedance_max?: number
-  subcircuit_id?: string
-}
+/** A group of source traces routed together: an ordinary bus or a differential pair. */ type SourceBus =
+  OrdinarySourceBus | SourceDifferentialPairBus
 
 /** A routed length in mm, or an offset from the longest endpoint Manhattan distance.
  * Explicit references are resolved source traces; omitted references use the bus
@@ -439,6 +406,49 @@ interface SourceBus {
 
 /** Centerline separation in mm or a multiple of the larger local trace width. */ type SourceBusTraceSpacing =
   number | { width_multiplier: number }
+
+/** A bus that is not a differential pair: resolved source traces with a maximum routed-length difference. */
+interface OrdinarySourceBus {
+  type: "source_bus"
+  source_bus_id: string
+  name?: string
+  source_trace_ids: string[]
+  /** Maximum difference between the longest and shortest member, in millimeters. */
+  max_length_skew?: number
+  /** Intended single-ended characteristic impedance, in ohms. */
+  target_impedance?: number
+  /** Only set on SourceDifferentialPairBus. */
+  differential_pair?: never
+  /** Additional traces for length comparison, without changing electrical membership. */
+  length_match_source_trace_ids?: string[]
+  min_length?: SourceBusRouteLength
+  max_length?: SourceBusRouteLength
+  target_length?: SourceBusRouteLength
+  length_tolerance?: number
+  /** Spacing between traces within this bus. */
+  pcb_trace_spacing?: SourceBusTraceSpacing
+  /** Spacing to all signals outside this bus. */
+  pcb_spacing_to_other_signals?: SourceBusTraceSpacing
+  target_impedance_min?: number
+  target_impedance_max?: number
+  subcircuit_id?: string
+}
+
+/** A differential pair: two lanes of source traces whose total lengths must match. */
+interface SourceDifferentialPairBus {
+  type: "source_bus"
+  source_bus_id: string
+  name?: string
+  subcircuit_id?: string
+  /** Positive lane IDs followed by negative lane IDs. */
+  source_trace_ids: [string, ...string[]]
+  /** Maximum difference between the summed positive and negative lane lengths, in mm. */
+  max_length_skew: number
+  differential_pair: {
+    positive_source_trace_ids: [string, ...string[]]
+    negative_source_trace_ids: [string, ...string[]]
+  }
+}
 ```
 
 ### SourceComponentAvailabilityWarning
@@ -1718,12 +1728,21 @@ interface CadReferenceSurface {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_autorouting_error.ts)
 
+The autorouting has failed to route a portion of the board.
+
 ```typescript
+/** The autorouting has failed to route a portion of the board. */
 interface PcbAutoroutingErrorInterface extends BaseCircuitJsonError {
   type: "pcb_autorouting_error"
   pcb_error_id: string
   error_type: "pcb_autorouting_error"
   subcircuit_id?: string
+  /** Set when routing failed because a differential pair's lanes could not be length-matched. Lengths in mm. */
+  differential_pair_length_skew?: {
+    source_bus_id: string
+    positive_length: number
+    negative_length: number
+  }
 }
 ```
 
@@ -1835,6 +1854,11 @@ interface PcbBusLengthSkewError extends BaseCircuitJsonError {
   actual_length_skew: number
   maximum_length_skew: number
   subcircuit_id?: string
+  /** Summed lane lengths, in mm, when the bus is a differential pair. */
+  differential_pair_lengths?: {
+    positive_length: number
+    negative_length: number
+  }
 }
 ```
 
