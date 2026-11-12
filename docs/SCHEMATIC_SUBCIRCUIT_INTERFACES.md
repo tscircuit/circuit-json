@@ -25,3 +25,10 @@ Legacy groups and component ports omit these optional fields and retain their
 existing rendering. All endpoint ownership references and boundary positions
 must be consistent; as with other Circuit JSON references, cross-record
 validation is a consumer responsibility.
+
+The schema regression fixture contains actual core output for the
+[CC2340R5 reference design](https://tscircuit.com/ShiboSoftwareDev/cc2340r5-reference-design/customize?package_release_id=bff7bbb1-c0df-4b3e-8cb2-5f5c706caa87&preview_file=dist%2Findex%2Fcircuit.json#schematic),
+release `bff7bbb1-c0df-4b3e-8cb2-5f5c706caa87`. It includes the complete group's
+27 component references, the exported RESET_N terminal, and the real MCU's
+component-owned reset pin. The core companion preserves the published internal
+circuit and adds exports for its existing supply and debug nets.
