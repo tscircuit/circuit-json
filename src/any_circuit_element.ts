@@ -72,6 +72,7 @@ export const any_circuit_element = z.union([
   src.source_part_not_found_warning,
   src.source_i2c_misconfigured_error,
   src.source_component_misconfigured_error,
+  src.source_component_misconfigured_warning,
   src.source_ambiguous_port_reference,
   pcb.pcb_component,
   pcb.pcb_debug_object,
