@@ -48,9 +48,7 @@
     "type": "source_port",
     "source_port_id": "source_port_2",
     "name": "RESET_N",
-    "port_hints": [
-      "RESET_N"
-    ],
+    "port_hints": ["RESET_N"],
     "subcircuit_id": "subcircuit_source_group_0",
     "source_group_id": "source_group_0",
     "subcircuit_connectivity_map_key": "CC2340R5_connectivity_net13"
