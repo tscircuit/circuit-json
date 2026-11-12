@@ -4,7 +4,7 @@ import reference from "./assets/cc2340r5-interface.json"
 
 // Actual core output for ShiboSoftwareDev/cc2340r5-reference-design 1.4.0,
 // release bff7bbb1-c0df-4b3e-8cb2-5f5c706caa87. The core companion preserves
-// all 27 components and 16 nets and adds a five-net module interface.
+// all 27 components and 16 original nets, adding eight GPIO nets and 13 exports.
 test("CC2340R5 expanded interface preserves group ownership and terminal geometry", () => {
   const group = schematic_group.parse(reference.group)
   const sourcePort = source_port.parse(reference.sourcePort)
