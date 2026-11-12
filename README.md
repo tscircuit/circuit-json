@@ -264,6 +264,10 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationVoltageProbe](#simulationvoltageprobe)
     - [SimulationVoltageSource](#simulationvoltagesource)
   - [Drawing Elements](#drawing-elements)
+    - [DrawingPartLabel](#drawingpartlabel)
+    - [DrawingPageNote](#drawingpagenote)
+    - [DrawingExplosion](#drawingexplosion)
+    - [DrawingAssemblyStage](#drawingassemblystage)
     - [DrawingDimensionLine](#drawingdimensionline)
     - [DrawingPage](#drawingpage)
     - [DrawingPageTitleBlock](#drawingpagetitleblock)
@@ -5318,6 +5322,24 @@ interface SimulationAcVoltageSource {
 
 ## Drawing Elements
 
+### DrawingAssemblyStage
+
+```typescript
+interface DrawingAssemblyStage extends DrawingPartSelection {
+  type: "drawing_assembly_stage"
+  drawing_assembly_stage_id: string
+  name: string
+  display_name?: string
+}
+
+/** Explicit drawing membership. References form a set; repeated members are deduplicated. */
+interface DrawingPartSelection {
+  source_component_ids?: string[]
+  pcb_board_ids?: string[]
+  includes_stage_ids?: string[]
+}
+```
+
 ### DrawingDimensionLine
 
 ```typescript
@@ -5345,6 +5367,15 @@ interface DrawingDimensionLine {
 }
 ```
 
+### DrawingExplosion
+
+```typescript
+interface DrawingExplosionMove extends DrawingPartSelection {
+  /** World-space mm (+Z up), relative to assembled placement. Never cumulative. */
+  translation: { x: number; y: number; z: number }
+}
+```
+
 ### DrawingPage
 
 ```typescript
@@ -5357,6 +5388,19 @@ interface DrawingPage {
   orientation?: "landscape" | "portrait"
   width: number
   height: number
+}
+```
+
+### DrawingPageNote
+
+```typescript
+interface DrawingPageNote {
+  type: "drawing_page_note"
+  drawing_page_note_id: string
+  drawing_page_id: string
+  position: { x: number; y: number }
+  text: string
+  font_size?: number
 }
 ```
 
@@ -5379,6 +5423,19 @@ interface DrawingPageTitleBlock {
 }
 ```
 
+### DrawingPartLabel
+
+```typescript
+interface DrawingPartLabel extends DrawingPartSelection {
+  type: "drawing_part_label"
+  drawing_part_label_id: string
+  drawing_part_view_id: string
+  text: string
+  anchor: { x: number; y: number; z: number }
+  label_position: { x: number; y: number }
+}
+```
+
 ### DrawingPartView
 
 ```typescript
@@ -5389,6 +5446,10 @@ interface DrawingPartView {
   /** Resolved geometry selection for this part view; omitted selectors mean the entire assembly. */
   source_group_id?: string
   source_component_ids?: string[]
+  /** Optional drawing-only stage membership; conflicts with legacy source selectors. */
+  drawing_assembly_stage_id?: string
+  /** Optional simultaneous exploded pose; conflicts with legacy source selectors. */
+  drawing_explosion_id?: string
   name?: string
   display_name?: string
   direction: DrawingPartViewDirection

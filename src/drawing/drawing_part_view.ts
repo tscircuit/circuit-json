@@ -34,6 +34,8 @@ export const drawing_part_view = z
     drawing_page_id: z.string().min(1),
     source_group_id: z.string().min(1).optional(),
     source_component_ids: z.array(z.string().min(1)).optional(),
+    drawing_assembly_stage_id: z.string().trim().min(1).optional(),
+    drawing_explosion_id: z.string().trim().min(1).optional(),
     name: z.string().optional(),
     display_name: z.string().optional(),
     direction: drawing_part_view_direction,
@@ -44,6 +46,12 @@ export const drawing_part_view = z
     show_hidden_edges: z.boolean().optional(),
     section: drawing_section_plane.optional(),
   })
+  .refine(
+    (view) =>
+      !(view.drawing_assembly_stage_id || view.drawing_explosion_id) ||
+      (!view.source_group_id && !view.source_component_ids),
+    "Use drawing stage membership instead of mixing assembly and legacy selectors",
+  )
   .describe(
     "A configured orthographic view of selected assembly geometry. Paper coordinates are mm, origin at sheet center, +X right/+Y up. Directions and section planes use CAD world coordinates in mm with +Z up.",
   )
@@ -55,6 +63,10 @@ export interface DrawingPartView {
   /** Resolved geometry selection for this part view; omitted selectors mean the entire assembly. */
   source_group_id?: string
   source_component_ids?: string[]
+  /** Optional drawing-only stage membership; conflicts with legacy source selectors. */
+  drawing_assembly_stage_id?: string
+  /** Optional simultaneous exploded pose; conflicts with legacy source selectors. */
+  drawing_explosion_id?: string
   name?: string
   display_name?: string
   direction: DrawingPartViewDirection
