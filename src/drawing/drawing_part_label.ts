@@ -9,7 +9,8 @@ export const drawing_part_label = drawing_part_selection
   .extend({
     type: z.literal("drawing_part_label"),
     drawing_part_label_id: z.string().trim().min(1),
-    drawing_part_view_id: z.string().trim().min(1),
+    drawing_part_view_id: z.string().trim().min(1).optional(),
+    drawing_explosion_view_id: z.string().trim().min(1).optional(),
     text: z
       .string()
       .refine((s) => s.trim().length > 0, "Label text must not be blank"),
@@ -24,13 +25,21 @@ export const drawing_part_label = drawing_part_selection
     }),
   })
   .refine(has_drawing_part_selection, "Part label requires explicit membership")
+  .refine(
+    (r) =>
+      (r.drawing_part_view_id !== undefined) !==
+      (r.drawing_explosion_view_id !== undefined),
+    "Provide exactly one drawing part or explosion view reference",
+  )
   .describe(
     "A leader annotation attached to selected parts. anchor is an assembled CAD-world point in mm (+Z up), translated with its target. label_position is fixed page-centered paper mm (+X right, +Y up). Selected parts must be visible and share a displacement. Labels are authored; automatic placement and occlusion detection are not implied.",
   )
 export interface DrawingPartLabel extends DrawingPartSelection {
   type: "drawing_part_label"
   drawing_part_label_id: string
-  drawing_part_view_id: string
+  /** Exactly one view reference must be supplied. */
+  drawing_part_view_id?: string
+  drawing_explosion_view_id?: string
   text: string
   anchor: { x: number; y: number; z: number }
   label_position: { x: number; y: number }

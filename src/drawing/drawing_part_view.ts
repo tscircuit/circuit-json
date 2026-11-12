@@ -27,28 +27,29 @@ export interface DrawingSectionPlane {
   hatch_spacing?: number
 }
 
-export const drawing_part_view = z
-  .object({
-    type: z.literal("drawing_part_view"),
-    drawing_part_view_id: z.string().min(1),
-    drawing_page_id: z.string().min(1),
-    source_group_id: z.string().min(1).optional(),
-    source_component_ids: z.array(z.string().min(1)).optional(),
-    drawing_assembly_stage_id: z.string().trim().min(1).optional(),
-    drawing_explosion_id: z.string().trim().min(1).optional(),
-    name: z.string().optional(),
-    display_name: z.string().optional(),
-    direction: drawing_part_view_direction,
-    center: z.object({ x: z.number().finite(), y: z.number().finite() }),
-    width: z.number().finite().positive(),
-    height: z.number().finite().positive(),
-    scale: z.number().finite().positive().optional(),
-    show_hidden_edges: z.boolean().optional(),
-    section: drawing_section_plane.optional(),
-  })
+export const drawing_part_view_base = z.object({
+  type: z.literal("drawing_part_view"),
+  drawing_part_view_id: z.string().min(1),
+  drawing_page_id: z.string().min(1),
+  source_group_id: z.string().min(1).optional(),
+  source_component_ids: z.array(z.string().min(1)).optional(),
+  drawing_assembly_stage_id: z.string().trim().min(1).optional(),
+  drawing_explosion_id: z.never().optional(),
+  name: z.string().optional(),
+  display_name: z.string().optional(),
+  direction: drawing_part_view_direction,
+  center: z.object({ x: z.number().finite(), y: z.number().finite() }),
+  width: z.number().finite().positive(),
+  height: z.number().finite().positive(),
+  scale: z.number().finite().positive().optional(),
+  show_hidden_edges: z.boolean().optional(),
+  section: drawing_section_plane.optional(),
+})
+
+export const drawing_part_view = drawing_part_view_base
   .refine(
     (view) =>
-      !(view.drawing_assembly_stage_id || view.drawing_explosion_id) ||
+      !view.drawing_assembly_stage_id ||
       (!view.source_group_id && !view.source_component_ids),
     "Use drawing stage membership instead of mixing assembly and legacy selectors",
   )
@@ -65,8 +66,8 @@ export interface DrawingPartView {
   source_component_ids?: string[]
   /** Optional drawing-only stage membership; conflicts with legacy source selectors. */
   drawing_assembly_stage_id?: string
-  /** Optional simultaneous exploded pose; conflicts with legacy source selectors. */
-  drawing_explosion_id?: string
+  /** Exploded geometry uses drawing_explosion_view instead. */
+  drawing_explosion_id?: never
   name?: string
   display_name?: string
   direction: DrawingPartViewDirection

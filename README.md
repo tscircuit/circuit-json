@@ -264,15 +264,15 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationVoltageProbe](#simulationvoltageprobe)
     - [SimulationVoltageSource](#simulationvoltagesource)
   - [Drawing Elements](#drawing-elements)
-    - [DrawingPartLabel](#drawingpartlabel)
-    - [DrawingPageNote](#drawingpagenote)
-    - [DrawingExplosion](#drawingexplosion)
     - [DrawingAssemblyStage](#drawingassemblystage)
     - [DrawingDimensionLine](#drawingdimensionline)
+    - [DrawingExplosion](#drawingexplosion)
+    - [DrawingExplosionView](#drawingexplosionview)
     - [DrawingPage](#drawingpage)
+    - [DrawingPageNote](#drawingpagenote)
     - [DrawingPageTitleBlock](#drawingpagetitleblock)
+    - [DrawingPartLabel](#drawingpartlabel)
     - [DrawingPartView](#drawingpartview)
-
   - [System Block Elements](#system-block-elements)
     - [SystemBlockComponent](#systemblockcomponent)
     - [SystemBlockConnection](#systemblockconnection)
@@ -5350,7 +5350,9 @@ interface DrawingPartSelection {
 interface DrawingDimensionLine {
   type: "drawing_dimension_line"
   drawing_dimension_line_id: string
-  drawing_part_view_id: string
+  /** Exactly one view reference must be supplied. */
+  drawing_part_view_id?: string
+  drawing_explosion_view_id?: string
   /** Distinct endpoints of the visible dimension line, in paper mm. */
   start: { x: number; y: number }
   end: { x: number; y: number }
@@ -5373,6 +5375,28 @@ interface DrawingDimensionLine {
 interface DrawingExplosionMove extends DrawingPartSelection {
   /** World-space mm (+Z up), relative to assembled placement. Never cumulative. */
   translation: { x: number; y: number; z: number }
+}
+```
+
+### DrawingExplosionView
+
+```typescript
+interface DrawingExplosionView
+  extends Omit<
+    DrawingPartView,
+    | "type"
+    | "drawing_part_view_id"
+    | "drawing_assembly_stage_id"
+    | "drawing_explosion_id"
+    | "source_group_id"
+    | "source_component_ids"
+  > {
+  type: "drawing_explosion_view"
+  drawing_explosion_view_id: string
+  drawing_assembly_stage_id: string
+  drawing_explosion_id: string
+  source_group_id?: never
+  source_component_ids?: never
 }
 ```
 
@@ -5429,7 +5453,9 @@ interface DrawingPageTitleBlock {
 interface DrawingPartLabel extends DrawingPartSelection {
   type: "drawing_part_label"
   drawing_part_label_id: string
-  drawing_part_view_id: string
+  /** Exactly one view reference must be supplied. */
+  drawing_part_view_id?: string
+  drawing_explosion_view_id?: string
   text: string
   anchor: { x: number; y: number; z: number }
   label_position: { x: number; y: number }
@@ -5448,8 +5474,8 @@ interface DrawingPartView {
   source_component_ids?: string[]
   /** Optional drawing-only stage membership; conflicts with legacy source selectors. */
   drawing_assembly_stage_id?: string
-  /** Optional simultaneous exploded pose; conflicts with legacy source selectors. */
-  drawing_explosion_id?: string
+  /** Exploded geometry uses drawing_explosion_view instead. */
+  drawing_explosion_id?: never
   name?: string
   display_name?: string
   direction: DrawingPartViewDirection

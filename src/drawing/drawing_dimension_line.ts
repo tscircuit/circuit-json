@@ -10,7 +10,8 @@ export const drawing_dimension_line = z
   .object({
     type: z.literal("drawing_dimension_line"),
     drawing_dimension_line_id: z.string().trim().min(1),
-    drawing_part_view_id: z.string().trim().min(1),
+    drawing_part_view_id: z.string().trim().min(1).optional(),
+    drawing_explosion_view_id: z.string().trim().min(1).optional(),
     start: paper_point,
     end: paper_point,
     text: z
@@ -34,6 +35,12 @@ export const drawing_dimension_line = z
     (line) => line.start.x !== line.end.x || line.start.y !== line.end.y,
     { message: "Dimension line endpoints must be distinct", path: ["end"] },
   )
+  .refine(
+    (r) =>
+      (r.drawing_part_view_id !== undefined) !==
+      (r.drawing_explosion_view_id !== undefined),
+    "Provide exactly one drawing part or explosion view reference",
+  )
   .describe(
     "A resolved dimension annotation associated with a drawing part view. start/end and optional edge_ref_start/edge_ref_end use page-centered paper mm, +X right/+Y up. Core resolves model measurement and formats the required text before emitting this record; renderers draw the supplied line, text and optional witness attachments without resolving native geometry or deriving values from paper length. Each witness attachment is independently optional. edge_ref_name is optional exact nonblank model-feature metadata, never a geometry definition or a rendering dependency.",
   )
@@ -46,7 +53,9 @@ export const drawing_dimension_line = z
 export interface DrawingDimensionLine {
   type: "drawing_dimension_line"
   drawing_dimension_line_id: string
-  drawing_part_view_id: string
+  /** Exactly one view reference must be supplied. */
+  drawing_part_view_id?: string
+  drawing_explosion_view_id?: string
   /** Distinct endpoints of the visible dimension line, in paper mm. */
   start: { x: number; y: number }
   end: { x: number; y: number }

@@ -6,6 +6,8 @@ import {
   drawing_part_label,
   drawing_page_note,
   drawing_part_view,
+  drawing_explosion_view,
+  drawing_dimension_line,
 } from "../src"
 test("assembly drawing records round-trip through the public union and reject invalid scalar configuration", () => {
   const stage = {
@@ -25,8 +27,8 @@ test("assembly drawing records round-trip through the public union and reject in
     show_trails: true,
   }
   const view = {
-    type: "drawing_part_view" as const,
-    drawing_part_view_id: "v",
+    type: "drawing_explosion_view" as const,
+    drawing_explosion_view_id: "v",
     drawing_page_id: "p",
     drawing_assembly_stage_id: "rotor",
     drawing_explosion_id: "join",
@@ -38,7 +40,7 @@ test("assembly drawing records round-trip through the public union and reject in
   const label = {
     type: "drawing_part_label" as const,
     drawing_part_label_id: "label",
-    drawing_part_view_id: "v",
+    drawing_explosion_view_id: "v",
     source_component_ids: ["cap"],
     anchor: { x: 0, y: 0, z: 2 },
     label_position: { x: 60, y: 30 },
@@ -94,11 +96,11 @@ test("assembly drawing records round-trip through the public union and reject in
     }).success,
   ).toBe(false)
   expect(
-    drawing_part_view.safeParse({ ...view, source_component_ids: ["cap"] })
+    drawing_explosion_view.safeParse({ ...view, source_component_ids: ["cap"] })
       .success,
   ).toBe(false)
   expect(
-    drawing_part_view.safeParse({ ...view, source_group_id: "g" }).success,
+    drawing_explosion_view.safeParse({ ...view, source_group_id: "g" }).success,
   ).toBe(false)
   expect(drawing_part_label.safeParse({ ...label, text: " " }).success).toBe(
     false,
@@ -106,6 +108,42 @@ test("assembly drawing records round-trip through the public union and reject in
   expect(drawing_page_note.safeParse({ ...note, font_size: 0 }).success).toBe(
     false,
   )
+  for (const field of ["drawing_explosion_id", "drawing_assembly_stage_id"]) {
+    expect(
+      drawing_explosion_view.safeParse({ ...view, [field]: undefined }).success,
+    ).toBe(false)
+    expect(
+      drawing_explosion_view.safeParse({ ...view, [field]: " " }).success,
+    ).toBe(false)
+  }
+  expect(
+    drawing_part_view.safeParse({
+      ...view,
+      type: "drawing_part_view",
+      drawing_part_view_id: "v",
+    }).success,
+  ).toBe(false)
+  const line = {
+    type: "drawing_dimension_line" as const,
+    drawing_dimension_line_id: "d",
+    drawing_explosion_view_id: "v",
+    start: { x: 0, y: 0 },
+    end: { x: 5, y: 0 },
+    text: "5 mm",
+  }
+  expect(any_circuit_element.parse(line)).toEqual(line)
+  for (const [schema, annotation] of [
+    [drawing_part_label, label],
+    [drawing_dimension_line, line],
+  ] as const) {
+    expect(
+      schema.safeParse({ ...annotation, drawing_explosion_view_id: undefined })
+        .success,
+    ).toBe(false)
+    expect(
+      schema.safeParse({ ...annotation, drawing_part_view_id: "v" }).success,
+    ).toBe(false)
+  }
   // Record schemas deliberately leave graph/reference validation to document consumers.
   expect(
     drawing_assembly_stage.parse({ ...stage, includes_stage_ids: ["rotor"] }),

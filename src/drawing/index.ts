@@ -8,3 +8,5 @@ export * from "./drawing_assembly_stage"
 export * from "./drawing_explosion"
 export * from "./drawing_part_label"
 export * from "./drawing_page_note"
+
+export * from "./drawing_explosion_view"
