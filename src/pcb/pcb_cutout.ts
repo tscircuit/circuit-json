@@ -1,4 +1,5 @@
 import { type Point, getZodPrefixedIdWithDefault, point } from "src/common"
+import { type PointWithBulge, point_with_bulge } from "src/pcb/properties/brep"
 import { type Length, type Rotation, length, rotation } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import { z } from "zod"
@@ -73,7 +74,7 @@ expectTypesMatch<PcbCutoutCircle, InferredPcbCutoutCircle>(true)
 // Polygon Cutout
 export const pcb_cutout_polygon = pcb_cutout_base.extend({
   shape: z.literal("polygon"),
-  points: z.array(point),
+  points: z.array(point_with_bulge),
 })
 export type PcbCutoutPolygonInput = z.input<typeof pcb_cutout_polygon>
 type InferredPcbCutoutPolygon = z.infer<typeof pcb_cutout_polygon>
@@ -90,14 +91,14 @@ export interface PcbCutoutPolygon {
   pcb_board_id?: string
   pcb_panel_id?: string
   shape: "polygon"
-  points: Point[]
+  points: PointWithBulge[]
 }
 expectTypesMatch<PcbCutoutPolygon, InferredPcbCutoutPolygon>(true)
 
 // Path Cutout (for slots along a path)
 export const pcb_cutout_path = pcb_cutout_base.extend({
   shape: z.literal("path"),
-  route: z.array(point),
+  route: z.array(point_with_bulge),
   slot_width: length,
   slot_length: length.optional(),
   space_between_slots: length.optional(),
@@ -120,7 +121,7 @@ export interface PcbCutoutPath {
   pcb_board_id?: string
   pcb_panel_id?: string
   shape: "path"
-  route: Point[]
+  route: PointWithBulge[]
   slot_width: Length
   slot_length?: Length
   space_between_slots?: Length
