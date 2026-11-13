@@ -18,6 +18,7 @@ export * from "./pcb_solder_paste"
 export * from "./pcb_soldermask_opening"
 export * from "./pcb_text"
 export * from "./pcb_trace"
+export * from "./pcb_trace_preview"
 export * from "./pcb_trace_warning"
 export * from "./pcb_trace_style_warning"
 export * from "./pcb_copper_pour_isolated_warning"
@@ -104,6 +105,7 @@ import type { PcbSolderPaste } from "./pcb_solder_paste"
 import type { PcbSoldermaskOpening } from "./pcb_soldermask_opening"
 import type { PcbText } from "./pcb_text"
 import type { PcbTrace } from "./pcb_trace"
+import type { PcbTracePreview } from "./pcb_trace_preview"
 import type { PcbKeepoutOverlapWarning } from "./pcb_keepout_overlap_warning"
 import type { PcbTraceStyleWarning } from "./pcb_trace_style_warning"
 import type { PcbCopperPourIsolatedWarning } from "./pcb_copper_pour_isolated_warning"
@@ -189,6 +191,7 @@ export type PcbCircuitElement =
   | PcbSoldermaskOpening
   | PcbText
   | PcbTrace
+  | PcbTracePreview
   | PcbTraceWarning
   | PcbTraceStyleWarning
   | PcbCopperPourIsolatedWarning
