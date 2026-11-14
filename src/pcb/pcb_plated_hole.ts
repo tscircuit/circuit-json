@@ -15,6 +15,12 @@ const pcb_plated_hole_circle = z.object({
   x: distance,
   y: distance,
   layers: z.array(layer_ref),
+  pad_number: z
+    .string()
+    .optional()
+    .describe(
+      "Physical pad identifier, preserved verbatim (including an empty string). Independent of port hints and numeric source pin ordinals.",
+    ),
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
@@ -36,6 +42,8 @@ export interface PcbPlatedHoleCircle {
   x: Distance
   y: Distance
   layers: LayerRef[]
+  /** Physical pad identifier, preserved verbatim and independent of port hints. */
+  pad_number?: string
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
@@ -57,6 +65,12 @@ const pcb_plated_hole_oval = z.object({
   y: distance,
   ccw_rotation: rotation,
   layers: z.array(layer_ref),
+  pad_number: z
+    .string()
+    .optional()
+    .describe(
+      "Physical pad identifier, preserved verbatim (including an empty string). Independent of port hints and numeric source pin ordinals.",
+    ),
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
@@ -81,6 +95,8 @@ export interface PcbPlatedHoleOval {
   y: Distance
   ccw_rotation: Rotation
   layers: LayerRef[]
+  /** Physical pad identifier, preserved verbatim and independent of port hints. */
+  pad_number?: string
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
@@ -105,6 +121,12 @@ const pcb_circular_hole_with_rect_pad = z.object({
   x: distance,
   y: distance,
   layers: z.array(layer_ref),
+  pad_number: z
+    .string()
+    .optional()
+    .describe(
+      "Physical pad identifier, preserved verbatim (including an empty string). Independent of port hints and numeric source pin ordinals.",
+    ),
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
@@ -130,6 +152,12 @@ const pcb_pill_hole_with_rect_pad = z.object({
   x: distance,
   y: distance,
   layers: z.array(layer_ref),
+  pad_number: z
+    .string()
+    .optional()
+    .describe(
+      "Physical pad identifier, preserved verbatim (including an empty string). Independent of port hints and numeric source pin ordinals.",
+    ),
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
@@ -156,6 +184,12 @@ const pcb_rotated_pill_hole_with_rect_pad = z.object({
   x: distance,
   y: distance,
   layers: z.array(layer_ref),
+  pad_number: z
+    .string()
+    .optional()
+    .describe(
+      "Physical pad identifier, preserved verbatim (including an empty string). Independent of port hints and numeric source pin ordinals.",
+    ),
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
@@ -180,6 +214,8 @@ export interface PcbHolePillWithRectPad {
   x: Distance
   y: Distance
   layers: LayerRef[]
+  /** Physical pad identifier, preserved verbatim and independent of port hints. */
+  pad_number?: string
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
@@ -207,6 +243,8 @@ export interface PcbHoleRotatedPillWithRectPad {
   x: Distance
   y: Distance
   layers: LayerRef[]
+  /** Physical pad identifier, preserved verbatim and independent of port hints. */
+  pad_number?: string
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
@@ -231,6 +269,8 @@ export interface PcbHoleCircularWithRectPad {
   x: Distance
   y: Distance
   layers: LayerRef[]
+  /** Physical pad identifier, preserved verbatim and independent of port hints. */
+  pad_number?: string
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
@@ -263,6 +303,12 @@ const pcb_hole_with_polygon_pad = z.object({
   x: distance,
   y: distance,
   layers: z.array(layer_ref),
+  pad_number: z
+    .string()
+    .optional()
+    .describe(
+      "Physical pad identifier, preserved verbatim (including an empty string). Independent of port hints and numeric source pin ordinals.",
+    ),
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
@@ -291,6 +337,8 @@ export interface PcbHoleWithPolygonPad {
   x: Distance
   y: Distance
   layers: LayerRef[]
+  /** Physical pad identifier, preserved verbatim and independent of port hints. */
+  pad_number?: string
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
