@@ -18,7 +18,6 @@ export const any_circuit_element = z.union([
   system_block.system_block_connection,
   pcb.pcb_quote_estimate,
   drawings.drawing_assembly_stage,
-  drawings.drawing_explosion,
   drawings.drawing_part_label,
   drawings.drawing_page_note,
   drawings.drawing_page,

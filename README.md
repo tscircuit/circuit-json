@@ -266,7 +266,6 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
   - [Drawing Elements](#drawing-elements)
     - [DrawingAssemblyStage](#drawingassemblystage)
     - [DrawingDimensionLine](#drawingdimensionline)
-    - [DrawingExplosion](#drawingexplosion)
     - [DrawingExplosionView](#drawingexplosionview)
     - [DrawingPage](#drawingpage)
     - [DrawingPageNote](#drawingpagenote)
@@ -5369,15 +5368,6 @@ interface DrawingDimensionLine {
 }
 ```
 
-### DrawingExplosion
-
-```typescript
-interface DrawingExplosionMove extends DrawingPartSelection {
-  /** World-space mm (+Z up), relative to assembled placement. Never cumulative. */
-  translation: { x: number; y: number; z: number }
-}
-```
-
 ### DrawingExplosionView
 
 ```typescript
@@ -5387,16 +5377,27 @@ interface DrawingExplosionView
     | "type"
     | "drawing_part_view_id"
     | "drawing_assembly_stage_id"
-    | "drawing_explosion_id"
+    | "moves"
+    | "factor"
+    | "show_trails"
     | "source_group_id"
     | "source_component_ids"
   > {
   type: "drawing_explosion_view"
   drawing_explosion_view_id: string
   drawing_assembly_stage_id: string
-  drawing_explosion_id: string
+  moves: DrawingExplosionMove[]
+  /** Fraction of separation in 0..1; omitted means 1. */
+  factor?: number
+  /** Separation guides; omitted means false. */
+  show_trails?: boolean
   source_group_id?: never
   source_component_ids?: never
+}
+
+interface DrawingExplosionMove extends DrawingPartSelection {
+  /** World-space mm (+Z up), relative to assembled placement. Never cumulative. */
+  translation: { x: number; y: number; z: number }
 }
 ```
 
@@ -5485,6 +5486,10 @@ interface DrawingPartView {
   drawing_assembly_stage_id?: string
   /** Exploded geometry uses drawing_explosion_view instead. */
   drawing_explosion_id?: never
+  /** Explosion settings belong to drawing_explosion_view. */
+  moves?: never
+  factor?: never
+  show_trails?: never
   name?: string
   display_name?: string
   direction: DrawingPartViewDirection

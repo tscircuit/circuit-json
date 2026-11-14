@@ -2,7 +2,6 @@ import { expect, test } from "bun:test"
 import {
   any_circuit_element,
   drawing_assembly_stage,
-  drawing_explosion,
   drawing_part_label,
   drawing_page_note,
   drawing_part_view,
@@ -17,9 +16,7 @@ test("assembly drawing records round-trip through the public union and reject in
     source_component_ids: ["cap", "bearing"],
     includes_stage_ids: ["encoder"],
   }
-  const explosion = {
-    type: "drawing_explosion" as const,
-    drawing_explosion_id: "join",
+  const pose = {
     moves: [
       { includes_stage_ids: ["rotor"], translation: { x: 0, y: 0, z: 40 } },
     ],
@@ -31,7 +28,7 @@ test("assembly drawing records round-trip through the public union and reject in
     drawing_explosion_view_id: "v",
     drawing_page_id: "p",
     drawing_assembly_stage_id: "rotor",
-    drawing_explosion_id: "join",
+    ...pose,
     direction: "isometric" as const,
     center: { x: 0, y: 0 },
     width: 90,
@@ -54,7 +51,7 @@ test("assembly drawing records round-trip through the public union and reject in
     position: { x: 0, y: 40 },
     font_size: 3,
   }
-  for (const r of [stage, explosion, view, label, note])
+  for (const r of [stage, view, label, note])
     expect(any_circuit_element.parse(r)).toEqual(r)
   expect(
     drawing_assembly_stage.safeParse({
@@ -72,21 +69,21 @@ test("assembly drawing records round-trip through the public union and reject in
       .success,
   ).toBe(false)
   for (const factor of [-1, 1.01, NaN, Infinity])
-    expect(drawing_explosion.safeParse({ ...explosion, factor }).success).toBe(
+    expect(drawing_explosion_view.safeParse({ ...view, factor }).success).toBe(
       false,
     )
-  expect(drawing_explosion.safeParse({ ...explosion, moves: [] }).success).toBe(
+  expect(drawing_explosion_view.safeParse({ ...view, moves: [] }).success).toBe(
     false,
   )
   expect(
-    drawing_explosion.safeParse({
-      ...explosion,
+    drawing_explosion_view.safeParse({
+      ...view,
       moves: [{ translation: { x: 0, y: 0, z: 1 } }],
     }).success,
   ).toBe(false)
   expect(
-    drawing_explosion.safeParse({
-      ...explosion,
+    drawing_explosion_view.safeParse({
+      ...view,
       moves: [
         {
           includes_stage_ids: ["rotor"],
@@ -108,7 +105,7 @@ test("assembly drawing records round-trip through the public union and reject in
   expect(drawing_page_note.safeParse({ ...note, font_size: 0 }).success).toBe(
     false,
   )
-  for (const field of ["drawing_explosion_id", "drawing_assembly_stage_id"]) {
+  for (const field of ["moves", "drawing_assembly_stage_id"]) {
     expect(
       drawing_explosion_view.safeParse({ ...view, [field]: undefined }).success,
     ).toBe(false)
@@ -144,6 +141,20 @@ test("assembly drawing records round-trip through the public union and reject in
       schema.safeParse({ ...annotation, drawing_part_view_id: "v" }).success,
     ).toBe(false)
   }
+  expect(
+    any_circuit_element.safeParse({
+      type: "drawing_explosion",
+      drawing_explosion_id: "old",
+      ...pose,
+    }).success,
+  ).toBe(false)
+  expect(
+    drawing_explosion_view.safeParse({ ...view, drawing_explosion_id: "old" })
+      .success,
+  ).toBe(false)
+  expect(
+    drawing_explosion_view.parse({ ...view, factor: 0, show_trails: false }),
+  ).toMatchObject({ factor: 0, show_trails: false })
   // Record schemas deliberately leave graph/reference validation to document consumers.
   expect(
     drawing_assembly_stage.parse({ ...stage, includes_stage_ids: ["rotor"] }),

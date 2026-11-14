@@ -35,6 +35,9 @@ export const drawing_part_view_base = z.object({
   source_component_ids: z.array(z.string().min(1)).optional(),
   drawing_assembly_stage_id: z.string().trim().min(1).optional(),
   drawing_explosion_id: z.never().optional(),
+  moves: z.never().optional(),
+  factor: z.never().optional(),
+  show_trails: z.never().optional(),
   name: z.string().optional(),
   display_name: z.string().optional(),
   direction: drawing_part_view_direction,
@@ -68,6 +71,10 @@ export interface DrawingPartView {
   drawing_assembly_stage_id?: string
   /** Exploded geometry uses drawing_explosion_view instead. */
   drawing_explosion_id?: never
+  /** Explosion settings belong to drawing_explosion_view. */
+  moves?: never
+  factor?: never
+  show_trails?: never
   name?: string
   display_name?: string
   direction: DrawingPartViewDirection
