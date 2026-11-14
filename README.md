@@ -1776,7 +1776,7 @@ interface PcbBoard extends ManufacturingDrcProperties {
   default_via_tented_on_bottom?: boolean
   default_via_plugged?: boolean
   /** Preferred trace width in mm for connections without an explicit width. */
-  nominal_trace_width?: Length
+  default_nominal_trace_width?: Length
   width?: Length
   height?: Length
   display_offset_x?: string
