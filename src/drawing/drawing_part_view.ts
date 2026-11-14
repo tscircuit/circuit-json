@@ -27,25 +27,37 @@ export interface DrawingSectionPlane {
   hatch_spacing?: number
 }
 
-export const drawing_part_view = z
-  .object({
-    type: z.literal("drawing_part_view"),
-    drawing_part_view_id: z.string().min(1),
-    drawing_page_id: z.string().min(1),
-    source_group_id: z.string().min(1).optional(),
-    source_component_ids: z.array(z.string().min(1)).optional(),
-    name: z.string().optional(),
-    display_name: z.string().optional(),
-    direction: drawing_part_view_direction,
-    center: z.object({ x: z.number().finite(), y: z.number().finite() }),
-    width: z.number().finite().positive(),
-    height: z.number().finite().positive(),
-    scale: z.number().finite().positive().optional(),
-    show_hidden_edges: z.boolean().optional(),
-    section: drawing_section_plane.optional(),
-  })
+export const drawing_part_view_base = z.object({
+  type: z.literal("drawing_part_view"),
+  drawing_part_view_id: z.string().min(1),
+  drawing_page_id: z.string().min(1),
+  source_group_id: z.string().min(1).optional(),
+  source_component_ids: z.array(z.string().min(1)).optional(),
+  drawing_assembly_stage_id: z.string().trim().min(1).optional(),
+  drawing_explosion_id: z.never().optional(),
+  moves: z.never().optional(),
+  factor: z.never().optional(),
+  show_trails: z.never().optional(),
+  name: z.string().optional(),
+  display_name: z.string().optional(),
+  direction: drawing_part_view_direction,
+  center: z.object({ x: z.number().finite(), y: z.number().finite() }),
+  width: z.number().finite().positive(),
+  height: z.number().finite().positive(),
+  scale: z.number().finite().positive().optional(),
+  show_hidden_edges: z.boolean().optional(),
+  section: drawing_section_plane.optional(),
+})
+
+export const drawing_part_view = drawing_part_view_base
+  .refine(
+    (view) =>
+      !view.drawing_assembly_stage_id ||
+      (!view.source_group_id && !view.source_component_ids),
+    "Use drawing stage membership instead of mixing assembly and legacy selectors",
+  )
   .describe(
-    "A configured orthographic view of selected assembly geometry. Paper coordinates are mm, origin at sheet center, +X right/+Y up. Directions and section planes use CAD world coordinates in mm with +Z up.",
+    "A configured orthographic view of selected assembly geometry. Paper coordinates are mm, relative to the drawing page anchor, +X right/+Y up. Directions and section planes use CAD world coordinates in mm with +Z up.",
   )
 
 export interface DrawingPartView {
@@ -55,6 +67,14 @@ export interface DrawingPartView {
   /** Resolved geometry selection for this part view; omitted selectors mean the entire assembly. */
   source_group_id?: string
   source_component_ids?: string[]
+  /** Optional drawing-only stage membership; conflicts with legacy source selectors. */
+  drawing_assembly_stage_id?: string
+  /** Exploded geometry uses drawing_explosion_view instead. */
+  drawing_explosion_id?: never
+  /** Explosion settings belong to drawing_explosion_view. */
+  moves?: never
+  factor?: never
+  show_trails?: never
   name?: string
   display_name?: string
   direction: DrawingPartViewDirection

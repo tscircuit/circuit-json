@@ -37,7 +37,7 @@ const dimensionLine = {
 }
 ```
 
-All four point fields use absolute **page-centered paper mm**, +X right and +Y
+All four point fields use absolute **page-anchor-relative paper mm**, +X right and +Y
 up. They are not local to the part view, model coordinates, or raster pixels.
 Do not apply the part view's center or model placement a second time. `start` and
 `end` are required finite numeric points and must be distinct. Their authored
@@ -80,7 +80,7 @@ view's referenced page. Record validation does not constrain annotations to the
 view's viewport or resolve optional metadata. Core's TSX processing and model
 measurement remain upstream of this resolved drawing format.
 
-CAD coordinates use mm, +Z up. Paper origin is page center, +X right/+Y up.
+CAD coordinates use mm, +Z up. Paper coordinates use `drawing_page.anchor_alignment` (default: `center`), +X right/+Y up. See [page anchors and view-relative annotations](./drawing-assemblies.md#page-anchor-alignment).
 Directions use snake_case: x_positive/x_negative/y_positive/y_negative/
 z_positive/z_negative/isometric. The named axis side is where the camera sits,
 looking toward the selected geometry's center. X/Y views use +Z paper up; Z views
