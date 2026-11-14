@@ -264,11 +264,14 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationVoltageProbe](#simulationvoltageprobe)
     - [SimulationVoltageSource](#simulationvoltagesource)
   - [Drawing Elements](#drawing-elements)
+    - [DrawingAssemblyStage](#drawingassemblystage)
     - [DrawingDimensionLine](#drawingdimensionline)
+    - [DrawingExplosionView](#drawingexplosionview)
     - [DrawingPage](#drawingpage)
+    - [DrawingPageNote](#drawingpagenote)
     - [DrawingPageTitleBlock](#drawingpagetitleblock)
+    - [DrawingPartLabel](#drawingpartlabel)
     - [DrawingPartView](#drawingpartview)
-
   - [System Block Elements](#system-block-elements)
     - [SystemBlockComponent](#systemblockcomponent)
     - [SystemBlockConnection](#systemblockconnection)
@@ -5330,17 +5333,37 @@ interface SimulationAcVoltageSource {
 
 ## Drawing Elements
 
+### DrawingAssemblyStage
+
+```typescript
+interface DrawingAssemblyStage extends DrawingPartSelection {
+  type: "drawing_assembly_stage"
+  drawing_assembly_stage_id: string
+  name: string
+  display_name?: string
+}
+
+/** Explicit drawing membership. References form a set; repeated members are deduplicated. */
+interface DrawingPartSelection {
+  source_component_ids?: string[]
+  pcb_board_ids?: string[]
+  includes_stage_ids?: string[]
+}
+```
+
 ### DrawingDimensionLine
 
 ```typescript
-/** Resolved drawing strokes in page-centered paper mm, +X right/+Y up.
+/** Resolved drawing strokes in page-anchor-relative paper mm, +X right/+Y up.
  * Core computes the model measurement, projection, placement and formatted text.
  * A renderer draws these supplied coordinates without resolving model geometry.
  * The preformatted text is preserved exactly and need not equal paper length. */
 interface DrawingDimensionLine {
   type: "drawing_dimension_line"
   drawing_dimension_line_id: string
-  drawing_part_view_id: string
+  /** Exactly one view reference must be supplied. */
+  drawing_part_view_id?: string
+  drawing_explosion_view_id?: string
   /** Distinct endpoints of the visible dimension line, in paper mm. */
   start: { x: number; y: number }
   end: { x: number; y: number }
@@ -5357,6 +5380,39 @@ interface DrawingDimensionLine {
 }
 ```
 
+### DrawingExplosionView
+
+```typescript
+interface DrawingExplosionView
+  extends Omit<
+    DrawingPartView,
+    | "type"
+    | "drawing_part_view_id"
+    | "drawing_assembly_stage_id"
+    | "moves"
+    | "factor"
+    | "show_trails"
+    | "source_group_id"
+    | "source_component_ids"
+  > {
+  type: "drawing_explosion_view"
+  drawing_explosion_view_id: string
+  drawing_assembly_stage_id: string
+  moves: DrawingExplosionMove[]
+  /** Fraction of separation in 0..1; omitted means 1. */
+  factor?: number
+  /** Separation guides; omitted means false. */
+  show_trails?: boolean
+  source_group_id?: never
+  source_component_ids?: never
+}
+
+interface DrawingExplosionMove extends DrawingPartSelection {
+  /** World-space mm (+Z up), relative to assembled placement. Never cumulative. */
+  translation: { x: number; y: number; z: number }
+}
+```
+
 ### DrawingPage
 
 ```typescript
@@ -5369,6 +5425,25 @@ interface DrawingPage {
   orientation?: "landscape" | "portrait"
   width: number
   height: number
+  /** Sheet anchor used as (0, 0) for drawing coordinates; defaults to center. Axes remain +X right and +Y up. */
+  anchor_alignment?: NinePointAnchor
+}
+```
+
+### DrawingPageNote
+
+```typescript
+interface DrawingPageNote {
+  type: "drawing_page_note"
+  drawing_page_note_id: string
+  drawing_page_id: string
+  position?: { x?: number; y?: number }
+  x_offset_from_view_center?: number
+  y_offset_from_view_center?: number
+  drawing_part_view_id?: string
+  drawing_explosion_view_id?: string
+  text: string
+  font_size?: number
 }
 ```
 
@@ -5391,6 +5466,24 @@ interface DrawingPageTitleBlock {
 }
 ```
 
+### DrawingPartLabel
+
+```typescript
+interface DrawingPartLabel extends DrawingPartSelection {
+  type: "drawing_part_label"
+  drawing_part_label_id: string
+  /** Exactly one view reference must be supplied. */
+  drawing_part_view_id?: string
+  drawing_explosion_view_id?: string
+  text: string
+  anchor: { x: number; y: number; z: number }
+  /** Text baseline relative to the page anchor; choose exactly one coordinate or view offset per axis. */
+  label_position?: { x?: number; y?: number }
+  x_offset_from_view_center?: number
+  y_offset_from_view_center?: number
+}
+```
+
 ### DrawingPartView
 
 ```typescript
@@ -5401,6 +5494,14 @@ interface DrawingPartView {
   /** Resolved geometry selection for this part view; omitted selectors mean the entire assembly. */
   source_group_id?: string
   source_component_ids?: string[]
+  /** Optional drawing-only stage membership; conflicts with legacy source selectors. */
+  drawing_assembly_stage_id?: string
+  /** Exploded geometry uses drawing_explosion_view instead. */
+  drawing_explosion_id?: never
+  /** Explosion settings belong to drawing_explosion_view. */
+  moves?: never
+  factor?: never
+  show_trails?: never
   name?: string
   display_name?: string
   direction: DrawingPartViewDirection
