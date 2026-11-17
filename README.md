@@ -244,6 +244,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationDcSweepCurrentGraph](#simulationdcsweepcurrentgraph)
     - [SimulationDcSweepVoltageGraph](#simulationdcsweepvoltagegraph)
     - [SimulationExperiment](#simulationexperiment)
+    - [SimulationEyeDiagram](#simulationeyediagram)
     - [SimulationOpAmp](#simulationopamp)
     - [SimulationOscilloscopeTrace](#simulationoscilloscopetrace)
     - [SimulationParameterSweep](#simulationparametersweep)
@@ -4826,7 +4827,6 @@ interface SimulationExperiment {
   time_per_step?: number // ms
   start_time_ms?: number // ms
   end_time_ms?: number // ms
-  pcb_spice_channel?: PcbSpiceChannel
   spice_options?: SpiceSimulationOptions
   dc_sweep_voltage_source_id?: string
   dc_sweep_current_source_id?: string
@@ -4847,48 +4847,27 @@ interface SpiceSimulationOptions {
   abstol?: number | string
   vntol?: number | string
 }
+```
 
-interface PcbSpiceChannel {
-  reduction: "routed-copper" | "straightened-stages"
-  sections: number
-  lanes: Array<{
-    name: string
-    driver_source_port_id: string
-    receiver_source_port_id: string
-  }>
-  reference_source_port_id: string
-  passive_source_component_ids?: string[]
-  extraction: {
-    minimum_frequency_hz: number
-    maximum_frequency_hz: number
-    model_frequency_hz: number
-    filaments: number
-    refinement_filaments: number
-    convergence_tolerance: number
-    capacitance_tolerance: number
-    reciprocity_tolerance: number
-    dc_resistance_tolerance: number
-    max_panel_length_mm: number
-    ground_mesh_size_mm?: number
-  }
-  relative_permittivity?: number
-  via_plating_thickness_mm?: number
-  via_equivalent_width_mm?: number
-  omit_through_via_stubs?: boolean
-  straightened_stage_profiles?: Record<
-    string,
-    {
-      spacing_mm: number
-      relative_permittivity: number
-      return: {
-        width_mm: number
-        thickness_mm: number
-        length_factor: number
-        center_y_mm: number
-        center_z_mm: number
-      }
-    }
-  >
+### SimulationEyeDiagram
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_eye_diagram.ts)
+
+An eye measurement of driven channels in a transient channel simulation.
+
+```typescript
+/** An eye measurement of driven channels in a transient channel simulation. */
+interface SimulationEyeDiagram {
+  type: "simulation_eye_diagram"
+  simulation_eye_diagram_id: string
+  name: string
+  simulation_pcb_transient_channel_simulation_id: string
+  /** Omitted: every driven channel. Constant patterns and disabled drivers are skipped. */
+  simulation_pcb_driver_receiver_channel_ids?: string[]
+  /** Omitted: skip startup settling. */
+  start_time_ms?: number
+  /** Omitted: end of simulation. */
+  end_time_ms?: number
 }
 ```
 
