@@ -12,7 +12,7 @@ export const source_net = z.object({
   is_analog_signal: z.boolean().optional(),
   is_positive_voltage_source: z.boolean().optional(),
   trace_width: z.number().optional(),
-  pcb_min_trace_clearance: z.number().finite().nonnegative().optional(),
+  min_trace_clearance: z.number().finite().nonnegative().optional(),
   subcircuit_id: z.string().optional(),
   subcircuit_connectivity_map_key: z.string().optional(),
 })
@@ -36,7 +36,7 @@ export interface SourceNet {
    * trace, pad, or via copper on a shared layer. Use the largest applicable
    * existing minimum or requirement from either net.
    */
-  pcb_min_trace_clearance?: number
+  min_trace_clearance?: number
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
 }

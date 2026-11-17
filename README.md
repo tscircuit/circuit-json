@@ -756,7 +756,7 @@ interface SourceNet {
    * trace, pad, or via copper on a shared layer. Use the largest applicable
    * existing minimum or requirement from either net. */
 
-  pcb_min_trace_clearance?: number
+  min_trace_clearance?: number
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
 }

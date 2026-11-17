@@ -30,16 +30,16 @@ test("source_net preserves optional PCB trace clearance in millimeters", () => {
     member_source_group_ids: [],
   })
 
-  expect(net.pcb_min_trace_clearance).toBeUndefined()
+  expect(net.min_trace_clearance).toBeUndefined()
 
   const withClearance = source_net.parse({
     ...net,
-    pcb_min_trace_clearance: 0.254,
+    min_trace_clearance: 0.254,
   })
   const reloaded = source_net.parse(JSON.parse(JSON.stringify(withClearance)))
-  expect(reloaded.pcb_min_trace_clearance).toBe(0.254)
+  expect(reloaded.min_trace_clearance).toBe(0.254)
 
-  const clearance = source_net.shape.pcb_min_trace_clearance
+  const clearance = source_net.shape.min_trace_clearance
   expect(clearance.parse(0)).toBe(0)
   for (const invalid of [-0.1, Infinity, NaN, "0.254mm", null]) {
     expect(clearance.safeParse(invalid).success).toBe(false)
