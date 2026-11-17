@@ -41,6 +41,8 @@ export interface SimulationExperiment {
   start_time_ms?: number // ms
   end_time_ms?: number // ms
   spice_options?: SpiceSimulationOptions
+  /** Calculate a DC operating point before a transient run. Omitted keeps UIC behavior. */
+  calculate_initial_operating_point?: boolean
   dc_sweep_voltage_source_id?: string
   dc_sweep_current_source_id?: string
   dc_sweep_start?: number
@@ -68,6 +70,12 @@ export const simulation_experiment = z
     start_time_ms: ms.optional(),
     end_time_ms: ms.optional(),
     spice_options: spice_simulation_options.optional(),
+    calculate_initial_operating_point: z
+      .boolean()
+      .optional()
+      .describe(
+        "Calculate a DC operating point before a transient run; omitted or false preserves UIC startup",
+      ),
     dc_sweep_voltage_source_id: z.string().optional(),
     dc_sweep_current_source_id: z.string().optional(),
     dc_sweep_start: z.number().optional(),

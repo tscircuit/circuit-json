@@ -4833,6 +4833,8 @@ interface SimulationExperiment {
   start_time_ms?: number // ms
   end_time_ms?: number // ms
   spice_options?: SpiceSimulationOptions
+  /** Calculate a DC operating point before a transient run. Omitted keeps UIC behavior. */
+  calculate_initial_operating_point?: boolean
   dc_sweep_voltage_source_id?: string
   dc_sweep_current_source_id?: string
   dc_sweep_start?: number
