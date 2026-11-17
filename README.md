@@ -248,13 +248,17 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationOscilloscopeTrace](#simulationoscilloscopetrace)
     - [SimulationParameterSweep](#simulationparametersweep)
     - [SimulationParameterSweepCoordinate](#simulationparametersweepcoordinate)
+    - [SimulationPcbDriverReceiverChannel](#simulationpcbdriverreceiverchannel)
     - [SimulationPcbReturnCurrentField](#simulationpcbreturncurrentfield)
     - [SimulationPcbReturnCurrentHeatmap](#simulationpcbreturncurrentheatmap)
     - [SimulationPcbReturnCurrentMarker](#simulationpcbreturncurrentmarker)
     - [SimulationPcbReturnCurrentResult](#simulationpcbreturncurrentresult)
+    - [SimulationPcbTransientChannelResult](#simulationpcbtransientchannelresult)
+    - [SimulationPcbTransientChannelSimulation](#simulationpcbtransientchannelsimulation)
     - [SimulationReturnCurrentContact](#simulationreturncurrentcontact)
     - [SimulationReturnCurrentExcitation](#simulationreturncurrentexcitation)
     - [SimulationReturnCurrentGridJson](#simulationreturncurrentgridjson)
+    - [SimulationSignalWaveformResult](#simulationsignalwaveformresult)
     - [SimulationSpiceSubcircuit](#simulationspicesubcircuit)
     - [SimulationSwitch](#simulationswitch)
     - [SimulationTerminalPort](#simulationterminalport)
@@ -4987,6 +4991,40 @@ interface SimulationParameterSweepCoordinate {
 }
 ```
 
+### SimulationPcbDriverReceiverChannel
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_pcb_driver_receiver_channel.ts)
+
+Resolved simulation.pcbdriverreceiverchannel endpoints and traffic for one transient simulation.
+
+```typescript
+/** Resolved simulation.pcbdriverreceiverchannel endpoints and traffic for one transient simulation. */
+interface SimulationPcbDriverReceiverChannel {
+  type: "simulation_pcb_driver_receiver_channel"
+  simulation_pcb_driver_receiver_channel_id: string
+  simulation_pcb_transient_channel_simulation_id: string
+  name: string
+  driver: SignalEndpoint
+  receivers: SignalEndpoint[]
+  bit_rate_bps: number
+  /** Open pattern string, as declared by simulation.pcbdriverreceiverchannel. */
+  pattern: string
+  /** Optional PRBS seed. Core resolves omitted seeds for the simulation. */
+  seed?: number
+  offset_ms: number
+  driver_disabled?: boolean
+}
+
+type SignalEndpoint =
+  | { source_port_id: string; ibis_model_name?: string }
+  | {
+      p_source_port_id: string
+      n_source_port_id: string
+      p_ibis_model_name?: string
+      n_ibis_model_name?: string
+    }
+```
+
 ### SimulationPcbReturnCurrentField
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_pcb_return_current_field.ts)
@@ -5083,6 +5121,55 @@ interface SimulationPcbReturnCurrentResult {
 }
 ```
 
+### SimulationPcbTransientChannelResult
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_pcb_transient_channel_result.ts)
+
+Results of a simulation.pcbtransientchannelsimulation: the RLGC (resistance, inductance, conductance, capacitance) transmission line parameters the solver extracted for the coupled traces. RLGC is the standard telegrapher's-equation line model (Pozar, Microwave Engineering, ch. 2): R is copper loss, L is inductance, G is dielectric leakage, C is capacitance. Impedance ≈ √(L/C) and delay ≈ √(LC) for low-loss lines; off-diagonal matrix terms describe crosstalk between traces. Values are totals for the whole section, not per-metre values.
+
+```typescript
+/** Results of a simulation.pcbtransientchannelsimulation: the RLGC (resistance, inductance, conductance, capacitance) transmission line parameters the solver extracted for the coupled traces. RLGC is the standard telegrapher's-equation line model (Pozar, Microwave Engineering, ch. 2): R is copper loss, L is inductance, G is dielectric leakage, C is capacitance. Impedance ≈ √(L/C) and delay ≈ √(LC) for low-loss lines; off-diagonal matrix terms describe crosstalk between traces. Values are totals for the whole section, not per-metre values. */
+interface SimulationPcbTransientChannelResult {
+  type: "simulation_pcb_transient_channel_result"
+  simulation_pcb_transient_channel_result_id: string
+  simulation_pcb_transient_channel_simulation_id: string
+  /** Physical conductor order for every matrix row and column. */
+  conductors: {
+    simulation_pcb_driver_receiver_channel_id: string
+    source_port_id: string
+  }[]
+  matrices: {
+    frequency_hz: number
+    /** Total loop resistance, including the return path, in ohms. */
+    resistance_ohms: number[][]
+    /** Total loop inductance, including the return path, in henries. */
+    inductance_henries: number[][]
+    /** Ground-referenced Maxwell capacitance totals in farads. */
+    capacitance_farads: number[][]
+    /** Ground-referenced dielectric leakage conductance totals in siemens. */
+    conductance_siemens: number[][]
+  }[]
+}
+```
+
+### SimulationPcbTransientChannelSimulation
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_pcb_transient_channel_simulation.ts)
+
+One simulation.pcbtransientchannelsimulation run. Its channels, results and eye diagrams point back to it by id.
+
+```typescript
+/** One simulation.pcbtransientchannelsimulation run. Its channels, results and eye diagrams point back to it by id. */
+interface SimulationPcbTransientChannelSimulation {
+  type: "simulation_pcb_transient_channel_simulation"
+  simulation_pcb_transient_channel_simulation_id: string
+  name?: string
+  bit_rate_bps: number
+  duration_ms?: number
+  allow_unrouted_traces: boolean
+}
+```
+
 ### SimulationReturnCurrentContact
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_return_current_contact.ts)
@@ -5147,6 +5234,27 @@ type SimulationReturnCurrentGridJson =
       sheet_current_y_real: (number | null)[]
       sheet_current_y_imag: (number | null)[]
     }
+```
+
+### SimulationSignalWaveformResult
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_waveform_result.ts)
+
+Parallel time (milliseconds) and voltage (volts) samples, including differential P - N.
+
+```typescript
+/** Parallel time (milliseconds) and voltage (volts) samples, including differential P - N. */
+interface SimulationSignalWaveformResult {
+  type: "simulation_signal_waveform_result"
+  simulation_signal_waveform_result_id: string
+  simulation_pcb_driver_receiver_channel_id: string
+  /** Driver port identifies the near end; receiver port identifies the far end. */
+  source_port_id: string
+  timestamps_ms: number[]
+  voltage_levels: number[]
+  /** Required for constant literal patterns or disabled drivers; omitted otherwise. Requires the referenced signal to validate. */
+  idle_voltage_v?: number
+}
 ```
 
 ### SimulationSpiceSubcircuit
