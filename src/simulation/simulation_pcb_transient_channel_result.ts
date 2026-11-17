@@ -6,7 +6,7 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 export interface SimulationPcbTransientChannelResult {
   type: "simulation_pcb_transient_channel_result"
   simulation_pcb_transient_channel_result_id: string
-  simulation_signal_integrity_id: string
+  simulation_pcb_transient_channel_simulation_id: string
   /** Physical conductor order for every matrix row and column. */
   conductors: {
     simulation_pcb_driver_receiver_channel_id: string
@@ -33,7 +33,7 @@ export const simulation_pcb_transient_channel_result = z
     simulation_pcb_transient_channel_result_id: getZodPrefixedIdWithDefault(
       "simulation_pcb_transient_channel_result",
     ),
-    simulation_signal_integrity_id: z.string().min(1),
+    simulation_pcb_transient_channel_simulation_id: z.string().min(1),
     conductors: z
       .array(
         z

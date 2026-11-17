@@ -42,7 +42,7 @@ export const signal_endpoint = z
 export interface SimulationPcbDriverReceiverChannel {
   type: "simulation_pcb_driver_receiver_channel"
   simulation_pcb_driver_receiver_channel_id: string
-  simulation_signal_integrity_id: string
+  simulation_pcb_transient_channel_simulation_id: string
   name: string
   driver: SignalEndpoint
   receivers: SignalEndpoint[]
@@ -61,7 +61,7 @@ export const simulation_pcb_driver_receiver_channel = z
     simulation_pcb_driver_receiver_channel_id: getZodPrefixedIdWithDefault(
       "simulation_pcb_driver_receiver_channel",
     ),
-    simulation_signal_integrity_id: z.string().min(1),
+    simulation_pcb_transient_channel_simulation_id: z.string().min(1),
     name: z.string().min(1),
     driver: signal_endpoint,
     receivers: z.array(signal_endpoint).min(1),

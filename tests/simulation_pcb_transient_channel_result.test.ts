@@ -18,7 +18,7 @@ const entry = {
 }
 const result = {
   type: "simulation_pcb_transient_channel_result",
-  simulation_signal_integrity_id: "run_1",
+  simulation_pcb_transient_channel_simulation_id: "run_1",
   conductors: [conductor],
   matrices: [entry],
 } satisfies SimulationPcbTransientChannelResultInput

@@ -254,10 +254,10 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationPcbReturnCurrentMarker](#simulationpcbreturncurrentmarker)
     - [SimulationPcbReturnCurrentResult](#simulationpcbreturncurrentresult)
     - [SimulationPcbTransientChannelResult](#simulationpcbtransientchannelresult)
+    - [SimulationPcbTransientChannelSimulation](#simulationpcbtransientchannelsimulation)
     - [SimulationReturnCurrentContact](#simulationreturncurrentcontact)
     - [SimulationReturnCurrentExcitation](#simulationreturncurrentexcitation)
     - [SimulationReturnCurrentGridJson](#simulationreturncurrentgridjson)
-    - [SimulationSignalIntegrity](#simulationsignalintegrity)
     - [SimulationSignalWaveform](#simulationsignalwaveform)
     - [SimulationSpiceSubcircuit](#simulationspicesubcircuit)
     - [SimulationSwitch](#simulationswitch)
@@ -4985,7 +4985,7 @@ Resolved simulation.pcbdriverreceiverchannel endpoints and traffic for one trans
 interface SimulationPcbDriverReceiverChannel {
   type: "simulation_pcb_driver_receiver_channel"
   simulation_pcb_driver_receiver_channel_id: string
-  simulation_signal_integrity_id: string
+  simulation_pcb_transient_channel_simulation_id: string
   name: string
   driver: SignalEndpoint
   receivers: SignalEndpoint[]
@@ -5115,7 +5115,7 @@ Results of a simulation.pcbtransientchannelsimulation: the RLGC (resistance, ind
 interface SimulationPcbTransientChannelResult {
   type: "simulation_pcb_transient_channel_result"
   simulation_pcb_transient_channel_result_id: string
-  simulation_signal_integrity_id: string
+  simulation_pcb_transient_channel_simulation_id: string
   /** Physical conductor order for every matrix row and column. */
   conductors: {
     simulation_pcb_driver_receiver_channel_id: string
@@ -5132,6 +5132,24 @@ interface SimulationPcbTransientChannelResult {
     /** Ground-referenced dielectric leakage conductance totals in siemens. */
     conductance_siemens: number[][]
   }[]
+}
+```
+
+### SimulationPcbTransientChannelSimulation
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_pcb_transient_channel_simulation.ts)
+
+One simulation.pcbtransientchannelsimulation run. Its channels, waveforms, results and eye diagrams point back to it by id.
+
+```typescript
+/** One simulation.pcbtransientchannelsimulation run. Its channels, waveforms, results and eye diagrams point back to it by id. */
+interface SimulationPcbTransientChannelSimulation {
+  type: "simulation_pcb_transient_channel_simulation"
+  simulation_pcb_transient_channel_simulation_id: string
+  name?: string
+  bit_rate_bps: number
+  duration_s?: number
+  allow_unrouted_traces: boolean
 }
 ```
 
@@ -5199,24 +5217,6 @@ type SimulationReturnCurrentGridJson =
       sheet_current_y_real: (number | null)[]
       sheet_current_y_imag: (number | null)[]
     }
-```
-
-### SimulationSignalIntegrity
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_integrity.ts)
-
-One independent signal integrity test over the board's coupled copper.
-
-```typescript
-/** One independent signal integrity test over the board's coupled copper. */
-interface SimulationSignalIntegrity {
-  type: "simulation_signal_integrity"
-  simulation_signal_integrity_id: string
-  name?: string
-  bit_rate_bps: number
-  duration_s?: number
-  allow_unrouted_traces: boolean
-}
 ```
 
 ### SimulationSignalWaveform

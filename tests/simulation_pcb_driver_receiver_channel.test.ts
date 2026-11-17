@@ -7,7 +7,7 @@ import {
 
 const channel = {
   type: "simulation_pcb_driver_receiver_channel",
-  simulation_signal_integrity_id: "run_1",
+  simulation_pcb_transient_channel_simulation_id: "run_1",
   name: "DATA",
   driver: { source_port_id: "tx", ibis_model_name: "OUT" },
   receivers: [{ source_port_id: "rx" }, { source_port_id: "rx2" }],
@@ -39,7 +39,7 @@ test("simulation_pcb_driver_receiver_channel", () => {
     expect(parses(change)).toBe(true)
 
   for (const change of [
-    { simulation_signal_integrity_id: "" },
+    { simulation_pcb_transient_channel_simulation_id: "" },
     { driver: { p_source_port_id: "same", n_source_port_id: "same" } },
     { receivers: [] },
     { receivers: [{ p_source_port_id: "rx_p", n_source_port_id: "rx_n" }] },
