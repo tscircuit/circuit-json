@@ -258,7 +258,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationReturnCurrentContact](#simulationreturncurrentcontact)
     - [SimulationReturnCurrentExcitation](#simulationreturncurrentexcitation)
     - [SimulationReturnCurrentGridJson](#simulationreturncurrentgridjson)
-    - [SimulationSignalWaveform](#simulationsignalwaveform)
+    - [SimulationSignalWaveformResult](#simulationsignalwaveformresult)
     - [SimulationSpiceSubcircuit](#simulationspicesubcircuit)
     - [SimulationSwitch](#simulationswitch)
     - [SimulationTerminalPort](#simulationterminalport)
@@ -5139,10 +5139,10 @@ interface SimulationPcbTransientChannelResult {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_pcb_transient_channel_simulation.ts)
 
-One simulation.pcbtransientchannelsimulation run. Its channels, waveforms, results and eye diagrams point back to it by id.
+One simulation.pcbtransientchannelsimulation run. Its channels, results and eye diagrams point back to it by id.
 
 ```typescript
-/** One simulation.pcbtransientchannelsimulation run. Its channels, waveforms, results and eye diagrams point back to it by id. */
+/** One simulation.pcbtransientchannelsimulation run. Its channels, results and eye diagrams point back to it by id. */
 interface SimulationPcbTransientChannelSimulation {
   type: "simulation_pcb_transient_channel_simulation"
   simulation_pcb_transient_channel_simulation_id: string
@@ -5219,17 +5219,17 @@ type SimulationReturnCurrentGridJson =
     }
 ```
 
-### SimulationSignalWaveform
+### SimulationSignalWaveformResult
 
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_waveform.ts)
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_waveform_result.ts)
 
 Parallel time (seconds) and voltage (volts) samples, including differential P - N.
 
 ```typescript
 /** Parallel time (seconds) and voltage (volts) samples, including differential P - N. */
-interface SimulationSignalWaveform {
-  type: "simulation_signal_waveform"
-  simulation_signal_waveform_id: string
+interface SimulationSignalWaveformResult {
+  type: "simulation_signal_waveform_result"
+  simulation_signal_waveform_result_id: string
   simulation_pcb_driver_receiver_channel_id: string
   /** Driver port identifies the near end; receiver port identifies the far end. */
   source_port_id: string

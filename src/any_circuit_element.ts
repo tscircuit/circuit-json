@@ -203,7 +203,7 @@ export const any_circuit_element = z.union([
   sim.simulation_eye_diagram,
   sim.simulation_pcb_transient_channel_simulation,
   sim.simulation_pcb_driver_receiver_channel,
-  sim.simulation_signal_waveform,
+  sim.simulation_signal_waveform_result,
   sim.simulation_pcb_transient_channel_result,
   sim.simulation_return_current_excitation,
   sim.simulation_pcb_return_current_result,

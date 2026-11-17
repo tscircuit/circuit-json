@@ -2,7 +2,7 @@ import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-/** One simulation.pcbtransientchannelsimulation run. Its channels, waveforms, results and eye diagrams point back to it by id. */
+/** One simulation.pcbtransientchannelsimulation run. Its channels, results and eye diagrams point back to it by id. */
 export interface SimulationPcbTransientChannelSimulation {
   type: "simulation_pcb_transient_channel_simulation"
   simulation_pcb_transient_channel_simulation_id: string

@@ -3,9 +3,9 @@ import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 /** Parallel time (seconds) and voltage (volts) samples, including differential P - N. */
-export interface SimulationSignalWaveform {
-  type: "simulation_signal_waveform"
-  simulation_signal_waveform_id: string
+export interface SimulationSignalWaveformResult {
+  type: "simulation_signal_waveform_result"
+  simulation_signal_waveform_result_id: string
   simulation_pcb_driver_receiver_channel_id: string
   /** Driver port identifies the near end; receiver port identifies the far end. */
   source_port_id: string
@@ -44,11 +44,11 @@ function validateSamples(
   }
 }
 
-export const simulation_signal_waveform = samples
+export const simulation_signal_waveform_result = samples
   .extend({
-    type: z.literal("simulation_signal_waveform"),
-    simulation_signal_waveform_id: getZodPrefixedIdWithDefault(
-      "simulation_signal_waveform",
+    type: z.literal("simulation_signal_waveform_result"),
+    simulation_signal_waveform_result_id: getZodPrefixedIdWithDefault(
+      "simulation_signal_waveform_result",
     ),
     simulation_pcb_driver_receiver_channel_id: z.string().min(1),
     idle_voltage_v: z.number().finite().optional(),
@@ -63,10 +63,10 @@ export const simulation_signal_waveform = samples
     "Stores near-end or far-end signal voltage samples in seconds and volts",
   )
 
-export type SimulationSignalWaveformInput = z.input<
-  typeof simulation_signal_waveform
+export type SimulationSignalWaveformResultInput = z.input<
+  typeof simulation_signal_waveform_result
 >
 expectTypesMatch<
-  SimulationSignalWaveform,
-  z.infer<typeof simulation_signal_waveform>
+  SimulationSignalWaveformResult,
+  z.infer<typeof simulation_signal_waveform_result>
 >(true)
