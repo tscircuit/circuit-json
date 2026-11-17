@@ -1,6 +1,7 @@
 import { z } from "zod"
 import * as cad from "./cad"
 import * as drawings from "./drawing"
+import * as manufacturing from "./manufacturing"
 import * as pcb from "./pcb"
 import * as sch from "./schematic"
 import * as sim from "./simulation"
@@ -198,6 +199,7 @@ export const any_circuit_element = z.union([
   cad.cad_collision_error,
   cad.cad_explosion_collision_error,
   cad.cad_explosion_collision_check_warning,
+  manufacturing.manufacturing_laser_engraving_text,
   sim.simulation_voltage_source,
   sim.simulation_current_source,
   sim.simulation_experiment,
