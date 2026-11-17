@@ -8,7 +8,7 @@ import {
 const eye = {
   type: "simulation_eye_diagram",
   name: "RX_EYES",
-  simulation_signal_integrity_id: "simulation_1",
+  simulation_pcb_transient_channel_simulation_id: "simulation_1",
 } satisfies SimulationEyeDiagramInput
 
 const parses = (change: object) =>
@@ -31,7 +31,7 @@ test("simulation_eye_diagram", () => {
 
   for (const change of [
     { name: " " },
-    { simulation_signal_integrity_id: "" },
+    { simulation_pcb_transient_channel_simulation_id: "" },
     { simulation_pcb_driver_receiver_channel_ids: [] },
     { simulation_pcb_driver_receiver_channel_ids: [""] },
     { start_time: -1 },

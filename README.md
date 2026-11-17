@@ -4844,7 +4844,7 @@ interface SimulationEyeDiagram {
   type: "simulation_eye_diagram"
   simulation_eye_diagram_id: string
   name: string
-  simulation_signal_integrity_id: string
+  simulation_pcb_transient_channel_simulation_id: string
   /** Omitted: every driven channel. Constant patterns and disabled drivers are skipped. */
   simulation_pcb_driver_receiver_channel_ids?: string[]
   /** Seconds, or a UI string resolved at each channel's bit rate. Omitted: skip startup settling. */
