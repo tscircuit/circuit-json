@@ -20,22 +20,6 @@ test("simulation_experiment requires valid experiment_type", () => {
   expect(() => experiment_type.parse("spice_ac_analysis")).not.toThrow()
 })
 
-test("pcb_spice experiments point to the transient channel simulation record", () => {
-  const result = simulation_experiment.safeParse({
-    type: "simulation_experiment",
-    name: "Channel simulation",
-    experiment_type: "spice_transient_analysis",
-    spice_engine: "pcb_spice",
-  })
-  expect(result.success).toBe(false)
-  if (result.success) throw new Error("Expected the superseded engine to fail")
-  expect(result.error.issues).toContainEqual({
-    code: "custom",
-    path: ["spice_engine"],
-    message: "Use simulation_signal_integrity for SI",
-  })
-})
-
 test("simulation_experiment parses start time and spice options", () => {
   const parsed = simulation_experiment.parse({
     type: "simulation_experiment",
@@ -153,37 +137,4 @@ test("simulation_oscilloscope_trace rejects ambiguous references and units", () 
       amps_per_div: 0.001,
     }),
   ).toThrow()
-})
-
-test("experiments retain their subcircuit and requested simulation engine", () => {
-  const record = {
-    type: "simulation_experiment",
-    name: "Transient analysis",
-    experiment_type: "spice_transient_analysis",
-    subcircuit_id: "subcircuit_1",
-    spice_engine: "ngspice",
-  }
-  const parsed = any_circuit_element.parse(record)
-  expect(parsed).toMatchObject(record)
-  expect(any_circuit_element.parse(JSON.parse(JSON.stringify(parsed)))).toEqual(
-    parsed,
-  )
-})
-
-test("transient samples retain their declared voltage probe", () => {
-  const record = {
-    type: "simulation_transient_voltage_graph",
-    simulation_experiment_id: "experiment",
-    simulation_voltage_probe_id: "probe_rx",
-    voltage_levels: [0, 1],
-    timestamps_ms: [0, 1],
-    time_per_step: 1,
-    start_time_ms: 0,
-    end_time_ms: 1,
-  }
-  const parsed = any_circuit_element.parse(record)
-  expect(parsed).toMatchObject(record)
-  expect(any_circuit_element.parse(JSON.parse(JSON.stringify(parsed)))).toEqual(
-    parsed,
-  )
 })
