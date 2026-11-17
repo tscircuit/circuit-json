@@ -752,6 +752,11 @@ interface SourceNet {
   is_analog_signal?: boolean
   is_positive_voltage_source?: boolean
   trace_width?: number
+  /** Minimum edge-to-edge clearance in mm from a trace to a different net's
+   * trace, pad, or via copper on a shared layer. Use the largest applicable
+   * existing minimum or requirement from either net. */
+
+  pcb_min_trace_clearance?: number
   subcircuit_id?: string
   subcircuit_connectivity_map_key?: string
 }
