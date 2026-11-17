@@ -1,12 +1,12 @@
 import { expect, test } from "bun:test"
 import {
   any_circuit_element,
-  simulation_signal_integrity_rlgc,
-  type SimulationSignalIntegrityRlgcInput,
+  simulation_pcb_transient_channel_result,
+  type SimulationPcbTransientChannelResultInput,
 } from "../src"
 
 const result = {
-  type: "simulation_signal_integrity_rlgc",
+  type: "simulation_pcb_transient_channel_result",
   simulation_signal_integrity_id: "run_1",
   conductors: [
     {
@@ -23,16 +23,16 @@ const result = {
       conductance_siemens: [[0]],
     },
   ],
-} satisfies SimulationSignalIntegrityRlgcInput
+} satisfies SimulationPcbTransientChannelResultInput
 
 test("RLGC keeps its run and references driver receiver channels with expanded matrix fields", () => {
-  const parsed = simulation_signal_integrity_rlgc.parse(result)
-  expect(parsed.simulation_signal_integrity_rlgc_id).toStartWith(
-    "simulation_signal_integrity_rlgc_",
+  const parsed = simulation_pcb_transient_channel_result.parse(result)
+  expect(parsed.simulation_pcb_transient_channel_result_id).toStartWith(
+    "simulation_pcb_transient_channel_result_",
   )
   expect(any_circuit_element.parse(parsed)).toEqual(parsed)
   expect(
-    simulation_signal_integrity_rlgc.safeParse({
+    simulation_pcb_transient_channel_result.safeParse({
       ...result,
       conductors: [
         { simulation_signal_id: "old_channel", source_port_id: "tx" },
@@ -48,7 +48,7 @@ test("conductor cardinality and matrix dimensions still apply to renamed channel
     [conductor, { ...conductor, source_port_id: "other" }],
   ])
     expect(
-      simulation_signal_integrity_rlgc.safeParse({ ...result, conductors })
+      simulation_pcb_transient_channel_result.safeParse({ ...result, conductors })
         .success,
     ).toBe(false)
   const pair = {
@@ -76,7 +76,7 @@ test("conductor cardinality and matrix dimensions still apply to renamed channel
       },
     ],
   }
-  expect(simulation_signal_integrity_rlgc.safeParse(pair).success).toBe(true)
+  expect(simulation_pcb_transient_channel_result.safeParse(pair).success).toBe(true)
 })
 
 test("expanded matrix fields retain dimensional and coupling validation", () => {
@@ -88,20 +88,20 @@ test("expanded matrix fields retain dimensional and coupling validation", () => 
     "capacitance_farads",
   ])
     expect(
-      simulation_signal_integrity_rlgc.safeParse({
+      simulation_pcb_transient_channel_result.safeParse({
         ...result,
         matrices: [{ ...entry, [field]: [[Infinity]] }],
       }).success,
     ).toBe(false)
   for (const field of ["conductance_siemens", "capacitance_farads"])
     expect(
-      simulation_signal_integrity_rlgc.safeParse({
+      simulation_pcb_transient_channel_result.safeParse({
         ...result,
         matrices: [{ ...entry, [field]: [[-1]] }],
       }).success,
     ).toBe(false)
   expect(
-    simulation_signal_integrity_rlgc.safeParse({
+    simulation_pcb_transient_channel_result.safeParse({
       ...result,
       matrices: [
         {

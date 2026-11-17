@@ -253,11 +253,11 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationPcbReturnCurrentHeatmap](#simulationpcbreturncurrentheatmap)
     - [SimulationPcbReturnCurrentMarker](#simulationpcbreturncurrentmarker)
     - [SimulationPcbReturnCurrentResult](#simulationpcbreturncurrentresult)
+    - [SimulationPcbTransientChannelResult](#simulationpcbtransientchannelresult)
     - [SimulationReturnCurrentContact](#simulationreturncurrentcontact)
     - [SimulationReturnCurrentExcitation](#simulationreturncurrentexcitation)
     - [SimulationReturnCurrentGridJson](#simulationreturncurrentgridjson)
     - [SimulationSignalIntegrity](#simulationsignalintegrity)
-    - [SimulationSignalIntegrityRlgc](#simulationsignalintegrityrlgc)
     - [SimulationSignalWaveform](#simulationsignalwaveform)
     - [SimulationSpiceSubcircuit](#simulationspicesubcircuit)
     - [SimulationSwitch](#simulationswitch)
@@ -5104,6 +5104,37 @@ interface SimulationPcbReturnCurrentResult {
 }
 ```
 
+### SimulationPcbTransientChannelResult
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_pcb_transient_channel_result.ts)
+
+Results of a simulation.pcbtransientchannelsimulation: the RLGC (resistance, inductance, conductance, capacitance) transmission line parameters the solver extracted for the coupled traces. RLGC is the standard telegrapher's-equation line model (Pozar, Microwave Engineering, ch. 2): R is copper loss, L is inductance, G is dielectric leakage, C is capacitance. Impedance ≈ √(L/C) and delay ≈ √(LC) for low-loss lines; off-diagonal matrix terms describe crosstalk between traces. Values are totals for the whole section, not per-metre values.
+
+```typescript
+/** Results of a simulation.pcbtransientchannelsimulation: the RLGC (resistance, inductance, conductance, capacitance) transmission line parameters the solver extracted for the coupled traces. RLGC is the standard telegrapher's-equation line model (Pozar, Microwave Engineering, ch. 2): R is copper loss, L is inductance, G is dielectric leakage, C is capacitance. Impedance ≈ √(L/C) and delay ≈ √(LC) for low-loss lines; off-diagonal matrix terms describe crosstalk between traces. Values are totals for the whole section, not per-metre values. */
+interface SimulationPcbTransientChannelResult {
+  type: "simulation_pcb_transient_channel_result"
+  simulation_pcb_transient_channel_result_id: string
+  simulation_signal_integrity_id: string
+  /** Physical conductor order for every matrix row and column. */
+  conductors: {
+    simulation_pcb_driver_receiver_channel_id: string
+    source_port_id: string
+  }[]
+  matrices: {
+    frequency_hz: number
+    /** Total loop resistance, including the return path, in ohms. */
+    resistance_ohms: number[][]
+    /** Total loop inductance, including the return path, in henries. */
+    inductance_henries: number[][]
+    /** Ground-referenced Maxwell capacitance totals in farads. */
+    capacitance_farads: number[][]
+    /** Ground-referenced dielectric leakage conductance totals in siemens. */
+    conductance_siemens: number[][]
+  }[]
+}
+```
+
 ### SimulationReturnCurrentContact
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_return_current_contact.ts)
@@ -5185,37 +5216,6 @@ interface SimulationSignalIntegrity {
   bit_rate_bps: number
   duration_s?: number
   allow_unrouted_traces: boolean
-}
-```
-
-### SimulationSignalIntegrityRlgc
-
-[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_integrity_rlgc.ts)
-
-RLGC (resistance, inductance, conductance, capacitance) per-unit-length transmission line parameters follow telegrapher's equations; see Pozar, Microwave Engineering, ch. 2. R is conductor resistance/copper loss in Ω/m; L is inductance in H/m; G is dielectric leakage conductance in S/m; C is capacitance in F/m. For low-loss lines, impedance ≈ √(L/C) and delay per metre = √(LC) in s/m. Coupled traces use matrices whose off-diagonal terms describe crosstalk. This record stores integrated section totals, not per-metre values.
-
-```typescript
-/** RLGC (resistance, inductance, conductance, capacitance) per-unit-length transmission line parameters follow telegrapher's equations; see Pozar, Microwave Engineering, ch. 2. R is conductor resistance/copper loss in Ω/m; L is inductance in H/m; G is dielectric leakage conductance in S/m; C is capacitance in F/m. For low-loss lines, impedance ≈ √(L/C) and delay per metre = √(LC) in s/m. Coupled traces use matrices whose off-diagonal terms describe crosstalk. This record stores integrated section totals, not per-metre values. */
-interface SimulationSignalIntegrityRlgc {
-  type: "simulation_signal_integrity_rlgc"
-  simulation_signal_integrity_rlgc_id: string
-  simulation_signal_integrity_id: string
-  /** Physical conductor order for every matrix row and column. */
-  conductors: {
-    simulation_pcb_driver_receiver_channel_id: string
-    source_port_id: string
-  }[]
-  matrices: {
-    frequency_hz: number
-    /** Total loop resistance, including the return path, in ohms. */
-    resistance_ohms: number[][]
-    /** Total loop inductance, including the return path, in henries. */
-    inductance_henries: number[][]
-    /** Ground-referenced Maxwell capacitance totals in farads. */
-    capacitance_farads: number[][]
-    /** Ground-referenced dielectric leakage conductance totals in siemens. */
-    conductance_siemens: number[][]
-  }[]
 }
 ```
 

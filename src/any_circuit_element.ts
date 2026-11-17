@@ -204,7 +204,7 @@ export const any_circuit_element = z.union([
   sim.simulation_signal_integrity,
   sim.simulation_pcb_driver_receiver_channel,
   sim.simulation_signal_waveform,
-  sim.simulation_signal_integrity_rlgc,
+  sim.simulation_pcb_transient_channel_result,
   sim.simulation_return_current_excitation,
   sim.simulation_pcb_return_current_result,
   sim.simulation_pcb_return_current_field,
