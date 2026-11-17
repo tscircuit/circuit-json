@@ -9,7 +9,7 @@ const waveform = {
   type: "simulation_signal_waveform_result",
   simulation_pcb_driver_receiver_channel_id: "channel_1",
   source_port_id: "rx",
-  timestamps_s: [0, 1e-9],
+  timestamps_ms: [0, 1e-6],
   voltage_levels: [0, 1.2],
 } satisfies SimulationSignalWaveformResultInput
 
@@ -35,7 +35,7 @@ test("waveforms reference driver receiver channels and retain their record type"
   expect(
     simulation_signal_waveform_result.safeParse({
       ...waveform,
-      timestamps_s: [0, 0],
+      timestamps_ms: [0, 0],
     }).success,
   ).toBe(false)
 })

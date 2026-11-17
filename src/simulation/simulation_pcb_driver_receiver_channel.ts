@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
+import { ms } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export type SignalEndpoint =
@@ -51,7 +52,7 @@ export interface SimulationPcbDriverReceiverChannel {
   pattern: string
   /** Optional PRBS seed. Core resolves omitted seeds for the simulation. */
   seed?: number
-  offset_s: number
+  offset_ms: number
   driver_disabled?: boolean
 }
 
@@ -68,7 +69,7 @@ export const simulation_pcb_driver_receiver_channel = z
     bit_rate_bps: z.number().finite().positive(),
     pattern: z.string().min(1),
     seed: z.number().finite().int().positive().optional(),
-    offset_s: z.number().finite().nonnegative(),
+    offset_ms: ms.refine((value) => value >= 0),
     driver_disabled: z.boolean().optional(),
   })
   .strict()

@@ -13,7 +13,7 @@ const channel = {
   receivers: [{ source_port_id: "rx" }, { source_port_id: "rx2" }],
   bit_rate_bps: 50e6,
   pattern: "prbs7",
-  offset_s: 0,
+  offset_ms: 0,
 } satisfies SimulationPcbDriverReceiverChannelInput
 
 const parses = (change: object) =>
@@ -26,6 +26,12 @@ test("simulation_pcb_driver_receiver_channel", () => {
     "simulation_pcb_driver_receiver_channel_",
   )
   expect(any_circuit_element.parse(parsed)).toEqual(parsed)
+  expect(
+    simulation_pcb_driver_receiver_channel.parse({
+      ...channel,
+      offset_ms: "1.25ns",
+    }).offset_ms,
+  ).toBeCloseTo(1.25e-6, 15)
 
   for (const change of [
     {
@@ -44,7 +50,7 @@ test("simulation_pcb_driver_receiver_channel", () => {
     { receivers: [] },
     { receivers: [{ p_source_port_id: "rx_p", n_source_port_id: "rx_n" }] },
     { bit_rate_bps: -1 },
-    { offset_s: -1 },
+    { offset_ms: -1 },
     { pattern: "" },
     { seed: 0 },
     { seed: 2 ** 7 },

@@ -4994,7 +4994,7 @@ interface SimulationPcbDriverReceiverChannel {
   pattern: string
   /** Optional PRBS seed. Core resolves omitted seeds for the simulation. */
   seed?: number
-  offset_s: number
+  offset_ms: number
   driver_disabled?: boolean
 }
 
@@ -5148,7 +5148,7 @@ interface SimulationPcbTransientChannelSimulation {
   simulation_pcb_transient_channel_simulation_id: string
   name?: string
   bit_rate_bps: number
-  duration_s?: number
+  duration_ms?: number
   allow_unrouted_traces: boolean
 }
 ```
@@ -5223,17 +5223,17 @@ type SimulationReturnCurrentGridJson =
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_signal_waveform_result.ts)
 
-Parallel time (seconds) and voltage (volts) samples, including differential P - N.
+Parallel time (milliseconds) and voltage (volts) samples, including differential P - N.
 
 ```typescript
-/** Parallel time (seconds) and voltage (volts) samples, including differential P - N. */
+/** Parallel time (milliseconds) and voltage (volts) samples, including differential P - N. */
 interface SimulationSignalWaveformResult {
   type: "simulation_signal_waveform_result"
   simulation_signal_waveform_result_id: string
   simulation_pcb_driver_receiver_channel_id: string
   /** Driver port identifies the near end; receiver port identifies the far end. */
   source_port_id: string
-  timestamps_s: number[]
+  timestamps_ms: number[]
   voltage_levels: number[]
   /** Required for constant literal patterns or disabled drivers; omitted otherwise. Requires the referenced signal to validate. */
   idle_voltage_v?: number

@@ -2,21 +2,21 @@ import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-/** Parallel time (seconds) and voltage (volts) samples, including differential P - N. */
+/** Parallel time (milliseconds) and voltage (volts) samples, including differential P - N. */
 export interface SimulationSignalWaveformResult {
   type: "simulation_signal_waveform_result"
   simulation_signal_waveform_result_id: string
   simulation_pcb_driver_receiver_channel_id: string
   /** Driver port identifies the near end; receiver port identifies the far end. */
   source_port_id: string
-  timestamps_s: number[]
+  timestamps_ms: number[]
   voltage_levels: number[]
   /** Required for constant literal patterns or disabled drivers; omitted otherwise. Requires the referenced signal to validate. */
   idle_voltage_v?: number
 }
 
 const samples = z.object({
-  timestamps_s: z.array(z.number().finite().nonnegative()).min(1),
+  timestamps_ms: z.array(z.number().finite().nonnegative()).min(1),
   voltage_levels: z.array(z.number().finite()).min(1),
 })
 
@@ -24,7 +24,7 @@ function validateSamples(
   data: z.infer<typeof samples>,
   context: z.RefinementCtx,
 ) {
-  if (data.timestamps_s.length !== data.voltage_levels.length) {
+  if (data.timestamps_ms.length !== data.voltage_levels.length) {
     context.addIssue({
       code: z.ZodIssueCode.custom,
       path: ["voltage_levels"],
@@ -32,13 +32,13 @@ function validateSamples(
     })
   }
   if (
-    data.timestamps_s.some(
+    data.timestamps_ms.some(
       (time, index, times) => index > 0 && time <= times[index - 1]!,
     )
   ) {
     context.addIssue({
       code: z.ZodIssueCode.custom,
-      path: ["timestamps_s"],
+      path: ["timestamps_ms"],
       message: "Sample timestamps must be strictly increasing",
     })
   }
@@ -54,13 +54,13 @@ export const simulation_signal_waveform_result = samples
     idle_voltage_v: z.number().finite().optional(),
     source_port_id: z.string().min(1),
   })
-  .refine((waveform) => waveform.timestamps_s[0] === 0, {
-    path: ["timestamps_s", 0],
+  .refine((waveform) => waveform.timestamps_ms[0] === 0, {
+    path: ["timestamps_ms", 0],
     message: "Sample timestamps must start at zero",
   })
   .superRefine(validateSamples)
   .describe(
-    "Stores near-end or far-end signal voltage samples in seconds and volts",
+    "Stores near-end or far-end signal voltage samples in milliseconds and volts",
   )
 
 export type SimulationSignalWaveformResultInput = z.input<

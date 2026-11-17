@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
+import { ms } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 /** One simulation.pcbtransientchannelsimulation run. Its channels, results and eye diagrams point back to it by id. */
@@ -8,7 +9,7 @@ export interface SimulationPcbTransientChannelSimulation {
   simulation_pcb_transient_channel_simulation_id: string
   name?: string
   bit_rate_bps: number
-  duration_s?: number
+  duration_ms?: number
   allow_unrouted_traces: boolean
 }
 
@@ -20,7 +21,7 @@ export const simulation_pcb_transient_channel_simulation = z
     ),
     name: z.string().min(1).optional(),
     bit_rate_bps: z.number().finite().positive(),
-    duration_s: z.number().finite().positive().optional(),
+    duration_ms: ms.refine((value) => value > 0).optional(),
     allow_unrouted_traces: z.boolean(),
   })
   .describe("Defines a PCB transient channel simulation run")
