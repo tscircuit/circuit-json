@@ -6,7 +6,7 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 export interface SimulationSignalWaveform {
   type: "simulation_signal_waveform"
   simulation_signal_waveform_id: string
-  simulation_signal_id: string
+  simulation_pcb_driver_receiver_channel_id: string
   /** Driver port identifies the near end; receiver port identifies the far end. */
   source_port_id: string
   timestamps_s: number[]
@@ -50,7 +50,7 @@ export const simulation_signal_waveform = samples
     simulation_signal_waveform_id: getZodPrefixedIdWithDefault(
       "simulation_signal_waveform",
     ),
-    simulation_signal_id: z.string().min(1),
+    simulation_pcb_driver_receiver_channel_id: z.string().min(1),
     idle_voltage_v: z.number().finite().optional(),
     source_port_id: z.string().min(1),
   })

@@ -2,18 +2,26 @@ import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-/** Frequency-indexed total loop R/L and ground-referenced Maxwell C/G in physical conductor order. */
+/** RLGC (resistance, inductance, conductance, capacitance) per-unit-length transmission line parameters follow telegrapher's equations; see Pozar, Microwave Engineering, ch. 2. R is conductor resistance/copper loss in Ω/m; L is inductance in H/m; G is dielectric leakage conductance in S/m; C is capacitance in F/m. For low-loss lines, impedance ≈ √(L/C) and delay per metre = √(LC) in s/m. Coupled traces use matrices whose off-diagonal terms describe crosstalk. This record stores integrated section totals, not per-metre values. */
 export interface SimulationSignalIntegrityRlgc {
   type: "simulation_signal_integrity_rlgc"
   simulation_signal_integrity_rlgc_id: string
   simulation_signal_integrity_id: string
-  conductors: { simulation_signal_id: string; source_port_id: string }[]
+  /** Physical conductor order for every matrix row and column. */
+  conductors: {
+    simulation_pcb_driver_receiver_channel_id: string
+    source_port_id: string
+  }[]
   matrices: {
     frequency_hz: number
-    r_ohm: number[][]
-    l_h: number[][]
-    c_f: number[][]
-    g_s: number[][]
+    /** Total loop resistance, including the return path, in ohms. */
+    resistance_ohms: number[][]
+    /** Total loop inductance, including the return path, in henries. */
+    inductance_henries: number[][]
+    /** Ground-referenced Maxwell capacitance totals in farads. */
+    capacitance_farads: number[][]
+    /** Ground-referenced dielectric leakage conductance totals in siemens. */
+    conductance_siemens: number[][]
   }[]
 }
 
@@ -30,7 +38,7 @@ export const simulation_signal_integrity_rlgc = z
       .array(
         z
           .object({
-            simulation_signal_id: z.string().min(1),
+            simulation_pcb_driver_receiver_channel_id: z.string().min(1),
             source_port_id: z.string().min(1),
           })
           .strict(),
@@ -40,10 +48,10 @@ export const simulation_signal_integrity_rlgc = z
       .array(
         z.object({
           frequency_hz: z.number().finite().positive(),
-          r_ohm: matrix,
-          l_h: matrix,
-          c_f: matrix,
-          g_s: matrix,
+          resistance_ohms: matrix,
+          inductance_henries: matrix,
+          capacitance_farads: matrix,
+          conductance_siemens: matrix,
         }),
       )
       .min(1),
@@ -61,7 +69,12 @@ export const simulation_signal_integrity_rlgc = z
           message: "Frequencies must be unique and increasing",
         })
       }
-      for (const field of ["r_ohm", "l_h", "c_f", "g_s"] as const) {
+      for (const field of [
+        "resistance_ohms",
+        "inductance_henries",
+        "capacitance_farads",
+        "conductance_siemens",
+      ] as const) {
         if (
           entry[field].length !== size ||
           entry[field].some((row) => row.length !== size)
@@ -73,7 +86,10 @@ export const simulation_signal_integrity_rlgc = z
           })
         }
       }
-      for (const field of ["c_f", "g_s"] as const) {
+      for (const field of [
+        "capacitance_farads",
+        "conductance_siemens",
+      ] as const) {
         const values = entry[field]
         // Allow roundoff up to 1e-9 of this matrix's largest absolute entry.
         const tolerance =
@@ -112,9 +128,12 @@ export const simulation_signal_integrity_rlgc = z
       }
     }
     const portsBySignal = new Map<string, string[]>()
-    for (const { simulation_signal_id, source_port_id } of result.conductors) {
-      portsBySignal.set(simulation_signal_id, [
-        ...(portsBySignal.get(simulation_signal_id) ?? []),
+    for (const {
+      simulation_pcb_driver_receiver_channel_id,
+      source_port_id,
+    } of result.conductors) {
+      portsBySignal.set(simulation_pcb_driver_receiver_channel_id, [
+        ...(portsBySignal.get(simulation_pcb_driver_receiver_channel_id) ?? []),
         source_port_id,
       ])
     }
@@ -132,7 +151,7 @@ export const simulation_signal_integrity_rlgc = z
     }
   })
   .describe(
-    "Stores coupled RLGC totals at each frequency in physical conductor order",
+    "Stores coupled resistance, inductance, conductance and capacitance totals at each frequency in physical conductor order",
   )
 
 export type SimulationSignalIntegrityRlgcInput = z.input<

@@ -38,31 +38,35 @@ export const signal_endpoint = z
     },
   )
 
-/** A resolved signal, its traffic, and the receivers measured in one test. */
-export interface SimulationSignal {
-  type: "simulation_signal"
-  simulation_signal_id: string
+/** Resolved simulation.pcbdriverreceiverchannel endpoints and traffic for one transient simulation. */
+export interface SimulationPcbDriverReceiverChannel {
+  type: "simulation_pcb_driver_receiver_channel"
+  simulation_pcb_driver_receiver_channel_id: string
   simulation_signal_integrity_id: string
   name: string
   driver: SignalEndpoint
   receivers: SignalEndpoint[]
   bit_rate_bps: number
+  /** Open pattern string, as declared by simulation.pcbdriverreceiverchannel. */
   pattern: string
+  /** Optional PRBS seed. Core resolves omitted seeds for the simulation. */
   seed?: number
   offset_s: number
   driver_disabled?: boolean
 }
 
-export const simulation_signal = z
+export const simulation_pcb_driver_receiver_channel = z
   .object({
-    type: z.literal("simulation_signal"),
-    simulation_signal_id: getZodPrefixedIdWithDefault("simulation_signal"),
+    type: z.literal("simulation_pcb_driver_receiver_channel"),
+    simulation_pcb_driver_receiver_channel_id: getZodPrefixedIdWithDefault(
+      "simulation_pcb_driver_receiver_channel",
+    ),
     simulation_signal_integrity_id: z.string().min(1),
     name: z.string().min(1),
     driver: signal_endpoint,
     receivers: z.array(signal_endpoint).min(1),
     bit_rate_bps: z.number().finite().positive(),
-    pattern: z.string().regex(/^(?:prbs7|prbs15|prbs31|clock|[01]+)$/),
+    pattern: z.string().min(1),
     seed: z.number().finite().int().positive().optional(),
     offset_s: z.number().finite().nonnegative(),
     driver_disabled: z.boolean().optional(),
@@ -76,29 +80,26 @@ export const simulation_signal = z
       ),
     { path: ["receivers"], message: "Receivers must have the driver's shape" },
   )
-  .superRefine((signal, context) => {
-    const order = /^prbs(7|15|31)$/.exec(signal.pattern)?.[1]
-    if (order) {
-      const maxSeed = 2 ** Number(order) - 1
-      if (signal.seed === undefined || signal.seed > maxSeed) {
-        context.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["seed"],
-          message: `${signal.pattern} seed must be an integer in 1..${maxSeed}`,
-        })
-      }
-    } else if (signal.seed !== undefined) {
-      context.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["seed"],
-        message: "Non-PRBS source records must omit seed",
-      })
-    }
-  })
+  .refine(
+    (channel) => {
+      const order = /^prbs(7|15|31)$/.exec(channel.pattern)?.[1]
+      return (
+        channel.seed === undefined ||
+        !order ||
+        channel.seed <= 2 ** Number(order) - 1
+      )
+    },
+    { path: ["seed"], message: "Seed must fit the PRBS pattern" },
+  )
   .describe(
-    "Defines resolved endpoints and traffic for one signal integrity test",
+    "Defines resolved driver and receiver ports and traffic for one PCB channel",
   )
 
-export type SimulationSignalInput = z.input<typeof simulation_signal>
+export type SimulationPcbDriverReceiverChannelInput = z.input<
+  typeof simulation_pcb_driver_receiver_channel
+>
 expectTypesMatch<SignalEndpoint, z.infer<typeof signal_endpoint>>(true)
-expectTypesMatch<SimulationSignal, z.infer<typeof simulation_signal>>(true)
+expectTypesMatch<
+  SimulationPcbDriverReceiverChannel,
+  z.infer<typeof simulation_pcb_driver_receiver_channel>
+>(true)
