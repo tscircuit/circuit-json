@@ -32,6 +32,7 @@ import {
   type SourceSubassembly,
 } from "./source_subassembly"
 import { source_motor, type SourceMotor } from "./source_motor"
+import { source_sticker, type SourceSticker } from "./source_sticker"
 import {
   source_simple_power_source,
   type SourceSimplePowerSource,
@@ -175,6 +176,7 @@ export const any_source_component = z.union([
   source_printed_part,
   source_subassembly,
   source_motor,
+  source_sticker,
   source_simple_power_source,
   source_simple_current_source,
   source_simple_ammeter,
@@ -227,6 +229,7 @@ export type AnySourceElement =
   | SourcePrintedPart
   | SourceSubassembly
   | SourceMotor
+  | SourceSticker
   | SourceSimplePowerSource
   | SourceSimpleCurrentSource
   | SourceSimpleAmmeter

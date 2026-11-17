@@ -195,6 +195,7 @@ export const any_circuit_element = z.union([
   cad.cad_explosion_move,
   cad.cad_cable,
   cad.cad_reference_surface,
+  cad.cad_sticker,
   cad.cad_collision_error,
   cad.cad_explosion_collision_error,
   cad.cad_explosion_collision_check_warning,
