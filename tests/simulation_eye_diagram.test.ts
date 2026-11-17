@@ -23,24 +23,25 @@ test("simulation_eye_diagram", () => {
 
   for (const change of [
     { simulation_pcb_driver_receiver_channel_ids: ["channel_tx"] },
-    { start_time: 40e-9, end_time: 160e-9 },
-    { start_time: "16UI", end_time: "64UI" },
-    { start_time: "16UI", end_time: 160e-9 },
+    { start_time_ms: 40e-6, end_time_ms: 160e-6 },
+    { start_time_ms: "40ns", end_time_ms: "160ns" },
   ])
     expect(parses(change)).toBe(true)
+  expect(
+    simulation_eye_diagram.parse({ ...eye, start_time_ms: "40ns" })
+      .start_time_ms,
+  ).toBeCloseTo(40e-6, 15)
 
   for (const change of [
     { name: " " },
     { simulation_pcb_transient_channel_simulation_id: "" },
     { simulation_pcb_driver_receiver_channel_ids: [] },
     { simulation_pcb_driver_receiver_channel_ids: [""] },
-    { start_time: -1 },
-    { end_time: Number.NaN },
-    { start_time: "-1UI" },
-    { start_time: "InfinityUI" },
-    { start_time: "2ns" },
-    { start_time: "64UI", end_time: "16UI" },
-    { start_time: 1e-9, end_time: 1e-9 },
+    { start_time_ms: -1 },
+    { end_time_ms: Number.NaN },
+    { start_time_ms: "16UI" },
+    { start_time_ms: 1e-6, end_time_ms: 1e-6 },
+    { start_time_ms: 2e-6, end_time_ms: 1e-6 },
   ])
     expect(parses(change)).toBe(false)
 })
