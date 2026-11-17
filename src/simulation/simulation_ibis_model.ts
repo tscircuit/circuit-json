@@ -63,6 +63,7 @@ export const simulation_ibis_model = z
         "Maps each IBIS signal pin name to the physical source ports used as its buffer supply/clamp references",
       ),
   })
+  .strict()
   .superRefine((model, context) => {
     const boundPins = new Set(
       Object.keys(model.ibis_pin_name_to_source_port_id),

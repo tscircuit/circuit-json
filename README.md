@@ -244,6 +244,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationDcSweepCurrentGraph](#simulationdcsweepcurrentgraph)
     - [SimulationDcSweepVoltageGraph](#simulationdcsweepvoltagegraph)
     - [SimulationExperiment](#simulationexperiment)
+    - [SimulationEyeDiagram](#simulationeyediagram)
     - [SimulationOpAmp](#simulationopamp)
     - [SimulationOscilloscopeTrace](#simulationoscilloscopetrace)
     - [SimulationParameterSweep](#simulationparametersweep)
@@ -4828,6 +4829,28 @@ interface SpiceSimulationOptions {
   reltol?: number | string
   abstol?: number | string
   vntol?: number | string
+}
+```
+
+### SimulationEyeDiagram
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/simulation/simulation_eye_diagram.ts)
+
+An eye measurement of driven channels in a transient channel simulation.
+
+```typescript
+/** An eye measurement of driven channels in a transient channel simulation. */
+interface SimulationEyeDiagram {
+  type: "simulation_eye_diagram"
+  simulation_eye_diagram_id: string
+  name: string
+  simulation_signal_integrity_id: string
+  /** Omitted: every driven channel. Constant patterns and disabled drivers are skipped. */
+  simulation_pcb_driver_receiver_channel_ids?: string[]
+  /** Seconds, or a UI string resolved at each channel's bit rate. Omitted: skip startup settling. */
+  start_time?: number | string
+  /** Seconds, or a UI string resolved at each channel's bit rate. Omitted: end of simulation. */
+  end_time?: number | string
 }
 ```
 

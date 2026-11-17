@@ -198,6 +198,7 @@ export const any_circuit_element = z.union([
   sim.simulation_current_source,
   sim.simulation_experiment,
   sim.simulation_ibis_model,
+  sim.simulation_eye_diagram,
   sim.simulation_pcb_transient_channel_simulation,
   sim.simulation_pcb_driver_receiver_channel,
   sim.simulation_signal_waveform_result,
