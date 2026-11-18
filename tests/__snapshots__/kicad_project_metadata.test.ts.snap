@@ -1,0 +1,16 @@
+// Bun Snapshot v1, https://bun.sh/docs/test/snapshots
+
+exports[`snapshot parsed converter metadata on existing records 1`] = `
+{
+  "net": {
+    "member_source_group_ids": [],
+    "name": "POWER_VCC_P",
+    "source_net_id": "power",
+    "trace_width": 0.8,
+    "type": "source_net",
+  },
+  "project": {
+    "type": "source_project_metadata",
+  },
+}
+`;
