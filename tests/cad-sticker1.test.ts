@@ -18,6 +18,12 @@ const sticker: CadSticker = {
   height: 16,
 }
 
+const label = {
+  project_relative_path: "assets/label.svg",
+  url: "https://example.com/assets/label.svg",
+  mimetype: "image/svg+xml",
+}
+
 test("stickers round-trip through Circuit JSON and parse distances to millimeters", () => {
   const circuit: CircuitJson = [sticker]
   expect(
@@ -30,7 +36,7 @@ test("stickers round-trip through Circuit JSON and parse distances to millimeter
       width: "30mm",
       height: "0.5in",
       thickness: "0.1mm",
-      image_url: "./label.svg",
+      image_asset: label,
       background_color: " #ffffff ",
       subcircuit_id: "sub_1",
     }),
@@ -39,12 +45,12 @@ test("stickers round-trip through Circuit JSON and parse distances to millimeter
     center: { x: 3, y: -2, z: 54 },
     height: 12.7,
     thickness: 0.1,
-    image_url: "./label.svg",
+    image_asset: label,
     background_color: "#ffffff",
     subcircuit_id: "sub_1",
   })
   const parsed = cad_sticker.parse(sticker)
-  for (const optional of ["thickness", "image_url", "background_color"])
+  for (const optional of ["thickness", "image_asset", "background_color"])
     expect(parsed).not.toHaveProperty(optional)
   const { applied_to_source_component_id: _, ...unowned } = sticker
   expect(cad_sticker.parse(unowned)).toEqual(unowned)

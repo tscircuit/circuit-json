@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { point3, type Point3 } from "../common"
+import { asset, point3, type Asset, type Point3 } from "../common"
 import { distance } from "../units"
 import { expectTypesMatch } from "../utils/expect-types-match"
 
@@ -57,9 +57,7 @@ export const cad_sticker = z
       .describe(
         "Sticker thickness including adhesive, measured along normal from center, in millimeters. Omission leaves it unspecified.",
       ),
-    image_url: z
-      .string()
-      .min(1)
+    image_asset: asset
       .optional()
       .describe(
         "Printed artwork, an SVG or raster image, stretched to width by height. Omit for an unprinted sticker.",
@@ -113,7 +111,7 @@ export interface CadSticker {
   /** Includes adhesive; measured along normal. Unspecified when omitted. */
   thickness?: number
   /** Printed artwork stretched to width by height; omitted when unprinted. */
-  image_url?: string
+  image_asset?: Asset
   /** Sticker material color, seen where the artwork is transparent or absent. */
   background_color?: string
   subcircuit_id?: string
