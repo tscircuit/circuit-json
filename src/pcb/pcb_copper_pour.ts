@@ -13,6 +13,7 @@ const pcb_copper_pour_base = z.object({
   subcircuit_id: z.string().optional(),
   layer: layer_ref,
   source_net_id: z.string().optional(),
+  clearance: length.optional(),
   covered_with_solder_mask: z.boolean().optional().default(true),
 })
 
@@ -37,6 +38,7 @@ export interface PcbCopperPourRect {
   subcircuit_id?: string
   layer: LayerRef
   source_net_id?: string
+  clearance?: Length
   shape: "rect"
   center: Point
   width: Length
@@ -63,6 +65,7 @@ export interface PcbCopperPourBRep {
   subcircuit_id?: string
   layer: LayerRef
   source_net_id?: string
+  clearance?: Length
   shape: "brep"
   brep_shape: BRepShape
 }
@@ -87,6 +90,7 @@ export interface PcbCopperPourPolygon {
   subcircuit_id?: string
   layer: LayerRef
   source_net_id?: string
+  clearance?: Length
   shape: "polygon"
   points: Point[]
 }
