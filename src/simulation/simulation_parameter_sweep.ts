@@ -12,6 +12,7 @@ export const simulation_parameter_type = z.enum([
   "inductance",
   "voltage",
   "current",
+  "position",
 ])
 
 export type SimulationParameterType = z.infer<typeof simulation_parameter_type>
@@ -55,12 +56,19 @@ export interface SimulationCurrentParameterSweep
   current_source_component_id: string
 }
 
+export interface SimulationSwitchPositionParameterSweep
+  extends SimulationParameterSweepBase {
+  parameter_type: "position"
+  switch_source_component_id: string
+}
+
 export type SimulationParameterSweep =
   | SimulationResistanceParameterSweep
   | SimulationCapacitanceParameterSweep
   | SimulationInductanceParameterSweep
   | SimulationVoltageParameterSweep
   | SimulationCurrentParameterSweep
+  | SimulationSwitchPositionParameterSweep
 
 const simulation_parameter_sweep_base = z.object({
   type: z.literal("simulation_parameter_sweep"),
@@ -94,6 +102,11 @@ export const simulation_parameter_sweep = z
     simulation_parameter_sweep_base.extend({
       parameter_type: z.literal("current"),
       current_source_component_id: z.string(),
+    }),
+    simulation_parameter_sweep_base.extend({
+      parameter_type: z.literal("position"),
+      switch_source_component_id: z.string(),
+      parameter_values: z.array(z.number().int().min(1)).min(1),
     }),
   ])
   .describe("Repeats a simulation experiment over component parameter values")

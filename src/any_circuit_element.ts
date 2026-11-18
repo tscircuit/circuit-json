@@ -54,6 +54,7 @@ export const any_circuit_element = z.union([
   src.source_simple_pinout,
   src.source_simple_resonator,
   src.source_simple_switch,
+  src.source_simple_rotary_switch,
   src.source_simple_transistor,
   src.source_simple_test_point,
   src.source_simple_mosfet,
