@@ -12,8 +12,11 @@ export const simulation_switch = z
     opens_at: ms.optional(),
     starts_closed: z.boolean().optional(),
     switching_frequency: frequency.optional(),
+    selected_position: z.number().int().min(1).optional(),
   })
-  .describe("Defines a switch for simulation timing control")
+  .describe(
+    "Defines a switch for simulation timing or position selection control",
+  )
 
 export type SimulationSwitchInput = z.input<typeof simulation_switch>
 
@@ -27,6 +30,7 @@ export interface SimulationSwitch {
   opens_at?: number
   starts_closed?: boolean
   switching_frequency?: number
+  selected_position?: number
 }
 
 expectTypesMatch<SimulationSwitch, InferredSimulationSwitch>(true)

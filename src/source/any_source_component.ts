@@ -102,6 +102,10 @@ import {
   type SourceSimpleSwitch,
 } from "./source_simple_switch"
 import {
+  source_simple_rotary_switch,
+  type SourceSimpleRotarySwitch,
+} from "./source_simple_rotary_switch"
+import {
   source_project_metadata,
   type SourceProjectMetadata,
 } from "./source_project_metadata"
@@ -190,6 +194,7 @@ export const any_source_component = z.union([
   source_simple_pinout,
   source_simple_resonator,
   source_simple_switch,
+  source_simple_rotary_switch,
   source_simple_transistor,
   source_simple_test_point,
   source_simple_mosfet,
@@ -243,6 +248,7 @@ export type AnySourceElement =
   | SourceSimplePinout
   | SourceSimpleResonator
   | SourceSimpleSwitch
+  | SourceSimpleRotarySwitch
   | SourceSimpleTransistor
   | SourceSimpleTestPoint
   | SourceSimpleMosfet
