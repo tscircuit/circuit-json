@@ -22,6 +22,6 @@ test.failing("named net classes and ordered assignments survive JSON parsing", (
     priority: 1,
     subcircuit_id: "board",
   }
-  expect(any_circuit_element.parse(netClass)).toEqual(netClass)
+  expect<unknown>(any_circuit_element.parse(netClass)).toEqual(netClass)
   expect(source_net.parse(JSON.parse(JSON.stringify(net)))).toEqual(net)
 })
