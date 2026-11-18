@@ -5,7 +5,6 @@ import {
   ninePointAnchor,
   point,
 } from "src/common"
-import { type PointWithBulge, point_with_bulge } from "src/pcb/properties/brep"
 import {
   type ManufacturingDrcProperties,
   manufacturing_drc_properties,
@@ -55,7 +54,7 @@ export const pcb_board = z
       .describe(
         "Whether autorouters may generate blind and buried vias. False restricts newly generated vias to the full board stack.",
       ),
-    outline: z.array(point_with_bulge).optional(),
+    outline: z.array(point).optional(),
     shape: z.enum(["rect", "polygon"]).optional(),
     material: z.enum(["fr4", "fr1", "flex"]).default("fr4"),
     solder_mask_color: z.string().optional(),
@@ -93,7 +92,7 @@ export interface PcbBoard extends ManufacturingDrcProperties {
   /** Whether autorouters may generate blind and buried vias. */
   allow_blind_and_buried_vias?: boolean
   center: Point
-  outline?: PointWithBulge[]
+  outline?: Point[]
   shape?: "rect" | "polygon"
   material: "fr4" | "fr1" | "flex"
   solder_mask_color?: string
