@@ -5,6 +5,7 @@ export * from "./cad_explosion_collision_check_warning"
 export * from "./cad_model_conventions"
 export * from "./cad_cable"
 export * from "./cad_reference_surface"
+export * from "./cad_laser_engraving_text"
 
 export * from "./cad_explosion_stage"
 export * from "./cad_explosion_move"
