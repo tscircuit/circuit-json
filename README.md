@@ -5723,7 +5723,3 @@ interface SystemBlockRoutePoint extends Point {
 ```
 
 <!-- circuit-json-docs:end -->
-
-### source_net_class
-
-Named PCB trace-width classes preserve design intent independently of the resolved width on a net. `source_net_class` records have a `source_net_class_id`, `name`, optional positive `trace_width` in mm, optional nonnegative integer `priority`, and optional `subcircuit_id`. Unset widths inherit from the next assigned class or the board default. `source_net.source_net_class_ids` stores assignments in precedence order (highest first). Distinct classes may share a width; empty classes remain valid. Legacy nets may omit assignments. These records do not define a class-to-class clearance matrix.
