@@ -6,8 +6,10 @@ export * from "./cad_model_conventions"
 export * from "./cad_cable"
 export * from "./cad_reference_surface"
 export * from "./cad_sticker"
+export * from "./cad_laser_engraving_text"
 
 export * from "./cad_explosion_stage"
 export * from "./cad_explosion_move"
 
 export * from "./cad_assembly_bom_item"
+export * from "./cad_cable_wire"

@@ -9,3 +9,8 @@ export * from "./drawing_part_label"
 export * from "./drawing_page_note"
 
 export * from "./drawing_explosion_view"
+
+export * from "./drawing_wiring_harness_view"
+export * from "./drawing_table"
+export * from "./drawing_table_cell"
+export * from "./drawing_balloon"

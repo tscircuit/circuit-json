@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { point3, type Point3 } from "../common"
+import { length } from "../units"
 import { expectTypesMatch } from "../utils/expect-types-match"
 
 const connectorPin1Position = point3
@@ -26,6 +27,27 @@ export const cad_cable = z
       .describe(
         'Physical cable definition, e.g. "usb_c" or "jst_ph_pins6". Independent of the route.',
       ),
+    nominal_length: length
+      .pipe(z.number().finite().positive())
+      .optional()
+      .describe(
+        "Manufactured length in millimeters between the two connector wire exits. A build specification, independent of the routed path and its slack.",
+      ),
+    length_tolerance: length
+      .pipe(z.number().finite().nonnegative())
+      .optional()
+      .describe(
+        "Symmetric plus/minus tolerance on nominal_length, in millimeters.",
+      ),
+    from_connector_name: z
+      .string()
+      .trim()
+      .min(1)
+      .optional()
+      .describe(
+        'Designator of the cable\'s own connector at the from end, e.g. "H1".',
+      ),
+    to_connector_name: z.string().trim().min(1).optional(),
     path: z
       .array(point3)
       .min(2)
@@ -47,8 +69,17 @@ export const cad_cable = z
         "Resolved cable centerline points in right-handed circuit world, millimeters: +X right, +Y top, +Z above. First/last samples are connector wire exits; their tangents point into/out of the cable. Includes routing/slack; renderers must not recompute the path.",
       ),
   })
+  .refine(
+    (cable) =>
+      cable.length_tolerance === undefined ||
+      cable.nominal_length !== undefined,
+    {
+      message: "length_tolerance requires nominal_length",
+      path: ["length_tolerance"],
+    },
+  )
   .describe(
-    "A physical assembly cable with a resolved 3D route. Several cables are independent cad_cable records, each with its own endpoints, definition and path. Does not imply electrical pin mapping.",
+    "A physical assembly cable with a resolved 3D route. Several cables are independent cad_cable records, each with its own endpoints, definition and path. Electrical pin mapping is carried by cad_cable_wire records, never implied by the cable definition.",
   )
 
 export type CadCableInput = z.input<typeof cad_cable>
@@ -70,6 +101,13 @@ export interface CadCable {
   from_connector_pin1_position?: Point3
   to_connector_pin1_position?: Point3
   cableprinter_string: string
+  /** Manufactured length between the connector wire exits, mm. Not the path length. */
+  nominal_length?: number
+  /** Symmetric plus/minus tolerance on nominal_length, mm. Requires nominal_length. */
+  length_tolerance?: number
+  /** Designators of the cable's own connectors, e.g. "H1"/"H2". */
+  from_connector_name?: string
+  to_connector_name?: string
   path: Point3[]
 }
 
