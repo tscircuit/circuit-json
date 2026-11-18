@@ -25,7 +25,7 @@ export const any_circuit_element = z.union([
   drawings.drawing_part_view,
   drawings.drawing_explosion_view,
   drawings.drawing_dimension_line,
-  drawings.drawing_harness_view,
+  drawings.drawing_wiring_harness_view,
   drawings.drawing_table,
   drawings.drawing_table_cell,
   drawings.drawing_balloon,

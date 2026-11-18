@@ -2,15 +2,15 @@ import { expect, test } from "bun:test"
 import {
   any_circuit_element,
   drawing_balloon,
-  drawing_harness_view,
+  drawing_wiring_harness_view,
   drawing_table,
   drawing_table_cell,
 } from "../src"
 
 test("harness drawing records round-trip through the public union and reject invalid configuration", () => {
   const view = {
-    type: "drawing_harness_view" as const,
-    drawing_harness_view_id: "harness",
+    type: "drawing_wiring_harness_view" as const,
+    drawing_wiring_harness_view_id: "harness",
     drawing_page_id: "page",
     cad_cable_id: "cad_cable_1",
     center: { x: 0, y: 30 },
@@ -42,7 +42,7 @@ test("harness drawing records round-trip through the public union and reject inv
   const balloon = {
     type: "drawing_balloon" as const,
     drawing_balloon_id: "balloon_from",
-    drawing_harness_view_id: "harness",
+    drawing_wiring_harness_view_id: "harness",
     texts: ["3", "2"],
     harness_target: "from_connector" as const,
     anchor_position: { x: -80, y: 60 },
@@ -58,7 +58,7 @@ test("harness drawing records round-trip through the public union and reject inv
     { center: { x: 0 } },
   ])
     expect(
-      drawing_harness_view.safeParse({ ...view, ...invalid }).success,
+      drawing_wiring_harness_view.safeParse({ ...view, ...invalid }).success,
     ).toBe(false)
   // A table's position is never implied: both anchor fields are required.
   for (const invalid of [
@@ -90,7 +90,7 @@ test("harness drawing records round-trip through the public union and reject inv
     { texts: [] },
     { texts: ["3", " "] },
     { harness_target: "fromConnector" },
-    { drawing_harness_view_id: " " },
+    { drawing_wiring_harness_view_id: " " },
     { anchor_position: undefined },
     { anchor_alignment: undefined },
   ])
