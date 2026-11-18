@@ -9,6 +9,10 @@ export interface SourceProjectMetadata {
   project_url?: string
   source_filesystem_md5_hash?: string
   created_at?: string // ISO8601 timestamp
+  /** Opaque import data used only by the corresponding format converter. */
+  metadata?: {
+    kicad_project?: { net_settings?: Record<string, unknown> }
+  }
 }
 
 export const source_project_metadata = z.object({
@@ -18,6 +22,13 @@ export const source_project_metadata = z.object({
   project_url: z.string().optional(),
   source_filesystem_md5_hash: z.string().optional(),
   created_at: timestamp.optional(),
+  metadata: z
+    .object({
+      kicad_project: z
+        .object({ net_settings: z.record(z.unknown()).optional() })
+        .optional(),
+    })
+    .optional(),
 })
 
 export type InferredProjectMetadata = z.infer<typeof source_project_metadata>

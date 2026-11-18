@@ -37,10 +37,7 @@ test("snapshot parsed converter metadata on existing records", () => {
   }).toMatchSnapshot()
 })
 
-test.failing(
-  "KiCad preservation metadata survives Circuit JSON parsing",
-  () => {
-    expect<unknown>(any_circuit_element.parse(project)).toEqual(project)
-    expect(source_net.parse(JSON.parse(JSON.stringify(net)))).toEqual(net)
-  },
-)
+test("KiCad preservation metadata survives Circuit JSON parsing", () => {
+  expect<unknown>(any_circuit_element.parse(project)).toEqual(project)
+  expect(source_net.parse(JSON.parse(JSON.stringify(net)))).toEqual(net)
+})

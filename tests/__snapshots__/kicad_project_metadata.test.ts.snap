@@ -4,12 +4,57 @@ exports[`snapshot parsed converter metadata on existing records 1`] = `
 {
   "net": {
     "member_source_group_ids": [],
+    "metadata": {
+      "kicad_net": {
+        "circuit_json_name": "POWER_VCC_P",
+        "name": "/POWER/VCC+",
+      },
+    },
     "name": "POWER_VCC_P",
     "source_net_id": "power",
     "trace_width": 0.8,
     "type": "source_net",
   },
   "project": {
+    "metadata": {
+      "kicad_project": {
+        "net_settings": {
+          "classes": [
+            {
+              "clearance": 0.3,
+              "name": "Power",
+              "track_width": 0.8,
+            },
+            {
+              "name": "Sense",
+              "pcb_color": "rgba(1, 2, 3, 1)",
+              "track_width": 0.8,
+            },
+            {
+              "name": "Unused",
+              "via_diameter": 0.7,
+            },
+          ],
+          "future_kicad_setting": {
+            "preserve": true,
+          },
+          "meta": {
+            "version": 4,
+          },
+          "netclass_assignments": {
+            "/POWER/VCC+": [
+              "Power",
+            ],
+          },
+          "netclass_patterns": [
+            {
+              "netclass": "Sense",
+              "pattern": "SENSE*",
+            },
+          ],
+        },
+      },
+    },
     "type": "source_project_metadata",
   },
 }
