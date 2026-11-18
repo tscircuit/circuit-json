@@ -33,8 +33,8 @@ record and its output is a `cad_` record.
     "font_size": 3,
     "anchor_position": { "x": -27, "y": 17, "z": 8 },
     "anchor_alignment": "top_left",
-    "normal": { "x": 0, "y": 0, "z": 1 },
-    "x_axis": { "x": 1, "y": 0, "z": 0 }
+    "normal_direction": { "x": 0, "y": 0, "z": 1 },
+    "x_axis_direction": { "x": 1, "y": 0, "z": 0 }
   }
 ]
 ```
@@ -74,8 +74,8 @@ placement once, and a renderer draws the text from the record alone.
 | `font_size` | Text height in mm, with the same metrics as PCB text in that font. Required. |
 | `anchor_position` | Resolved anchor point on the surface. Required. |
 | `anchor_alignment` | The point of the text's bounds that sits at the anchor. Defaults to `"center"`. |
-| `normal` | Outward unit normal of the engraved surface. Required. |
-| `x_axis` | Unit direction the text reads along. Required. |
+| `normal_direction` | Outward unit normal of the engraved surface. Required. |
+| `x_axis_direction` | Unit direction the text reads along. Required. |
 | `color` | Color the engraved area is drawn in. Optional; a renderer derives one from the part. |
 
 Distances accept unit strings such as `"3mm"` and parse to millimeters.
@@ -86,13 +86,15 @@ record by a manufacturing export, the cad record by a renderer.
 
 - The frame is in right-handed circuit world: +X right, +Y top, +Z above.
 - `anchor_position` is an absolute point in millimeters after assembly placement.
-- `normal` and `x_axis` are finite, dimensionless unit directions, perpendicular
-  to each other within a numerical tolerance of 1e-6.
+- `normal_direction` and `x_axis_direction` are finite, dimensionless unit
+  directions, perpendicular to each other within a numerical tolerance of 1e-6.
 - The text lies in the plane through `anchor_position` perpendicular to
-  `normal`. It reads along `x_axis`, and its up direction is `normal × x_axis`,
-  so it reads correctly when seen from the side `normal` points to.
+  `normal_direction`. It reads along `x_axis_direction`, and its up direction
+  is `normal_direction × x_axis_direction`, so it reads correctly when seen
+  from the side `normal_direction` points to.
 - Rotation on the surface is not a separate field. The producer applies it to
-  `x_axis`: text turned 90° clockwise on a top face has `x_axis` along -Y.
+  `x_axis_direction`: text turned 90° clockwise on a top face has
+  `x_axis_direction` along -Y.
 - `anchor_alignment` refers to the extents of the engraved strokes. A
   `top_left` anchor is the top-left corner of the ink.
 
@@ -108,8 +110,8 @@ reference surfaces. Model-only position offsets do not move the text.
   that is omitted it picks a color that contrasts with the part. Depth is a
   manufacturing fact on the source record; a renderer may draw the text flat.
 - **Manufacturing output.** An exporter reads the source records for what to
-  engrave, and can project the cad records that share a `normal` into that
-  surface's 2D frame.
+  engrave, and can project the cad records that share a `normal_direction`
+  into that surface's 2D frame.
 
 ## Left out for now
 
@@ -126,5 +128,6 @@ reference surfaces. Model-only position offsets do not move the text.
   process, like `pcb_silkscreen_text` and `pcb_copper_text` name their layer.
   The alternative is a process-neutral `cad_surface_text` that other marking
   processes reuse.
-- **Direction names.** `normal` and `x_axis` match `cad_reference_surface`.
-  The props call the surface direction `outwardNormal`.
+- **Direction names.** This record uses `normal_direction` and
+  `x_axis_direction`. `cad_reference_surface`, which is already released,
+  calls the same two directions `normal` and `x_axis`.

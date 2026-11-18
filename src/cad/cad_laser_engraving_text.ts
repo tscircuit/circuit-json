@@ -69,11 +69,11 @@ export const cad_laser_engraving_text = z
       .describe(
         "The point of the text's bounding box that sits at anchor_position.",
       ),
-    normal: unitDirection.describe(
+    normal_direction: unitDirection.describe(
       "Outward unit normal of the engraved surface in circuit-world XYZ. The text is read from this side. Dimensionless direction; transform with the part's rotation, without translation.",
     ),
-    x_axis: unitDirection.describe(
-      "Unit direction the text reads along in circuit-world XYZ, perpendicular to normal. Any rotation on the surface is already applied. The text's up direction is normal cross x_axis.",
+    x_axis_direction: unitDirection.describe(
+      "Unit direction the text reads along in circuit-world XYZ, perpendicular to normal_direction. Any rotation on the surface is already applied. The text's up direction is normal_direction cross x_axis_direction.",
     ),
     color: z
       .string()
@@ -86,12 +86,12 @@ export const cad_laser_engraving_text = z
     subcircuit_id: z.string().optional(),
   })
   .superRefine((engraving, ctx) => {
-    const { normal: n, x_axis: x } = engraving
+    const { normal_direction: n, x_axis_direction: x } = engraving
     if (Math.abs(n.x * x.x + n.y * x.y + n.z * x.z) > FRAME_TOLERANCE)
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ["x_axis"],
-        message: "x_axis must be perpendicular to normal",
+        path: ["x_axis_direction"],
+        message: "x_axis_direction must be perpendicular to normal_direction",
       })
   })
   .describe(
@@ -104,10 +104,11 @@ export type CadLaserEngravingTextInput = z.input<
 
 /** The 3D geometry of text laser engraved onto one surface of a part, in
  * right-handed circuit world: +X right, +Y top, +Z above. anchor_position is
- * an absolute point in mm; normal and x_axis are dimensionless, perpendicular
- * unit directions, within 1e-6 numerical tolerance. The text lies in the plane
- * through anchor_position perpendicular to normal, reads along x_axis, and its
- * up direction is normal cross x_axis. font_size is the text height in mm.
+ * an absolute point in mm; normal_direction and x_axis_direction are
+ * dimensionless, perpendicular unit directions, within 1e-6 numerical
+ * tolerance. The text lies in the plane through anchor_position perpendicular
+ * to normal_direction, reads along x_axis_direction, and its up direction is
+ * normal_direction cross x_axis_direction. font_size is the text height in mm.
  * color adds no default when omitted.
  */
 export interface CadLaserEngravingText {
@@ -122,8 +123,8 @@ export interface CadLaserEngravingText {
   font_size: number
   anchor_position: Point3
   anchor_alignment: NinePointAnchor
-  normal: Point3
-  x_axis: Point3
+  normal_direction: Point3
+  x_axis_direction: Point3
   color?: string
   subcircuit_id?: string
 }

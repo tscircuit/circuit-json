@@ -11,8 +11,8 @@ const engraving: CadLaserEngravingText = {
   font_size: 2.5,
   anchor_position: { x: 0, y: -25, z: 6 },
   anchor_alignment: "center",
-  normal: { x: 0, y: -1, z: 0 },
-  x_axis: { x: 1, y: 0, z: 0 },
+  normal_direction: { x: 0, y: -1, z: 0 },
+  x_axis_direction: { x: 1, y: 0, z: 0 },
 }
 
 test("cad laser engraving text rejects missing identity, blank text and invalid frames", () => {
@@ -34,13 +34,16 @@ test("cad laser engraving text rejects missing identity, blank text and invalid 
     { anchor_position: undefined },
     { anchor_position: { x: 0, y: Number.POSITIVE_INFINITY, z: 0 } },
     { anchor_alignment: "middle" },
-    { normal: undefined },
-    { normal: { x: 0, y: 0, z: 2 } },
-    { normal: { x: 0, y: 0, z: 0 } },
-    { x_axis: undefined },
-    { x_axis: { x: 0.5, y: 0, z: 0 } },
+    { normal_direction: undefined },
+    { normal_direction: { x: 0, y: 0, z: 2 } },
+    { normal_direction: { x: 0, y: 0, z: 0 } },
+    { x_axis_direction: undefined },
+    { x_axis_direction: { x: 0.5, y: 0, z: 0 } },
     // Not perpendicular to the normal.
-    { normal: { x: 0, y: 0, z: 1 }, x_axis: { x: 0, y: 0, z: 1 } },
+    {
+      normal_direction: { x: 0, y: 0, z: 1 },
+      x_axis_direction: { x: 0, y: 0, z: 1 },
+    },
     { color: " " },
   ]) {
     expect(
