@@ -12,8 +12,8 @@ const sticker: CadSticker = {
   source_component_id: "source_label",
   applied_to_source_component_id: "source_lid",
   center: { x: 0, y: 0, z: 54 },
-  normal: { x: 0, y: 0, z: 1 },
-  x_axis: { x: 1, y: 0, z: 0 },
+  normal_direction: { x: 0, y: 0, z: 1 },
+  x_axis_direction: { x: 1, y: 0, z: 0 },
   width: 30,
   height: 16,
 }

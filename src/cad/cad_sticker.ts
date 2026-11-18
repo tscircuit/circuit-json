@@ -42,20 +42,22 @@ export const cad_sticker = z
       .describe(
         "Center of the sticker's adhesive face, on the surface it is applied to. Right-handed circuit-world XYZ, millimeters: +X right, +Y top, +Z above. An absolute point after assembly placement.",
       ),
-    normal: unitDirection.describe(
+    normal_direction: unitDirection.describe(
       "Unit direction the printed face points, away from the surface, in circuit-world XYZ. A dimensionless direction, not a point.",
     ),
-    x_axis: unitDirection.describe(
-      "In-plane unit direction of the artwork's left-to-right, in circuit-world XYZ, perpendicular to normal. It includes any rotation on the surface. The artwork's bottom-to-top is normal cross x_axis.",
+    x_axis_direction: unitDirection.describe(
+      "In-plane unit direction of the artwork's left-to-right, in circuit-world XYZ, perpendicular to normal_direction. It includes any rotation on the surface. The artwork's bottom-to-top is normal_direction cross x_axis_direction.",
     ),
-    width: extent.describe("Sticker extent along x_axis in millimeters."),
+    width: extent.describe(
+      "Sticker extent along x_axis_direction in millimeters.",
+    ),
     height: extent.describe(
-      "Sticker extent along normal cross x_axis in millimeters.",
+      "Sticker extent along normal_direction cross x_axis_direction in millimeters.",
     ),
     thickness: extent
       .optional()
       .describe(
-        "Sticker thickness including adhesive, measured along normal from center, in millimeters. Omission leaves it unspecified.",
+        "Sticker thickness including adhesive, measured along normal_direction from center, in millimeters. Omission leaves it unspecified.",
       ),
     image_asset: asset
       .optional()
@@ -73,12 +75,12 @@ export const cad_sticker = z
     subcircuit_id: z.string().optional(),
   })
   .superRefine((sticker, ctx) => {
-    const { normal: n, x_axis: x } = sticker
+    const { normal_direction: n, x_axis_direction: x } = sticker
     if (Math.abs(n.x * x.x + n.y * x.y + n.z * x.z) > FRAME_TOLERANCE)
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ["x_axis"],
-        message: "x_axis must be perpendicular to normal",
+        path: ["x_axis_direction"],
+        message: "x_axis_direction must be perpendicular to normal_direction",
       })
   })
   .describe(
@@ -88,10 +90,11 @@ export const cad_sticker = z
 export type CadStickerInput = z.input<typeof cad_sticker>
 
 /** An adhesive sticker in right-handed circuit world: +X right, +Y top, +Z
- * above. Center, width, height and thickness are mm. Normal and x_axis are
- * dimensionless, perpendicular unit directions, within 1e-6 numerical
- * tolerance. Seen from outside, looking against normal, the artwork reads left
- * to right along x_axis with its top toward normal cross x_axis.
+ * above. Center, width, height and thickness are mm. normal_direction and
+ * x_axis_direction are dimensionless, perpendicular unit directions, within
+ * 1e-6 numerical tolerance. Seen from outside, looking against
+ * normal_direction, the artwork reads left to right along x_axis_direction
+ * with its top toward normal_direction cross x_axis_direction.
  */
 export interface CadSticker {
   type: "cad_sticker"
@@ -103,12 +106,12 @@ export interface CadSticker {
   /** Center of the adhesive face, on the surface the sticker is applied to. */
   center: Point3
   /** Direction the printed face points, away from the surface. */
-  normal: Point3
+  normal_direction: Point3
   /** The artwork's left-to-right direction, including rotation on the surface. */
-  x_axis: Point3
+  x_axis_direction: Point3
   width: number
   height: number
-  /** Includes adhesive; measured along normal. Unspecified when omitted. */
+  /** Includes adhesive; measured along normal_direction. Unspecified when omitted. */
   thickness?: number
   /** Printed artwork stretched to width by height; omitted when unprinted. */
   image_asset?: Asset
