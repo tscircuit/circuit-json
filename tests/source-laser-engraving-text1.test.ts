@@ -1,16 +1,15 @@
 import { expect, test } from "bun:test"
 import {
   any_circuit_element,
-  source_manufacturing_laser_engraving_text,
+  source_laser_engraving_text,
   type CircuitJson,
-  type SourceManufacturingLaserEngravingText,
+  type SourceLaserEngravingText,
 } from "../src"
 
 test("source laser engraving text records what is engraved and links to its geometry", () => {
-  const engraving: SourceManufacturingLaserEngravingText = {
-    type: "source_manufacturing_laser_engraving_text",
-    source_manufacturing_laser_engraving_text_id:
-      "source_manufacturing_laser_engraving_text_0",
+  const engraving: SourceLaserEngravingText = {
+    type: "source_laser_engraving_text",
+    source_laser_engraving_text_id: "source_laser_engraving_text_0",
     source_component_id: "source_lid",
     text: "REV B",
   }
@@ -20,8 +19,7 @@ test("source laser engraving text records what is engraved and links to its geom
     {
       type: "cad_laser_engraving_text",
       cad_laser_engraving_text_id: "cad_laser_engraving_text_0",
-      source_manufacturing_laser_engraving_text_id:
-        engraving.source_manufacturing_laser_engraving_text_id,
+      source_laser_engraving_text_id: engraving.source_laser_engraving_text_id,
       source_component_id: "source_lid",
       text: "REV B",
       font: "tscircuit2024",
@@ -38,7 +36,7 @@ test("source laser engraving text records what is engraved and links to its geom
     ).toEqual(element)
 
   expect(
-    source_manufacturing_laser_engraving_text.parse({
+    source_laser_engraving_text.parse({
       ...engraving,
       name: " REV ",
       engraving_depth: "0.1mm",
@@ -51,13 +49,13 @@ test("source laser engraving text records what is engraved and links to its geom
     subcircuit_id: "sub_1",
   })
   // Depth is a manufacturing fact: none is assumed.
-  const parsed = source_manufacturing_laser_engraving_text.parse(engraving)
+  const parsed = source_laser_engraving_text.parse(engraving)
   expect(parsed).not.toHaveProperty("engraving_depth")
   expect(parsed).not.toHaveProperty("name")
 
   for (const overrides of [
-    { source_manufacturing_laser_engraving_text_id: undefined },
-    { source_manufacturing_laser_engraving_text_id: "" },
+    { source_laser_engraving_text_id: undefined },
+    { source_laser_engraving_text_id: "" },
     { source_component_id: undefined },
     { source_component_id: "" },
     { name: " " },
@@ -68,7 +66,7 @@ test("source laser engraving text records what is engraved and links to its geom
     { engraving_depth: Number.POSITIVE_INFINITY },
   ]) {
     expect(
-      source_manufacturing_laser_engraving_text.safeParse({
+      source_laser_engraving_text.safeParse({
         ...engraving,
         ...overrides,
       }).success,

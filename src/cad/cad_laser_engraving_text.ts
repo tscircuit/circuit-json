@@ -24,7 +24,7 @@ export const cad_laser_engraving_text = z
   .object({
     type: z.literal("cad_laser_engraving_text"),
     cad_laser_engraving_text_id: z.string().min(1),
-    source_manufacturing_laser_engraving_text_id: z
+    source_laser_engraving_text_id: z
       .string()
       .min(1)
       .describe(
@@ -95,7 +95,7 @@ export const cad_laser_engraving_text = z
       })
   })
   .describe(
-    "The 3D geometry of text laser engraved onto one surface of an assembly part, with a resolved world-space frame. The producer resolves the surface and placement; renderers consume the frame without reapplying the owning model's transform. What is engraved and how is in the linked source_manufacturing_laser_engraving_text.",
+    "The 3D geometry of text laser engraved onto one surface of an assembly part, with a resolved world-space frame. The producer resolves the surface and placement; renderers consume the frame without reapplying the owning model's transform. What is engraved and how is in the linked source_laser_engraving_text.",
   )
 
 export type CadLaserEngravingTextInput = z.input<
@@ -113,7 +113,7 @@ export type CadLaserEngravingTextInput = z.input<
 export interface CadLaserEngravingText {
   type: "cad_laser_engraving_text"
   cad_laser_engraving_text_id: string
-  source_manufacturing_laser_engraving_text_id: string
+  source_laser_engraving_text_id: string
   source_component_id: string
   cad_component_id?: string
   cad_reference_surface_id?: string

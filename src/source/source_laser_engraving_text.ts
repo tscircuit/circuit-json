@@ -2,10 +2,10 @@ import { z } from "zod"
 import { distance } from "../units"
 import { expectTypesMatch } from "../utils/expect-types-match"
 
-export const source_manufacturing_laser_engraving_text = z
+export const source_laser_engraving_text = z
   .object({
-    type: z.literal("source_manufacturing_laser_engraving_text"),
-    source_manufacturing_laser_engraving_text_id: z.string().min(1),
+    type: z.literal("source_laser_engraving_text"),
+    source_laser_engraving_text_id: z.string().min(1),
     source_component_id: z
       .string()
       .min(1)
@@ -32,8 +32,8 @@ export const source_manufacturing_laser_engraving_text = z
     "A manufacturing step that laser engraves text onto an assembly part. It records what is engraved and how; where the text sits in 3D is in the linked cad_laser_engraving_text.",
   )
 
-export type SourceManufacturingLaserEngravingTextInput = z.input<
-  typeof source_manufacturing_laser_engraving_text
+export type SourceLaserEngravingTextInput = z.input<
+  typeof source_laser_engraving_text
 >
 
 /** A manufacturing step that laser engraves text onto an assembly part. It
@@ -41,9 +41,9 @@ export type SourceManufacturingLaserEngravingTextInput = z.input<
  * material removed in mm. engraving_depth adds no default when omitted. Where
  * the text sits in 3D is in the cad_laser_engraving_text that links to it.
  */
-export interface SourceManufacturingLaserEngravingText {
-  type: "source_manufacturing_laser_engraving_text"
-  source_manufacturing_laser_engraving_text_id: string
+export interface SourceLaserEngravingText {
+  type: "source_laser_engraving_text"
+  source_laser_engraving_text_id: string
   source_component_id: string
   name?: string
   text: string
@@ -52,6 +52,6 @@ export interface SourceManufacturingLaserEngravingText {
 }
 
 expectTypesMatch<
-  SourceManufacturingLaserEngravingText,
-  z.infer<typeof source_manufacturing_laser_engraving_text>
+  SourceLaserEngravingText,
+  z.infer<typeof source_laser_engraving_text>
 >(true)

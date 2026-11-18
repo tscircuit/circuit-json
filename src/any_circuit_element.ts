@@ -58,7 +58,7 @@ export const any_circuit_element = z.union([
   src.source_simple_push_button,
   src.source_pcb_ground_plane,
   src.source_manually_placed_via,
-  src.source_manufacturing_laser_engraving_text,
+  src.source_laser_engraving_text,
   src.source_board,
   src.source_project_metadata,
   src.source_invalid_component_property_error,

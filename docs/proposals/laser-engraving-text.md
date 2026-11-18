@@ -3,20 +3,21 @@
 Text laser engraved onto an assembly part is two records, split the way
 Circuit JSON already splits source and output:
 
-- `source_manufacturing_laser_engraving_text` says what is engraved and how. It
+- `source_laser_engraving_text` says what is engraved and how. It
   is the manufacturing step, with no geometry.
 - `cad_laser_engraving_text` is the 3D output: where that text sits on the
   part, as a resolved world-space frame.
 
 Together they are the Circuit JSON counterpart of the
-`<manufacturing.laserengraving.text />` props element. `manufacturing` is a
-source concept here, not an output namespace; the output lives under `cad_`.
+`<manufacturing.laserengraving.text />` props element. The props namespace
+`manufacturing` does not become a Circuit JSON prefix: the step is a `source_`
+record and its output is a `cad_` record.
 
 ```json
 [
   {
-    "type": "source_manufacturing_laser_engraving_text",
-    "source_manufacturing_laser_engraving_text_id": "source_manufacturing_laser_engraving_text_0",
+    "type": "source_laser_engraving_text",
+    "source_laser_engraving_text_id": "source_laser_engraving_text_0",
     "source_component_id": "source_lid",
     "text": "REV B",
     "engraving_depth": 0.1
@@ -24,7 +25,7 @@ source concept here, not an output namespace; the output lives under `cad_`.
   {
     "type": "cad_laser_engraving_text",
     "cad_laser_engraving_text_id": "cad_laser_engraving_text_0",
-    "source_manufacturing_laser_engraving_text_id": "source_manufacturing_laser_engraving_text_0",
+    "source_laser_engraving_text_id": "source_laser_engraving_text_0",
     "source_component_id": "source_lid",
     "cad_component_id": "cad_component_lid",
     "text": "REV B",
@@ -51,7 +52,7 @@ says where the text is, and `cad_laser_engraving_text` is that record. It
 follows `cad_reference_surface`: the producer resolves the surface and the
 placement once, and a renderer draws the text from the record alone.
 
-## `source_manufacturing_laser_engraving_text`
+## `source_laser_engraving_text`
 
 | Field | Meaning |
 | --- | --- |
@@ -64,7 +65,7 @@ placement once, and a renderer draws the text from the record alone.
 
 | Field | Meaning |
 | --- | --- |
-| `source_manufacturing_laser_engraving_text_id` | The engraving this geometry draws. Required. |
+| `source_laser_engraving_text_id` | The engraving this geometry draws. Required. |
 | `source_component_id` | The part that is engraved. Required. |
 | `cad_component_id` | The CAD geometry the text sits on. Optional, for a part with no CAD component. |
 | `cad_reference_surface_id` | The named reference surface the text was placed on, when there is one. Informational; the frame is already resolved. |

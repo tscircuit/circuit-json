@@ -4,8 +4,7 @@ import { cad_laser_engraving_text, type CadLaserEngravingText } from "../src"
 const engraving: CadLaserEngravingText = {
   type: "cad_laser_engraving_text",
   cad_laser_engraving_text_id: "cad_laser_engraving_text_0",
-  source_manufacturing_laser_engraving_text_id:
-    "source_manufacturing_laser_engraving_text_0",
+  source_laser_engraving_text_id: "source_laser_engraving_text_0",
   source_component_id: "source_lid",
   text: "SN 0001",
   font: "tscircuit2024",
@@ -20,8 +19,8 @@ test("cad laser engraving text rejects missing identity, blank text and invalid 
   for (const overrides of [
     { cad_laser_engraving_text_id: undefined },
     { cad_laser_engraving_text_id: "" },
-    { source_manufacturing_laser_engraving_text_id: undefined },
-    { source_manufacturing_laser_engraving_text_id: "" },
+    { source_laser_engraving_text_id: undefined },
+    { source_laser_engraving_text_id: "" },
     { source_component_id: undefined },
     { source_component_id: "" },
     { cad_component_id: "" },
