@@ -1,13 +1,15 @@
 import { expect, test } from "bun:test"
 import {
   any_circuit_element,
-  manufacturing_laser_engraving_text,
-  type ManufacturingLaserEngravingText,
+  cad_laser_engraving_text,
+  type CadLaserEngravingText,
 } from "../src"
 
-const engraving: ManufacturingLaserEngravingText = {
-  type: "manufacturing_laser_engraving_text",
-  manufacturing_laser_engraving_text_id: "manufacturing_laser_engraving_text_0",
+const engraving: CadLaserEngravingText = {
+  type: "cad_laser_engraving_text",
+  cad_laser_engraving_text_id: "cad_laser_engraving_text_0",
+  source_manufacturing_laser_engraving_text_id:
+    "source_manufacturing_laser_engraving_text_0",
   source_component_id: "source_lid",
   text: "SN 0001",
   font: "tscircuit2024",
@@ -36,11 +38,11 @@ test("laser engraving frames keep tilted and rotated directions as authored", ()
     normal: { x: 0, y: 0, z: 1 },
     x_axis: { x: s, y: s, z: 0 },
   }
-  expect(manufacturing_laser_engraving_text.parse(rotated)).toEqual(rotated)
+  expect(cad_laser_engraving_text.parse(rotated)).toEqual(rotated)
 
   // Rigid transforms leave small errors in unit directions.
   expect(
-    manufacturing_laser_engraving_text.safeParse({
+    cad_laser_engraving_text.safeParse({
       ...tilted,
       normal: { x: 0.70710677, y: 0, z: 0.70710677 },
     }).success,

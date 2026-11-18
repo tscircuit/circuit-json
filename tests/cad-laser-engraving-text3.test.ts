@@ -1,12 +1,11 @@
 import { expect, test } from "bun:test"
-import {
-  manufacturing_laser_engraving_text,
-  type ManufacturingLaserEngravingText,
-} from "../src"
+import { cad_laser_engraving_text, type CadLaserEngravingText } from "../src"
 
-const engraving: ManufacturingLaserEngravingText = {
-  type: "manufacturing_laser_engraving_text",
-  manufacturing_laser_engraving_text_id: "manufacturing_laser_engraving_text_0",
+const engraving: CadLaserEngravingText = {
+  type: "cad_laser_engraving_text",
+  cad_laser_engraving_text_id: "cad_laser_engraving_text_0",
+  source_manufacturing_laser_engraving_text_id:
+    "source_manufacturing_laser_engraving_text_0",
   source_component_id: "source_lid",
   text: "SN 0001",
   font: "tscircuit2024",
@@ -17,15 +16,16 @@ const engraving: ManufacturingLaserEngravingText = {
   x_axis: { x: 1, y: 0, z: 0 },
 }
 
-test("laser engraving text rejects missing identity, blank text and invalid frames", () => {
+test("cad laser engraving text rejects missing identity, blank text and invalid frames", () => {
   for (const overrides of [
-    { manufacturing_laser_engraving_text_id: undefined },
-    { manufacturing_laser_engraving_text_id: "" },
+    { cad_laser_engraving_text_id: undefined },
+    { cad_laser_engraving_text_id: "" },
+    { source_manufacturing_laser_engraving_text_id: undefined },
+    { source_manufacturing_laser_engraving_text_id: "" },
     { source_component_id: undefined },
     { source_component_id: "" },
     { cad_component_id: "" },
     { cad_reference_surface_id: "" },
-    { name: " " },
     { text: " " },
     { text: undefined },
     { font: "comic" },
@@ -42,12 +42,10 @@ test("laser engraving text rejects missing identity, blank text and invalid fram
     { x_axis: { x: 0.5, y: 0, z: 0 } },
     // Not perpendicular to the normal.
     { normal: { x: 0, y: 0, z: 1 }, x_axis: { x: 0, y: 0, z: 1 } },
-    { engraving_depth: 0 },
-    { engraving_depth: -0.1 },
-    { resulting_color: " " },
+    { color: " " },
   ]) {
     expect(
-      manufacturing_laser_engraving_text.safeParse({
+      cad_laser_engraving_text.safeParse({
         ...engraving,
         ...overrides,
       }).success,

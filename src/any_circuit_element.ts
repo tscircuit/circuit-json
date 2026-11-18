@@ -1,7 +1,6 @@
 import { z } from "zod"
 import * as cad from "./cad"
 import * as drawings from "./drawing"
-import * as manufacturing from "./manufacturing"
 import * as pcb from "./pcb"
 import * as sch from "./schematic"
 import * as sim from "./simulation"
@@ -59,6 +58,7 @@ export const any_circuit_element = z.union([
   src.source_simple_push_button,
   src.source_pcb_ground_plane,
   src.source_manually_placed_via,
+  src.source_manufacturing_laser_engraving_text,
   src.source_board,
   src.source_project_metadata,
   src.source_invalid_component_property_error,
@@ -199,7 +199,7 @@ export const any_circuit_element = z.union([
   cad.cad_collision_error,
   cad.cad_explosion_collision_error,
   cad.cad_explosion_collision_check_warning,
-  manufacturing.manufacturing_laser_engraving_text,
+  cad.cad_laser_engraving_text,
   sim.simulation_voltage_source,
   sim.simulation_current_source,
   sim.simulation_experiment,
