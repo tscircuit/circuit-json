@@ -37,6 +37,7 @@ export const any_circuit_element = z.union([
   src.source_component_internal_connection,
   src.any_source_component,
   src.source_net,
+  src.source_net_class,
   src.source_group,
   src.source_simple_chip,
   src.source_simple_capacitor,

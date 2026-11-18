@@ -12,6 +12,7 @@ export const source_net = z.object({
   is_analog_signal: z.boolean().optional(),
   is_positive_voltage_source: z.boolean().optional(),
   trace_width: z.number().optional(),
+  source_net_class_ids: z.array(z.string()).optional(),
   min_trace_clearance: z.number().finite().nonnegative().optional(),
   subcircuit_id: z.string().optional(),
   subcircuit_connectivity_map_key: z.string().optional(),
@@ -31,6 +32,8 @@ export interface SourceNet {
   is_analog_signal?: boolean
   is_positive_voltage_source?: boolean
   trace_width?: number
+  /** Assigned routing classes, highest precedence first. Omitted for legacy nets. */
+  source_net_class_ids?: string[]
   /**
    * Minimum edge-to-edge clearance in mm from a trace to a different net's
    * trace, pad, or via copper on a shared layer. Use the largest applicable
