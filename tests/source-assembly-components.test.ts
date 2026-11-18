@@ -5,9 +5,11 @@ import {
   cad_component,
   source_motor,
   source_printed_part,
+  source_sticker,
   source_subassembly,
   type SourceMotor,
   type SourcePrintedPart,
+  type SourceSticker,
   type SourceSubassembly,
 } from "../src"
 
@@ -15,6 +17,7 @@ const assemblyTypes = [
   { schema: source_printed_part, ftype: "printedpart" },
   { schema: source_subassembly, ftype: "subassembly" },
   { schema: source_motor, ftype: "motor" },
+  { schema: source_sticker, ftype: "sticker" },
 ] as const
 
 for (const { schema, ftype } of assemblyTypes) {
@@ -28,7 +31,11 @@ for (const { schema, ftype } of assemblyTypes) {
       source_group_id: "source_group_1",
       subcircuit_id: "subcircuit_1",
       manufacturer_part_number: "PART-001",
-    } satisfies SourcePrintedPart | SourceSubassembly | SourceMotor
+    } satisfies
+      | SourcePrintedPart
+      | SourceSubassembly
+      | SourceMotor
+      | SourceSticker
 
     expect(schema.parse(component)).toEqual(component)
     expect(any_source_component.parse(component)).toEqual(component)
