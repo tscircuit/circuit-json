@@ -8,6 +8,7 @@ export const supplier_name = z.enum([
   "digikey",
   "mouser",
   "lcsc",
+  "sparkfun",
 ])
 
 type InferredSupplierName = z.infer<typeof supplier_name>
@@ -19,5 +20,6 @@ export type SupplierName =
   | "digikey"
   | "mouser"
   | "lcsc"
+  | "sparkfun"
 
 expectTypesMatch<SupplierName, InferredSupplierName>(true)
