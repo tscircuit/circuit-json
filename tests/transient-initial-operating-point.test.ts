@@ -12,6 +12,7 @@ test("serializes a transient initial operating-point request", () => {
 
   expect(experiment).toMatchInlineSnapshot(`
     {
+      "calculate_initial_operating_point": true,
       "experiment_type": "spice_transient_analysis",
       "name": "5-V RC steady state",
       "simulation_experiment_id": "simulation_experiment_0",
