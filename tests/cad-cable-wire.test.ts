@@ -10,7 +10,6 @@ test("cable wires map one contact at each end and reject invalid pins and attrib
     to_pin_number: 2,
     color: "black",
     wire_awg: 22,
-    wire_style: "UL1007",
     name: "B+",
   }
   expect(any_circuit_element.parse(wire)).toEqual(wire)

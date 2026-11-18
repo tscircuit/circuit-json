@@ -12,7 +12,6 @@ export const cad_cable_wire = z
     to_pin_number: pin_number,
     color: z.string().trim().min(1).optional(),
     wire_awg: z.number().finite().nonnegative().optional(),
-    wire_style: z.string().trim().min(1).optional(),
     name: z.string().trim().min(1).optional(),
   })
   .describe(
@@ -32,8 +31,6 @@ export interface CadCableWire {
   color?: string
   /** Conductor size, American Wire Gauge. */
   wire_awg?: number
-  /** Wire type designation, e.g. the UL AWM style "UL1007". */
-  wire_style?: string
   /** Optional signal or conductor name, e.g. "A+". */
   name?: string
 }
