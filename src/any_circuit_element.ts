@@ -25,6 +25,10 @@ export const any_circuit_element = z.union([
   drawings.drawing_part_view,
   drawings.drawing_explosion_view,
   drawings.drawing_dimension_line,
+  drawings.drawing_wiring_harness_view,
+  drawings.drawing_table,
+  drawings.drawing_table_cell,
+  drawings.drawing_balloon,
   src.source_runtime_error,
   // TODO source_config
   // TODO pcb_config
@@ -194,6 +198,7 @@ export const any_circuit_element = z.union([
   cad.cad_explosion_stage,
   cad.cad_explosion_move,
   cad.cad_cable,
+  cad.cad_cable_wire,
   cad.cad_reference_surface,
   cad.cad_collision_error,
   cad.cad_explosion_collision_error,

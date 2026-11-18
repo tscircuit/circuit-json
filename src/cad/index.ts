@@ -10,3 +10,4 @@ export * from "./cad_explosion_stage"
 export * from "./cad_explosion_move"
 
 export * from "./cad_assembly_bom_item"
+export * from "./cad_cable_wire"
