@@ -2555,10 +2555,12 @@ interface PcbKeepoutOutline {
    * False or omitted preserves normal enforcement. Component exclusions still apply. */
 
   warning_only?: boolean
-  /** Allow trace crossings without keepout diagnostics; copper pours remain excluded. */
+  /** Allow trace crossings without keepout diagnostics; copper pours remain excluded unless allow_copper_pour is true. */
   allow_traces?: boolean
-  /** Allow components and their pads/plated holes without keepout diagnostics; copper pours remain excluded. */
+  /** Allow components and their pads/plated holes without keepout diagnostics; copper pours remain excluded unless allow_copper_pour is true. */
   allow_placements?: boolean
+  /** Allow copper pours inside the keepout without clipping. False or omitted excludes copper pours. */
+  allow_copper_pour?: boolean
 }
 
 interface PCBKeepoutRect {
@@ -2580,10 +2582,12 @@ interface PCBKeepoutRect {
    * False or omitted preserves normal enforcement. Component exclusions still apply. */
 
   warning_only?: boolean
-  /** Allow trace crossings without keepout diagnostics; copper pours remain excluded. */
+  /** Allow trace crossings without keepout diagnostics; copper pours remain excluded unless allow_copper_pour is true. */
   allow_traces?: boolean
-  /** Allow components and their pads/plated holes without keepout diagnostics; copper pours remain excluded. */
+  /** Allow components and their pads/plated holes without keepout diagnostics; copper pours remain excluded unless allow_copper_pour is true. */
   allow_placements?: boolean
+  /** Allow copper pours inside the keepout without clipping. False or omitted excludes copper pours. */
+  allow_copper_pour?: boolean
 }
 
 interface PCBKeepoutCircle {
@@ -2604,10 +2608,12 @@ interface PCBKeepoutCircle {
    * False or omitted preserves normal enforcement. Component exclusions still apply. */
 
   warning_only?: boolean
-  /** Allow trace crossings without keepout diagnostics; copper pours remain excluded. */
+  /** Allow trace crossings without keepout diagnostics; copper pours remain excluded unless allow_copper_pour is true. */
   allow_traces?: boolean
-  /** Allow components and their pads/plated holes without keepout diagnostics; copper pours remain excluded. */
+  /** Allow components and their pads/plated holes without keepout diagnostics; copper pours remain excluded unless allow_copper_pour is true. */
   allow_placements?: boolean
+  /** Allow copper pours inside the keepout without clipping. False or omitted excludes copper pours. */
+  allow_copper_pour?: boolean
 }
 
 type PCBKeepout = PCBKeepoutRect | PCBKeepoutCircle | PcbKeepoutOutline
