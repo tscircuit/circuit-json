@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { getZodPrefixedIdWithDefault } from "src/common"
-import { current, frequency, rotation } from "src/units"
+import { current, frequency, ms, rotation } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import {
   wave_shape,
@@ -59,6 +59,11 @@ export const simulation_ac_current_source = z
     wave_shape: wave_shape.optional(),
     phase: rotation.optional(),
     duty_cycle: percentage.optional(),
+    pulse_delay: ms.optional(),
+    rise_time: ms.optional(),
+    fall_time: ms.optional(),
+    pulse_width: ms.optional(),
+    period: ms.optional(),
     ac_magnitude: current.optional(),
     ac_phase: rotation.optional(),
   })
@@ -111,6 +116,11 @@ export interface SimulationAcCurrentSource {
   wave_shape?: WaveShape
   phase?: number
   duty_cycle?: number
+  pulse_delay?: number // ms
+  rise_time?: number // ms
+  fall_time?: number // ms
+  pulse_width?: number // ms
+  period?: number // ms
   ac_magnitude?: number
   ac_phase?: number
 }

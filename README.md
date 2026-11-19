@@ -42,6 +42,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
 <!-- toc:start -->
 
 - [Circuit JSON Specification `circuit-json`](#circuit-json-specification-circuit-json)
+
   - [Things You Can Do With Circuit JSON](#things-you-can-do-with-circuit-json)
   - [Typescript Usage](#typescript-usage)
 
@@ -61,6 +62,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceI2cMisconfiguredError](#sourcei2cmisconfigurederror)
     - [SourceInterconnect](#sourceinterconnect)
     - [SourceInvalidComponentPropertyError](#sourceinvalidcomponentpropertyerror)
+    - [SourceLaserEngravingText](#sourcelaserengravingtext)
     - [SourceManuallyPlacedVia](#sourcemanuallyplacedvia)
     - [SourceMissingManufacturerPartNumberWarning](#sourcemissingmanufacturerpartnumberwarning)
     - [SourceMissingPropertyError](#sourcemissingpropertyerror)
@@ -106,6 +108,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SourceSimpleTransistor](#sourcesimpletransistor)
     - [SourceSimpleVoltageProbe](#sourcesimplevoltageprobe)
     - [SourceSimpleVoltageSource](#sourcesimplevoltagesource)
+    - [SourceSticker](#sourcesticker)
     - [SourceSubassembly](#sourcesubassembly)
     - [SourceTrace](#sourcetrace)
     - [SourceTraceNotConnectedError](#sourcetracenotconnectederror)
@@ -114,11 +117,16 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
   - [CAD Components](#cad-components)
     - [CadAssemblyBomItem](#cadassemblybomitem)
     - [CadCable](#cadcable)
+    - [CadCableWire](#cadcablewire)
     - [CadCollisionError](#cadcollisionerror)
     - [CadComponent](#cadcomponent)
+    - [CadExplosionCollisionCheckWarning](#cadexplosioncollisioncheckwarning)
+    - [CadExplosionCollisionError](#cadexplosioncollisionerror)
     - [CadExplosionMove](#cadexplosionmove)
     - [CadExplosionStage](#cadexplosionstage)
+    - [CadLaserEngravingText](#cadlaserengravingtext)
     - [CadReferenceSurface](#cadreferencesurface)
+    - [CadSticker](#cadsticker)
   - [PCB Elements](#pcb-elements)
     - [PcbAutoroutingError](#pcbautoroutingerror)
     - [PcbBend](#pcbbend)
@@ -134,6 +142,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbComponentOutsideBoardError](#pcbcomponentoutsideboarderror)
     - [PcbConnectorNotInAccessibleOrientationWarning](#pcbconnectornotinaccessibleorientationwarning)
     - [PcbCopperPour](#pcbcopperpour)
+    - [PcbCopperPourIsolatedWarning](#pcbcopperpourisolatedwarning)
     - [PcbCopperText](#pcbcoppertext)
     - [PcbCourtyardCircle](#pcbcourtyardcircle)
     - [PcbCourtyardOutline](#pcbcourtyardoutline)
@@ -270,6 +279,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [SimulationVoltageSource](#simulationvoltagesource)
   - [Drawing Elements](#drawing-elements)
     - [DrawingAssemblyStage](#drawingassemblystage)
+    - [DrawingBalloon](#drawingballoon)
     - [DrawingDimensionLine](#drawingdimensionline)
     - [DrawingExplosionView](#drawingexplosionview)
     - [DrawingPage](#drawingpage)
@@ -277,6 +287,9 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [DrawingPageTitleBlock](#drawingpagetitleblock)
     - [DrawingPartLabel](#drawingpartlabel)
     - [DrawingPartView](#drawingpartview)
+    - [DrawingTable](#drawingtable)
+    - [DrawingTableCell](#drawingtablecell)
+    - [DrawingWiringHarnessView](#drawingwiringharnessview)
   - [System Block Elements](#system-block-elements)
     - [SystemBlockComponent](#systemblockcomponent)
     - [SystemBlockConnection](#systemblockconnection)
@@ -303,7 +316,9 @@ const resistor: SourceSimpleResistor = simple_source_resistor.parse({
 console.log(resistor.resistance) // 1000
 
 // This is the common way to parse/transform any element
-any_circuit_element.parse({/* ... */})
+any_circuit_element.parse({
+  /* ... */
+})
 ```
 
 ## Base Units
@@ -665,6 +680,26 @@ interface SourceInvalidComponentPropertyError extends BaseCircuitJsonError {
   expected_format?: string
   subcircuit_id?: string
   error_type: "source_invalid_component_property_error"
+}
+```
+
+### SourceLaserEngravingText
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_laser_engraving_text.ts)
+
+```typescript
+/** A manufacturing step that laser engraves text onto an assembly part. It
+ * records what is engraved and how: the part, the text and the depth of
+ * material removed in mm. engraving_depth adds no default when omitted. Where
+ * the text sits in 3D is in the cad_laser_engraving_text that links to it. */
+interface SourceLaserEngravingText {
+  type: "source_laser_engraving_text"
+  source_laser_engraving_text_id: string
+  source_component_id: string
+  name?: string
+  text: string
+  engraving_depth?: number
+  subcircuit_id?: string
 }
 ```
 
@@ -1038,10 +1073,8 @@ interface SourceRefdesConventionWarning {
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_runtime_error.ts)
 
 ```typescript
-interface SourceRuntimeError extends Pick<
-  BaseCircuitJsonError,
-  "message" | "error_type"
-> {
+interface SourceRuntimeError
+  extends Pick<BaseCircuitJsonError, "message" | "error_type"> {
   type: "source_runtime_error"
   source_runtime_error_id: string
   error_type: "source_runtime_error"
@@ -1160,6 +1193,11 @@ interface SourceSimpleCurrentSource extends SourceComponentBase {
   wave_shape: "sine" | "square" | "triangle" | "sawtooth" | "dc"
   phase?: number
   duty_cycle?: number
+  pulse_delay?: number // ms
+  rise_time?: number // ms
+  fall_time?: number // ms
+  pulse_width?: number // ms
+  period?: number // ms
 }
 ```
 
@@ -1451,6 +1489,18 @@ interface SourceSimpleVoltageSource extends SourceComponentBase {
 }
 ```
 
+### SourceSticker
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_sticker.ts)
+
+```typescript
+/** Defines an adhesive sticker in an assembly. Its placement and appearance
+ * are carried by cad_sticker. */
+interface SourceSticker extends SourceComponentBase {
+  ftype: "sticker"
+}
+```
+
 ### SourceSubassembly
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/source/source_subassembly.ts)
@@ -1573,6 +1623,8 @@ interface CadAssemblyBomItem {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_cable.ts)
 
+Manufactured length between the connector wire exits, mm. Not the path length.
+
 ```typescript
 /** Resolved cable geometry in circuit-world XYZ, mm, +Z up. Path samples are
  * points; first and last are wire exits. Optional pin 1 positions are absolute
@@ -1589,7 +1641,39 @@ interface CadCable {
   from_connector_pin1_position?: Point3
   to_connector_pin1_position?: Point3
   cableprinter_string: string
+  /** Manufactured length between the connector wire exits, mm. Not the path length. */
+  nominal_length?: number
+  /** Symmetric plus/minus tolerance on nominal_length, mm. Requires nominal_length. */
+  length_tolerance?: number
+  /** Designators of the cable's own connectors, e.g. "H1"/"H2". */
+  from_connector_name?: string
+  to_connector_name?: string
   path: Point3[]
+}
+```
+
+### CadCableWire
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_cable_wire.ts)
+
+One conductor of a cable. Unlisted connector cavities are unpopulated.
+
+```typescript
+/** One conductor of a cable. Unlisted connector cavities are unpopulated. */
+interface CadCableWire {
+  type: "cad_cable_wire"
+  cad_cable_wire_id: string
+  cad_cable_id: string
+  /** 1-based contact position on the cable's from-end connector. */
+  from_pin_number: number
+  /** 1-based contact position on the cable's to-end connector. */
+  to_pin_number: number
+  /** Insulation color name as it should read on a drawing, e.g. "black" or "red/white". */
+  color?: string
+  /** Conductor size, American Wire Gauge. */
+  wire_awg?: number
+  /** Optional signal or conductor name, e.g. "A+". */
+  name?: string
 }
 ```
 
@@ -1664,6 +1748,47 @@ interface CadComponent {
 }
 ```
 
+### CadExplosionCollisionCheckWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_explosion_collision_check_warning.ts)
+
+```typescript
+interface CadExplosionCollisionCheckWarning extends BaseCircuitJsonError {
+  type: "cad_explosion_collision_check_warning"
+  cad_explosion_collision_check_warning_id: string
+  error_type: "cad_explosion_collision_check_warning"
+  cad_explosion_stage_ids: string[]
+  cad_component_ids: string[]
+  pcb_board_ids: string[]
+  reason: "unsupported_geometry" | "invalid_geometry" | "collision_check_failed"
+}
+```
+
+### CadExplosionCollisionError
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_explosion_collision_error.ts)
+
+Newly swept obstacle volume in mm³, excluding the move's initial solid.
+
+```typescript
+interface CadExplosionCollisionError extends BaseCircuitJsonError {
+  type: "cad_explosion_collision_error"
+  cad_explosion_collision_error_id: string
+  error_type: "cad_explosion_collision_error"
+  cad_explosion_stage_id: string
+  cad_explosion_move_id: string
+  moving_cad_component_id: string
+  obstacle: CadExplosionCollisionObstacle
+  source_component_ids: string[]
+  /** Newly swept obstacle volume in mm³, excluding the move's initial solid. */
+  swept_intersection_volume_mm3: number
+}
+
+type CadExplosionCollisionObstacle =
+  | { type: "cad_component"; cad_component_id: string }
+  | { type: "pcb_board"; pcb_board_id: string }
+```
+
 ### CadExplosionMove
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_explosion_move.ts)
@@ -1699,6 +1824,38 @@ interface CadExplosionStage {
 }
 ```
 
+### CadLaserEngravingText
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_laser_engraving_text.ts)
+
+```typescript
+/** The 3D geometry of text laser engraved onto one surface of a part, in
+ * right-handed circuit world: +X right, +Y top, +Z above. anchor_position is
+ * an absolute point in mm; normal_direction and x_axis_direction are
+ * dimensionless, perpendicular unit directions, within 1e-6 numerical
+ * tolerance. The text lies in the plane through anchor_position perpendicular
+ * to normal_direction, reads along x_axis_direction, and its up direction is
+ * normal_direction cross x_axis_direction. font_size is the text height in mm.
+ * color adds no default when omitted. */
+interface CadLaserEngravingText {
+  type: "cad_laser_engraving_text"
+  cad_laser_engraving_text_id: string
+  source_laser_engraving_text_id: string
+  source_component_id: string
+  cad_component_id?: string
+  cad_reference_surface_id?: string
+  text: string
+  font: "tscircuit2024"
+  font_size: number
+  anchor_position: Point3
+  anchor_alignment: NinePointAnchor
+  normal_direction: Point3
+  x_axis_direction: Point3
+  color?: string
+  subcircuit_id?: string
+}
+```
+
 ### CadReferenceSurface
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_reference_surface.ts)
@@ -1721,6 +1878,46 @@ interface CadReferenceSurface {
   x_axis: Point3
   width?: number
   height?: number
+  subcircuit_id?: string
+}
+```
+
+### CadSticker
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/cad/cad_sticker.ts)
+
+The sticker's own source component: name and BOM identity.
+
+```typescript
+/** An adhesive sticker in right-handed circuit world: +X right, +Y top, +Z
+ * above. Center, width, height and thickness are mm. normal_direction and
+ * x_axis_direction are dimensionless, perpendicular unit directions, within
+ * 1e-6 numerical tolerance. Seen from outside, looking against
+ * normal_direction, the artwork reads left to right along x_axis_direction
+ * with its top toward normal_direction cross x_axis_direction. */
+interface CadSticker {
+  type: "cad_sticker"
+  cad_sticker_id: string
+  /** The sticker's own source component: name and BOM identity. */
+  source_component_id: string
+  /** The part whose surface carries the sticker; the sticker moves with it. */
+  applied_to_source_component_id?: string
+  /** Center of the adhesive face, on the surface the sticker is applied to. */
+  center: Point3
+  /** Direction the printed face points, away from the surface. */
+  normal_direction: Point3
+  /** The artwork's left-to-right direction, including rotation on the surface. */
+  x_axis_direction: Point3
+  width: number
+  height: number
+  /** Rounds the corners and cuts the artwork to that outline; square when omitted. */
+  corner_radius?: number
+  /** Includes adhesive; measured along normal_direction. Unspecified when omitted. */
+  thickness?: number
+  /** Printed artwork stretched to width by height; omitted when unprinted. */
+  image_asset?: Asset
+  /** Sticker material color, seen where the artwork is transparent or absent. */
+  background_color?: string
   subcircuit_id?: string
 }
 ```
@@ -1862,47 +2059,48 @@ type PcbBusRoutingConstraintError =
   WithErrorContext<PcbBusRoutingConstraintViolation>
 
 /** Rule-specific routing measurements. Lengths and centreline spacing are mm; impedance is ohms. */ type PcbBusRoutingConstraintViolation =
-  | {
-      routing_rule: "length_skew"
-      actual_length_skew: number
-      maximum_length_skew: number
-    }
-  | {
-      routing_rule: "min_length"
-      actual_trace_length: number
-      minimum_trace_length: number
-    }
-  | {
-      routing_rule: "max_length"
-      actual_trace_length: number
-      maximum_trace_length: number
-    }
-  | {
-      routing_rule: "target_length"
-      actual_trace_length: number
-      target_trace_length: number
-      length_tolerance: number
-    }
-  | {
-      routing_rule: "pcb_trace_spacing"
-      other_pcb_trace_id: string
-      other_source_trace_id?: string
-      actual_centerline_spacing: number
-      minimum_centerline_spacing: number
-    }
-  | {
-      routing_rule: "pcb_spacing_to_other_signals"
-      other_pcb_trace_id: string
-      other_source_trace_id?: string
-      actual_centerline_spacing: number
-      minimum_centerline_spacing: number
-    }
-  | {
-      routing_rule: "impedance_target"
-      target_impedance: number
-      minimum_impedance?: number
-      maximum_impedance?: number
-    }
+
+    | {
+        routing_rule: "length_skew"
+        actual_length_skew: number
+        maximum_length_skew: number
+      }
+    | {
+        routing_rule: "min_length"
+        actual_trace_length: number
+        minimum_trace_length: number
+      }
+    | {
+        routing_rule: "max_length"
+        actual_trace_length: number
+        maximum_trace_length: number
+      }
+    | {
+        routing_rule: "target_length"
+        actual_trace_length: number
+        target_trace_length: number
+        length_tolerance: number
+      }
+    | {
+        routing_rule: "pcb_trace_spacing"
+        other_pcb_trace_id: string
+        other_source_trace_id?: string
+        actual_centerline_spacing: number
+        minimum_centerline_spacing: number
+      }
+    | {
+        routing_rule: "pcb_spacing_to_other_signals"
+        other_pcb_trace_id: string
+        other_source_trace_id?: string
+        actual_centerline_spacing: number
+        minimum_centerline_spacing: number
+      }
+    | {
+        routing_rule: "impedance_target"
+        target_impedance: number
+        minimum_impedance?: number
+        maximum_impedance?: number
+      }
 ```
 
 ### PcbBusRoutingConstraintWarning
@@ -2053,6 +2251,28 @@ interface PcbCopperPourRect {
   width: Length
   height: Length
   rotation?: Rotation
+}
+```
+
+### PcbCopperPourIsolatedWarning
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_copper_pour_isolated_warning.ts)
+
+An isolated copper pour, with its original reference and location.
+
+```typescript
+/** An isolated copper pour, with its original reference and location. */
+interface PcbCopperPourIsolatedWarning {
+  type: "pcb_copper_pour_isolated_warning"
+  pcb_copper_pour_isolated_warning_id: string
+  warning_type: "pcb_copper_pour_isolated_warning"
+  message: string
+  pcb_copper_pour_id: string
+  source_net_id?: string
+  subcircuit_id?: string
+  layer: LayerRef
+  /** Approximate island location in board-world millimeters. */
+  center: Point
 }
 ```
 
@@ -2825,7 +3045,11 @@ interface PcbNoteText {
   text?: string
   anchor_position: Point
   anchor_alignment:
-    "center" | "top_left" | "top_right" | "bottom_left" | "bottom_right"
+    | "center"
+    | "top_left"
+    | "top_right"
+    | "bottom_left"
+    | "bottom_right"
   layer: VisibleLayer
   is_mirrored_from_top_view?: boolean
   color?: string
@@ -3549,7 +3773,9 @@ interface PcbDielectricStackupLayer {
 }
 
 type PcbStackupLayer =
-  PcbSoldermaskStackupLayer | PcbCopperStackupLayer | PcbDielectricStackupLayer
+  | PcbSoldermaskStackupLayer
+  | PcbCopperStackupLayer
+  | PcbDielectricStackupLayer
 ```
 
 ### PcbStiffener
@@ -3648,7 +3874,9 @@ interface PcbTraceRoutePointWire {
 }
 
 type PcbTraceRoutePoint =
-  PcbTraceRoutePointWire | PcbTraceRoutePointVia | PcbTraceRoutePointThroughPad
+  | PcbTraceRoutePointWire
+  | PcbTraceRoutePointVia
+  | PcbTraceRoutePointThroughPad
 ```
 
 ### PcbTraceError
@@ -4096,7 +4324,9 @@ interface SchematicComponentStylingWarning {
 
 ```typescript
 type SchematicDebugObject =
-  SchematicDebugRect | SchematicDebugLine | SchematicDebugPoint
+  | SchematicDebugRect
+  | SchematicDebugLine
+  | SchematicDebugPoint
 
 interface SchematicDebugRect {
   type: "schematic_debug_object"
@@ -4140,7 +4370,9 @@ interface SchematicElementOutsideSheetWarning {
   message: string
   schematic_sheet_id: string
   schematic_element_type:
-    "schematic_component" | "schematic_net_label" | "schematic_trace"
+    | "schematic_component"
+    | "schematic_net_label"
+    | "schematic_trace"
   schematic_element_id: string
 }
 ```
@@ -4651,7 +4883,8 @@ interface SimulationAcSweepVoltageGraph {
 
 ```typescript
 type SimulationAnalysisResult =
-  SimulationVoltageAnalysisResult | SimulationCurrentAnalysisResult
+  | SimulationVoltageAnalysisResult
+  | SimulationCurrentAnalysisResult
 
 type SimulationNonTransientVoltageAnalysisResult =
   | SimulationDcOperatingPointVoltage
@@ -4664,10 +4897,12 @@ type SimulationNonTransientCurrentAnalysisResult =
   | SimulationAcSweepCurrentGraph
 
 type SimulationVoltageAnalysisResult =
-  SimulationTransientVoltageGraph | SimulationNonTransientVoltageAnalysisResult
+  | SimulationTransientVoltageGraph
+  | SimulationNonTransientVoltageAnalysisResult
 
 type SimulationCurrentAnalysisResult =
-  SimulationTransientCurrentGraph | SimulationNonTransientCurrentAnalysisResult
+  | SimulationTransientCurrentGraph
+  | SimulationNonTransientCurrentAnalysisResult
 ```
 
 ### SimulationComplexSample
@@ -4708,7 +4943,8 @@ interface SimulationCurrentProbe {
 
 ```typescript
 type SimulationCurrentSource =
-  SimulationDcCurrentSource | SimulationAcCurrentSource
+  | SimulationDcCurrentSource
+  | SimulationAcCurrentSource
 
 /** Defines a DC current source for simulation purposes. It forces a current
  * between two source ports. */
@@ -4740,6 +4976,11 @@ interface SimulationAcCurrentSource {
   wave_shape?: WaveShape
   phase?: number
   duty_cycle?: number
+  pulse_delay?: number // ms
+  rise_time?: number // ms
+  fall_time?: number // ms
+  pulse_width?: number // ms
+  period?: number // ms
   ac_magnitude?: number
   ac_phase?: number
 }
@@ -4936,17 +5177,20 @@ type SimulationParameterSweep =
   | SimulationVoltageParameterSweep
   | SimulationCurrentParameterSweep
 
-interface SimulationResistanceParameterSweep extends SimulationParameterSweepBase {
+interface SimulationResistanceParameterSweep
+  extends SimulationParameterSweepBase {
   parameter_type: "resistance"
   resistor_source_component_id: string
 }
 
-interface SimulationCapacitanceParameterSweep extends SimulationParameterSweepBase {
+interface SimulationCapacitanceParameterSweep
+  extends SimulationParameterSweepBase {
   parameter_type: "capacitance"
   capacitor_source_component_id: string
 }
 
-interface SimulationInductanceParameterSweep extends SimulationParameterSweepBase {
+interface SimulationInductanceParameterSweep
+  extends SimulationParameterSweepBase {
   parameter_type: "inductance"
   inductor_source_component_id: string
 }
@@ -5058,7 +5302,8 @@ interface SimulationPcbReturnCurrentHeatmap {
 
 ```typescript
 type SimulationPcbReturnCurrentMarker =
-  SimulationPcbReturnCurrentPortMarker | SimulationPcbReturnCurrentViaMarker
+  | SimulationPcbReturnCurrentPortMarker
+  | SimulationPcbReturnCurrentViaMarker
 
 interface SimulationReturnCurrentMarkerBase {
   type: "simulation_pcb_return_current_marker"
@@ -5076,13 +5321,15 @@ interface SimulationReturnCurrentMarkerBase {
   label_y?: number
 }
 
-interface SimulationPcbReturnCurrentPortMarker extends SimulationReturnCurrentMarkerBase {
+interface SimulationPcbReturnCurrentPortMarker
+  extends SimulationReturnCurrentMarkerBase {
   target_type: "pcb_port"
   pcb_port_id: string
   layer: LayerRef
 }
 
-interface SimulationPcbReturnCurrentViaMarker extends SimulationReturnCurrentMarkerBase {
+interface SimulationPcbReturnCurrentViaMarker
+  extends SimulationReturnCurrentMarkerBase {
   target_type: "pcb_via"
   pcb_via_id: string
   from_layer: LayerRef
@@ -5165,17 +5412,20 @@ interface SimulationReturnCurrentContactBase {
   layer: LayerRef
 }
 
-interface SimulationReturnCurrentPortContact extends SimulationReturnCurrentContactBase {
+interface SimulationReturnCurrentPortContact
+  extends SimulationReturnCurrentContactBase {
   contact_type: "pcb_port"
   pcb_port_id: string
 }
 
-interface SimulationReturnCurrentViaContact extends SimulationReturnCurrentContactBase {
+interface SimulationReturnCurrentViaContact
+  extends SimulationReturnCurrentContactBase {
   contact_type: "pcb_via"
   pcb_via_id: string
 }
 
-interface SimulationReturnCurrentCopperPourContact extends SimulationReturnCurrentContactBase {
+interface SimulationReturnCurrentCopperPourContact
+  extends SimulationReturnCurrentContactBase {
   contact_type: "pcb_copper_pour"
   pcb_copper_pour_id: string
 }
@@ -5383,7 +5633,8 @@ interface SimulationVoltageProbe {
 
 ```typescript
 type SimulationVoltageSource =
-  SimulationDcVoltageSource | SimulationAcVoltageSource
+  | SimulationDcVoltageSource
+  | SimulationAcVoltageSource
 
 /** Defines a DC voltage source for simulation purposes. It applies a voltage
  * difference between two source ports. */
@@ -5442,6 +5693,24 @@ interface DrawingPartSelection {
   source_component_ids?: string[]
   pcb_board_ids?: string[]
   includes_stage_ids?: string[]
+}
+```
+
+### DrawingBalloon
+
+```typescript
+interface DrawingBalloon {
+  type: "drawing_balloon"
+  drawing_balloon_id: string
+  drawing_wiring_harness_view_id: string
+  /** One circle per text, left to right. */
+  texts: string[]
+  /** What the leader points at within the wiring harness view. */
+  harness_target: DrawingBalloonHarnessTarget
+  /** Where the anchor_alignment point of the row of circles sits, relative to the page anchor. */
+  anchor_position: { x: number; y: number }
+  /** Which point of the circles' bounding rectangle anchor_position locates. */
+  anchor_alignment: NinePointAnchor
 }
 ```
 
@@ -5617,6 +5886,65 @@ interface DrawingSectionPlane {
 }
 ```
 
+### DrawingTable
+
+```typescript
+interface DrawingTable {
+  type: "drawing_table"
+  drawing_table_id: string
+  drawing_page_id: string
+  name?: string
+  /** Where the anchor_alignment point of the table sits, relative to the page anchor. */
+  anchor_position: { x: number; y: number }
+  /** Which point of the table's outer rectangle anchor_position locates. */
+  anchor_alignment: NinePointAnchor
+  /** Left to right, paper mm. */
+  column_widths: number[]
+  /** Top to bottom, paper mm. */
+  row_heights: number[]
+}
+```
+
+### DrawingTableCell
+
+```typescript
+interface DrawingTableCell {
+  type: "drawing_table_cell"
+  drawing_table_cell_id: string
+  drawing_table_id: string
+  /** 0-based from the top row; start and end are inclusive. */
+  start_row_index: number
+  end_row_index: number
+  /** 0-based from the left column; start and end are inclusive. */
+  start_column_index: number
+  end_column_index: number
+  text: string
+  /** Defaults to center. */
+  horizontal_align?: "left" | "center" | "right"
+  /** Paper mm, default 2.8. */
+  font_size?: number
+}
+```
+
+### DrawingWiringHarnessView
+
+```typescript
+interface DrawingWiringHarnessView {
+  type: "drawing_wiring_harness_view"
+  drawing_wiring_harness_view_id: string
+  drawing_page_id: string
+  /** The cable to draw; its cad_cable_wire records supply the wires. */
+  cad_cable_id: string
+  name?: string
+  display_name?: string
+  center: { x: number; y: number }
+  width: number
+  height: number
+  /** Connector model-to-paper ratio; omitted means fit. Cable length is never to scale. */
+  scale?: number
+}
+```
+
 ## System Block Elements
 
 ### SystemBlockComponent
@@ -5657,6 +5985,10 @@ interface SystemBlockConnection {
   to_system_block_component_id: string
   /** Independent classifications; both flags are required. */
   is_signal: boolean
+  /** Optional #RGB or #RRGGBB stroke and arrow color; overrides classification/theme color. */
+  color?: string
+  /** Omitted retains the renderer's classification-based pattern. */
+  line_style?: "solid" | "dashed" | "dotted"
   is_power: boolean
   /** Forward draws an arrow at the route's end; both draws at both ends. */
   direction: "forward" | "both" | "none"

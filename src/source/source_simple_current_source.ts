@@ -3,7 +3,7 @@ import {
   source_component_base,
   type SourceComponentBase,
 } from "src/source/base/source_component_base"
-import { current, frequency } from "src/units"
+import { current, frequency, ms } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const source_simple_current_source = source_component_base.extend({
@@ -17,6 +17,11 @@ export const source_simple_current_source = source_component_base.extend({
     .default("dc"),
   phase: z.number().optional(),
   duty_cycle: z.number().min(0).max(1).optional(),
+  pulse_delay: ms.optional(),
+  rise_time: ms.optional(),
+  fall_time: ms.optional(),
+  pulse_width: ms.optional(),
+  period: ms.optional(),
 })
 
 export type SourceSimpleCurrentSourceInput = z.input<
@@ -37,6 +42,11 @@ export interface SourceSimpleCurrentSource extends SourceComponentBase {
   wave_shape: "sine" | "square" | "triangle" | "sawtooth" | "dc"
   phase?: number
   duty_cycle?: number
+  pulse_delay?: number // ms
+  rise_time?: number // ms
+  fall_time?: number // ms
+  pulse_width?: number // ms
+  period?: number // ms
 }
 
 expectTypesMatch<SourceSimpleCurrentSource, InferredSourceSimpleCurrentSource>(
