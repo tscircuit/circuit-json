@@ -3,8 +3,13 @@
 exports[`current-source records retain explicit pulse timing 1`] = `
 {
   "current": 0.5,
+  "fall_time": 0.01,
   "is_dc_source": false,
   "peak_to_peak_current": 0.5,
+  "period": 20,
+  "pulse_delay": 20,
+  "pulse_width": 10,
+  "rise_time": 0.01,
   "simulation_current_source_id": "load",
   "type": "simulation_current_source",
   "wave_shape": "square",
@@ -14,9 +19,14 @@ exports[`current-source records retain explicit pulse timing 1`] = `
 exports[`current-source records retain explicit pulse timing 2`] = `
 {
   "current": 0.5,
+  "fall_time": 0.01,
   "ftype": "simple_current_source",
   "name": "LOAD",
   "peak_to_peak_current": 0.5,
+  "period": 20,
+  "pulse_delay": 20,
+  "pulse_width": 10,
+  "rise_time": 0.01,
   "source_component_id": "load",
   "type": "source_component",
   "wave_shape": "square",
