@@ -20,6 +20,28 @@ export const spice_simulation_options = z
     reltol: z.union([z.number(), z.string()]).optional(),
     abstol: z.union([z.number(), z.string()]).optional(),
     vntol: z.union([z.number(), z.string()]).optional(),
+    itl1: z
+      .number()
+      .int()
+      .positive()
+      .optional()
+      .describe(
+        "Initial operating-point iteration limit; omitted uses the engine default",
+      ),
+    itl2: z
+      .number()
+      .int()
+      .positive()
+      .optional()
+      .describe("DC sweep iteration limit; omitted uses the engine default"),
+    itl4: z
+      .number()
+      .int()
+      .positive()
+      .optional()
+      .describe(
+        "Transient timestep iteration limit; omitted uses the engine default",
+      ),
   })
   .describe("SPICE solver options for a simulation experiment")
 
@@ -28,6 +50,9 @@ export interface SpiceSimulationOptions {
   reltol?: number | string
   abstol?: number | string
   vntol?: number | string
+  itl1?: number
+  itl2?: number
+  itl4?: number
 }
 
 export interface SimulationExperiment {

@@ -4851,6 +4851,9 @@ interface SpiceSimulationOptions {
   reltol?: number | string
   abstol?: number | string
   vntol?: number | string
+  itl1?: number
+  itl2?: number
+  itl4?: number
 }
 ```
 
