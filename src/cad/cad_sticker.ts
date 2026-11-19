@@ -54,6 +54,12 @@ export const cad_sticker = z
     height: extent.describe(
       "Sticker extent along normal_direction cross x_axis_direction in millimeters.",
     ),
+    corner_radius: distance
+      .pipe(z.number().finite().nonnegative())
+      .optional()
+      .describe(
+        "Radius of the sticker's rounded corners in millimeters, at most half of width and of height. The artwork is cut to the rounded outline. Omission means square corners.",
+      ),
     thickness: extent
       .optional()
       .describe(
@@ -81,6 +87,15 @@ export const cad_sticker = z
         code: z.ZodIssueCode.custom,
         path: ["x_axis_direction"],
         message: "x_axis_direction must be perpendicular to normal_direction",
+      })
+    if (
+      sticker.corner_radius !== undefined &&
+      sticker.corner_radius > Math.min(sticker.width, sticker.height) / 2
+    )
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["corner_radius"],
+        message: "corner_radius cannot exceed half of width or height",
       })
   })
   .describe(
@@ -111,6 +126,8 @@ export interface CadSticker {
   x_axis_direction: Point3
   width: number
   height: number
+  /** Rounds the corners and cuts the artwork to that outline; square when omitted. */
+  corner_radius?: number
   /** Includes adhesive; measured along normal_direction. Unspecified when omitted. */
   thickness?: number
   /** Printed artwork stretched to width by height; omitted when unprinted. */
