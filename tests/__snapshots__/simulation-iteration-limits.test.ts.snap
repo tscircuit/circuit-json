@@ -1,0 +1,40 @@
+// Bun Snapshot v1, https://bun.sh/docs/test/snapshots
+
+exports[`TI iteration limits survive simulation experiment parsing 1`] = `
+{
+  "invalidCountsAccepted": [
+    {
+      "accepted": [
+        true,
+        true,
+        true,
+        true,
+      ],
+      "name": "itl1",
+    },
+    {
+      "accepted": [
+        true,
+        true,
+        true,
+        true,
+      ],
+      "name": "itl2",
+    },
+    {
+      "accepted": [
+        true,
+        true,
+        true,
+        true,
+      ],
+      "name": "itl4",
+    },
+  ],
+  "spice_options": {
+    "abstol": "10n",
+    "method": "trap",
+    "vntol": "10u",
+  },
+}
+`;
