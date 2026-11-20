@@ -13,12 +13,16 @@ test("schematic_graphic normalizes optional layout bounds", () => {
 
   const graphic = schematic_graphic.parse({
     ...graphicInput,
+    center: { x: "1cm", y: "2cm" },
     width: "25mm",
     height: "2.5cm",
+    keep_aspect_ratio: false,
   })
 
+  expect(graphic.center).toEqual({ x: 10, y: 20 })
   expect(graphic.width).toBe(25)
   expect(graphic.height).toBe(25)
+  expect(graphic.keep_aspect_ratio).toBe(false)
   expect(
     schematic_graphic.safeParse({ ...graphicInput, width: 0 }).success,
   ).toBe(false)
