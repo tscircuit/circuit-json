@@ -5,7 +5,7 @@ import {
   type PcbDifferentialPairLocalSkew,
 } from "../src"
 import {
-  coupled_segment,
+  measured_segment,
   skew,
 } from "./fixtures/pcb-differential-pair-local-skew"
 
@@ -36,9 +36,9 @@ test("local skew rejects negative or nonfinite scales and nonfinite segment valu
     )
   }
   for (const invalid_segment of [
-    { ...coupled_segment, end: { x: Infinity, y: 0 } },
-    { ...coupled_segment, width: Infinity },
-    { ...coupled_segment, local_skew: -Infinity },
+    { ...measured_segment, end: { x: Infinity, y: 0 } },
+    { ...measured_segment, width: Infinity },
+    { ...measured_segment, local_skew: -Infinity },
   ]) {
     expect(
       pcb_differential_pair_local_skew.safeParse({

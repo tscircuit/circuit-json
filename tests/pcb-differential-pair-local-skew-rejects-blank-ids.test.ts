@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test"
 import { pcb_differential_pair_local_skew } from "../src"
 import {
-  coupled_segment,
+  measured_segment,
   skew,
 } from "./fixtures/pcb-differential-pair-local-skew"
 

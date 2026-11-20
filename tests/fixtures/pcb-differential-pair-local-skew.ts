@@ -4,13 +4,12 @@ import type {
 } from "../../src"
 
 /** A measured segment of the positive trace. */
-export const coupled_segment = {
+export const measured_segment = {
   start: { x: 0, y: 0 },
   end: { x: 2, y: 0 },
   layer: "top",
   width: 0.2,
   local_skew: 0.1,
-  coupling: "coupled",
 } satisfies PcbLocalSkewSegment
 
 /** A valid local skew element for a two-trace differential pair. */
@@ -26,13 +25,12 @@ export const skew = {
     positive_skew_scale: 0.1,
     negative_skew_scale: 0,
     segments: [
-      coupled_segment,
+      measured_segment,
       {
         start: { x: 2, y: 0 },
         end: { x: 3, y: 0 },
         layer: "top",
         width: 0.2,
-        coupling: "unknown",
       },
     ],
   },
@@ -42,7 +40,7 @@ export const skew = {
     negative_skew_scale: 0.1,
     segments: [
       {
-        ...coupled_segment,
+        ...measured_segment,
         start: { x: 0, y: 0.3 },
         end: { x: 2, y: 0.3 },
         local_skew: -0.1,
