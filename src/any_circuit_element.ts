@@ -203,6 +203,8 @@ export const any_circuit_element = z.union([
   cad.cad_reference_surface,
   cad.cad_sticker,
   cad.cad_collision_error,
+  cad.cad_assembly_collision_error,
+  cad.cad_assembly_collision_check_warning,
   cad.cad_explosion_collision_error,
   cad.cad_explosion_collision_check_warning,
   cad.cad_laser_engraving_text,
