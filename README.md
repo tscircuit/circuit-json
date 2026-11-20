@@ -2311,9 +2311,9 @@ interface PcbLocalSkewSegment {
   end: Point
   /** Copper layer carrying the segment. */
   layer: LayerRef
-  /** Width of the trace segment in mm. */
+  /** Width of the trace segment in mm, greater than zero. */
   width: number
-  /** How much farther this trace has run than its partner, in mm. Positive means longer. Absent when unknown. */
+  /** How much farther this trace has run than its partner, in mm. Positive means longer. Present exactly when `coupling` is not `"unknown"`. */
   local_skew?: number
   /** Coupled stretches are measured side by side. Interpolated stretches are estimated between coupled stretches. Skew is unknown before the first or after the last coupled stretch. */
   coupling: "coupled" | "interpolated" | "unknown"

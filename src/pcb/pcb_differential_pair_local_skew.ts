@@ -7,6 +7,10 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 const finite_distance = distance.pipe(z.number().finite())
 const finite_point = point.extend({ x: finite_distance, y: finite_distance })
 const skew_magnitude = z.number().finite().nonnegative()
+const positive_distance = distance.pipe(z.number().finite().positive())
+const nonblank_id = z
+  .string()
+  .refine((id) => id.trim().length > 0, { message: "ID must not be blank" })
 
 export interface PcbLocalSkewSegment {
   /** Start of this trace segment in PCB coordinates, in mm. */
@@ -15,22 +19,34 @@ export interface PcbLocalSkewSegment {
   end: Point
   /** Copper layer carrying the segment. */
   layer: LayerRef
-  /** Width of the trace segment in mm. */
+  /** Width of the trace segment in mm, greater than zero. */
   width: number
-  /** How much farther this trace has run than its partner, in mm. Positive means longer. Absent when unknown. */
+  /** How much farther this trace has run than its partner, in mm. Positive means longer. Present exactly when `coupling` is not `"unknown"`. */
   local_skew?: number
   /** Coupled stretches are measured side by side. Interpolated stretches are estimated between coupled stretches. Skew is unknown before the first or after the last coupled stretch. */
   coupling: "coupled" | "interpolated" | "unknown"
 }
 
-const pcb_local_skew_segment = z.object({
-  start: finite_point,
-  end: finite_point,
-  layer: layer_ref,
-  width: finite_distance,
-  local_skew: z.number().finite().optional(),
-  coupling: z.enum(["coupled", "interpolated", "unknown"]),
-})
+const pcb_local_skew_segment = z
+  .object({
+    start: finite_point,
+    end: finite_point,
+    layer: layer_ref,
+    width: positive_distance,
+    local_skew: z.number().finite().optional(),
+    coupling: z.enum(["coupled", "interpolated", "unknown"]),
+  })
+  .superRefine((segment, ctx) => {
+    const is_known = segment.coupling !== "unknown"
+    const has_skew = segment.local_skew !== undefined
+    if (is_known === has_skew) return
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["local_skew"],
+      message:
+        "local_skew must be present for coupled or interpolated segments and absent for unknown ones",
+    })
+  })
 
 export interface PcbLocalSkewTrace {
   /** ID of the PCB trace described by these measurements. */
@@ -44,7 +60,7 @@ export interface PcbLocalSkewTrace {
 }
 
 const pcb_local_skew_trace = z.object({
-  pcb_trace_id: z.string(),
+  pcb_trace_id: nonblank_id,
   positive_skew_scale: skew_magnitude,
   negative_skew_scale: skew_magnitude,
   segments: z.array(pcb_local_skew_segment),
@@ -79,7 +95,7 @@ export const pcb_differential_pair_local_skew = z.object({
   pcb_differential_pair_local_skew_id: getZodPrefixedIdWithDefault(
     "pcb_differential_pair_local_skew",
   ),
-  source_bus_id: z.string(),
+  source_bus_id: nonblank_id,
   subcircuit_id: z.string().optional(),
   max_local_skew: skew_magnitude.optional(),
   max_length_skew: skew_magnitude.optional(),
