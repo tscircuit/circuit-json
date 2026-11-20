@@ -64,6 +64,10 @@ export interface PcbDifferentialPairLocalSkew {
   max_local_skew?: number
   /** The pair's maxLengthSkew in mm, when set. */
   max_length_skew?: number
+  /** Colour for positive local skew, where a trace has run farther than its partner. Renderers may override this colour. */
+  positive_skew_color?: string
+  /** Colour for negative local skew, where a trace has run a shorter distance than its partner. Renderers may override this colour. */
+  negative_skew_color?: string
   /** Local skew data for the positive member of the pair. */
   positive: PcbLocalSkewTrace
   /** Local skew data for the negative member of the pair. */
@@ -79,6 +83,8 @@ export const pcb_differential_pair_local_skew = z.object({
   subcircuit_id: z.string().optional(),
   max_local_skew: skew_magnitude.optional(),
   max_length_skew: skew_magnitude.optional(),
+  positive_skew_color: z.string().optional(),
+  negative_skew_color: z.string().optional(),
   positive: pcb_local_skew_trace,
   negative: pcb_local_skew_trace,
 })

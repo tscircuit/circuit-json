@@ -54,6 +54,12 @@ const skew = {
 
 test("local skew survives generic Circuit JSON parsing", () => {
   expect(any_circuit_element.parse(skew)).toEqual(skew)
+  const coloured_skew = {
+    ...skew,
+    positive_skew_color: "rgb(0, 0, 255)",
+    negative_skew_color: "rgb(255, 0, 0)",
+  } satisfies PcbDifferentialPairLocalSkew
+  expect(any_circuit_element.parse(coloured_skew)).toEqual(coloured_skew)
   expect(
     pcb_differential_pair_local_skew.parse({
       ...skew,
