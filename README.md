@@ -143,6 +143,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbCourtyardRect](#pcbcourtyardrect)
     - [PcbCutout](#pcbcutout)
     - [PcbDebugObject](#pcbdebugobject)
+    - [PcbDifferentialPairLocalSkew](#pcbdifferentialpairlocalskew)
     - [PcbFabricationNoteDimension](#pcbfabricationnotedimension)
     - [PcbFabricationNotePath](#pcbfabricationnotepath)
     - [PcbFabricationNoteRect](#pcbfabricationnoterect)
@@ -2269,6 +2270,60 @@ interface PcbDebugPoint {
   shape: "point"
   center: Point
   subcircuit_id?: string
+}
+```
+
+### PcbDifferentialPairLocalSkew
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_differential_pair_local_skew.ts)
+
+Local skew records how much farther one trace has run than its partner at each point on a routed differential pair, in mm. KiCad calls this differential phase skew.
+
+```typescript
+/** Local skew records how much farther one trace has run than its partner at each point on a routed differential pair, in mm. KiCad calls this differential phase skew. */
+interface PcbDifferentialPairLocalSkew {
+  /** Identifies a differential-pair local skew element. */
+  type: "pcb_differential_pair_local_skew"
+  /** Unique ID of this local skew element. */
+  pcb_differential_pair_local_skew_id: string
+  /** ID of the source bus that defines the differential pair. */
+  source_bus_id: string
+  /** ID of the subcircuit that owns the pair, when available. */
+  subcircuit_id?: string
+  /** Largest absolute local skew in mm over measured and interpolated stretches and via steps. Absent when the traces never run together. */
+  max_local_skew?: number
+  /** The pair's maxLengthSkew in mm, when set. */
+  max_length_skew?: number
+  /** Local skew data for the positive member of the pair. */
+  positive: PcbLocalSkewTrace
+  /** Local skew data for the negative member of the pair. */
+  negative: PcbLocalSkewTrace
+}
+
+interface PcbLocalSkewSegment {
+  /** Start of this trace segment in PCB coordinates, in mm. */
+  start: Point
+  /** End of this trace segment in PCB coordinates, in mm. */
+  end: Point
+  /** Copper layer carrying the segment. */
+  layer: LayerRef
+  /** Width of the trace segment in mm. */
+  width: number
+  /** How much farther this trace has run than its partner, in mm. Positive means longer. Absent when unknown. */
+  local_skew?: number
+  /** Coupled stretches are measured side by side. Interpolated stretches are estimated between coupled stretches. Skew is unknown before the first or after the last coupled stretch. */
+  coupling: "coupled" | "interpolated" | "unknown"
+}
+
+interface PcbLocalSkewTrace {
+  /** ID of the PCB trace described by these measurements. */
+  pcb_trace_id: string
+  /** Largest positive local skew on this trace in mm, a nonnegative value used as the full-colour scale for positive skew. */
+  positive_skew_scale: number
+  /** Largest magnitude of negative local skew on this trace in mm, expressed as a nonnegative value. */
+  negative_skew_scale: number
+  /** Segments carrying local skew along this trace. */
+  segments: PcbLocalSkewSegment[]
 }
 ```
 
