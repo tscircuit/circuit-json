@@ -1,3 +1,4 @@
+import { schematic_length_unit, type SchematicLengthUnit } from "../units"
 import { z } from "zod"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
@@ -8,6 +9,7 @@ export const source_group = z.object({
   parent_subcircuit_id: z.string().optional(),
   parent_source_group_id: z.string().optional(),
   is_subcircuit: z.boolean().optional(),
+  default_schematic_length_unit: schematic_length_unit.optional(),
   show_as_schematic_box: z.boolean().optional(),
   name: z.string().optional(),
   was_automatically_named: z.boolean().optional(),
@@ -23,6 +25,8 @@ export interface SourceGroup {
   parent_subcircuit_id?: string
   parent_source_group_id?: string
   is_subcircuit?: boolean
+  /** Effective default for bare schematic placement values in this subcircuit. Older files omit it and use the legacy sheet unit. */
+  default_schematic_length_unit?: SchematicLengthUnit
   show_as_schematic_box?: boolean
   name?: string
   was_automatically_named?: boolean

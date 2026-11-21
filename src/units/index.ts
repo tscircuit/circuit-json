@@ -13,6 +13,21 @@ export {
  */
 export const MM_PER_SCHEMATIC_UNIT = 10.16 / 1.1
 
+export const LEGACY_SCHEMATIC_LENGTH_UNIT = "9.236363636363636mm"
+export type SchematicLengthUnit =
+  | "mm"
+  | "in"
+  | typeof LEGACY_SCHEMATIC_LENGTH_UNIT
+export const schematic_length_unit = z.enum([
+  "mm",
+  "in",
+  LEGACY_SCHEMATIC_LENGTH_UNIT,
+])
+
+/** Default for newly authored top-level subcircuits. */
+export const DEFAULT_SCHEMATIC_LENGTH_UNIT: SchematicLengthUnit =
+  LEGACY_SCHEMATIC_LENGTH_UNIT
+
 // // Currently, removing uncommon SI Prefixes for type simplicity.
 // export type SIPrefix =
 //   // | "y"
