@@ -4,6 +4,7 @@ import { duration_ms, ms } from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import {
   simulation_parameter_sweep_coordinate,
+  simulation_parameter_sweep_coordinates,
   type SimulationParameterSweepCoordinate,
 } from "./simulation_parameter_sweep_coordinate"
 
@@ -13,6 +14,7 @@ export interface SimulationTransientVoltageGraph {
   simulation_experiment_id: string
   simulation_voltage_probe_id?: string
   simulation_parameter_sweep_coordinate?: SimulationParameterSweepCoordinate
+  simulation_parameter_sweep_coordinates?: SimulationParameterSweepCoordinate[]
   timestamps_ms?: number[]
   voltage_levels: number[]
   source_component_id?: string
@@ -34,6 +36,8 @@ export const simulation_transient_voltage_graph = z
     simulation_voltage_probe_id: z.string().optional(),
     simulation_parameter_sweep_coordinate:
       simulation_parameter_sweep_coordinate.optional(),
+    simulation_parameter_sweep_coordinates:
+      simulation_parameter_sweep_coordinates.optional(),
     timestamps_ms: z.array(z.number()).optional(),
     voltage_levels: z.array(z.number()),
     source_component_id: z.string().optional(),
