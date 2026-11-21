@@ -7,13 +7,13 @@ import {
 
 test("source groups preserve the schematic placement default and accept older documents", () => {
   const group = {
-    type: "source_group",
+    type: "source_group" as const,
     source_group_id: "board",
     is_subcircuit: true,
   }
   expect(source_group.parse(group)).toEqual(group)
   expect(LEGACY_SCHEMATIC_LENGTH_UNIT).toBe(`${MM_PER_SCHEMATIC_UNIT}mm`)
-  for (const unit of ["mm", "in", LEGACY_SCHEMATIC_LENGTH_UNIT]) {
+  for (const unit of ["mm", "in", LEGACY_SCHEMATIC_LENGTH_UNIT] as const) {
     const input = { ...group, default_schematic_length_unit: unit }
     expect(source_group.parse(input)).toEqual(input)
   }

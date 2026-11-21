@@ -1,0 +1,5 @@
+A subcircuit's `source_group.default_schematic_length_unit` declares the unit of schematic geometry stored with its `subcircuit_id`. Producers write the effective unit on each subcircuit, including nested subcircuits. Read each declaration independently. A missing declaration or unowned record uses the legacy drawing unit (10.16 mm per 1.1 units).
+
+The declaration applies to world coordinates, symbol dimensions, wire edges and junctions, drawing strokes, text sizes, pin spacing, and other schematic drawing lengths. Coordinates share the same origin and axes across subcircuits. Paper dimensions (`sheet_width` and `sheet_height`) remain physical millimeters. Angles, pin numbers, IDs, and non-schematic geometry retain their field-specific meanings.
+
+Consumers that require one coordinate system can call `convertSchematicLengthUnits(circuitJson, "mm")` before filtering, measuring bounds, or rendering. Existing drawing engines can pass `LEGACY_SCHEMATIC_LENGTH_UNIT` instead. The conversion updates both geometry and declarations without mutating the input.

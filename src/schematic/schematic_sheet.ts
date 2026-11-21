@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { getZodPrefixedIdWithDefault } from "src/common"
+import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const schematic_sheet_size = z.enum(["a4", "ansi_b"])
@@ -12,6 +12,7 @@ export const schematic_sheet = z
     name: z.string().optional(),
     sheet_index: z.number().optional(),
     sheet_size: schematic_sheet_size.optional(),
+    center: point.optional(),
     sheet_width: z.number().positive().optional(),
     sheet_height: z.number().positive().optional(),
     subcircuit_id: z.string().optional(),
@@ -33,6 +34,8 @@ export interface SchematicSheet {
   name?: string
   sheet_index?: number
   sheet_size?: SchematicSheetSize
+  center?: Point
+  /** Physical paper width in mm, independent of the subcircuit geometry unit. */
   sheet_width?: number
   sheet_height?: number
   subcircuit_id?: string

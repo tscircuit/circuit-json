@@ -25,7 +25,7 @@ export interface SourceGroup {
   parent_subcircuit_id?: string
   parent_source_group_id?: string
   is_subcircuit?: boolean
-  /** Effective default for bare schematic placement values in this subcircuit. Older files omit it and use the legacy sheet unit. */
+  /** Unit of the stored schematic geometry owned by this subcircuit. Omission means legacy drawing units. */
   default_schematic_length_unit?: SchematicLengthUnit
   show_as_schematic_box?: boolean
   name?: string

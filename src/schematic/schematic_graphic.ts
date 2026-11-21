@@ -9,6 +9,7 @@ export const schematic_graphic = z
   .object({
     type: z.literal("schematic_graphic"),
     schematic_graphic_id: getZodPrefixedIdWithDefault("schematic_graphic"),
+    subcircuit_id: z.string().optional(),
     schematic_sheet_id: z.string().optional(),
     asset: asset.optional(),
     svg_content: z.string().optional(),
@@ -34,6 +35,7 @@ type InferredSchematicGraphic = z.infer<typeof schematic_graphic>
 export interface SchematicGraphic {
   type: "schematic_graphic"
   schematic_graphic_id: string
+  subcircuit_id?: string
   schematic_sheet_id?: string
   /** Optional canonical source asset; at least one graphic source is required. */
   asset?: Asset
