@@ -1,0 +1,30 @@
+import { expect, test } from "bun:test"
+import {
+  any_circuit_element,
+  type SimulationPcbTransientChannelSimulation,
+  simulation_pcb_transient_channel_simulation,
+} from "../src"
+
+test("channel simulations preserve optional nearby driver controls", () => {
+  const simulation: SimulationPcbTransientChannelSimulation = {
+    type: "simulation_pcb_transient_channel_simulation",
+    simulation_pcb_transient_channel_simulation_id: "run_1",
+    bit_rate_bps: 50e6,
+    allow_unrouted_traces: false,
+  }
+  expect(simulation_pcb_transient_channel_simulation.parse(simulation)).toEqual(
+    simulation,
+  )
+  const declared = {
+    ...simulation,
+    nearby_driver_pattern: "prbs15",
+    nearby_drivers_disabled: false,
+  }
+  expect(any_circuit_element.parse(declared)).toEqual(declared)
+  expect(
+    simulation_pcb_transient_channel_simulation.safeParse({
+      ...simulation,
+      nearby_driver_pattern: "",
+    }).success,
+  ).toBe(false)
+})

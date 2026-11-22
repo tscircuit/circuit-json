@@ -11,6 +11,10 @@ export interface SimulationPcbTransientChannelSimulation {
   bit_rate_bps: number
   duration_ms?: number
   allow_unrouted_traces: boolean
+  /** Pattern for retained output pins outside the selected channels. "0" and "1" hold a quiet level. */
+  nearby_driver_pattern?: string
+  /** Tri-state retained output pins outside the selected channels. When true, the nearby driver pattern is ignored. */
+  nearby_drivers_disabled?: boolean
 }
 
 export const simulation_pcb_transient_channel_simulation = z
@@ -23,6 +27,8 @@ export const simulation_pcb_transient_channel_simulation = z
     bit_rate_bps: z.number().finite().positive(),
     duration_ms: ms.refine((value) => value > 0).optional(),
     allow_unrouted_traces: z.boolean(),
+    nearby_driver_pattern: z.string().min(1).optional(),
+    nearby_drivers_disabled: z.boolean().optional(),
   })
   .describe("Defines a PCB transient channel simulation run")
 

@@ -5151,6 +5151,10 @@ interface SimulationPcbTransientChannelSimulation {
   bit_rate_bps: number
   duration_ms?: number
   allow_unrouted_traces: boolean
+  /** Pattern for retained output pins outside the selected channels. "0" and "1" hold a quiet level. */
+  nearby_driver_pattern?: string
+  /** Tri-state retained output pins outside the selected channels. When true, the nearby driver pattern is ignored. */
+  nearby_drivers_disabled?: boolean
 }
 ```
 
