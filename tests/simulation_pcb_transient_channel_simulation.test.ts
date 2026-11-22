@@ -18,7 +18,7 @@ test("channel simulations preserve optional aggressor controls", () => {
   const declared = {
     ...simulation,
     aggressor_pattern: "prbs15",
-    aggressors_disabled: false,
+    aggressor_disabled: false,
   }
   expect(any_circuit_element.parse(declared)).toEqual(declared)
   expect(
