@@ -5,7 +5,7 @@ import {
   simulation_pcb_transient_channel_simulation,
 } from "../src"
 
-test("channel simulations preserve optional nearby driver controls", () => {
+test("channel simulations preserve optional aggressor controls", () => {
   const simulation: SimulationPcbTransientChannelSimulation = {
     type: "simulation_pcb_transient_channel_simulation",
     simulation_pcb_transient_channel_simulation_id: "run_1",
@@ -17,14 +17,14 @@ test("channel simulations preserve optional nearby driver controls", () => {
   )
   const declared = {
     ...simulation,
-    nearby_driver_pattern: "prbs15",
-    nearby_drivers_disabled: false,
+    aggressor_pattern: "prbs15",
+    aggressors_disabled: false,
   }
   expect(any_circuit_element.parse(declared)).toEqual(declared)
   expect(
     simulation_pcb_transient_channel_simulation.safeParse({
       ...simulation,
-      nearby_driver_pattern: "",
+      aggressor_pattern: "",
     }).success,
   ).toBe(false)
 })

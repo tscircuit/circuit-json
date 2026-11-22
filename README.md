@@ -5151,10 +5151,10 @@ interface SimulationPcbTransientChannelSimulation {
   bit_rate_bps: number
   duration_ms?: number
   allow_unrouted_traces: boolean
-  /** Pattern for retained output pins outside the selected channels. "0" and "1" hold a quiet level. */
-  nearby_driver_pattern?: string
-  /** Tri-state retained output pins outside the selected channels. When true, the nearby driver pattern is ignored. */
-  nearby_drivers_disabled?: boolean
+  /** Pattern for aggressors, the output-capable pins coupled to the selected channels outside their endpoints. Uses the channel pattern syntax. "0" and "1" drive quiet low and high, while "prbs7", "clock", or switching bits drive transitions. The selected channels (victims) keep their own `pattern` and `driver_disabled` settings. */
+  aggressor_pattern?: string
+  /** Tri-state every aggressor (high impedance) and ignore aggressor_pattern. Pattern "0" actively drives low. */
+  aggressors_disabled?: boolean
 }
 ```
 
