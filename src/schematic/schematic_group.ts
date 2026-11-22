@@ -1,11 +1,17 @@
 import { z } from "zod"
 import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
-import { length, type Length } from "src/units"
+import {
+  length,
+  type Length,
+  schematic_length_unit,
+  type SchematicLengthUnit,
+} from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const schematic_group = z
   .object({
     type: z.literal("schematic_group"),
+    schematic_length_unit: schematic_length_unit.optional(),
     schematic_group_id: getZodPrefixedIdWithDefault("schematic_group"),
     schematic_sheet_id: z.string().optional(),
     source_group_id: z.string(),
@@ -30,6 +36,7 @@ type InferredSchematicGroup = z.infer<typeof schematic_group>
  */
 export interface SchematicGroup {
   type: "schematic_group"
+  schematic_length_unit?: SchematicLengthUnit
   schematic_group_id: string
   schematic_sheet_id?: string
   source_group_id: string

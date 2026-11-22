@@ -1,3 +1,4 @@
+import { schematic_length_unit, type SchematicLengthUnit } from "../units"
 import { z } from "zod"
 import { point, type Point } from "../common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
@@ -6,6 +7,7 @@ import { schematic_text_part } from "./schematic_text_part"
 
 export interface SchematicPort {
   type: "schematic_port"
+  schematic_length_unit?: SchematicLengthUnit
   schematic_port_id: string
   source_port_id: string
   schematic_sheet_id?: string
@@ -14,7 +16,7 @@ export interface SchematicPort {
   schematic_group_id?: string
   /**
    * Point where the port stem meets the group boundary. Like center, this is a
-   * schematic-world point in mm (+X right, +Y up), including group translation.
+   * schematic-world point in this record's unit (+X right, +Y up), including group translation.
    * center remains the externally connectable terminal; facing_direction points
    * out of the group. This field does not create an electrical connection.
    */
@@ -45,6 +47,7 @@ export interface SchematicPort {
 export const schematic_port = z
   .object({
     type: z.literal("schematic_port"),
+    schematic_length_unit: schematic_length_unit.optional(),
     schematic_port_id: z.string(),
     source_port_id: z.string(),
     schematic_sheet_id: z.string().optional(),

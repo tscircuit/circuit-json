@@ -1,5 +1,6 @@
+import { schematic_length_unit, type SchematicLengthUnit } from "../units"
 import { z } from "zod"
-import { getZodPrefixedIdWithDefault } from "src/common"
+import { point, type Point, getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const schematic_sheet_size = z.enum(["a4", "ansi_b"])
@@ -8,10 +9,12 @@ export type SchematicSheetSize = z.infer<typeof schematic_sheet_size>
 export const schematic_sheet = z
   .object({
     type: z.literal("schematic_sheet"),
+    schematic_length_unit: schematic_length_unit.optional(),
     schematic_sheet_id: getZodPrefixedIdWithDefault("schematic_sheet"),
     name: z.string().optional(),
     sheet_index: z.number().optional(),
     sheet_size: schematic_sheet_size.optional(),
+    center: point.optional(),
     sheet_width: z.number().positive().optional(),
     sheet_height: z.number().positive().optional(),
     subcircuit_id: z.string().optional(),
@@ -29,11 +32,15 @@ type InferredSchematicSheet = z.infer<typeof schematic_sheet>
  */
 export interface SchematicSheet {
   type: "schematic_sheet"
+  schematic_length_unit?: SchematicLengthUnit
   schematic_sheet_id: string
   name?: string
   sheet_index?: number
   sheet_size?: SchematicSheetSize
+  center?: Point
+  /** Physical paper width in millimeters. */
   sheet_width?: number
+  /** Physical paper height in millimeters. */
   sheet_height?: number
   subcircuit_id?: string
   outline_color?: string

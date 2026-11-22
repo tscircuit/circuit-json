@@ -1,12 +1,18 @@
 import { z } from "zod"
 import { point, type Point } from "../common/point"
-import { distance, rotation } from "../units"
+import {
+  distance,
+  rotation,
+  schematic_length_unit,
+  type SchematicLengthUnit,
+} from "../units"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 /** Draws a styled rectangle on the schematic */
 export interface SchematicRect {
   type: "schematic_rect"
+  schematic_length_unit?: SchematicLengthUnit
   schematic_rect_id: string
   schematic_sheet_id?: string
   schematic_component_id?: string
@@ -26,6 +32,7 @@ export interface SchematicRect {
 export const schematic_rect = z
   .object({
     type: z.literal("schematic_rect"),
+    schematic_length_unit: schematic_length_unit.optional(),
     schematic_rect_id: getZodPrefixedIdWithDefault("schematic_rect"),
     schematic_sheet_id: z.string().optional(),
     schematic_component_id: z.string().optional(),

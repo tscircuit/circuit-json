@@ -1,11 +1,16 @@
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import { z } from "zod"
-import { distance } from "../units"
+import {
+  distance,
+  schematic_length_unit,
+  type SchematicLengthUnit,
+} from "../units"
 
 /** Draws a styled line on the schematic */
 export interface SchematicLine {
   type: "schematic_line"
+  schematic_length_unit?: SchematicLengthUnit
   schematic_line_id: string
   schematic_sheet_id?: string
   schematic_component_id?: string
@@ -25,6 +30,7 @@ export interface SchematicLine {
 export const schematic_line = z
   .object({
     type: z.literal("schematic_line"),
+    schematic_length_unit: schematic_length_unit.optional(),
     schematic_line_id: getZodPrefixedIdWithDefault("schematic_line"),
     schematic_sheet_id: z.string().optional(),
     schematic_component_id: z.string().optional(),

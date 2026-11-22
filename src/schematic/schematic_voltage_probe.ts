@@ -1,7 +1,11 @@
 import { z } from "zod"
 import { point, type Point } from "../common/point"
 import { expectTypesMatch } from "src/utils/expect-types-match"
-import { voltage } from "src/units"
+import {
+  voltage,
+  schematic_length_unit,
+  type SchematicLengthUnit,
+} from "src/units"
 import {
   ninePointAnchor,
   type NinePointAnchor,
@@ -9,6 +13,7 @@ import {
 
 export interface SchematicVoltageProbe {
   type: "schematic_voltage_probe"
+  schematic_length_unit?: SchematicLengthUnit
   schematic_voltage_probe_id: string
   schematic_sheet_id?: string
   source_component_id?: string
@@ -24,6 +29,7 @@ export interface SchematicVoltageProbe {
 export const schematic_voltage_probe = z
   .object({
     type: z.literal("schematic_voltage_probe"),
+    schematic_length_unit: schematic_length_unit.optional(),
     schematic_voltage_probe_id: z.string(),
     schematic_sheet_id: z.string().optional(),
     source_component_id: z.string().optional(),
