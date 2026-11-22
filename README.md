@@ -5151,9 +5151,9 @@ interface SimulationPcbTransientChannelSimulation {
   bit_rate_bps: number
   duration_ms?: number
   allow_unrouted_traces: boolean
-  /** Pattern for aggressors, the output-capable pins coupled to the selected channels outside their endpoints. Uses the channel pattern syntax. "0" and "1" drive quiet low and high, while "prbs7", "clock", or switching bits drive transitions. The selected channels (victims) keep their own `pattern` and `driver_disabled` settings. */
+  /** Drive pattern for aggressors. Aggressors are output-capable pins coupled to the simulation's channels, excluding the driver pins of all channels in that simulation. Accepts a non-empty string after trimming, using channel pattern syntax. "0" and "1" drive quiet low and high, while "prbs7", "clock", or switching bits drive transitions. The channels keep their own `pattern` and `driver_disabled` settings. Absent stays absent without a default for the simulation consumer to interpret. */
   aggressor_pattern?: string
-  /** Tri-state every aggressor (high impedance) and ignore aggressor_pattern. Pattern "0" actively drives low. */
+  /** Optional boolean. When true, tri-state every aggressor (high impedance) and ignore `aggressor_pattern`. Every aggressor's IBIS model must support disabling its output. Explicit false is preserved and leaves `aggressor_pattern` in effect if supplied. Absent stays absent without a default for the simulation consumer to interpret. */
   aggressor_disabled?: boolean
 }
 ```

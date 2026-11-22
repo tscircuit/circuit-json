@@ -11,9 +11,9 @@ export interface SimulationPcbTransientChannelSimulation {
   bit_rate_bps: number
   duration_ms?: number
   allow_unrouted_traces: boolean
-  /** Pattern for aggressors, the output-capable pins coupled to the selected channels outside their endpoints. Uses the channel pattern syntax. "0" and "1" drive quiet low and high, while "prbs7", "clock", or switching bits drive transitions. The selected channels (victims) keep their own `pattern` and `driver_disabled` settings. */
+  /** Drive pattern for aggressors. Aggressors are output-capable pins coupled to the simulation's channels, excluding the driver pins of all channels in that simulation. Accepts a non-empty string after trimming, using channel pattern syntax. "0" and "1" drive quiet low and high, while "prbs7", "clock", or switching bits drive transitions. The channels keep their own `pattern` and `driver_disabled` settings. Absent stays absent without a default for the simulation consumer to interpret. */
   aggressor_pattern?: string
-  /** Tri-state every aggressor (high impedance) and ignore aggressor_pattern. Pattern "0" actively drives low. */
+  /** Optional boolean. When true, tri-state every aggressor (high impedance) and ignore `aggressor_pattern`. Every aggressor's IBIS model must support disabling its output. Explicit false is preserved and leaves `aggressor_pattern` in effect if supplied. Absent stays absent without a default for the simulation consumer to interpret. */
   aggressor_disabled?: boolean
 }
 
@@ -27,7 +27,7 @@ export const simulation_pcb_transient_channel_simulation = z
     bit_rate_bps: z.number().finite().positive(),
     duration_ms: ms.refine((value) => value > 0).optional(),
     allow_unrouted_traces: z.boolean(),
-    aggressor_pattern: z.string().min(1).optional(),
+    aggressor_pattern: z.string().trim().min(1).optional(),
     aggressor_disabled: z.boolean().optional(),
   })
   .describe("Defines a PCB transient channel simulation run")
