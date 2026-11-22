@@ -6,12 +6,18 @@ import {
   type NinePointAnchor,
   type Point,
 } from "src/common"
-import { distance, type Length } from "src/units"
+import {
+  distance,
+  type Length,
+  schematic_length_unit,
+  type SchematicLengthUnit,
+} from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const schematic_table = z
   .object({
     type: z.literal("schematic_table"),
+    schematic_length_unit: schematic_length_unit.optional(),
     schematic_table_id: getZodPrefixedIdWithDefault("schematic_table"),
     schematic_sheet_id: z.string().optional(),
     anchor_position: point,
@@ -33,6 +39,7 @@ type InferredSchematicTable = z.infer<typeof schematic_table>
  */
 export interface SchematicTable {
   type: "schematic_table"
+  schematic_length_unit?: SchematicLengthUnit
   schematic_table_id: string
   schematic_sheet_id?: string
   anchor_position: Point

@@ -1,11 +1,17 @@
 import { z } from "zod"
 import { getZodPrefixedIdWithDefault, point, type Point } from "src/common"
-import { distance, type Length } from "src/units"
+import {
+  distance,
+  type Length,
+  schematic_length_unit,
+  type SchematicLengthUnit,
+} from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const schematic_table_cell = z
   .object({
     type: z.literal("schematic_table_cell"),
+    schematic_length_unit: schematic_length_unit.optional(),
     schematic_table_cell_id: getZodPrefixedIdWithDefault(
       "schematic_table_cell",
     ),
@@ -34,6 +40,7 @@ type InferredSchematicTableCell = z.infer<typeof schematic_table_cell>
  */
 export interface SchematicTableCell {
   type: "schematic_table_cell"
+  schematic_length_unit?: SchematicLengthUnit
   schematic_table_cell_id: string
   schematic_sheet_id?: string
   schematic_table_id: string

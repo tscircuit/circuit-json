@@ -1,7 +1,11 @@
 import { z } from "zod"
 import { point, type Point } from "../common/point"
 import { size, type Size } from "../common/size"
-import { length } from "../units"
+import {
+  length,
+  schematic_length_unit,
+  type SchematicLengthUnit,
+} from "../units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import {
   schematicSymbolMetadata,
@@ -40,6 +44,7 @@ export type SchematicPortArrangement =
 
 export interface SchematicComponent {
   type: "schematic_component"
+  schematic_length_unit?: SchematicLengthUnit
   size: Size
   center: Point
   source_component_id?: string
@@ -125,6 +130,7 @@ export const port_arrangement = z.union([
 
 export const schematic_component = z.object({
   type: z.literal("schematic_component"),
+  schematic_length_unit: schematic_length_unit.optional(),
   size,
   center: point,
   source_component_id: z.string().optional(),

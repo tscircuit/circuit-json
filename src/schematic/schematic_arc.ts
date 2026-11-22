@@ -1,12 +1,18 @@
 import { z } from "zod"
 import { point, type Point } from "../common/point"
-import { distance, rotation } from "../units"
+import {
+  distance,
+  rotation,
+  schematic_length_unit,
+  type SchematicLengthUnit,
+} from "../units"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 /** Draws a styled arc on the schematic */
 export interface SchematicArc {
   type: "schematic_arc"
+  schematic_length_unit?: SchematicLengthUnit
   schematic_arc_id: string
   schematic_sheet_id?: string
   schematic_component_id?: string
@@ -25,6 +31,7 @@ export interface SchematicArc {
 export const schematic_arc = z
   .object({
     type: z.literal("schematic_arc"),
+    schematic_length_unit: schematic_length_unit.optional(),
     schematic_arc_id: getZodPrefixedIdWithDefault("schematic_arc"),
     schematic_sheet_id: z.string().optional(),
     schematic_component_id: z.string().optional(),

@@ -25,7 +25,7 @@ export interface SourceGroup {
   parent_subcircuit_id?: string
   parent_source_group_id?: string
   is_subcircuit?: boolean
-  /** Unit of the stored schematic geometry owned by this subcircuit. Omission means legacy drawing units. */
+  /** Default unit for writing new schematic geometry in this subcircuit. */
   default_schematic_length_unit?: SchematicLengthUnit
   show_as_schematic_box?: boolean
   name?: string

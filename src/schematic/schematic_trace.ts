@@ -1,5 +1,9 @@
 import { z } from "zod"
-import { distance } from "../units"
+import {
+  distance,
+  schematic_length_unit,
+  type SchematicLengthUnit,
+} from "../units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export interface SchematicTraceEdge {
@@ -18,6 +22,7 @@ export interface SchematicTraceEdge {
 
 export interface SchematicTrace {
   type: "schematic_trace"
+  schematic_length_unit?: SchematicLengthUnit
   schematic_trace_id: string
   schematic_sheet_id?: string
   source_trace_id?: string
@@ -33,6 +38,7 @@ export interface SchematicTrace {
 
 export const schematic_trace = z.object({
   type: z.literal("schematic_trace"),
+  schematic_length_unit: schematic_length_unit.optional(),
   schematic_trace_id: z.string(),
   schematic_sheet_id: z.string().optional(),
   source_trace_id: z.string().optional(),

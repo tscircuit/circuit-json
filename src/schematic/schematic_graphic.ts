@@ -1,6 +1,10 @@
 import { z } from "zod"
 import { asset, type Asset, getZodPrefixedIdWithDefault } from "src/common"
-import { distance } from "src/units"
+import {
+  distance,
+  schematic_length_unit,
+  type SchematicLengthUnit,
+} from "src/units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 const positiveFiniteDistance = distance.pipe(z.number().positive().finite())
@@ -8,8 +12,8 @@ const positiveFiniteDistance = distance.pipe(z.number().positive().finite())
 export const schematic_graphic = z
   .object({
     type: z.literal("schematic_graphic"),
+    schematic_length_unit: schematic_length_unit.optional(),
     schematic_graphic_id: getZodPrefixedIdWithDefault("schematic_graphic"),
-    subcircuit_id: z.string().optional(),
     schematic_sheet_id: z.string().optional(),
     asset: asset.optional(),
     svg_content: z.string().optional(),
@@ -34,8 +38,8 @@ type InferredSchematicGraphic = z.infer<typeof schematic_graphic>
 /** References a graphic asset or inline SVG content on a schematic sheet. */
 export interface SchematicGraphic {
   type: "schematic_graphic"
+  schematic_length_unit?: SchematicLengthUnit
   schematic_graphic_id: string
-  subcircuit_id?: string
   schematic_sheet_id?: string
   /** Optional canonical source asset; at least one graphic source is required. */
   asset?: Asset

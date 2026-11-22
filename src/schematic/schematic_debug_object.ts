@@ -1,3 +1,4 @@
+import { schematic_length_unit, type SchematicLengthUnit } from "../units"
 import { z } from "zod"
 import { point, type Point } from "../common/point"
 import { size, type Size } from "../common/size"
@@ -5,6 +6,7 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export const schematic_debug_object_base = z.object({
   type: z.literal("schematic_debug_object"),
+  schematic_length_unit: schematic_length_unit.optional(),
   label: z.string().optional(),
   subcircuit_id: z.string().optional(),
 })
@@ -35,6 +37,7 @@ type InferredSchematicDebugObject = z.infer<typeof schematic_debug_object>
 
 export interface SchematicDebugRect {
   type: "schematic_debug_object"
+  schematic_length_unit?: SchematicLengthUnit
   label?: string
   shape: "rect"
   center: Point
@@ -44,6 +47,7 @@ export interface SchematicDebugRect {
 
 export interface SchematicDebugLine {
   type: "schematic_debug_object"
+  schematic_length_unit?: SchematicLengthUnit
   label?: string
   shape: "line"
   start: Point
@@ -53,6 +57,7 @@ export interface SchematicDebugLine {
 
 export interface SchematicDebugPoint {
   type: "schematic_debug_object"
+  schematic_length_unit?: SchematicLengthUnit
   label?: string
   shape: "point"
   center: Point

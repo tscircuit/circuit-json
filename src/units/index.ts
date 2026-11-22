@@ -8,7 +8,7 @@ export {
 /**
  * Millimeters on the printed sheet per Circuit JSON schematic drawing unit.
  * A resistor spans 1.1 drawing units between pins, or 10.16 mm on paper.
- * Unmarked subcircuits use these legacy drawing units. Paper dimensions always use mm.
+ * Geometry records without a schematic_length_unit use this legacy scale.
  */
 export const MM_PER_SCHEMATIC_UNIT = 10.16 / 1.1
 

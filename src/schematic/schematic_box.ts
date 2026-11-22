@@ -1,9 +1,14 @@
 import { z } from "zod"
-import { distance } from "../units"
+import {
+  distance,
+  schematic_length_unit,
+  type SchematicLengthUnit,
+} from "../units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export interface SchematicBox {
   type: "schematic_box"
+  schematic_length_unit?: SchematicLengthUnit
   schematic_sheet_id?: string
   schematic_component_id?: string
   schematic_symbol_id?: string
@@ -18,6 +23,7 @@ export interface SchematicBox {
 export const schematic_box = z
   .object({
     type: z.literal("schematic_box"),
+    schematic_length_unit: schematic_length_unit.optional(),
     schematic_sheet_id: z.string().optional(),
     schematic_component_id: z.string().optional(),
     schematic_symbol_id: z.string().optional(),

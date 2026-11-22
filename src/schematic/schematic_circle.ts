@@ -1,12 +1,17 @@
 import { z } from "zod"
 import { point, type Point } from "../common/point"
-import { distance } from "../units"
+import {
+  distance,
+  schematic_length_unit,
+  type SchematicLengthUnit,
+} from "../units"
 import { getZodPrefixedIdWithDefault } from "src/common"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 /** Draws a styled circle on the schematic */
 export interface SchematicCircle {
   type: "schematic_circle"
+  schematic_length_unit?: SchematicLengthUnit
   schematic_circle_id: string
   schematic_sheet_id?: string
   schematic_component_id?: string
@@ -24,6 +29,7 @@ export interface SchematicCircle {
 export const schematic_circle = z
   .object({
     type: z.literal("schematic_circle"),
+    schematic_length_unit: schematic_length_unit.optional(),
     schematic_circle_id: getZodPrefixedIdWithDefault("schematic_circle"),
     schematic_sheet_id: z.string().optional(),
     schematic_component_id: z.string().optional(),

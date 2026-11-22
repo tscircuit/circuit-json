@@ -1,5 +1,7 @@
-A subcircuit's `source_group.default_schematic_length_unit` declares the unit of schematic geometry stored with its `subcircuit_id`. Producers write the effective unit on each subcircuit, including nested subcircuits. Read each declaration independently. A missing declaration or unowned record uses the legacy drawing unit (10.16 mm per 1.1 units).
+# Schematic length units
 
-The declaration applies to world coordinates, symbol dimensions, wire edges and junctions, drawing strokes, text sizes, pin spacing, and other schematic drawing lengths. Coordinates share the same origin and axes across subcircuits. Paper dimensions (`sheet_width` and `sheet_height`) remain physical millimeters. Angles, pin numbers, IDs, and non-schematic geometry retain their field-specific meanings.
+A record's optional `schematic_length_unit` describes its stored schematic geometry, including nested points, sizes, and drawing lengths. Supported values are `"mm"`, `"in"`, and the legacy unit `"9.236363636363636mm"` (10.16 mm per 1.1 drawing units). An untagged record uses the legacy unit, including when read on its own.
 
-Consumers that require one coordinate system can call `convertSchematicLengthUnits(circuitJson, "mm")` before filtering, measuring bounds, or rendering. Existing drawing engines can pass `LEGACY_SCHEMATIC_LENGTH_UNIT` instead. The conversion updates both geometry and declarations without mutating the input.
+A subcircuit's `source_group.default_schematic_length_unit` is the default for writing new records. During migration, writers should set `schematic_length_unit` on each geometry record, including records written in legacy units. Readers interpret each record independently.
+
+For example, a trace tagged `"in"` with an edge from `{ "x": 0, "y": 0 }` to `{ "x": 1, "y": 0 }` spans one inch. On a sheet the tag applies to `center`. Paper dimensions (`sheet_width` and `sheet_height`) always use millimeters. Fields for other domains, such as `pcb_center` or KiCad metadata, keep their own units.

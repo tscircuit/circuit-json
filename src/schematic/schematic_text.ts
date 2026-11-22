@@ -1,5 +1,9 @@
 import { z } from "zod"
-import { distance } from "../units"
+import {
+  distance,
+  schematic_length_unit,
+  type SchematicLengthUnit,
+} from "../units"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import { ninePointAnchor } from "src/common/NinePointAnchor"
 import type { NinePointAnchor } from "src/common/NinePointAnchor"
@@ -10,6 +14,7 @@ import { schematic_text_part } from "./schematic_text_part"
 
 export interface SchematicText {
   type: "schematic_text"
+  schematic_length_unit?: SchematicLengthUnit
   schematic_sheet_id?: string
   schematic_component_id?: string
   schematic_symbol_id?: string
@@ -42,6 +47,7 @@ export interface SchematicText {
 
 export const schematic_text = z.object({
   type: z.literal("schematic_text"),
+  schematic_length_unit: schematic_length_unit.optional(),
   schematic_sheet_id: z.string().optional(),
   schematic_component_id: z.string().optional(),
   schematic_symbol_id: z.string().optional(),

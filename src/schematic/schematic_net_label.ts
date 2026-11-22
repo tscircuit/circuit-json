@@ -1,3 +1,4 @@
+import { schematic_length_unit, type SchematicLengthUnit } from "../units"
 import { z } from "zod"
 import { point, type Point } from "../common/point"
 import { expectTypesMatch } from "src/utils/expect-types-match"
@@ -5,6 +6,7 @@ import { getZodPrefixedIdWithDefault } from "src/common"
 
 export interface SchematicNetLabel {
   type: "schematic_net_label"
+  schematic_length_unit?: SchematicLengthUnit
   schematic_net_label_id: string
   schematic_sheet_id?: string
   schematic_trace_id?: string
@@ -27,6 +29,7 @@ export interface SchematicNetLabel {
 
 export const schematic_net_label = z.object({
   type: z.literal("schematic_net_label"),
+  schematic_length_unit: schematic_length_unit.optional(),
   schematic_net_label_id: getZodPrefixedIdWithDefault("schematic_net_label"),
   schematic_sheet_id: z.string().optional(),
   schematic_trace_id: z.string().optional(),

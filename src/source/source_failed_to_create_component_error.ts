@@ -1,3 +1,4 @@
+import { schematic_length_unit, type SchematicLengthUnit } from "../units"
 import { z } from "zod"
 import {
   base_circuit_json_error,
@@ -9,6 +10,7 @@ import { expectTypesMatch } from "src/utils/expect-types-match"
 export const source_failed_to_create_component_error = base_circuit_json_error
   .extend({
     type: z.literal("source_failed_to_create_component_error"),
+    schematic_length_unit: schematic_length_unit.optional(),
     source_failed_to_create_component_error_id: getZodPrefixedIdWithDefault(
       "source_failed_to_create_component_error",
     ),
@@ -47,6 +49,7 @@ type InferredSourceFailedToCreateComponentError = z.infer<
 export interface SourceFailedToCreateComponentError
   extends BaseCircuitJsonError {
   type: "source_failed_to_create_component_error"
+  schematic_length_unit?: SchematicLengthUnit
   source_failed_to_create_component_error_id: string
   error_type: "source_failed_to_create_component_error"
   component_name?: string
