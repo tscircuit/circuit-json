@@ -49,7 +49,7 @@ export const pcb_differential_pair_phase_skew = z
     "Positive and negative traces must be different pcb_traces",
   )
   .describe(
-    "How far ahead or behind each trace of a differential pair is, in mm, at each point where the two traces run side by side. Parts of a trace with no segment have no known value.",
+    "How far ahead or behind each trace of a differential pair is, in mm, at each point where the two traces run side by side.",
   )
 
 /**
