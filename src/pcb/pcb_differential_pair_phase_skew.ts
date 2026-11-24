@@ -82,8 +82,11 @@ export interface PcbDifferentialPairPhaseSkewSegment {
   start_phase_skew: number
   /**
    * At `end`: this trace's routed length so far minus the other trace's, in mm.
-   * A piece of trace that goes from 0.3 mm behind to 0.5 mm ahead is stored
-   * as two segments, -0.3 to 0 and 0 to 0.5.
+   *
+   * Example: on a straight piece of this trace, at the start this trace is
+   * 0.3 mm shorter than the other trace (-0.3), and at the end it is 0.5 mm
+   * longer (+0.5). That piece is stored as two segments: -0.3 to 0, then
+   * 0 to +0.5.
    */
   end_phase_skew: number
 }
