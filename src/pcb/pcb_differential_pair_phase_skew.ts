@@ -13,6 +13,11 @@ export const pcb_differential_pair_phase_skew_segment = z
     end_phase_skew: z.number().finite(),
   })
   .refine(
+    ({ start, end }) =>
+      [start.x, start.y, end.x, end.y].every(Number.isFinite),
+    "Segment endpoints must be finite",
+  )
+  .refine(
     (segment) =>
       segment.start.x !== segment.end.x || segment.start.y !== segment.end.y,
     "Segment start and end must differ",
