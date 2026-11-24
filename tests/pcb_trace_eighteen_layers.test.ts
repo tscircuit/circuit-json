@@ -1,5 +1,6 @@
 import { expect, test } from "bun:test"
 import { pcbRenderLayer } from "../src/common/PcbRenderLayer"
+import { layer_string } from "../src/pcb/properties/layer_ref"
 import { pcb_trace } from "../src/pcb/pcb_trace"
 import { pcb_via } from "../src/pcb/pcb_via"
 
@@ -22,7 +23,7 @@ test("preserves the inner copper of an 18-layer board", () => {
     "top",
     ...Array.from({ length: 16 }, (_, i) => `inner${i + 1}`),
     "bottom",
-  ]
+  ].map((name) => layer_string.parse(name))
   expect(
     pcb_via.parse({
       type: "pcb_via",
