@@ -78,9 +78,9 @@ export interface PcbDifferentialPairPhaseSkewSegment {
   layer: LayerRef
   /** Copper width, in mm. */
   width: number
-  /** At `start`: this trace's routed length so far minus the other trace's, in mm. */
+  /** At `start`: this trace's routed length so far minus its paired trace's, in mm. */
   start_phase_skew: number
-  /** At `end`: this trace's routed length so far minus the other trace's, in mm. */
+  /** At `end`: this trace's routed length so far minus its paired trace's, in mm. */
   end_phase_skew: number
 }
 
