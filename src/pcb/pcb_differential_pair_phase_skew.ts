@@ -78,7 +78,11 @@ export interface PcbDifferentialPairPhaseSkewSegment {
   width: number
   /** At `start`: this trace's routed length so far minus the other trace's, in mm. */
   start_phase_skew: number
-  /** At `end`: this trace's routed length so far minus the other trace's, in mm. Same sign as `start_phase_skew`, or zero. */
+  /**
+   * At `end`: this trace's routed length so far minus the other trace's, in mm.
+   * Never the opposite sign of this segment's `start_phase_skew`: where phase
+   * skew crosses zero the copper is split into two segments.
+   */
   end_phase_skew: number
 }
 
