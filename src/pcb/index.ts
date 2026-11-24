@@ -23,6 +23,7 @@ export * from "./pcb_trace_style_warning"
 export * from "./pcb_copper_pour_isolated_warning"
 export * from "./pcb_trace_too_long_error"
 export * from "./pcb_bus_length_skew_error"
+export * from "./pcb_differential_pair_phase_skew"
 export * from "./pcb_trace_too_long_warning"
 export * from "./pcb_trace_too_many_vias_warning"
 export * from "./pcb_bus_routing_constraint_error"
@@ -110,6 +111,7 @@ import type { PcbCopperPourIsolatedWarning } from "./pcb_copper_pour_isolated_wa
 import type { PcbTraceWarning } from "./pcb_trace_warning"
 import type { PcbTraceTooLongError } from "./pcb_trace_too_long_error"
 import type { PcbBusLengthSkewError } from "./pcb_bus_length_skew_error"
+import type { PcbDifferentialPairPhaseSkew } from "./pcb_differential_pair_phase_skew"
 import type { PcbTraceTooLongWarning } from "./pcb_trace_too_long_warning"
 import type { PcbTraceTooManyViasWarning } from "./pcb_trace_too_many_vias_warning"
 import type { PcbBusRoutingConstraintError } from "./pcb_bus_routing_constraint_error"
@@ -195,6 +197,7 @@ export type PcbCircuitElement =
   | PcbKeepoutOverlapWarning
   | PcbTraceTooLongError
   | PcbBusLengthSkewError
+  | PcbDifferentialPairPhaseSkew
   | PcbTraceTooLongWarning
   | PcbTraceTooManyViasWarning
   | PcbBusRoutingConstraintError

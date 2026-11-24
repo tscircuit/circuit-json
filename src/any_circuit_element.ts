@@ -106,6 +106,7 @@ export const any_circuit_element = z.union([
   pcb.pcb_trace_too_long_warning,
   pcb.pcb_trace_too_long_error,
   pcb.pcb_bus_length_skew_error,
+  pcb.pcb_differential_pair_phase_skew,
   pcb.pcb_trace_too_many_vias_warning,
   pcb.pcb_via,
   pcb.pcb_smtpad,

@@ -143,6 +143,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbCourtyardRect](#pcbcourtyardrect)
     - [PcbCutout](#pcbcutout)
     - [PcbDebugObject](#pcbdebugobject)
+    - [PcbDifferentialPairPhaseSkew](#pcbdifferentialpairphaseskew)
     - [PcbFabricationNoteDimension](#pcbfabricationnotedimension)
     - [PcbFabricationNotePath](#pcbfabricationnotepath)
     - [PcbFabricationNoteRect](#pcbfabricationnoterect)
@@ -2268,6 +2269,26 @@ interface PcbDebugPoint {
   label?: string
   shape: "point"
   center: Point
+  subcircuit_id?: string
+}
+```
+
+### PcbDifferentialPairPhaseSkew
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_differential_pair_phase_skew.ts)
+
+```typescript
+/** Phase skew along one routed differential pair: where the two traces run
+ * together, how much farther each trace has run than its partner, in mm.
+ * Each trace reports its own length minus its partner's, so the two traces
+ * show opposite signs at the same place. Copper not covered by a segment has
+ * unknown phase skew. */
+interface PcbDifferentialPairPhaseSkew {
+  type: "pcb_differential_pair_phase_skew"
+  pcb_differential_pair_phase_skew_id: string
+  source_bus_id: string
+  positive_trace: PcbDifferentialPairPhaseSkewTrace
+  negative_trace: PcbDifferentialPairPhaseSkewTrace
   subcircuit_id?: string
 }
 ```
