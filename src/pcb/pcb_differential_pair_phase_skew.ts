@@ -55,12 +55,6 @@ export const pcb_differential_pair_phase_skew = z
 /**
  * How far ahead or behind each trace of a differential pair is, in mm, at
  * each point where the two traces run side by side.
- *
- * Example: at some point the positive trace has used 10.2 mm of copper and
- * the negative trace 10.0 mm. The positive trace stores +0.2 there and the
- * negative trace stores -0.2.
- *
- * Parts of a trace with no segment have no known value.
  */
 export interface PcbDifferentialPairPhaseSkew {
   type: "pcb_differential_pair_phase_skew"
