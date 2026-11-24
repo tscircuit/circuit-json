@@ -1,17 +1,12 @@
 import { z } from "zod"
-import { getZodPrefixedIdWithDefault, type Point } from "src/common"
+import { getZodPrefixedIdWithDefault, point, type Point } from "src/common"
 import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
-const finite_point = z.object({
-  x: z.number().finite(),
-  y: z.number().finite(),
-})
-
 export const pcb_differential_pair_phase_skew_segment = z
   .object({
-    start: finite_point,
-    end: finite_point,
+    start: point,
+    end: point,
     layer: layer_ref,
     width: z.number().positive().finite(),
     start_phase_skew: z.number().finite(),
