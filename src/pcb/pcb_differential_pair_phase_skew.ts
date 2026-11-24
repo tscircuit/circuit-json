@@ -78,12 +78,13 @@ export interface PcbDifferentialPairPhaseSkewSegment {
   layer: LayerRef
   /** Copper width, in mm. */
   width: number
-  /** The value at `start`, in mm. */
+  /** At `start`: this trace's routed length so far minus the other trace's, in mm. */
   start_phase_skew: number
   /**
-   * The value at `end`, in mm. If one of the two values is positive, the
-   * other can't be negative: a piece going from -0.1 to +0.1 is stored as
-   * two segments, -0.1 to 0 and 0 to +0.1.
+   * At `end`: this trace's routed length so far minus the other trace's, in mm.
+   * Never the opposite sign of `start_phase_skew`. For example, a piece of
+   * trace that goes from 0.3 mm behind to 0.5 mm ahead is stored as two
+   * segments, -0.3 to 0 and 0 to 0.5.
    */
   end_phase_skew: number
 }
