@@ -1,11 +1,11 @@
+import { all_layers, type LayerRef } from "src/pcb/properties/layer_ref"
 import { z } from "zod"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 
 export type PcbRenderLayer =
   | "top_silkscreen"
   | "bottom_silkscreen"
-  | "top_copper"
-  | "bottom_copper"
+  | `${LayerRef}_copper`
   | "top_soldermask"
   | "bottom_soldermask"
   | "top_fabrication_note"
@@ -14,22 +14,13 @@ export type PcbRenderLayer =
   | "bottom_user_note"
   | "top_courtyard"
   | "bottom_courtyard"
-  | "inner1_copper"
-  | "inner2_copper"
-  | "inner3_copper"
-  | "inner4_copper"
-  | "inner5_copper"
-  | "inner6_copper"
-  | "inner7_copper"
-  | "inner8_copper"
   | "edge_cuts"
   | "drill"
 
 export const pcbRenderLayer = z.enum([
   "top_silkscreen",
   "bottom_silkscreen",
-  "top_copper",
-  "bottom_copper",
+  ...all_layers.map((layer) => `${layer}_copper` as const),
   "top_soldermask",
   "bottom_soldermask",
   "top_fabrication_note",
@@ -38,14 +29,6 @@ export const pcbRenderLayer = z.enum([
   "bottom_user_note",
   "top_courtyard",
   "bottom_courtyard",
-  "inner1_copper",
-  "inner2_copper",
-  "inner3_copper",
-  "inner4_copper",
-  "inner5_copper",
-  "inner6_copper",
-  "inner7_copper",
-  "inner8_copper",
   "edge_cuts",
   "drill",
 ])
