@@ -2278,11 +2278,12 @@ interface PcbDebugPoint {
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_differential_pair_phase_skew.ts)
 
 ```typescript
-/** Phase skew along one routed differential pair: where the two traces run
- * together, how much farther each trace has run than its partner, in mm.
- * Each trace reports its own length minus its partner's, so the two traces
- * show opposite signs at the same place. Copper not covered by a segment has
- * unknown phase skew. */
+/** Phase skew along one routed differential pair: at each point where the
+ * positive and negative traces run side by side, how much longer one trace
+ * is than the other up to that point, in mm. The positive trace stores
+ * positive length minus negative length, and the negative trace stores
+ * negative length minus positive length, so the two show opposite signs at
+ * the same place. Copper not covered by a segment has unknown phase skew. */
 interface PcbDifferentialPairPhaseSkew {
   type: "pcb_differential_pair_phase_skew"
   pcb_differential_pair_phase_skew_id: string

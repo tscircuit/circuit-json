@@ -49,15 +49,16 @@ export const pcb_differential_pair_phase_skew = z
     "Positive and negative traces must be different pcb_traces",
   )
   .describe(
-    "Phase skew along one routed differential pair: where the two traces run together, how much farther each trace has run than its partner, in mm. Copper of either trace not covered by a segment has unknown phase skew. A pair whose traces never run together has no element.",
+    "Phase skew along one routed differential pair: at each point where the positive and negative traces run side by side, how much longer one trace is than the other up to that point, in mm. Copper of either trace not covered by a segment has unknown phase skew. A pair whose traces never run together has no element.",
   )
 
 /**
- * Phase skew along one routed differential pair: where the two traces run
- * together, how much farther each trace has run than its partner, in mm.
- * Each trace reports its own length minus its partner's, so the two traces
- * show opposite signs at the same place. Copper not covered by a segment has
- * unknown phase skew.
+ * Phase skew along one routed differential pair: at each point where the
+ * positive and negative traces run side by side, how much longer one trace
+ * is than the other up to that point, in mm. The positive trace stores
+ * positive length minus negative length, and the negative trace stores
+ * negative length minus positive length, so the two show opposite signs at
+ * the same place. Copper not covered by a segment has unknown phase skew.
  */
 export interface PcbDifferentialPairPhaseSkew {
   type: "pcb_differential_pair_phase_skew"
@@ -75,9 +76,9 @@ export interface PcbDifferentialPairPhaseSkewSegment {
   layer: LayerRef
   /** Copper width, in mm. */
   width: number
-  /** This trace's routed length minus its partner's at `start`, in mm. */
+  /** At `start`: this trace's routed length so far minus the other trace's, in mm. */
   start_phase_skew: number
-  /** This trace's routed length minus its partner's at `end`, in mm. Same sign as `start_phase_skew`, or zero. */
+  /** At `end`: this trace's routed length so far minus the other trace's, in mm. Same sign as `start_phase_skew`, or zero. */
   end_phase_skew: number
 }
 
