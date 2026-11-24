@@ -24,7 +24,7 @@ export const pcb_differential_pair_phase_skew_segment = z
   )
   .refine(
     (segment) => segment.start_phase_skew * segment.end_phase_skew >= 0,
-    "Phase skew must not change sign within a segment; split it at zero",
+    "start_phase_skew and end_phase_skew must not be one positive and one negative",
   )
 
 export const pcb_differential_pair_phase_skew_trace = z.object({
@@ -49,16 +49,18 @@ export const pcb_differential_pair_phase_skew = z
     "Positive and negative traces must be different pcb_traces",
   )
   .describe(
-    "Phase skew along one routed differential pair: at each point where the positive and negative traces run side by side, how much longer one trace is than the other up to that point, in mm. Copper of either trace not covered by a segment has unknown phase skew. A pair whose traces never run together has no element.",
+    "How far ahead or behind each trace of a differential pair is, in mm, at each point where the two traces run side by side. Parts of a trace with no segment have no known value.",
   )
 
 /**
- * Phase skew along one routed differential pair: at each point where the
- * positive and negative traces run side by side, how much longer one trace
- * is than the other up to that point, in mm. The positive trace stores
- * positive length minus negative length, and the negative trace stores
- * negative length minus positive length, so the two show opposite signs at
- * the same place. Copper not covered by a segment has unknown phase skew.
+ * How far ahead or behind each trace of a differential pair is, in mm, at
+ * each point where the two traces run side by side.
+ *
+ * Example: at some point the positive trace has used 10.2 mm of copper and
+ * the negative trace 10.0 mm. The positive trace stores +0.2 there and the
+ * negative trace stores -0.2.
+ *
+ * Parts of a trace with no segment have no known value.
  */
 export interface PcbDifferentialPairPhaseSkew {
   type: "pcb_differential_pair_phase_skew"
@@ -69,24 +71,24 @@ export interface PcbDifferentialPairPhaseSkew {
   subcircuit_id?: string
 }
 
-/** A straight piece of copper along which phase skew changes linearly. */
+/** A straight piece of trace. Along it the value changes evenly from `start_phase_skew` to `end_phase_skew`. */
 export interface PcbDifferentialPairPhaseSkewSegment {
   start: Point
   end: Point
   layer: LayerRef
   /** Copper width, in mm. */
   width: number
-  /** At `start`: this trace's routed length so far minus the other trace's, in mm. */
+  /** The value at `start`, in mm. */
   start_phase_skew: number
   /**
-   * At `end`: this trace's routed length so far minus the other trace's, in mm.
-   * Never the opposite sign of this segment's `start_phase_skew`: where phase
-   * skew crosses zero the copper is split into two segments.
+   * The value at `end`, in mm. If one of the two values is positive, the
+   * other can't be negative: a piece going from -0.1 to +0.1 is stored as
+   * two segments, -0.1 to 0 and 0 to +0.1.
    */
   end_phase_skew: number
 }
 
-/** One trace of a differential pair, covered where its phase skew is known. */
+/** One trace of the pair, with a segment wherever its value is known. */
 export interface PcbDifferentialPairPhaseSkewTrace {
   pcb_trace_id: string
   segments: PcbDifferentialPairPhaseSkewSegment[]
