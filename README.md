@@ -143,6 +143,7 @@ https://github.com/user-attachments/assets/2f28b7ba-689e-4d80-85b2-5bdef84b41f8
     - [PcbCourtyardRect](#pcbcourtyardrect)
     - [PcbCutout](#pcbcutout)
     - [PcbDebugObject](#pcbdebugobject)
+    - [PcbDifferentialPairPhaseSkew](#pcbdifferentialpairphaseskew)
     - [PcbFabricationNoteDimension](#pcbfabricationnotedimension)
     - [PcbFabricationNotePath](#pcbfabricationnotepath)
     - [PcbFabricationNoteRect](#pcbfabricationnoterect)
@@ -2268,6 +2269,23 @@ interface PcbDebugPoint {
   label?: string
   shape: "point"
   center: Point
+  subcircuit_id?: string
+}
+```
+
+### PcbDifferentialPairPhaseSkew
+
+[Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_differential_pair_phase_skew.ts)
+
+```typescript
+/** How far ahead or behind each trace of a differential pair is, in mm, at
+ * each point where the two traces run side by side. */
+interface PcbDifferentialPairPhaseSkew {
+  type: "pcb_differential_pair_phase_skew"
+  pcb_differential_pair_phase_skew_id: string
+  source_bus_id: string
+  positive_trace: PcbDifferentialPairPhaseSkewTrace
+  negative_trace: PcbDifferentialPairPhaseSkewTrace
   subcircuit_id?: string
 }
 ```
