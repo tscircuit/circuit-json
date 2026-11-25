@@ -9,8 +9,8 @@ export const pcb_differential_pair_phase_skew_segment = z
     end: point,
     layer: layer_ref,
     width: z.number().positive().finite(),
-    start_phase_skew_mm: z.number().finite(),
-    end_phase_skew_mm: z.number().finite(),
+    start_length_difference_mm: z.number().finite(),
+    end_length_difference_mm: z.number().finite(),
   })
   .refine(
     ({ start, end }) => [start.x, start.y, end.x, end.y].every(Number.isFinite),
@@ -22,8 +22,10 @@ export const pcb_differential_pair_phase_skew_segment = z
     "Segment start and end must differ",
   )
   .refine(
-    (segment) => segment.start_phase_skew_mm * segment.end_phase_skew_mm >= 0,
-    "start_phase_skew_mm and end_phase_skew_mm must not be one positive and one negative",
+    (segment) =>
+      segment.start_length_difference_mm * segment.end_length_difference_mm >=
+      0,
+    "start_length_difference_mm and end_length_difference_mm must not be one positive and one negative",
   )
 
 export const pcb_differential_pair_phase_skew_trace = z.object({
@@ -64,7 +66,7 @@ export interface PcbDifferentialPairPhaseSkew {
   subcircuit_id?: string
 }
 
-/** A straight piece of trace. Along it the value changes evenly from `start_phase_skew_mm` to `end_phase_skew_mm`. */
+/** A straight piece of trace. Along it the value changes evenly from `start_length_difference_mm` to `end_length_difference_mm`. */
 export interface PcbDifferentialPairPhaseSkewSegment {
   start: Point
   end: Point
@@ -72,9 +74,9 @@ export interface PcbDifferentialPairPhaseSkewSegment {
   /** Copper width, in mm. */
   width: number
   /** At `start`: this trace's routed length so far minus the opposite-polarity trace's. */
-  start_phase_skew_mm: number
+  start_length_difference_mm: number
   /** At `end`: this trace's routed length so far minus the opposite-polarity trace's. */
-  end_phase_skew_mm: number
+  end_length_difference_mm: number
 }
 
 /** One trace of the pair, with a segment wherever its value is known. */

@@ -10,5 +10,7 @@ test("pcb_differential_pair_phase_skew parses as a circuit element", () => {
   expect(element.pcb_differential_pair_phase_skew_id).toStartWith(
     "pcb_differential_pair_phase_skew",
   )
-  expect(element.negative_trace.segments[0]!.end_phase_skew_mm).toBe(-0.2)
+  expect(element.negative_trace.segments[0]!.end_length_difference_mm).toBe(
+    -0.2,
+  )
 })
