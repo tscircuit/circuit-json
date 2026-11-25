@@ -15,6 +15,13 @@ export type SourceBusRouteLength =
 /** Centerline separation in mm or a multiple of the larger local trace width. */
 export type SourceBusTraceSpacing = number | { width_multiplier: number }
 
+export type SourceBusSkewReference = "range" | "mean" | "references"
+
+export interface SourceBusLengthMatchingPath {
+  source_trace_id: string
+  source_port_ids: [string, string]
+}
+
 const route_length = z.union([
   z.number().nonnegative().finite(),
   z.object({
@@ -36,6 +43,10 @@ export interface SourceBus {
   source_trace_ids: string[]
   /** Maximum difference between the longest and shortest member, in millimeters. */
   max_length_skew?: number
+  /** Range by default; mean deviation or comparison to length_match_source_trace_ids. */
+  skew_reference?: SourceBusSkewReference
+  /** Explicit endpoints for timing a path through a branched electrical net. */
+  length_matching_paths?: SourceBusLengthMatchingPath[]
   /** Intended single-ended characteristic impedance, in ohms. */
   target_impedance?: number
   /** Intended differential characteristic impedance, in ohms. */
@@ -70,6 +81,16 @@ export const source_bus = z.object({
   name: z.string().optional(),
   source_trace_ids: z.array(z.string()).min(1),
   max_length_skew: z.number().nonnegative().finite().optional(),
+  skew_reference: z.enum(["range", "mean", "references"]).optional(),
+  length_matching_paths: z
+    .array(
+      z.object({
+        source_trace_id: z.string(),
+        source_port_ids: z.tuple([z.string(), z.string()]),
+      }),
+    )
+    .min(1)
+    .optional(),
   target_impedance: z.number().positive().finite().optional(),
   target_differential_impedance: z.number().positive().finite().optional(),
   differential_pair: z
