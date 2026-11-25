@@ -354,6 +354,8 @@ There are 3 main element prefixes:
 - `pcb_` - e.g. `pcb_component`, `pcb_port`. Anything required to render the PCB
 - `schematic_` - e.g. `schematic_component`. Anything required to render the Schematic
 
+The `cad_` prefix describes 3D component and assembly geometry, including [built-in footprint 3D model references](docs/cad-builtin-footprint-models.md) and [CAD reference surfaces](docs/cad-reference-surfaces.md).
+
 The `system_block_` prefix describes [resolved system block diagrams](docs/system-blocks.md),
 including page bounds, block/group geometry, and routed logical connections.
 
@@ -1638,6 +1640,8 @@ interface CadComponent {
   layer?: LayerRef
   subcircuit_id?: string
   footprinter_string?: string
+  /** Resolved STEP or 3D model URL for a built-in footprinter_string, distinct from authored model_*_url overrides. */
+  footprinter_model_url?: string
   model_obj_url?: string
   model_stl_url?: string
   model_3mf_url?: string
