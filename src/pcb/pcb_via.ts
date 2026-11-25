@@ -28,8 +28,6 @@ export const pcb_via = z
     pcb_port_ids: z.array(z.string()).optional(),
     pcb_trace_id: z.string().optional(),
     source_trace_id: z.string().optional(),
-    /** Source declaration for a manually placed via. */
-    source_manually_placed_via_id: z.string().optional(),
     source_net_id: z.string().min(1).optional(),
     net_is_assignable: z.boolean().optional(),
     net_assigned: z.boolean().optional(),
@@ -77,8 +75,6 @@ export interface PcbVia {
   pcb_port_ids?: string[]
   pcb_trace_id?: string
   source_trace_id?: string
-  /** Source declaration for a manually placed via. */
-  source_manually_placed_via_id?: string
   source_net_id?: string
   net_is_assignable?: boolean
   net_assigned?: boolean
