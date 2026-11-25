@@ -1,17 +1,17 @@
 import { expect, test } from "bun:test"
-import { any_circuit_element } from "../src"
+import { any_circuit_element, type SourceBus } from "../src"
 
 test("source bus retains reference skew and explicit branched timing endpoints", () => {
   const bus = {
-    type: "source_bus" as const,
+    type: "source_bus",
     source_bus_id: "data",
     source_trace_ids: ["dq"],
     max_length_skew: 1,
-    skew_reference: "references" as const,
+    skew_reference: "references",
     length_match_source_trace_ids: ["dqs"],
     length_matching_paths: [
       { source_trace_id: "dqs", source_port_ids: ["cpu_dqs", "ram_dqs"] },
     ],
-  }
+  } satisfies SourceBus
   expect(any_circuit_element.parse(bus)).toEqual(bus)
 })
