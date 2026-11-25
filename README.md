@@ -3648,6 +3648,9 @@ interface PcbThermalSpoke {
 
 Outgoing segment taper; all three fields must be specified together.
 
+Footprint bridge traces can declare their intended owner with the optional
+`source_component_internal_connection_id` field on `pcb_trace`.
+
 ```typescript
 interface PcbTraceRoutePointWire {
   route_type: "wire"
@@ -3880,6 +3883,8 @@ interface PcbVia {
   pcb_port_ids?: string[]
   pcb_trace_id?: string
   source_trace_id?: string
+  /** Source declaration for a manually placed via. */
+  source_manually_placed_via_id?: string
   source_net_id?: string
   net_is_assignable?: boolean
   net_assigned?: boolean

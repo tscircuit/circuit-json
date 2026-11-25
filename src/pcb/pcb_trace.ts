@@ -86,6 +86,8 @@ export const pcb_trace = z
   .object({
     type: z.literal("pcb_trace"),
     source_trace_id: z.string().optional(),
+    /** Declared internal connection that owns footprint bridge copper. */
+    source_component_internal_connection_id: z.string().optional(),
     pcb_component_id: z.string().optional(),
     pcb_trace_id: getZodPrefixedIdWithDefault("pcb_trace"),
     pcb_group_id: z.string().optional(),
@@ -184,6 +186,8 @@ export type PcbTraceRoutePoint =
 export interface PcbTrace {
   type: "pcb_trace"
   source_trace_id?: string
+  /** Declared internal connection that owns footprint bridge copper. */
+  source_component_internal_connection_id?: string
   pcb_component_id?: string
   pcb_group_id?: string
   /** Owning manufacturing panel for copper connecting its child boards. */
