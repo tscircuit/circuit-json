@@ -32,6 +32,10 @@ export type SupplierPin1LocationMap = Partial<
   Record<SupplierName, PcbPin1Location>
 >
 
+export type SupplierAssemblyRotationOffsetMap = Partial<
+  Record<SupplierName, Rotation>
+>
+
 export const pcb_component = z
   .object({
     type: z.literal("pcb_component"),
@@ -83,6 +87,12 @@ export const pcb_component = z
       .optional()
       .describe(
         "Pin 1 location for each supplier's unrotated, top-view footprint",
+      ),
+    supplier_assembly_rotation_offset_map: z
+      .record(supplier_name, rotation.pipe(z.number().finite()))
+      .optional()
+      .describe(
+        "Counterclockwise placement angle in degrees needed to match each supplier's unrotated top-view CAD footprint in that supplier's assembly system. Add it after matching the authored and supplier footprint frames. A missing entry means the assembly zero is unknown.",
       ),
     metadata: z
       .object({
@@ -138,6 +148,8 @@ export interface PcbComponent {
   insertion_direction?: InsertionDirection
   pin1_location?: PcbPin1Location
   supplier_pin1_location_map?: SupplierPin1LocationMap
+  /** Placement angle that matches the supplier's unrotated CAD footprint. Missing means unknown. */
+  supplier_assembly_rotation_offset_map?: SupplierAssemblyRotationOffsetMap
   metadata?: PcbComponentMetadata
   obstructs_within_bounds: boolean
 }

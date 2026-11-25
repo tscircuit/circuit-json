@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test"
 import { pcb_component } from "src/pcb/pcb_component"
 
-test.failing("round trips assembly rotations separately from CAD pin 1", () => {
+test("round trips assembly rotations separately from CAD pin 1", () => {
   const footprint = {
     type: "pcb_component",
     pcb_component_id: "pcb_component_1",
