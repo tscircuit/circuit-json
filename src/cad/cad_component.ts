@@ -33,6 +33,14 @@ export const cad_component = z
 
     // These are all ways to generate/load the 3d model
     footprinter_string: z.string().optional(),
+    footprinter_model_url: z
+      .string()
+      .trim()
+      .min(1)
+      .optional()
+      .describe(
+        "Optional STEP or 3D model URL for the built-in footprinter_string body. Separate from model_step_url and model_asset so procedural viewers keep using footprinter_string while external CAD readers can load the prebuilt body.",
+      ),
     model_obj_url: z.string().optional(),
     model_stl_url: z.string().optional(),
     model_3mf_url: z.string().optional(),
@@ -104,6 +112,8 @@ export interface CadComponent {
   layer?: LayerRef
   subcircuit_id?: string
   footprinter_string?: string
+  /** Resolved STEP or 3D model URL for a built-in footprinter_string, distinct from authored model_*_url overrides. */
+  footprinter_model_url?: string
   model_obj_url?: string
   model_stl_url?: string
   model_3mf_url?: string
