@@ -14,6 +14,12 @@ const pcb_smtpad_circle = z.object({
   y: distance,
   radius: z.number(),
   layer: layer_ref,
+  pad_number: z
+    .string()
+    .optional()
+    .describe(
+      "Physical pad identifier, preserved verbatim (including an empty string). Independent of port hints and numeric source pin ordinals.",
+    ),
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
@@ -35,6 +41,12 @@ const pcb_smtpad_rect = z.object({
   rect_border_radius: z.number().optional(),
   corner_radius: z.number().optional(),
   layer: layer_ref,
+  pad_number: z
+    .string()
+    .optional()
+    .describe(
+      "Physical pad identifier, preserved verbatim (including an empty string). Independent of port hints and numeric source pin ordinals.",
+    ),
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
@@ -61,6 +73,12 @@ const pcb_smtpad_rotated_rect = z.object({
   corner_radius: z.number().optional(),
   ccw_rotation: rotation,
   layer: layer_ref,
+  pad_number: z
+    .string()
+    .optional()
+    .describe(
+      "Physical pad identifier, preserved verbatim (including an empty string). Independent of port hints and numeric source pin ordinals.",
+    ),
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
@@ -85,6 +103,12 @@ export const pcb_smtpad_pill = z.object({
   height: z.number(),
   radius: z.number(),
   layer: layer_ref,
+  pad_number: z
+    .string()
+    .optional()
+    .describe(
+      "Physical pad identifier, preserved verbatim (including an empty string). Independent of port hints and numeric source pin ordinals.",
+    ),
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
@@ -105,6 +129,12 @@ const pcb_smtpad_rotated_pill = z.object({
   radius: z.number(),
   ccw_rotation: rotation,
   layer: layer_ref,
+  pad_number: z
+    .string()
+    .optional()
+    .describe(
+      "Physical pad identifier, preserved verbatim (including an empty string). Independent of port hints and numeric source pin ordinals.",
+    ),
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
@@ -121,6 +151,12 @@ const pcb_smtpad_polygon = z.object({
   subcircuit_id: z.string().optional(),
   points: z.array(point),
   layer: layer_ref,
+  pad_number: z
+    .string()
+    .optional()
+    .describe(
+      "Physical pad identifier, preserved verbatim (including an empty string). Independent of port hints and numeric source pin ordinals.",
+    ),
   port_hints: z.array(z.string()).optional(),
   pcb_component_id: z.string().optional(),
   pcb_port_id: z.string().optional(),
@@ -161,6 +197,8 @@ export interface PcbSmtPadCircle {
   y: Distance
   radius: number
   layer: LayerRef
+  /** Physical pad identifier, preserved verbatim and independent of port hints. */
+  pad_number?: string
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
@@ -185,6 +223,8 @@ export interface PcbSmtPadRect {
   rect_border_radius?: number
   corner_radius?: number
   layer: LayerRef
+  /** Physical pad identifier, preserved verbatim and independent of port hints. */
+  pad_number?: string
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
@@ -214,6 +254,8 @@ export interface PcbSmtPadRotatedRect {
   corner_radius?: number
   ccw_rotation: Rotation
   layer: LayerRef
+  /** Physical pad identifier, preserved verbatim and independent of port hints. */
+  pad_number?: string
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
@@ -240,6 +282,8 @@ export interface PcbSmtPadPill {
   height: number
   radius: number
   layer: LayerRef
+  /** Physical pad identifier, preserved verbatim and independent of port hints. */
+  pad_number?: string
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
@@ -264,6 +308,8 @@ export interface PcbSmtPadRotatedPill {
   radius: number
   ccw_rotation: Rotation
   layer: LayerRef
+  /** Physical pad identifier, preserved verbatim and independent of port hints. */
+  pad_number?: string
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
@@ -283,6 +329,8 @@ export interface PcbSmtPadPolygon {
   subcircuit_id?: string
   points: Point[]
   layer: LayerRef
+  /** Physical pad identifier, preserved verbatim and independent of port hints. */
+  pad_number?: string
   port_hints?: string[]
   pcb_component_id?: string
   pcb_port_id?: string
