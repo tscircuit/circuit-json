@@ -90,7 +90,10 @@ const pcb_hole_circle_or_square = z.object({
   pcb_group_id: z.string().optional(),
   subcircuit_id: z.string().optional(),
   pcb_component_id: z.string().optional(),
-  hole_shape: z.enum(["circle", "square"]),
+  /** @deprecated "round" is accepted for old data and normalized to "circle". */
+  hole_shape: z
+    .enum(["circle", "square", "round"])
+    .transform((shape) => (shape === "round" ? "circle" : shape)),
   hole_diameter: z.number(),
   x: distance,
   y: distance,
