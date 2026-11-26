@@ -2,6 +2,55 @@ import { test, expect } from "bun:test"
 import { pcb_copper_pour } from "../src/pcb/pcb_copper_pour"
 import { any_circuit_element } from "../src/any_circuit_element"
 
+const clearanceShapes = [
+  { shape: "rect", center: { x: 0, y: 0 }, width: 10, height: 10 },
+  {
+    shape: "polygon",
+    points: [
+      { x: 0, y: 0 },
+      { x: 10, y: 0 },
+      { x: 0, y: 10 },
+    ],
+  },
+  {
+    shape: "brep",
+    brep_shape: {
+      outer_ring: {
+        vertices: [
+          { x: 0, y: 0 },
+          { x: 10, y: 0 },
+          { x: 0, y: 10 },
+        ],
+      },
+    },
+  },
+]
+
+for (const shape of clearanceShapes) {
+  test(`${shape.shape} clearance survives schema parsing and JSON serialization`, () => {
+    const base = { type: "pcb_copper_pour", layer: "inner1", ...shape }
+    for (const clearance of [0, 0.16, 0.3, "0.3mm"]) {
+      const parsed = pcb_copper_pour.parse({ ...base, clearance })
+      const expected = typeof clearance === "string" ? 0.3 : clearance
+      expect(parsed.clearance).toBe(expected)
+      expect(
+        any_circuit_element.parse(JSON.parse(JSON.stringify(parsed))),
+      ).toMatchObject({ clearance: expected })
+    }
+    expect(pcb_copper_pour.parse(base).clearance).toBeUndefined()
+    for (const clearance of [
+      -0.1,
+      "-0.1mm",
+      Number.NaN,
+      Number.POSITIVE_INFINITY,
+    ]) {
+      expect(pcb_copper_pour.safeParse({ ...base, clearance }).success).toBe(
+        false,
+      )
+    }
+  })
+}
+
 test("pcb_copper_pour rect parses", () => {
   const pour = pcb_copper_pour.parse({
     type: "pcb_copper_pour",
