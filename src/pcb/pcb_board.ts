@@ -10,6 +10,7 @@ import {
   manufacturing_drc_properties,
 } from "src/pcb/properties/manufacturing_drc_properties"
 import { type Length, length } from "src/units"
+import { type LayerRef, layer_ref } from "./properties/layer_ref"
 import { expectTypesMatch } from "src/utils/expect-types-match"
 import { z } from "zod"
 
@@ -48,6 +49,7 @@ export const pcb_board = z
       ),
     thickness: length.optional().default(1.4),
     num_layers: z.number().optional().default(4),
+    routing_layers: z.array(layer_ref).min(1).optional(),
     allow_blind_and_buried_vias: z
       .boolean()
       .optional()
@@ -89,6 +91,8 @@ export interface PcbBoard extends ManufacturingDrcProperties {
   display_offset_y?: string
   thickness: Length
   num_layers: number
+  /** Layers available for planar trace segments. Vias may span other copper layers. */
+  routing_layers?: LayerRef[]
   /** Whether autorouters may generate blind and buried vias. */
   allow_blind_and_buried_vias?: boolean
   center: Point
