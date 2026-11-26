@@ -34,8 +34,11 @@ export interface SourceBus {
   source_bus_id: string
   name?: string
   source_trace_ids: string[]
-  /** Maximum difference between the longest and shortest member, in millimeters. */
+  /** Maximum routed-length skew using length_skew_reference, in millimeters. */
   max_length_skew?: number
+  /** Comparison for max_length_skew: range by default, or each member's absolute
+   * deviation from the arithmetic mean of all member lengths. */
+  length_skew_reference?: "range" | "mean"
   /** Intended single-ended characteristic impedance, in ohms. */
   target_impedance?: number
   /** Intended differential characteristic impedance, in ohms. */
@@ -70,6 +73,7 @@ export const source_bus = z.object({
   name: z.string().optional(),
   source_trace_ids: z.array(z.string()).min(1),
   max_length_skew: z.number().nonnegative().finite().optional(),
+  length_skew_reference: z.enum(["range", "mean"]).optional(),
   target_impedance: z.number().positive().finite().optional(),
   target_differential_impedance: z.number().positive().finite().optional(),
   differential_pair: z

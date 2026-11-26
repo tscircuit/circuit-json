@@ -406,7 +406,7 @@ interface SourceBus {
   source_bus_id: string
   name?: string
   source_trace_ids: string[]
-  /** Maximum difference between the longest and shortest member, in millimeters. */
+  /** Maximum member skew using length_skew_reference, in millimeters. */
   max_length_skew?: number
   /** Intended single-ended characteristic impedance, in ohms. */
   target_impedance?: number
