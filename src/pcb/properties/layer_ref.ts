@@ -12,9 +12,19 @@ export const all_layers = [
   "inner6",
   "inner7",
   "inner8",
+  "inner9",
+  "inner10",
+  "inner11",
+  "inner12",
+  "inner13",
+  "inner14",
+  "inner15",
+  "inner16",
 ] as const
 
-export const layer_string = z.enum(all_layers)
+// Name the shared enum so TypeScript can emit the full circuit element union.
+export interface LayerStringSchema extends z.ZodEnum<[...typeof all_layers]> {}
+export const layer_string: LayerStringSchema = z.enum(all_layers)
 
 export const layer_ref = layer_string
   .or(

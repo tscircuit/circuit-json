@@ -54,7 +54,7 @@ for (const schema of [pcb_via, any_circuit_element]) {
 
   test(`${schemaName} rejects invalid drill layers and through-hole status`, () => {
     for (const field of ["topmost_drill_layer", "bottommost_drill_layer"]) {
-      for (const value of ["inner9", "invalid", 1, null]) {
+      for (const value of ["inner17", "invalid", 1, null]) {
         expect(schema.safeParse({ ...baseVia, [field]: value }).success).toBe(
           false,
         )

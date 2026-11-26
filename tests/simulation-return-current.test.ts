@@ -264,7 +264,7 @@ test("field dimensions reject unsafe, fractional and nonpositive values", () => 
     { cell_height: Infinity },
     { copper_thickness: -0.035 },
     { min_x: Infinity },
-    { layer: "inner9" },
+    { layer: "inner17" },
     { data_format: "unknown" },
   ])
     assert.ok(
