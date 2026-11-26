@@ -1,9 +1,10 @@
 import type { PcbDifferentialPairPhaseSkewInput } from "src/pcb/pcb_differential_pair_phase_skew"
 
-/** A pair coupled for 5 mm where the positive trace pulls 0.2 mm ahead. */
+/** A pair coupled for 5 mm where the positive trace pulls 0.2 mm ahead, then ends up 0.1 mm shorter. */
 export const phaseSkewInput = {
   type: "pcb_differential_pair_phase_skew",
   source_bus_id: "source_bus_0",
+  end_to_end_length_difference_mm: -0.1,
   positive_trace: {
     pcb_trace_id: "pcb_trace_0",
     segments: [

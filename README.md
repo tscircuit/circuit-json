@@ -2277,13 +2277,17 @@ interface PcbDebugPoint {
 
 [Source](https://github.com/tscircuit/circuit-json/blob/main/src/pcb/pcb_differential_pair_phase_skew.ts)
 
+Total routed length of the positive trace minus that of the negative trace, in mm.
+
 ```typescript
-/** How far ahead or behind each trace of a differential pair is, in mm, at
- * each point where the two traces run side by side. */
+/** The differential pair's end-to-end routed length difference and how far
+ * ahead or behind each trace is where they run side by side, in mm. */
 interface PcbDifferentialPairPhaseSkew {
   type: "pcb_differential_pair_phase_skew"
   pcb_differential_pair_phase_skew_id: string
   source_bus_id: string
+  /** Total routed length of the positive trace minus that of the negative trace, in mm. */
+  end_to_end_length_difference_mm: number
   positive_trace: PcbDifferentialPairPhaseSkewTrace
   negative_trace: PcbDifferentialPairPhaseSkewTrace
   subcircuit_id?: string
