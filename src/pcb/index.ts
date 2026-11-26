@@ -75,6 +75,7 @@ export * from "./pcb_preflight_routing_error"
 export * from "./pcb_manual_edit_conflict_warning"
 export * from "./pcb_connector_not_in_accessible_orientation_warning"
 export * from "./pcb_component_missing_courtyard_warning"
+export * from "./pcb_component_suboptimal_rotation_warning"
 export * from "./supplier_footprint_mismatch_warning"
 export * from "./pcb_fabricator_extra_charge_warning"
 export * from "./pcb_breakout_point"
@@ -135,6 +136,7 @@ import type { ExternalFootprintLoadError } from "./external_footprint_load_error
 import type { PcbManualEditConflictWarning } from "./pcb_manual_edit_conflict_warning"
 import type { PcbConnectorNotInAccessibleOrientationWarning } from "./pcb_connector_not_in_accessible_orientation_warning"
 import type { PcbComponentMissingCourtyardWarning } from "./pcb_component_missing_courtyard_warning"
+import type { PcbComponentSuboptimalRotationWarning } from "./pcb_component_suboptimal_rotation_warning"
 import type { SupplierFootprintMismatchWarning } from "./supplier_footprint_mismatch_warning"
 import type { PcbFabricatorExtraChargeWarning } from "./pcb_fabricator_extra_charge_warning"
 import type { PcbTraceHint } from "./pcb_trace_hint"
@@ -210,6 +212,7 @@ export type PcbCircuitElement =
   | PcbManualEditConflictWarning
   | PcbConnectorNotInAccessibleOrientationWarning
   | PcbComponentMissingCourtyardWarning
+  | PcbComponentSuboptimalRotationWarning
   | SupplierFootprintMismatchWarning
   | PcbFabricatorExtraChargeWarning
   | PcbPortNotMatchedError
