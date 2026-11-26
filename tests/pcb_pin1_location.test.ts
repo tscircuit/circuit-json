@@ -5,18 +5,8 @@ import {
 } from "src/pcb/properties/pcb_pin1_location"
 
 const rotationCycles = [
-  [
-    "leftside_top",
-    "bottomside_left",
-    "rightside_bottom",
-    "topside_right",
-  ],
-  [
-    "leftside_bottom",
-    "bottomside_right",
-    "rightside_top",
-    "topside_left",
-  ],
+  ["leftside_top", "bottomside_left", "rightside_bottom", "topside_right"],
+  ["leftside_bottom", "bottomside_right", "rightside_top", "topside_left"],
 ] as const satisfies readonly (readonly PcbPin1Location[])[]
 
 const quarterTurnRotations = [0, 90, 180, 270] as const

@@ -11,9 +11,7 @@ test("pcb_packing_error parses", () => {
   })
 
   expect(error.pcb_packing_error_id).toBeDefined()
-  expect(error.pcb_packing_error_id.startsWith("pcb_packing_error")).toBe(
-    true,
-  )
+  expect(error.pcb_packing_error_id.startsWith("pcb_packing_error")).toBe(true)
   expect(error.error_type).toBe("pcb_packing_error")
   expect(error.pcb_group_id).toBe("pcb_group_1")
   expect(error.subcircuit_id).toBe("subcircuit_1")

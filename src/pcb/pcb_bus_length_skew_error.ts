@@ -17,6 +17,11 @@ export interface PcbBusLengthSkewError extends BaseCircuitJsonError {
   actual_length_skew: number
   maximum_length_skew: number
   subcircuit_id?: string
+  /** Summed lane lengths, in mm, when the bus is a differential pair. */
+  differential_pair_lengths?: {
+    positive_length: number
+    negative_length: number
+  }
 }
 
 export const pcb_bus_length_skew_error = base_circuit_json_error.extend({
@@ -33,6 +38,12 @@ export const pcb_bus_length_skew_error = base_circuit_json_error.extend({
   actual_length_skew: z.number().nonnegative().finite(),
   maximum_length_skew: z.number().nonnegative().finite(),
   subcircuit_id: z.string().optional(),
+  differential_pair_lengths: z
+    .object({
+      positive_length: z.number().nonnegative().finite(),
+      negative_length: z.number().nonnegative().finite(),
+    })
+    .optional(),
 })
 
 export type PcbBusLengthSkewErrorInput = z.input<
