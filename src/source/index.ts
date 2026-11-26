@@ -67,3 +67,4 @@ export * from "./source_bus"
 
 export * from "./source_runtime_error"
 export * from "./source_datasheet"
+export * from "./properties/trace_length_constraint"
