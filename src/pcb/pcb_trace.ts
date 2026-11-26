@@ -52,6 +52,7 @@ export const pcb_trace_route_point_wire = z
 
 export const pcb_trace_route_point_via = z.object({
   route_type: z.literal("via"),
+  pcb_component_id: z.string().min(1).nullable().optional(),
   x: distance,
   y: distance,
   copper_pour_id: z.string().optional(),
@@ -150,6 +151,7 @@ export interface PcbTraceRoutePointWire {
 
 export interface PcbTraceRoutePointVia {
   route_type: "via"
+  pcb_component_id?: string | null
   x: Distance
   y: Distance
   copper_pour_id?: string
