@@ -22,7 +22,11 @@ test("keepout permissions preserve booleans and omission across all shapes", () 
     },
   ] satisfies PCBKeepoutInput[]
   for (const keepout of keepouts) {
-    for (const field of ["allow_traces", "allow_placements"] as const) {
+    for (const field of [
+      "allow_traces",
+      "allow_placements",
+      "allow_copper_pour",
+    ] as const) {
       expect(any_circuit_element.parse(keepout)).not.toHaveProperty(field)
       for (const value of [true, false]) {
         const input = { ...keepout, [field]: value }
@@ -38,6 +42,7 @@ test("keepout permissions preserve booleans and omission across all shapes", () 
       ...keepout,
       allow_traces: true,
       allow_placements: true,
+      allow_copper_pour: true,
       warning_only: true,
     }
     expect(any_circuit_element.parse(combined)).toMatchObject(combined)
