@@ -3885,7 +3885,40 @@ interface PcbVia {
   net_assigned?: boolean
   tented_on_top?: boolean
   tented_on_bottom?: boolean
+  /** Top-side IPC-4761 protection. Requires tented_on_top to be true or omitted. */
+  ipc_4761_via_type_top?: Ipc4761ViaType
+  /** Bottom-side IPC-4761 protection. Requires tented_on_bottom to be true or omitted. */
+  ipc_4761_via_type_bottom?: Ipc4761ViaType
+  /** Process used to form the primary via hole. */
+  drill_method?: "mechanical" | "laser"
+  /** Allowed deviations from the finished hole_diameter. */
+  hole_diameter_tolerance?: {
+    /** Nonnegative oversize allowance, in millimeters. */
+    plus: Distance
+    /** Nonnegative undersize allowance, in millimeters. */
+    minus: Distance
+  }
+  /** Backdrill operation for removing unused barrel plating. */
+  backdrill?: {
+    /** Board surface where the backdrill starts. */
+    from_side: "top" | "bottom"
+    /** First layer that the backdrill must leave intact. */
+    must_not_cut_layer: LayerRef
+    /** Maximum length of the remaining via stub, in millimeters. */
+    max_stub_length?: Distance
+    /** Backdrill hole diameter, in millimeters. */
+    hole_diameter?: Distance
+  }
 }
+
+/** Via protection types I through VII, in order. */ type Ipc4761ViaType =
+  | "tented"
+  | "tented_and_covered"
+  | "plugged"
+  | "plugged_and_covered"
+  | "filled"
+  | "filled_and_covered"
+  | "filled_and_capped"
 ```
 
 ### PcbViaClearanceError
