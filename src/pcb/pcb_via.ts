@@ -1,8 +1,19 @@
 import { z } from "zod"
 import { distance, type Distance } from "src/units"
 import { getZodPrefixedIdWithDefault } from "src/common"
-import { layer_ref, type LayerRef } from "src/pcb/properties/layer_ref"
+import {
+  layer_ref,
+  layer_string,
+  type LayerRef,
+} from "src/pcb/properties/layer_ref"
 import { expectTypesMatch } from "src/utils/expect-types-match"
+
+const layerStack: LayerRef[] = [
+  ...layer_string.options.filter((layer) => layer !== "bottom"),
+  "bottom",
+]
+
+const getLayerStackIndex = (layer: LayerRef) => layerStack.indexOf(layer)
 
 export const pcb_via = z
   .object({
@@ -35,6 +46,55 @@ export const pcb_via = z
     is_tented: z.boolean().optional(),
     tented_on_top: z.boolean().optional(),
     tented_on_bottom: z.boolean().optional(),
+  })
+  .superRefine((via, ctx) => {
+    const layers = new Set(via.layers)
+    if (layers.size === 0 || layers.size !== via.layers.length) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["layers"],
+        message: "Via layers must be non-empty and unique",
+      })
+      return
+    }
+
+    const indices = via.layers.map(getLayerStackIndex)
+    const top = Math.min(...indices)
+    const bottom = Math.max(...indices)
+    for (const [field, endpoint] of [
+      ["topmost_drill_layer", layerStack[top]],
+      ["bottommost_drill_layer", layerStack[bottom]],
+    ] as const) {
+      if (via[field] !== undefined && via[field] !== endpoint) {
+        ctx.addIssue({
+          code: "custom",
+          path: [field],
+          message: `Must match the drill span endpoint ${endpoint}`,
+        })
+      }
+    }
+
+    const isThroughHole = layers.has("top") && layers.has("bottom")
+    if (via.through_hole !== undefined && via.through_hole !== isThroughHole) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["through_hole"],
+        message: `Must be ${isThroughHole} for this layer span`,
+      })
+    }
+
+    for (const field of ["from_layer", "to_layer"] as const) {
+      const layer = via[field]
+      if (layer === undefined) continue
+      const index = getLayerStackIndex(layer)
+      if (index < top || index > bottom) {
+        ctx.addIssue({
+          code: "custom",
+          path: [field],
+          message: "Must be within the drill span",
+        })
+      }
+    }
   })
   .transform(({ is_tented, ...via }) => {
     if (is_tented !== undefined) {
