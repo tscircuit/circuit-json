@@ -12,42 +12,58 @@ const baseVia = {
 for (const schema of [pcb_via, any_circuit_element]) {
   const schemaName = schema === pcb_via ? "pcb_via" : "any_circuit_element"
 
-  test(`${schemaName} preserves optional drill layers and through-hole status`, () => {
-    for (const top of [undefined, "top", "inner1"] as const) {
-      for (const bottom of [undefined, "inner2", "bottom"] as const) {
-        for (const throughHole of [undefined, false, true]) {
-          const input = {
-            ...baseVia,
-            ...(top !== undefined && { topmost_drill_layer: top }),
-            ...(bottom !== undefined && { bottommost_drill_layer: bottom }),
-            ...(throughHole !== undefined && { through_hole: throughHole }),
-          } satisfies PcbViaInput
-          const via = schema.parse(input) as PcbVia
-
-          for (const field of [
-            "topmost_drill_layer",
-            "bottommost_drill_layer",
-            "through_hole",
-          ] as const) {
-            if (input[field] === undefined) {
-              expect(via).not.toHaveProperty(field)
-            } else {
-              expect(via[field]).toBe(input[field])
-            }
-          }
-          expect(schema.parse(via)).toEqual(via)
-        }
-      }
-    }
-  })
+  test.each([
+    ["a via with default diameters and no drill metadata", {}],
+    [
+      "a through via",
+      {
+        layers: ["bottom", "top"],
+        topmost_drill_layer: "top",
+        bottommost_drill_layer: "bottom",
+        through_hole: true,
+      },
+    ],
+    [
+      "a blind via",
+      {
+        layers: ["bottom", "inner1"],
+        bottommost_drill_layer: "bottom",
+        through_hole: false,
+      },
+    ],
+    [
+      "a buried via with legacy endpoints inside the drill span",
+      {
+        layers: ["inner8", "inner2"],
+        topmost_drill_layer: "inner2",
+        from_layer: "inner7",
+        to_layer: "inner3",
+      },
+    ],
+  ] satisfies [string, Partial<PcbViaInput>][])(
+    `${schemaName} parses %s`,
+    (_, fields) => {
+      const input = { ...baseVia, ...fields }
+      const via = schema.parse(input)
+      expect(via).toEqual({
+        ...input,
+        pcb_via_id: expect.stringMatching(/^pcb_via_/),
+        outer_diameter: 0.6,
+        hole_diameter: 0.25,
+      })
+      expect(schema.parse(via)).toEqual(via)
+    },
+  )
 
   test(`${schemaName} normalizes drill layer references`, () => {
     const via = schema.parse({
       ...baseVia,
+      layers: [{ name: "inner8" }, { name: "inner1" }],
       topmost_drill_layer: { name: "inner1" },
       bottommost_drill_layer: { name: "inner8" },
     }) as PcbVia
 
+    expect(via.layers).toEqual(["inner8", "inner1"])
     expect(via.topmost_drill_layer).toBe("inner1")
     expect(via.bottommost_drill_layer).toBe("inner8")
   })
