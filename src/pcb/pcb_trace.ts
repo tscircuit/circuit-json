@@ -86,11 +86,13 @@ export const pcb_trace = z
   .object({
     type: z.literal("pcb_trace"),
     source_trace_id: z.string().optional(),
+    source_net_id: z.string().min(1).optional(),
     pcb_component_id: z.string().optional(),
     pcb_trace_id: getZodPrefixedIdWithDefault("pcb_trace"),
     pcb_group_id: z.string().optional(),
     pcb_panel_id: z.string().optional(),
     subcircuit_id: z.string().optional(),
+    subcircuit_connectivity_map_key: z.string().optional(),
     route_thickness_mode: z
       .enum(["constant", "interpolated"])
       .default("constant")
@@ -184,11 +186,15 @@ export type PcbTraceRoutePoint =
 export interface PcbTrace {
   type: "pcb_trace"
   source_trace_id?: string
+  /** Source net ID of the physical net this trace belongs to. */
+  source_net_id?: string
   pcb_component_id?: string
   pcb_group_id?: string
   /** Owning manufacturing panel for copper connecting its child boards. */
   pcb_panel_id?: string
   subcircuit_id?: string
+  /** Connectivity map key of the physical net this trace belongs to. */
+  subcircuit_connectivity_map_key?: string
   pcb_trace_id: string
   /**
    * The order that this trace was routed in. This can be used to debug the
